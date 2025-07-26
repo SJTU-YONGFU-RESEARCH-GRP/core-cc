@@ -1,0 +1,15 @@
+
+===== Running Python ECC Simulation & Analysis (Theoretical) =====
+Starting Python ECC simulation with enhanced parallel processing...
+Executing: python3 src/run_analysis.py --benchmark-only --use-processes
+Enhanced ECC Analysis Framework v3.0
+====================================
+Output directory: /mnt/d/proj/ecc/results
+
+============================================================
+ECC BENCHMARKING
+============================================================
+Auto-detected optimal workers: 9
+System: 12 CPU cores, 11.7 GB RAM
+Parallel mode: Processes
+🔄 Using ProcessPoolExecutor with 9 workers

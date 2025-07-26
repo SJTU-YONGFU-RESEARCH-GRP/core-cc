@@ -1,0 +1,9 @@
+bchlib
+reedsolo
+pandas
+pytest
+numpy
+pyldpc
+scikit-commpy
+mlflow
+matplotlib 
