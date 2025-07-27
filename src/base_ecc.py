@@ -14,17 +14,20 @@ class ECCBase:
         """
         raise NotImplementedError
 
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Decode a codeword.
-
+        Decode a codeword and return the original data.
+        
         Args:
-            codeword (int): The codeword to decode.
-
+            codeword: The encoded codeword
+            
         Returns:
-            Tuple[int, bool, bool]: (decoded_data, error_detected, error_corrected)
+            Tuple of (decoded_data, error_type) where error_type is one of:
+            - 'corrected': Error was detected and corrected
+            - 'detected': Error was detected but not corrected
+            - 'undetected': Error was not detected
         """
-        raise NotImplementedError
+        raise NotImplementedError("Subclasses must implement decode method")
 
     def inject_error(self, codeword: int, bit_idx: int) -> int:
         """

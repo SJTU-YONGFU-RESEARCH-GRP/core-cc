@@ -40,35 +40,25 @@ class BCHECC(ECCBase):
         # Append parity to data
         return (data << 8) | (codeword & 0xFF)
 
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Decode 15-bit BCH(15,7,2) codeword.
+        Decode a BCH codeword.
+        
         Args:
-            codeword (int): 15-bit codeword.
+            codeword: The codeword to decode
+            
         Returns:
-            Tuple[int, bool, bool]: (decoded_data, error_detected, error_corrected)
+            Tuple of (decoded_data, error_type)
         """
-        if codeword >= (1 << 15):
-            raise ValueError("Codeword must be 15 bits.")
-        # Extract data
-        data = (codeword >> 8) & 0x7F
-        # Syndrome calculation (brute force for small code)
-        # Try all single- and double-bit errors
-        if self.encode(data) == codeword:
-            return data, False, False  # No error
-        # Try all single-bit errors
-        for i in range(15):
-            test = codeword ^ (1 << i)
-            if self.encode((test >> 8) & 0x7F) == test:
-                return (test >> 8) & 0x7F, True, True
-        # Try all double-bit errors
-        for i in range(15):
-            for j in range(i+1, 15):
-                test = codeword ^ (1 << i) ^ (1 << j)
-                if self.encode((test >> 8) & 0x7F) == test:
-                    return (test >> 8) & 0x7F, True, True
-        # Uncorrectable error
-        return data, True, False
+        try:
+            # Convert to bytes for BCH decoding
+            codeword_bytes = codeword.to_bytes((codeword.bit_length() + 7) // 8, 'big')
+            decoded_bytes = self.bch.decode(codeword_bytes)
+            decoded_data = int.from_bytes(decoded_bytes, 'big')
+            return decoded_data, 'corrected'
+        except Exception:
+            # If decoding fails, error detected
+            return codeword, 'detected'
 
     def inject_error(self, codeword: int, bit_idx: int) -> int:
         """

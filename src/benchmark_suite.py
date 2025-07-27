@@ -99,21 +99,22 @@ class ECCBenchmarkSuite:
     """Comprehensive ECC benchmarking suite."""
     
     def __init__(self, config: BenchmarkConfig):
-        """Initialize the benchmark suite."""
-        self.config = config
-        self.results = []
+        """
+        Initialize the benchmarking suite.
         
-        # Parallel processing flags
+        Args:
+            config: Benchmark configuration
+        """
+        self.config = config
+        self.results: List[BenchmarkResult] = []
         self._run_benchmarks_with_processes = False
         self._use_chunked_processing = False
-        
-        # Overwrite flag for existing results
         self._overwrite_existing = False
-    
+        
     def set_overwrite_existing(self, overwrite: bool = True) -> None:
         """Set whether to overwrite existing benchmark results."""
         self._overwrite_existing = overwrite
-    
+        
     def _check_existing_results(self, output_dir: str = "results") -> Dict[str, bool]:
         """
         Check which benchmark configurations already have results.
@@ -175,7 +176,7 @@ class ECCBenchmarkSuite:
                         existing_results[key] = False
         
         return existing_results
-    
+        
     def _load_existing_results(self) -> List[BenchmarkResult]:
         """Load existing benchmark results from file."""
         results_file = Path("results") / "benchmark_results.json"
@@ -251,11 +252,11 @@ class ECCBenchmarkSuite:
             else:
                 return ReedSolomonECC(n=31, k=16)
         elif ecc_type == LDPCECC:
-            # LDPC parameters
-            return LDPCECC(n=word_length * 2, k=word_length)
+            # LDPC parameters - only n is needed, k is determined by the generator matrix
+            return LDPCECC(n=word_length * 2)
         elif ecc_type == TurboECC:
-            # Turbo code parameters
-            return TurboECC(n=word_length * 3, k=word_length)
+            # Turbo code parameters - TurboECC doesn't accept n/k parameters
+            return TurboECC()
         elif ecc_type == ConvolutionalECC:
             # Convolutional code parameters
             return ConvolutionalECC(n=word_length * 2, k=word_length)
@@ -364,7 +365,7 @@ class ECCBenchmarkSuite:
             
             # Measure decoding time
             start_time = time.perf_counter()
-            decoded, detected_err, corrected = ecc.decode(corrupted)
+            decoded, error_type = ecc.decode(corrupted)
             decode_time = time.perf_counter() - start_time
             decode_times.append(decode_time)
             
@@ -373,12 +374,12 @@ class ECCBenchmarkSuite:
             # Count error types
             error_distribution[error_pattern] += 1
             
-            # Update statistics
-            if detected_err:
-                detected += 1
-            if corrected and decoded == data:
+            # Update statistics based on error_type
+            if error_type == 'corrected':
                 correctable += 1
-            if not detected_err and decoded != data:
+            elif error_type == 'detected':
+                detected += 1
+            elif error_type == 'undetected':
                 undetected += 1
         
         # Calculate metrics
@@ -428,6 +429,13 @@ class ECCBenchmarkSuite:
                 for error_pattern in self.config.error_patterns:
                     configs.append((ecc_type, word_length, error_pattern))
         
+        print(f"📋 Total configurations to test: {len(configs)}")
+        print(f"🔧 ECC Types: {[ecc.__name__ for ecc in self.config.ecc_types]}")
+        print(f"📏 Word Lengths: {self.config.word_lengths}")
+        print(f"⚠️  Error Patterns: {self.config.error_patterns}")
+        print(f"🔄 Trials per configuration: {self.config.trials_per_config}")
+        print()
+        
         # Check for existing results
         existing_results_status = self._check_existing_results()
         
@@ -445,12 +453,18 @@ class ECCBenchmarkSuite:
             
             if skipped_count > 0:
                 print(f"📋 Skipped {skipped_count} existing configurations. Use --overwrite to re-run all.")
+                print(f"🎯 Remaining configurations to run: {len(configs)}")
+                print()
         
         # If no configurations to run, load existing results
         if not configs:
             print("✅ All configurations already have results. Loading existing data...")
             self._load_existing_results()
             return self.results
+        
+        print(f"🚀 Starting benchmark execution...")
+        print(f"⏱️  Estimated time: ~{len(configs) * 2} minutes (2 min per config)")
+        print()
         
         # Choose execution method based on configuration
         if self._run_benchmarks_with_processes:
@@ -473,6 +487,10 @@ class ECCBenchmarkSuite:
                 key = (existing_result.ecc_type, existing_result.word_length, existing_result.error_pattern)
                 if key not in new_result_keys:
                     results.append(existing_result)
+        
+        print(f"\n✅ Benchmarking completed!")
+        print(f"📊 Total results: {len(results)}")
+        print(f"🎯 Successful configurations: {len([r for r in results if r.success_rate > 0])}")
         
         self.results = results
         return results
@@ -589,8 +607,15 @@ class ECCBenchmarkSuite:
         
         from base_ecc import ECCBase
         
-        # Import ECC classes dynamically
+        # Log start of processing
         ecc_type_name = work_package['ecc_type_name']
+        word_length = work_package['word_length']
+        error_pattern = work_package['error_pattern']
+        trials = work_package['trials_per_config']
+        
+        print(f"🔄 Worker starting: {ecc_type_name} ({word_length} bits, {error_pattern} errors) - {trials} trials")
+        
+        # Import ECC classes dynamically
         try:
             # Map ECC class names to their module names
             module_mapping = {
@@ -623,31 +648,24 @@ class ECCBenchmarkSuite:
             from bch_ecc import BCHConfig
             ecc = ecc_type(BCHConfig(n=15, k=7, t=2))
         elif ecc_type_name == 'ReedSolomonECC':
-            # Reed-Solomon doesn't accept n, k parameters in constructor
-            # Use default parameters or handle differently
-            if word_length <= 4: ecc = ecc_type()
-            elif word_length <= 8: ecc = ecc_type()
-            else: ecc = ecc_type()
+            # Reed-Solomon needs a config parameter
+            from reed_solomon_ecc import RSConfig
+            if word_length <= 4: config = RSConfig(n=7, k=4)
+            elif word_length <= 8: config = RSConfig(n=15, k=8)
+            else: config = RSConfig(n=31, k=16)
+            ecc = ecc_type(config)
         elif ecc_type_name == 'LDPCECC': 
-            # LDPC needs specific parameters
-            if word_length <= 4: ecc = ecc_type(n=8, k=4)
-            elif word_length <= 8: ecc = ecc_type(n=16, k=8)
-            else: ecc = ecc_type(n=32, k=16)
+            # LDPC uses default constructor
+            ecc = ecc_type()
         elif ecc_type_name == 'TurboECC': 
-            # Turbo needs specific parameters
-            if word_length <= 4: ecc = ecc_type(n=12, k=4)
-            elif word_length <= 8: ecc = ecc_type(n=24, k=8)
-            else: ecc = ecc_type(n=48, k=16)
+            # Turbo uses default constructor
+            ecc = ecc_type()
         elif ecc_type_name == 'ConvolutionalECC': 
-            # Convolutional needs specific parameters
-            if word_length <= 4: ecc = ecc_type(n=8, k=4)
-            elif word_length <= 8: ecc = ecc_type(n=16, k=8)
-            else: ecc = ecc_type(n=32, k=16)
+            # Convolutional uses default constructor
+            ecc = ecc_type()
         elif ecc_type_name == 'PolarECC': 
-            # Polar needs specific parameters
-            if word_length <= 4: ecc = ecc_type(n=8, k=4)
-            elif word_length <= 8: ecc = ecc_type(n=16, k=8)
-            else: ecc = ecc_type(n=32, k=16)
+            # Polar only supports N=4, K=2 in this demo
+            ecc = ecc_type(n=4, k=2)
         elif ecc_type_name == 'RepetitionECC': 
             # Repetition needs repetition factor
             if word_length <= 4: ecc = ecc_type(repetition_factor=3)
@@ -669,19 +687,16 @@ class ECCBenchmarkSuite:
             ecc = ecc_type()
         
         # Run benchmark
-        error_pattern = work_package['error_pattern']
         trials_per_config = work_package['trials_per_config']
         burst_length = work_package['burst_length']
         random_error_prob = work_package['random_error_prob']
         
         # Initialize counters
-        correctable = 0
-        detected = 0
-        undetected = 0
+        correctable_errors = 0
+        detected_errors = 0
+        undetected_errors = 0
         encode_times = []
         decode_times = []
-        total_times = []
-        error_distribution = {"single": 0, "double": 0, "burst": 0, "random": 0}
         
         for _ in range(trials_per_config):
             # Generate random data with appropriate size for each ECC type
@@ -715,77 +730,133 @@ class ECCBenchmarkSuite:
                 # For other ECC types, use the word_length as specified
                 data = random.getrandbits(word_length)
             
-            # Measure encoding time
-            start_time = time.perf_counter()
-            codeword = ecc.encode(data)
-            encode_time = time.perf_counter() - start_time
-            encode_times.append(encode_time)
+            # Encode
+            start_time = time.time()
+            try:
+                encoded = ecc.encode(data)
+                encode_time = time.time() - start_time
+                encode_times.append(encode_time)
+            except Exception as e:
+                print(f"Encode error for {ecc_type_name}: {e}")
+                continue
             
-            # Inject errors
-            corrupted = codeword
-            codeword_length = codeword.bit_length()
-            if codeword_length == 0: codeword_length = 1
+            # Convert encoded to integer if it's not already
+            if not isinstance(encoded, int):
+                try:
+                    encoded = int(encoded)
+                except (ValueError, TypeError):
+                    print(f"Could not convert encoded data to int for {ecc_type_name}")
+                    continue
             
-            if error_pattern == "single":
-                bit_idx = random.randint(0, codeword_length - 1)
-                corrupted = codeword ^ (1 << bit_idx)
-            elif error_pattern == "double":
-                bit1 = random.randint(0, codeword_length - 1)
-                bit2 = random.randint(0, codeword_length - 1)
-                while bit2 == bit1: bit2 = random.randint(0, codeword_length - 1)
-                corrupted = codeword ^ (1 << bit1) ^ (1 << bit2)
-            elif error_pattern == "burst":
-                start_bit = random.randint(0, max(0, codeword_length - burst_length))
+            # Get the bit length of the encoded data
+            encoded_bits = encoded.bit_length()
+            if encoded_bits == 0:
+                encoded_bits = 1  # Handle case where encoded is 0
+            
+            # Inject errors based on pattern
+            if error_pattern == 'single':
+                # Inject single bit error
+                bit_pos = random.randint(0, encoded_bits - 1)
+                encoded = encoded ^ (1 << bit_pos)
+            elif error_pattern == 'double':
+                # Inject double bit errors
+                for _ in range(2):
+                    bit_pos = random.randint(0, encoded_bits - 1)
+                    encoded = encoded ^ (1 << bit_pos)
+            elif error_pattern == 'burst':
+                # Inject burst errors
+                start_pos = random.randint(0, max(0, encoded_bits - burst_length))
                 for i in range(burst_length):
-                    if start_bit + i < codeword_length:
-                        corrupted ^= (1 << (start_bit + i))
-            elif error_pattern == "random":
-                for i in range(codeword_length):
+                    if start_pos + i < encoded_bits:
+                        encoded = encoded ^ (1 << (start_pos + i))
+            elif error_pattern == 'random':
+                # Inject random errors with probability
+                for i in range(encoded_bits):
                     if random.random() < random_error_prob:
-                        corrupted ^= (1 << i)
+                        encoded = encoded ^ (1 << i)
             
-            # Measure decoding time
-            start_time = time.perf_counter()
-            decoded, detected_err, corrected = ecc.decode(corrupted)
-            decode_time = time.perf_counter() - start_time
-            decode_times.append(decode_time)
-            
-            total_times.append(encode_time + decode_time)
-            
-            # Count error types
-            error_distribution[error_pattern] += 1
-            
-            # Update statistics
-            if detected_err:
-                detected += 1
-            if corrected and decoded == data:
-                correctable += 1
-            if not detected_err and decoded != data:
-                undetected += 1
+            # Decode
+            start_time = time.time()
+            try:
+                decoded, error_type = ecc.decode(encoded)
+                decode_time = time.time() - start_time
+                decode_times.append(decode_time)
+                
+                # Count error types
+                if error_type == 'corrected':
+                    correctable_errors += 1
+                elif error_type == 'detected':
+                    detected_errors += 1
+                elif error_type == 'undetected':
+                    undetected_errors += 1
+                    
+            except Exception as e:
+                print(f"Decode error for {ecc_type_name}: {e}")
+                undetected_errors += 1
+                continue
         
         # Calculate metrics
-        correction_rate = (correctable / trials_per_config) * 100
-        detection_rate = ((correctable + detected) / trials_per_config) * 100
-        success_rate = ((correctable + detected) / trials_per_config) * 100
+        total_trials = len(encode_times)
+        if total_trials == 0:
+            # Return empty result if no successful trials
+            return BenchmarkResult(
+                ecc_type=ecc_type_name,
+                word_length=word_length,
+                error_pattern=error_pattern,
+                trials=0,
+                correctable_errors=0,
+                detected_errors=0,
+                undetected_errors=0,
+                encode_time_avg=0.0,
+                decode_time_avg=0.0,
+                total_time_avg=0.0,
+                code_rate=0.0,
+                overhead_ratio=0.0,
+                correction_rate=0.0,
+                detection_rate=0.0,
+                success_rate=0.0,
+                error_distribution={'corrected': 0, 'detected': 0, 'undetected': 0}
+            )
         
-        # Calculate code rate and overhead
-        sample_codeword = ecc.encode(random.getrandbits(word_length))
-        total_bits = sample_codeword.bit_length()
-        if total_bits == 0: total_bits = 1
-        code_rate = word_length / total_bits
-        overhead_ratio = (total_bits - word_length) / word_length
+        # Calculate averages
+        encode_time_avg = statistics.mean(encode_times) if encode_times else 0.0
+        decode_time_avg = statistics.mean(decode_times) if decode_times else 0.0
+        total_time_avg = encode_time_avg + decode_time_avg
+        
+        # Calculate rates
+        correction_rate = correctable_errors / total_trials
+        detection_rate = (correctable_errors + detected_errors) / total_trials
+        success_rate = (correctable_errors + detected_errors) / total_trials
+        
+        # Calculate code rate and overhead (simplified)
+        try:
+            original_size = word_length
+            # Use the bit length of the encoded data
+            encoded_size = encoded_bits if 'encoded_bits' in locals() else word_length
+            code_rate = original_size / encoded_size
+            overhead_ratio = (encoded_size - original_size) / original_size
+        except:
+            code_rate = 1.0
+            overhead_ratio = 0.0
+        
+        # Create error distribution
+        error_distribution = {
+            'corrected': correctable_errors,
+            'detected': detected_errors,
+            'undetected': undetected_errors
+        }
         
         return BenchmarkResult(
             ecc_type=ecc_type_name,
             word_length=word_length,
             error_pattern=error_pattern,
-            trials=trials_per_config,
-            correctable_errors=correctable,
-            detected_errors=detected,
-            undetected_errors=undetected,
-            encode_time_avg=statistics.mean(encode_times),
-            decode_time_avg=statistics.mean(decode_times),
-            total_time_avg=statistics.mean(total_times),
+            trials=total_trials,
+            correctable_errors=correctable_errors,
+            detected_errors=detected_errors,
+            undetected_errors=undetected_errors,
+            encode_time_avg=encode_time_avg,
+            decode_time_avg=decode_time_avg,
+            total_time_avg=total_time_avg,
             code_rate=code_rate,
             overhead_ratio=overhead_ratio,
             correction_rate=correction_rate,

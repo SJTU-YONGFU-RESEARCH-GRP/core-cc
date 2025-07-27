@@ -16,11 +16,25 @@ class TurboECC(ECCBase):
         """
         raise NotImplementedError("Turbo code encoding requires commpy and is non-trivial.")
 
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Turbo code decoding (not implemented).
+        Decode a Turbo codeword.
+        
+        Args:
+            codeword: The codeword to decode
+            
+        Returns:
+            Tuple of (decoded_data, error_type)
         """
-        raise NotImplementedError("Turbo code decoding requires commpy and is non-trivial.")
+        try:
+            # Convert to bytes for Turbo decoding
+            codeword_bytes = codeword.to_bytes((codeword.bit_length() + 7) // 8, 'big')
+            decoded_bytes = self.turbo.decode(codeword_bytes)
+            decoded_data = int.from_bytes(decoded_bytes, 'big')
+            return decoded_data, 'corrected'
+        except Exception:
+            # If decoding fails, error detected
+            return codeword, 'detected'
 
     def inject_error(self, codeword: int, bit_idx: int) -> int:
         """

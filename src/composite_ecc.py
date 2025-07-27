@@ -24,24 +24,32 @@ class CompositeECC(ECCBase):
             data = ecc.encode(data)
         return data
 
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Apply all ECC decoders in reverse sequence.
-
+        Decode a composite codeword.
+        
         Args:
-            codeword (int): The codeword to decode.
-
+            codeword: The codeword to decode
+            
         Returns:
-            Tuple[int, bool, bool]: (decoded_data, error_detected, error_corrected)
+            Tuple of (decoded_data, error_type)
         """
-        error_detected = False
-        error_corrected = False
-        for ecc in reversed(self.ecc_chain):
-            data, detected, corrected = ecc.decode(codeword)
-            error_detected = error_detected or detected
-            error_corrected = error_corrected or corrected
-            codeword = data
-        return codeword, error_detected, error_corrected
+        try:
+            # Decode with inner code first
+            inner_decoded, inner_error = self.inner_code.decode(codeword)
+            
+            # Then decode with outer code
+            outer_decoded, outer_error = self.outer_code.decode(inner_decoded)
+            
+            # Determine overall error type
+            if outer_error == 'corrected' and inner_error == 'corrected':
+                return outer_decoded, 'corrected'
+            elif outer_error == 'detected' or inner_error == 'detected':
+                return outer_decoded, 'detected'
+            else:
+                return outer_decoded, 'undetected'
+        except Exception:
+            return codeword, 'detected'
 
     def inject_error(self, codeword: int, bit_idx: int) -> int:
         """

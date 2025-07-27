@@ -74,6 +74,7 @@ class CRCECC(ECCBase):
         """
         self.polynomial = polynomial
         self.crc = CRC8(poly=polynomial)
+        self.crc_bits = 8  # CRC-8 uses 8 bits
     
     def encode(self, data: int) -> int:
         """
@@ -98,31 +99,40 @@ class CRCECC(ECCBase):
         
         return codeword
     
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def _calculate_crc(self, data: int) -> int:
         """
-        Decode codeword and check CRC.
+        Calculate CRC for given data.
         
         Args:
-            codeword: Input codeword
+            data: Input data
             
         Returns:
-            Tuple of (decoded_data, error_detected, error_corrected)
+            CRC value
         """
-        # Convert codeword to bit list
-        codeword_bits = [(codeword >> i) & 1 for i in range(codeword.bit_length() or 1)]
+        # Convert data to bit list
+        data_bits = [(data >> i) & 1 for i in range(data.bit_length() or 1)]
         
-        # Check CRC
-        if self.crc.check(codeword_bits):
-            # Extract data (remove CRC bits)
-            data_bits = codeword_bits[:-8]
-            data = 0
-            for i, bit in enumerate(data_bits):
-                data |= (bit << i)
-            return data, False, False  # No error
+        # Calculate CRC
+        return self.crc.compute(data_bits)
+    
+    def decode(self, codeword: int) -> Tuple[int, str]:
+        """
+        Decode a CRC codeword.
+        
+        Args:
+            codeword: The codeword to decode
+            
+        Returns:
+            Tuple of (decoded_data, error_type)
+        """
+        # Extract data and CRC
+        data_bits = codeword >> self.crc_bits
+        crc_received = codeword & ((1 << self.crc_bits) - 1)
+        
+        # Calculate expected CRC
+        crc_expected = self._calculate_crc(data_bits)
+        
+        if crc_received == crc_expected:
+            return data_bits, 'corrected'  # No error
         else:
-            # Extract data anyway
-            data_bits = codeword_bits[:-8]
-            data = 0
-            for i, bit in enumerate(data_bits):
-                data |= (bit << i)
-            return data, True, False  # Error detected, not corrected 
+            return data_bits, 'detected'   # Error detected 

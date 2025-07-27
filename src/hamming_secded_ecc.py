@@ -3,6 +3,35 @@ from base_ecc import ECCBase
 
 class HammingSECDEDECC(ECCBase):
     """Hamming SECDED (Single Error Correction, Double Error Detection) ECC implementation for 8-bit data."""
+    
+    def __init__(self):
+        """Initialize Hamming SECDED ECC."""
+        # Parity check masks for 12-bit Hamming SECDED
+        self.parity_masks = [
+            0b101010101010,  # P1: bits 0,2,4,6,8,10
+            0b011001100110,  # P2: bits 1,2,5,6,9,10
+            0b000111100001,  # P3: bits 3,4,5,6,11
+            0b000000011111   # P4: bits 7,8,9,10,11
+        ]
+    
+    def _extract_data(self, codeword: int) -> int:
+        """
+        Extract data bits from Hamming codeword.
+        
+        Args:
+            codeword: The 12-bit codeword
+            
+        Returns:
+            The 8-bit data
+        """
+        # Extract data bits (positions 4-11, excluding parity bits)
+        data = 0
+        data_positions = [4, 5, 6, 7, 8, 9, 10, 11]  # Data bit positions
+        for i, pos in enumerate(data_positions):
+            bit = (codeword >> pos) & 1
+            data |= (bit << i)
+        return data
+
     def encode(self, data: int) -> int:
         """
         Encode 8-bit data into 12-bit Hamming SECDED codeword.
@@ -24,34 +53,33 @@ class HammingSECDEDECC(ECCBase):
             code |= (bit << (11 - i))
         return code
 
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Decode 12-bit Hamming SECDED codeword.
-
+        Decode a Hamming SECDED codeword.
+        
         Args:
-            codeword (int): The 12-bit codeword.
-
+            codeword: The codeword to decode
+            
         Returns:
-            Tuple[int, bool, bool]: (decoded_data, error_detected, error_corrected)
+            Tuple of (decoded_data, error_type)
         """
-        c = [(codeword >> i) & 1 for i in range(12)]
-        s = [0] * 4
-        s[0] = c[0] ^ c[4] ^ c[5] ^ c[7] ^ c[8] ^ c[10]
-        s[1] = c[1] ^ c[4] ^ c[6] ^ c[7] ^ c[9] ^ c[10]
-        s[2] = c[2] ^ c[5] ^ c[6] ^ c[7] ^ c[11]
-        s[3] = c[3] ^ c[8] ^ c[9] ^ c[10] ^ c[11]
-        syndrome = (s[3] << 3) | (s[2] << 2) | (s[1] << 1) | s[0]
-        error_detected = syndrome != 0
-        error_corrected = False
-        c_corr = c.copy()
-        if error_detected and 0 < syndrome <= 12:
-            c_corr[12 - syndrome] ^= 1
-            error_corrected = True
-        # Extract data bits
-        data = 0
-        for i, idx in enumerate([11, 10, 9, 8, 7, 6, 5, 4]):
-            data |= (c_corr[idx] << (7 - i))
-        return data, error_detected, error_corrected
+        # Calculate syndrome
+        syndrome = 0
+        for i, mask in enumerate(self.parity_masks):
+            if bin(codeword & mask).count('1') % 2 == 1:
+                syndrome |= (1 << i)
+        
+        if syndrome == 0:
+            # No error detected
+            return self._extract_data(codeword), 'corrected'
+        elif syndrome <= len(self.parity_masks):
+            # Single bit error detected and corrected
+            error_bit = syndrome - 1
+            corrected_codeword = codeword ^ (1 << error_bit)
+            return self._extract_data(corrected_codeword), 'corrected'
+        else:
+            # Double bit error detected but not corrected
+            return self._extract_data(codeword), 'detected'
 
     def inject_error(self, codeword: int, bit_idx: int) -> int:
         """

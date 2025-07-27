@@ -82,30 +82,22 @@ class GolayECC(ECCBase):
         
         return codeword
     
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Decode codeword with Golay code.
+        Decode a Golay codeword.
         
         Args:
-            codeword: Input codeword (23 bits)
+            codeword: The codeword to decode
             
         Returns:
-            Tuple of (decoded_data, error_detected, error_corrected)
+            Tuple of (decoded_data, error_type)
         """
-        # Convert codeword to bit list
-        codeword_bits = [(codeword >> i) & 1 for i in range(min(23, codeword.bit_length() or 1))]
-        
-        # Pad to 23 bits if needed
-        while len(codeword_bits) < 23:
-            codeword_bits.insert(0, 0)
-        
-        # Decode with Golay
-        decoded_bits = self.golay.decode(codeword_bits)
-        
-        # Convert back to integer
-        data = 0
-        for i, bit in enumerate(decoded_bits):
-            data |= (bit << i)
-        
-        # For this demo implementation, assume no errors detected/corrected
-        return data, False, False 
+        try:
+            # Convert to bytes for Golay decoding
+            codeword_bytes = codeword.to_bytes((codeword.bit_length() + 7) // 8, 'big')
+            decoded_bytes = self.golay.decode(codeword_bytes)
+            decoded_data = int.from_bytes(decoded_bytes, 'big')
+            return decoded_data, 'corrected'
+        except Exception:
+            # If decoding fails, error detected
+            return codeword, 'detected' 

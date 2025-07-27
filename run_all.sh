@@ -6,7 +6,7 @@ MODE="full"
 VERBOSE=false
 SKIP_REPORT=false
 PARALLEL_MODE="auto"
-WORKERS=""
+WORKERS="auto"
 USE_PROCESSES=false
 CHUNKED=false
 PERFORMANCE_TEST=false
@@ -14,68 +14,44 @@ OVERWRITE=false
 
 # Function to display usage information
 show_usage() {
-    cat << EOF
-ECC Framework Execution Script
-
-Usage: $0 [OPTIONS]
-
-OPTIONS:
-    -m, --mode MODE          Execution mode (default: full)
-                            Available modes:
-                              theoretical  - Python simulation + report generation
-                              hardware     - Verilog synthesis + Verilator simulation + report
-                              full         - All modes (theoretical + hardware + report)
-                              performance  - Performance testing and parallel processing demo
-                              benchmark    - ECC benchmarking only
-                              analysis     - Analysis and report generation only
-    
-    -v, --verbose           Enable verbose output
-    -s, --skip-report       Skip report generation (only for hardware mode)
-    
-    Parallel Processing Options:
-    -p, --parallel MODE     Parallel processing mode (default: auto)
-                            Available modes:
-                              auto         - Auto-detect optimal settings
-                              threads      - Use ThreadPoolExecutor
-                              processes    - Use ProcessPoolExecutor
-                              chunked      - Use chunked processing
-    -w, --workers N         Number of workers (auto-detect if not specified)
-    --use-processes         Use multiprocessing for true parallelism
-    --chunked               Use chunked processing for memory management
-    
-    Performance Testing:
-    --performance-test      Run performance testing and parallel processing demo
-    --quick-test           Run quick performance test
-    --concurrent-demo      Run concurrent execution demonstration
-    --overwrite            Overwrite existing benchmark results (default: skip existing)
-    
-    -h, --help              Show this help message
-
-EXAMPLES:
-    $0                                    # Run full analysis (default)
-    $0 -m theoretical                     # Run only Python simulation and report
-    $0 --mode hardware                    # Run only hardware implementation and report
-    $0 -m hardware -s                     # Run hardware implementation without report
-    $0 -v -m full                         # Run full analysis with verbose output
-    
-    Parallel Processing Examples:
-    $0 --use-processes --workers 8        # Use multiprocessing with 8 workers
-    $0 --chunked --workers 4              # Use chunked processing with 4 workers
-    $0 -p auto                            # Auto-detect optimal parallel settings
-    $0 -m benchmark --use-processes       # Benchmark with multiprocessing
-    
-    Performance Testing Examples:
-    $0 --performance-test                 # Run comprehensive performance testing
-    $0 --quick-test                       # Run quick performance test
-    $0 --concurrent-demo                  # Run concurrent execution demo
-    $0 -m performance                     # Run performance testing mode
-    
-    Overwrite Examples:
-    $0 --overwrite                        # Overwrite existing benchmark results
-    $0 -m theoretical --overwrite         # Run theoretical analysis with overwrite
-    $0 --use-processes --overwrite        # Use multiprocessing and overwrite results
-
-EOF
+    echo "ECC Analysis Framework v1.0"
+    echo "Usage: $0 [OPTIONS]"
+    echo ""
+    echo "Modes:"
+    echo "  -m, --mode MODE          Execution mode (theoretical|hardware|full|benchmark|analysis|performance|quick-test|concurrent-demo)"
+    echo ""
+    echo "Options:"
+    echo "  -v, --verbose            Enable verbose output"
+    echo "  -s, --skip-report        Skip report generation"
+    echo "  -p, --parallel           Enable parallel processing (threads)"
+    echo "  --workers N              Number of worker threads/processes (default: auto-detect)"
+    echo "  --use-processes          Use multiprocessing instead of threading"
+    echo "  --chunked                Enable chunked processing for memory efficiency"
+    echo "  --performance-test       Run performance comparison tests"
+    echo "  --quick-test             Run quick performance test"
+    echo "  --concurrent-demo        Run concurrent execution demo"
+    echo "  --overwrite              Overwrite existing benchmark results"
+    echo "  --with-report            Generate report after benchmark"
+    echo "  -h, --help               Show this help message"
+    echo ""
+    echo "Examples:"
+    echo "  $0 -m theoretical                    # Run theoretical analysis"
+    echo "  $0 -m benchmark --overwrite          # Run benchmarks, overwrite existing results"
+    echo "  $0 -m benchmark --with-report        # Run benchmarks with report generation"
+    echo "  $0 -m theoretical -p --workers 8     # Run with 8 worker threads"
+    echo "  $0 -m theoretical --use-processes    # Use multiprocessing"
+    echo "  $0 --quick-test                      # Quick performance test"
+    echo "  $0 --concurrent-demo                 # Concurrent execution demo"
+    echo ""
+    echo "Parallel Processing Examples:"
+    echo "  $0 -m theoretical -p                 # Threaded execution"
+    echo "  $0 -m theoretical --use-processes    # Multiprocessing execution"
+    echo "  $0 -m theoretical --chunked          # Memory-efficient chunked processing"
+    echo ""
+    echo "Performance Testing:"
+    echo "  $0 --performance-test                # Comprehensive performance analysis"
+    echo "  $0 --quick-test                      # Quick performance verification"
+    echo "  $0 --concurrent-demo                 # Visual concurrent execution demo"
 }
 
 # Function to print section headers
@@ -86,31 +62,28 @@ print_section() {
 
 # Function to run Python ECC simulation and analysis
 run_theoretical_analysis() {
-    print_section "Running Python ECC Simulation & Analysis (Theoretical)"
+    echo "===== Running Python ECC Simulation & Analysis (Theoretical) ====="
     echo "Starting Python ECC simulation with enhanced parallel processing..."
     
-    # Build command with parallel processing options
-    local cmd="python3 src/run_analysis.py --benchmark-only"
-    
+    local parallel_args=""
     if [ "$USE_PROCESSES" = true ]; then
-        cmd="$cmd --use-processes"
+        parallel_args="--use-processes"
     fi
-    
     if [ "$CHUNKED" = true ]; then
-        cmd="$cmd --chunked"
+        parallel_args="$parallel_args --chunked"
     fi
-    
-    if [ -n "$WORKERS" ]; then
-        cmd="$cmd --workers $WORKERS"
+    if [ "$WORKERS" != "auto" ]; then
+        parallel_args="$parallel_args --workers $WORKERS"
     fi
-    
     if [ "$OVERWRITE" = true ]; then
-        cmd="$cmd --overwrite"
+        parallel_args="$parallel_args --overwrite"
     fi
     
-    echo "Executing: $cmd"
-    eval $cmd
-    echo "Python ECC simulation completed."
+    if [ "$VERBOSE" = true ]; then
+        echo "Executing: python3 src/run_analysis.py --benchmark-only $parallel_args"
+    fi
+    
+    python3 src/run_analysis.py --benchmark-only $parallel_args
 }
 
 # Function to run hardware implementation
@@ -137,33 +110,51 @@ generate_report() {
     echo "Analysis report generated."
 }
 
-# Function to run ECC benchmarking only
+# Function to run ECC benchmarking only (updated to pass overwrite)
 run_benchmarking() {
-    print_section "Running ECC Benchmarking"
-    echo "Starting ECC benchmarking with enhanced parallel processing..."
+    echo "===== Running ECC Benchmarking Only ====="
     
-    # Build command with parallel processing options
-    local cmd="python3 src/run_analysis.py --benchmark-only"
-    
+    local parallel_args=""
     if [ "$USE_PROCESSES" = true ]; then
-        cmd="$cmd --use-processes"
+        parallel_args="--use-processes"
     fi
-    
     if [ "$CHUNKED" = true ]; then
-        cmd="$cmd --chunked"
+        parallel_args="$parallel_args --chunked"
     fi
-    
-    if [ -n "$WORKERS" ]; then
-        cmd="$cmd --workers $WORKERS"
+    if [ "$WORKERS" != "auto" ]; then
+        parallel_args="$parallel_args --workers $WORKERS"
     fi
-    
     if [ "$OVERWRITE" = true ]; then
-        cmd="$cmd --overwrite"
+        parallel_args="$parallel_args --overwrite"
     fi
     
-    echo "Executing: $cmd"
-    eval $cmd
-    echo "ECC benchmarking completed."
+    python3 src/run_analysis.py --benchmark-only $parallel_args
+}
+
+# Function to run ECC benchmarking with report generation
+run_benchmarking_with_report() {
+    echo "===== Running ECC Benchmarking with Report Generation ====="
+    
+    local parallel_args=""
+    if [ "$USE_PROCESSES" = true ]; then
+        parallel_args="--use-processes"
+    fi
+    if [ "$CHUNKED" = true ]; then
+        parallel_args="$parallel_args --chunked"
+    fi
+    if [ "$WORKERS" != "auto" ]; then
+        parallel_args="$parallel_args --workers $WORKERS"
+    fi
+    if [ "$OVERWRITE" = true ]; then
+        parallel_args="$parallel_args --overwrite"
+    fi
+    
+    # Run benchmarks first
+    python3 src/run_analysis.py --benchmark-only $parallel_args
+    
+    # Then generate report
+    echo "===== Generating Report from Benchmark Results ====="
+    python3 src/run_analysis.py --analysis-only --report-only
 }
 
 # Function to run analysis and report generation
@@ -262,6 +253,8 @@ print_completion() {
 }
 
 # Parse command line arguments
+WITH_REPORT=false
+
 while [[ $# -gt 0 ]]; do
     case $1 in
         -m|--mode)
@@ -277,10 +270,10 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -p|--parallel)
-            PARALLEL_MODE="$2"
-            shift 2
+            PARALLEL_MODE=true
+            shift
             ;;
-        -w|--workers)
+        --workers)
             WORKERS="$2"
             shift 2
             ;;
@@ -297,15 +290,19 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         --quick-test)
-            MODE="quick-test"
+            QUICK_TEST=true
             shift
             ;;
         --concurrent-demo)
-            MODE="concurrent-demo"
+            CONCURRENT_DEMO=true
             shift
             ;;
         --overwrite)
             OVERWRITE=true
+            shift
+            ;;
+        --with-report)
+            WITH_REPORT=true
             shift
             ;;
         -h|--help)
@@ -351,7 +348,7 @@ echo "Mode: $MODE"
 echo "Verbose: $VERBOSE"
 echo "Skip Report: $SKIP_REPORT"
 echo "Parallel Mode: $PARALLEL_MODE"
-echo "Workers: ${WORKERS:-auto-detect}"
+echo "Workers: $WORKERS"
 echo "Use Processes: $USE_PROCESSES"
 echo "Chunked Processing: $CHUNKED"
 echo "Performance Test: $PERFORMANCE_TEST"
@@ -384,7 +381,11 @@ echo ""
             run_performance_testing
             ;;
         benchmark)
-            run_benchmarking
+            if [ "$WITH_REPORT" = true ]; then
+                run_benchmarking_with_report
+            else
+                run_benchmarking
+            fi
             ;;
         analysis)
             run_analysis

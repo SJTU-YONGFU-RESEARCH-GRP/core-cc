@@ -453,7 +453,49 @@ class ECCAnalyzer:
         )
 
 
-def load_benchmark_results(results_file: str = "results/benchmark_results.json") -> List[BenchmarkResult]:
+def save_benchmark_results(results: List[BenchmarkResult], output_dir: str = "results") -> None:
+    """
+    Save benchmark results to JSON file.
+    
+    Args:
+        results: List of benchmark results to save
+        output_dir: Directory to save results
+    """
+    output_path = Path(output_dir)
+    output_path.mkdir(exist_ok=True)
+    
+    # Convert results to JSON-serializable format
+    results_data = []
+    for result in results:
+        result_dict = {
+            'ecc_type': result.ecc_type,
+            'word_length': result.word_length,
+            'error_pattern': result.error_pattern,
+            'trials': result.trials,
+            'correctable_errors': result.correctable_errors,
+            'detected_errors': result.detected_errors,
+            'undetected_errors': result.undetected_errors,
+            'encode_time_avg': result.encode_time_avg,
+            'decode_time_avg': result.decode_time_avg,
+            'total_time_avg': result.total_time_avg,
+            'code_rate': result.code_rate,
+            'overhead_ratio': result.overhead_ratio,
+            'correction_rate': result.correction_rate,
+            'detection_rate': result.detection_rate,
+            'success_rate': result.success_rate,
+            'error_distribution': result.error_distribution
+        }
+        results_data.append(result_dict)
+    
+    # Save to JSON file
+    results_file = output_path / "benchmark_results.json"
+    with open(results_file, 'w') as f:
+        json.dump(results_data, f, indent=2)
+    
+    print(f"📊 Saved {len(results)} benchmark results to {results_file}")
+
+
+def load_benchmark_results(output_dir: str = "results") -> List[BenchmarkResult]:
     """
     Load benchmark results from JSON file.
     
@@ -463,6 +505,11 @@ def load_benchmark_results(results_file: str = "results/benchmark_results.json")
     Returns:
         List of benchmark results
     """
+    results_file = Path(output_dir) / "benchmark_results.json"
+    if not results_file.exists():
+        print(f"Benchmark results not found at {results_file}. Please run the benchmark suite first.")
+        return []
+
     with open(results_file, 'r') as f:
         data = json.load(f)
     

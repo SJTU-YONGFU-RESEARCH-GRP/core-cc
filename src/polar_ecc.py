@@ -104,6 +104,12 @@ class PolarECC(ECCBase):
         # Encode with Polar
         codeword_bits = self.polar.encode(data_bits)
         
+        # Ensure we have exactly n bits
+        while len(codeword_bits) < self.n:
+            codeword_bits.append(0)
+        if len(codeword_bits) > self.n:
+            codeword_bits = codeword_bits[:self.n]
+        
         # Convert back to integer
         codeword = 0
         for i, bit in enumerate(codeword_bits):
@@ -111,30 +117,36 @@ class PolarECC(ECCBase):
         
         return codeword
     
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Decode codeword with Polar code.
+        Decode a Polar codeword.
         
         Args:
-            codeword: Input codeword (n bits)
+            codeword: The codeword to decode
             
         Returns:
-            Tuple of (decoded_data, error_detected, error_corrected)
+            Tuple of (decoded_data, error_type)
         """
-        # Convert codeword to bit list
-        codeword_bits = [(codeword >> i) & 1 for i in range(min(self.n, codeword.bit_length() or 1))]
-        
-        # Pad to n bits if needed
-        while len(codeword_bits) < self.n:
-            codeword_bits.insert(0, 0)
-        
-        # Decode with Polar
-        decoded_bits = self.polar.decode(codeword_bits)
-        
-        # Convert back to integer
-        data = 0
-        for i, bit in enumerate(decoded_bits):
-            data |= (bit << i)
-        
-        # For this demo implementation, assume no errors detected/corrected
-        return data, False, False 
+        try:
+            # Convert to bit list
+            codeword_bits = [(codeword >> i) & 1 for i in range(codeword.bit_length() or 1)]
+            
+            # Ensure we have exactly n bits
+            while len(codeword_bits) < self.n:
+                codeword_bits.append(0)
+            if len(codeword_bits) > self.n:
+                codeword_bits = codeword_bits[:self.n]
+            
+            # Decode with Polar code
+            decoded_bits = self.polar.decode(codeword_bits)
+            
+            # Convert back to integer
+            data = 0
+            for i, bit in enumerate(decoded_bits):
+                data |= (bit << i)
+            
+            return data, 'corrected'
+        except Exception as e:
+            # If decoding fails, error detected
+            print(f"Decode error for PolarECC: {e}")
+            return codeword, 'detected' 

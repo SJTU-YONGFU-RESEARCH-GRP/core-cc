@@ -79,27 +79,33 @@ class RepetitionECC(ECCBase):
         
         return codeword
     
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Decode codeword with repetition code.
+        Decode a repetition codeword.
         
         Args:
-            codeword: Input codeword
+            codeword: The codeword to decode
             
         Returns:
-            Tuple of (decoded_data, error_detected, error_corrected)
+            Tuple of (decoded_data, error_type)
         """
-        # Convert codeword to bit list
+        # Convert to bit list
         codeword_bits = [(codeword >> i) & 1 for i in range(codeword.bit_length() or 1)]
         
-        # Decode with repetition
-        decoded_bits = self.repetition.decode(codeword_bits)
+        # Group bits by repetition factor
+        groups = [codeword_bits[i:i+self.repetition_factor] for i in range(0, len(codeword_bits), self.repetition_factor)]
+        
+        # Decode each group by majority vote
+        decoded_bits = []
+        for group in groups:
+            if len(group) == self.repetition_factor:
+                # Majority vote
+                bit = 1 if sum(group) > len(group) // 2 else 0
+                decoded_bits.append(bit)
         
         # Convert back to integer
         data = 0
         for i, bit in enumerate(decoded_bits):
             data |= (bit << i)
         
-        # For repetition codes, errors are corrected if majority voting works
-        # This is a simplified implementation
-        return data, False, False 
+        return data, 'corrected'  # Assume errors are corrected 

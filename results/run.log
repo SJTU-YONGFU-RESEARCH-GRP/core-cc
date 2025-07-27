@@ -1,15 +1,41 @@
-
-===== Running Python ECC Simulation & Analysis (Theoretical) =====
-Starting Python ECC simulation with enhanced parallel processing...
-Executing: python3 src/run_analysis.py --benchmark-only --use-processes
-Enhanced ECC Analysis Framework v3.0
+===== Running ECC Benchmarking with Report Generation =====
+ECC Analysis Framework
 ====================================
 Output directory: /mnt/d/proj/ecc/results
 
-============================================================
-ECC BENCHMARKING
-============================================================
 Auto-detected optimal workers: 9
 System: 12 CPU cores, 11.7 GB RAM
 Parallel mode: Processes
+📋 Total configurations to test: 176
+🔧 ECC Types: ['ParityECC', 'HammingSECDEDECC', 'BCHECC', 'ReedSolomonECC', 'CRCECC', 'GolayECC', 'RepetitionECC', 'LDPCECC', 'TurboECC', 'ConvolutionalECC', 'PolarECC']
+📏 Word Lengths: [4, 8, 16, 32]
+⚠️  Error Patterns: ['single', 'double', 'burst', 'random']
+🔄 Trials per configuration: 1000
+
+🚀 Starting benchmark execution...
+⏱️  Estimated time: ~352 minutes (2 min per config)
+
 🔄 Using ProcessPoolExecutor with 9 workers
+🔄 Worker starting: ParityECC (4 bits, double errors) - 1000 trials
+🔄 Worker starting: ParityECC (16 bits, double errors) - 1000 trials
+🔄 Worker starting: ParityECC (32 bits, random errors) - 1000 trials
+🔄 Worker starting: HammingSECDEDECC (16 bits, single errors) - 1000 trials
+🔄 Worker starting: BCHECC (4 bits, single errors) - 1000 trials
+🔄 Worker starting: BCHECC (8 bits, single errors) - 1000 trials
+🔄 Worker starting: BCHECC (32 bits, double errors) - 1000 trials
+🔄 Worker starting: ReedSolomonECC (8 bits, single errors) - 1000 trials
+🔄 Worker starting: ReedSolomonECC (32 bits, double errors) - 1000 trials
+🔄 Worker starting: GolayECC (8 bits, single errors) - 1000 trials
+🔄 Worker starting: GolayECC (16 bits, single errors) - 1000 trials
+🔄 Worker starting: GolayECC (32 bits, single errors) - 1000 trials
+🔄 Worker starting: RepetitionECC (4 bits, random errors) - 1000 trials
+🔄 Worker starting: RepetitionECC (16 bits, burst errors) - 1000 trials
+🔄 Worker starting: LDPCECC (4 bits, burst errors) - 1000 trials
+🔄 Worker starting: TurboECC (4 bits, burst errors) - 1000 trials
+Encode error for TurboECC: Turbo code encoding requires commpy and is non-trivial.
+Encode error for TurboECC: Turbo code encoding requires commpy and is non-trivial.
+Encode error for TurboECC: Turbo code encoding requires commpy and is non-trivial.
+Encode error for TurboECC: Turbo code encoding requires commpy and is non-trivial.
+Encode error for TurboECC: Turbo code encoding requires commpy and is non-trivial.
+Encode error for TurboECC: Turbo code encoding requires commpy and is non-trivial.
+Encode error for TurboECC: Turbo code encoding requires commpy and is non-trivial.

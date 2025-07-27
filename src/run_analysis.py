@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Enhanced ECC Analysis Framework - Main Orchestrator
+ECC Analysis Framework - Main Orchestrator
 
 This script runs the complete ECC analysis pipeline including:
 1. Benchmarking different ECC types across various configurations
@@ -26,17 +26,28 @@ import sys
 import multiprocessing
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 import psutil
 
 # Add src directory to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from benchmark_suite import ECCBenchmarkSuite, create_default_config, BenchmarkConfig
-from enhanced_analysis import ECCAnalyzer, load_benchmark_results
+from benchmark_suite import ECCBenchmarkSuite, create_default_config, BenchmarkConfig, BenchmarkResult
+from enhanced_analysis import ECCAnalyzer, load_benchmark_results, save_benchmark_results
 from hardware_verification import HardwareVerifier, load_verification_results
 from report_generator import ECCReportGenerator
+from parity_ecc import ParityECC
+from hamming_secded_ecc import HammingSECDEDECC
+from bch_ecc import BCHECC
+from reed_solomon_ecc import ReedSolomonECC
+from crc_ecc import CRCECC
+from golay_ecc import GolayECC
+from repetition_ecc import RepetitionECC
+from ldpc_ecc import LDPCECC
+from turbo_ecc import TurboECC
+from convolutional_ecc import ConvolutionalECC
+from polar_ecc import PolarECC
 
 
 def get_optimal_workers() -> int:
@@ -57,66 +68,64 @@ def get_optimal_workers() -> int:
     
     return optimal_workers
 
-def run_benchmarks(config: Optional[BenchmarkConfig] = None, output_dir: str = "results", 
-                  use_processes: bool = False, max_workers: Optional[int] = None,
-                  overwrite: bool = False) -> bool:
+def run_benchmarks(
+    output_dir: str = "results",
+    use_processes: bool = False,
+    max_workers: Optional[int] = None,
+    overwrite: bool = False
+) -> List[BenchmarkResult]:
     """
-    Run ECC benchmarks with enhanced parallel processing.
+    Run comprehensive ECC benchmarking with enhanced parallel processing.
     
     Args:
-        config: Benchmark configuration (uses default if None)
-        output_dir: Output directory for results
+        output_dir: Directory to store results
         use_processes: Use ProcessPoolExecutor instead of ThreadPoolExecutor
-        max_workers: Maximum number of workers (auto-detect if None)
-        overwrite: Overwrite existing benchmark results
+        max_workers: Maximum number of worker processes/threads
+        overwrite: Whether to overwrite existing benchmark results
         
     Returns:
-        True if benchmarks completed successfully
+        List of benchmark results
     """
-    print("=" * 60)
-    print("ECC BENCHMARKING")
-    print("=" * 60)
+    # Create output directory
+    Path(output_dir).mkdir(exist_ok=True)
     
-    try:
-        if config is None:
-            config = create_default_config()
-        
-        # Auto-detect optimal number of workers
-        if max_workers is None:
-            optimal_workers = get_optimal_workers()
-            config.max_workers = optimal_workers
-            print(f"Auto-detected optimal workers: {optimal_workers}")
-        else:
-            config.max_workers = max_workers
-            print(f"Using specified workers: {max_workers}")
-        
-        # Show system information
-        cpu_count = multiprocessing.cpu_count()
-        memory_gb = psutil.virtual_memory().total / (1024**3)
-        print(f"System: {cpu_count} CPU cores, {memory_gb:.1f} GB RAM")
-        print(f"Parallel mode: {'Processes' if use_processes else 'Threads'}")
-        
-        suite = ECCBenchmarkSuite(config)
-        
-        # Set overwrite flag
-        suite.set_overwrite_existing(overwrite)
-        
-        # Override the parallel execution method if using processes
-        if use_processes:
-            suite._run_benchmarks_with_processes = True
-        
-        results = suite.run_benchmarks()
-        suite.save_results(output_dir)
-        
-        print(f"\nBenchmarking completed successfully!")
-        print(f"Results saved to: {output_dir}")
-        print(f"Total configurations tested: {len(results)}")
-        
-        return True
-        
-    except Exception as e:
-        print(f"Error during benchmarking: {e}")
-        return False
+    # Auto-detect optimal worker count if not specified
+    if max_workers is None:
+        max_workers = get_optimal_workers()
+    
+    # Print system information
+    cpu_count = multiprocessing.cpu_count()
+    memory_gb = psutil.virtual_memory().total / (1024**3)
+    print(f"Auto-detected optimal workers: {max_workers}")
+    print(f"System: {cpu_count} CPU cores, {memory_gb:.1f} GB RAM")
+    print(f"Parallel mode: {'Processes' if use_processes else 'Threads'}")
+    
+    # Configure benchmark suite
+    config = BenchmarkConfig(
+        ecc_types=[
+            ParityECC, HammingSECDEDECC, BCHECC, ReedSolomonECC, CRCECC,
+            GolayECC, RepetitionECC, LDPCECC, TurboECC, ConvolutionalECC, PolarECC
+        ],
+        word_lengths=[4, 8, 16, 32],
+        error_patterns=['single', 'double', 'burst', 'random'],
+        trials_per_config=1000,
+        max_workers=max_workers,
+        burst_length=3,
+        random_error_prob=0.1
+    )
+    
+    suite = ECCBenchmarkSuite(config)
+    suite._run_benchmarks_with_processes = use_processes
+    suite._use_chunked_processing = False  # Can be enabled for memory-constrained systems
+    suite.set_overwrite_existing(overwrite)
+    
+    # Run benchmarks
+    results = suite.run_benchmarks()
+    
+    # Save results
+    save_benchmark_results(results, output_dir)
+    
+    return results
 
 
 def run_hardware_verification(output_dir: str = "results") -> bool:
@@ -288,15 +297,19 @@ Parallel Processing Options:
     )
     
     parser.add_argument('--benchmark-only', action='store_true',
-                       help='Run only benchmarking')
-    parser.add_argument('--hardware-only', action='store_true',
-                       help='Run only hardware verification')
+                       help='Run only benchmarking (skip hardware verification, analysis, and report generation)')
+    parser.add_argument('--analysis-only', action='store_true',
+                       help='Run only analysis (skip benchmarking and hardware verification)')
     parser.add_argument('--report-only', action='store_true',
-                       help='Generate report from existing data')
+                       help='Run only report generation (skip benchmarking, hardware verification, and analysis)')
     parser.add_argument('--skip-benchmark', action='store_true',
-                       help='Skip benchmarking (use existing data)')
+                       help='Skip benchmarking step')
     parser.add_argument('--skip-hardware', action='store_true',
-                       help='Skip hardware verification')
+                       help='Skip hardware verification step')
+    parser.add_argument('--skip-analysis', action='store_true',
+                       help='Skip analysis step')
+    parser.add_argument('--skip-report', action='store_true',
+                       help='Skip report generation step')
     parser.add_argument('--overwrite', action='store_true',
                        help='Overwrite existing benchmark results (default: skip existing)')
     parser.add_argument('--config', type=str,
@@ -318,7 +331,7 @@ Parallel Processing Options:
     output_dir = Path(args.output)
     output_dir.mkdir(exist_ok=True)
     
-    print("Enhanced ECC Analysis Framework v3.0")
+    print("ECC Analysis Framework")
     print("====================================")
     print(f"Output directory: {output_dir.absolute()}")
     print()
@@ -334,61 +347,86 @@ Parallel Processing Options:
     
     success = True
     
-    # Run pipeline based on arguments
+    # Handle different execution modes
     if args.benchmark_only:
-        success = run_benchmarks(
-            config, 
+        results = run_benchmarks(
             str(output_dir), 
             use_processes=args.use_processes,
             max_workers=args.workers,
             overwrite=args.overwrite
         )
-        
-    elif args.hardware_only:
-        success = run_hardware_verification(str(output_dir))
-        
-    elif args.report_only:
-        success = generate_report(str(output_dir))
-        
-    else:
-        # Run complete pipeline
-        if not args.skip_benchmark:
-            success = run_benchmarks(
-                config, 
-                str(output_dir),
-                use_processes=args.use_processes,
-                max_workers=args.workers,
-                overwrite=args.overwrite
-            )
-            if not success:
-                print("Benchmarking failed. Stopping pipeline.")
-                return 1
-        
-        if success and not args.skip_hardware:
-            success = run_hardware_verification(str(output_dir))
-            if not success:
-                print("Hardware verification failed. Continuing with analysis...")
-        
-        if success:
-            success = run_analysis(str(output_dir))
-            if not success:
-                print("Analysis failed. Stopping pipeline.")
-                return 1
-        
-        if success:
-            success = generate_report(str(output_dir))
-    
-    if success:
-        print("\n" + "=" * 60)
-        print("PIPELINE COMPLETED SUCCESSFULLY")
-        print("=" * 60)
-        print(f"All results saved to: {output_dir.absolute()}")
+        print(f"\nBenchmarking completed successfully!")
+        print(f"Results saved to: {output_dir}")
+        print(f"Total configurations tested: {len(results)}")
         return 0
+    
+    if args.analysis_only:
+        print("===== Running Analysis Only =====")
+        success = run_analysis(str(output_dir))
+        if not success:
+            print("Analysis failed!")
+            return 1
+        print("Analysis completed successfully!")
+        return 0
+    
+    if args.report_only:
+        print("===== Running Report Generation Only =====")
+        success = generate_report(str(output_dir))
+        if not success:
+            print("Report generation failed!")
+            return 1
+        print("Report generation completed successfully!")
+        return 0
+    
+    # Step 1: Run benchmarks
+    if not args.skip_benchmark:
+        results = run_benchmarks(
+            str(output_dir),
+            use_processes=args.use_processes,
+            max_workers=args.workers,
+            overwrite=args.overwrite
+        )
+        print(f"Benchmarking completed: {len(results)} configurations")
     else:
-        print("\n" + "=" * 60)
-        print("PIPELINE FAILED")
-        print("=" * 60)
-        return 1
+        print("Skipping benchmarks, loading existing results...")
+        results = load_benchmark_results(str(output_dir))
+        if not results:
+            print("No existing benchmark results found!")
+            return
+        
+    # Step 2: Run hardware verification
+    if not args.skip_hardware:
+        success = run_hardware_verification(str(output_dir))
+        if not success:
+            print("Hardware verification failed, but continuing with analysis...")
+    else:
+        print("Skipping hardware verification...")
+    
+    # Step 3: Run analysis
+    if not args.skip_analysis:
+        success = run_analysis(str(output_dir))
+        if not success:
+            print("Analysis failed, but continuing with report generation...")
+    else:
+        print("Skipping analysis...")
+    
+    # Step 4: Generate report
+    if not args.skip_report:
+        success = generate_report(str(output_dir))
+        if not success:
+            print("Report generation failed!")
+            return 1
+    else:
+        print("Skipping report generation...")
+    
+    print("\n" + "=" * 60)
+    print("ECC ANALYSIS PIPELINE COMPLETED")
+    print("=" * 60)
+    print(f"Results available in: {output_dir}")
+    print(f"Main report: {output_dir}/ecc_analysis_report.md")
+    print(f"Performance charts: {output_dir}/ecc_performance_charts.png")
+    
+    return 0
 
 
 if __name__ == "__main__":

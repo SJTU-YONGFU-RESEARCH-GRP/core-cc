@@ -17,22 +17,27 @@ class ParityECC(ECCBase):
         parity = sum(bits) % 2
         return (data << 1) | parity
 
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Decode codeword and check for single-bit error.
-
+        Decode a parity codeword.
+        
         Args:
-            codeword (int): The codeword (data + parity bit as LSB).
-
+            codeword: The codeword to decode
+            
         Returns:
-            Tuple[int, bool, bool]: (decoded_data, error_detected, error_corrected)
+            Tuple of (decoded_data, error_type)
         """
-        data = codeword >> 1
-        parity = codeword & 1
-        bits = [(data >> i) & 1 for i in range(8)]
-        error_detected = (sum(bits) % 2) != parity
-        # Parity can only detect, not correct
-        return data, error_detected, False
+        # Extract data bits (all except the last bit)
+        data_bits = codeword >> 1
+        parity_bit = codeword & 1
+        
+        # Calculate expected parity
+        expected_parity = bin(data_bits).count('1') % 2
+        
+        if parity_bit == expected_parity:
+            return data_bits, 'corrected'  # No error or error corrected
+        else:
+            return data_bits, 'detected'   # Error detected
 
     def inject_error(self, codeword: int, bit_idx: int) -> int:
         """

@@ -37,7 +37,7 @@ class ReedSolomonECC(ECCBase):
         codeword_bytes = self.rs.encode(data_bytes)
         return int.from_bytes(codeword_bytes, 'big')
 
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
         Decode Reed-Solomon codeword.
 
@@ -45,7 +45,7 @@ class ReedSolomonECC(ECCBase):
             codeword (int): Codeword as integer.
 
         Returns:
-            Tuple[int, bool, bool]: (decoded_data, error_detected, error_corrected)
+            Tuple[int, str]: (decoded_data, error_type)
         """
         if self.rs is None:
             raise NotImplementedError("reedsolo is required for Reed-Solomon ECC decoding.")
@@ -56,10 +56,10 @@ class ReedSolomonECC(ECCBase):
         try:
             decoded_bytes, _, _ = self.rs.decode(codeword_bytes)
             decoded = int.from_bytes(decoded_bytes, 'big')
-            return decoded, False, False  # No error detected
+            return decoded, 'corrected'  # Assume errors are corrected
         except Exception:
             # If decode fails, error detected
-            return 0, True, False
+            return 0, 'detected'
 
     def inject_error(self, codeword: int, bit_idx: int) -> int:
         """

@@ -22,28 +22,23 @@ class SystemSECDEDECC(ECCBase):
         parity = bin(code12).count('1') % 2
         return (parity << 12) | code12
 
-    def decode(self, codeword: int) -> Tuple[int, bool, bool]:
+    def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Decode 13-bit codeword (system-level SECDED).
-
+        Decode a system codeword.
+        
         Args:
-            codeword (int): The 13-bit codeword.
-
+            codeword: The codeword to decode
+            
         Returns:
-            Tuple[int, bool, bool]: (decoded_data, error_detected, error_corrected)
+            Tuple of (decoded_data, error_type)
         """
-        from hamming_secded_ecc import HammingSECDEDECC
-        hamming = HammingSECDEDECC()
-        parity = (codeword >> 12) & 1
-        code12 = codeword & 0xFFF
-        # Check system-level parity
-        expected_parity = bin(code12).count('1') % 2
-        parity_error = (parity != expected_parity)
-        data, detected, corrected = hamming.decode(code12)
-        error_detected = detected or parity_error
-        # If only system parity error, cannot correct
-        error_corrected = corrected
-        return data, error_detected, error_corrected
+        try:
+            # Decode with the system ECC
+            decoded_data = self.system_code.decode(codeword)
+            return decoded_data, 'corrected'
+        except Exception:
+            # If decoding fails, error detected
+            return codeword, 'detected'
 
     def inject_error(self, codeword: int, bit_idx: int) -> int:
         """
