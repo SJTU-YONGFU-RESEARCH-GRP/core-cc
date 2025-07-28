@@ -117,7 +117,7 @@ class ECCBenchmarkSuite:
         
     def _check_existing_results(self, output_dir: str = "results") -> Dict[str, bool]:
         """
-        Check which benchmark configurations already have results.
+        Check which benchmark configurations already have results from individual files.
         
         Args:
             output_dir: Directory to check for existing results
@@ -126,9 +126,9 @@ class ECCBenchmarkSuite:
             Dictionary mapping (ecc_type, word_length, error_pattern) to existence status
         """
         existing_results = {}
-        results_file = Path(output_dir) / "benchmark_results.json"
+        benchmarks_dir = Path(output_dir) / "benchmarks"
         
-        if not results_file.exists():
+        if not benchmarks_dir.exists():
             # No existing results, all configurations need to be run
             for ecc_type in self.config.ecc_types:
                 for word_length in self.config.word_lengths:
@@ -137,43 +137,27 @@ class ECCBenchmarkSuite:
                         existing_results[key] = False
             return existing_results
         
-        try:
-            # Load existing results
-            with open(results_file, 'r') as f:
-                data = json.load(f)
-            
-            # Handle both list format and object format
-            results_list = []
-            if isinstance(data, list):
-                results_list = data
-            elif isinstance(data, dict):
-                results_list = data.get('results', [])
-            
-            # Create set of existing configurations
-            existing_configs = set()
-            for result in results_list:
-                if isinstance(result, dict):
+        # Check individual result files
+        existing_configs = set()
+        for result_file in benchmarks_dir.glob("*.json"):
+            try:
+                with open(result_file, 'r') as f:
+                    result_data = json.load(f)
                     config_key = (
-                        result.get('ecc_type', ''),
-                        result.get('word_length', 0),
-                        result.get('error_pattern', '')
+                        result_data.get('ecc_type', ''),
+                        result_data.get('word_length', 0),
+                        result_data.get('error_pattern', '')
                     )
                     existing_configs.add(config_key)
-            
-            # Check which configurations need to be run
-            for ecc_type in self.config.ecc_types:
-                for word_length in self.config.word_lengths:
-                    for error_pattern in self.config.error_patterns:
-                        key = (ecc_type.__name__, word_length, error_pattern)
-                        existing_results[key] = key in existing_configs
-            
-        except (json.JSONDecodeError, KeyError, FileNotFoundError):
-            # If there's an error reading existing results, assume none exist
-            for ecc_type in self.config.ecc_types:
-                for word_length in self.config.word_lengths:
-                    for error_pattern in self.config.error_patterns:
-                        key = (ecc_type.__name__, word_length, error_pattern)
-                        existing_results[key] = False
+            except (json.JSONDecodeError, FileNotFoundError):
+                continue
+        
+        # Check which configurations need to be run
+        for ecc_type in self.config.ecc_types:
+            for word_length in self.config.word_lengths:
+                for error_pattern in self.config.error_patterns:
+                    key = (ecc_type.__name__, word_length, error_pattern)
+                    existing_results[key] = key in existing_configs
         
         return existing_results
         
@@ -255,8 +239,8 @@ class ECCBenchmarkSuite:
             # LDPC parameters - only n is needed, k is determined by the generator matrix
             return LDPCECC(n=word_length * 2)
         elif ecc_type == TurboECC:
-            # Turbo code parameters - TurboECC doesn't accept n/k parameters
-            return TurboECC()
+            # Turbo code parameters - pass data_length
+            return TurboECC(data_length=word_length)
         elif ecc_type == ConvolutionalECC:
             # Convolutional code parameters
             return ConvolutionalECC(n=word_length * 2, k=word_length)
@@ -534,7 +518,8 @@ class ECCBenchmarkSuite:
                 'error_pattern': error_pattern,
                 'trials_per_config': self.config.trials_per_config,
                 'burst_length': self.config.burst_length,
-                'random_error_prob': self.config.random_error_prob
+                'random_error_prob': self.config.random_error_prob,
+                'output_dir': 'results'  # Add output directory for incremental saving
             })
         
         results = []
@@ -658,8 +643,8 @@ class ECCBenchmarkSuite:
             # LDPC uses default constructor
             ecc = ecc_type()
         elif ecc_type_name == 'TurboECC': 
-            # Turbo uses default constructor
-            ecc = ecc_type()
+            # Turbo needs data_length parameter
+            ecc = ecc_type(data_length=word_length)
         elif ecc_type_name == 'ConvolutionalECC': 
             # Convolutional uses default constructor
             ecc = ecc_type()
@@ -680,8 +665,8 @@ class ECCBenchmarkSuite:
             # Golay uses default constructor
             ecc = ecc_type()
         elif ecc_type_name == 'ParityECC' or ecc_type_name == 'HammingSECDEDECC':
-            # These use default constructor
-            ecc = ecc_type()
+            # These use default constructor but can accept word_length
+            ecc = ecc_type(word_length=word_length)
         else: 
             # Fallback for unknown types
             ecc = ecc_type()
@@ -846,7 +831,7 @@ class ECCBenchmarkSuite:
             'undetected': undetected_errors
         }
         
-        return BenchmarkResult(
+        result = BenchmarkResult(
             ecc_type=ecc_type_name,
             word_length=word_length,
             error_pattern=error_pattern,
@@ -864,6 +849,76 @@ class ECCBenchmarkSuite:
             success_rate=success_rate,
             error_distribution=error_distribution
         )
+        
+        # Save result incrementally if output directory is provided
+        output_dir = work_package.get('output_dir')
+        if output_dir:
+            try:
+                # Import necessary modules for saving
+                import json
+                import pandas as pd
+                from pathlib import Path
+                
+                output_path = Path(output_dir)
+                output_path.mkdir(exist_ok=True)
+                
+                # Create benchmarks subdirectory for individual files
+                benchmarks_dir = output_path / "benchmarks"
+                try:
+                    benchmarks_dir.mkdir(parents=True, exist_ok=True)
+                except Exception as e:
+                    print(f"Could not create benchmarks directory: {benchmarks_dir} ({e})")
+                
+                # Create individual result file name
+                filename = f"{result.ecc_type}_{result.word_length}_{result.error_pattern}.json"
+                individual_file = benchmarks_dir / filename
+                
+                # Convert result to dictionary
+                result_dict = {
+                    "ecc_type": result.ecc_type,
+                    "word_length": result.word_length,
+                    "error_pattern": result.error_pattern,
+                    "trials": result.trials,
+                    "correctable_errors": result.correctable_errors,
+                    "detected_errors": result.detected_errors,
+                    "undetected_errors": result.undetected_errors,
+                    "encode_time_avg": result.encode_time_avg,
+                    "decode_time_avg": result.decode_time_avg,
+                    "total_time_avg": result.total_time_avg,
+                    "code_rate": result.code_rate,
+                    "overhead_ratio": result.overhead_ratio,
+                    "correction_rate": result.correction_rate,
+                    "detection_rate": result.detection_rate,
+                    "success_rate": result.success_rate,
+                    "error_distribution": result.error_distribution
+                }
+                
+                # Save individual result
+                with open(individual_file, 'w') as f:
+                    json.dump(result_dict, f, indent=2)
+                
+                # Update aggregated results file
+                aggregated_file = output_path / "benchmark_results.json"
+                results_data = []
+                for result_file in benchmarks_dir.glob("*.json"):
+                    try:
+                        with open(result_file, 'r') as f:
+                            data = json.load(f)
+                            results_data.append(data)
+                    except (json.JSONDecodeError, FileNotFoundError):
+                        continue
+                
+                with open(aggregated_file, 'w') as f:
+                    json.dump(results_data, f, indent=2)
+                
+                # Update CSV file
+                df = pd.DataFrame(results_data)
+                df.to_csv(output_path / "benchmark_results.csv", index=False)
+                
+            except Exception as e:
+                print(f"Warning: Could not save incremental result for {ecc_type_name}: {e}")
+        
+        return result
     
     def generate_summary(self) -> Dict[str, Any]:
         """
@@ -952,6 +1007,263 @@ class ECCBenchmarkSuite:
         df.to_csv(output_path / "benchmark_results.csv", index=False)
         
         print(f"Benchmark results saved to {output_path}")
+
+    def save_incremental_result(self, result: BenchmarkResult, output_dir: str = "results") -> None:
+        """
+        Save a single benchmark result incrementally to individual JSON file.
+        
+        Args:
+            result: Single benchmark result to save
+            output_dir: Directory to save results
+        """
+        output_path = Path(output_dir)
+        output_path.mkdir(exist_ok=True)
+        
+        # Create benchmarks subdirectory for individual files
+        benchmarks_dir = output_path / "benchmarks"
+        benchmarks_dir.mkdir(exist_ok=True)
+        
+        # Create individual result file name
+        filename = f"{result.ecc_type}_{result.word_length}_{result.error_pattern}.json"
+        individual_file = benchmarks_dir / filename
+        
+        # Convert result to dictionary
+        result_dict = {
+            "ecc_type": result.ecc_type,
+            "word_length": result.word_length,
+            "error_pattern": result.error_pattern,
+            "trials": result.trials,
+            "correctable_errors": result.correctable_errors,
+            "detected_errors": result.detected_errors,
+            "undetected_errors": result.undetected_errors,
+            "encode_time_avg": result.encode_time_avg,
+            "decode_time_avg": result.decode_time_avg,
+            "total_time_avg": result.total_time_avg,
+            "code_rate": result.code_rate,
+            "overhead_ratio": result.overhead_ratio,
+            "correction_rate": result.correction_rate,
+            "detection_rate": result.detection_rate,
+            "success_rate": result.success_rate,
+            "error_distribution": result.error_distribution
+        }
+        
+        # Save individual result
+        with open(individual_file, 'w') as f:
+            json.dump(result_dict, f, indent=2)
+        
+        # Update aggregated results file
+        self._update_aggregated_results(output_path)
+        
+        # Update CSV file
+        self._update_csv_file(output_path)
+        
+        # Update summary
+        self._update_summary_incremental(output_path)
+
+    def _update_aggregated_results(self, output_path: Path) -> None:
+        """
+        Update the aggregated benchmark_results.json file from individual files.
+        
+        Args:
+            output_path: Output directory path
+        """
+        benchmarks_dir = output_path / "benchmarks"
+        aggregated_file = output_path / "benchmark_results.json"
+        
+        if not benchmarks_dir.exists():
+            return
+        
+        # Collect all individual result files
+        results_data = []
+        for result_file in benchmarks_dir.glob("*.json"):
+            try:
+                with open(result_file, 'r') as f:
+                    result_data = json.load(f)
+                    results_data.append(result_data)
+            except (json.JSONDecodeError, FileNotFoundError) as e:
+                print(f"Warning: Could not read {result_file}: {e}")
+        
+        # Save aggregated results
+        with open(aggregated_file, 'w') as f:
+            json.dump(results_data, f, indent=2)
+
+    def _update_csv_file(self, output_path: Path) -> None:
+        """
+        Update the CSV file from individual JSON files.
+        
+        Args:
+            output_path: Output directory path
+        """
+        benchmarks_dir = output_path / "benchmarks"
+        csv_file = output_path / "benchmark_results.csv"
+        
+        if not benchmarks_dir.exists():
+            return
+        
+        # Collect all individual result files
+        results_data = []
+        for result_file in benchmarks_dir.glob("*.json"):
+            try:
+                with open(result_file, 'r') as f:
+                    result_data = json.load(f)
+                    results_data.append(result_data)
+            except (json.JSONDecodeError, FileNotFoundError) as e:
+                print(f"Warning: Could not read {result_file}: {e}")
+        
+        # Save as CSV
+        df = pd.DataFrame(results_data)
+        df.to_csv(csv_file, index=False)
+
+    def _update_summary_incremental(self, output_path: Path) -> None:
+        """
+        Update summary file incrementally from individual JSON files.
+        
+        Args:
+            output_path: Output directory path
+        """
+        benchmarks_dir = output_path / "benchmarks"
+        summary_file = output_path / "benchmark_summary.json"
+        
+        if not benchmarks_dir.exists():
+            return
+        
+        # Collect all individual result files
+        results_data = []
+        for result_file in benchmarks_dir.glob("*.json"):
+            try:
+                with open(result_file, 'r') as f:
+                    result_data = json.load(f)
+                    results_data.append(result_data)
+            except (json.JSONDecodeError, FileNotFoundError) as e:
+                print(f"Warning: Could not read {result_file}: {e}")
+        
+        # Convert to BenchmarkResult objects for summary generation
+        results = []
+        for result_data in results_data:
+            result = BenchmarkResult(
+                ecc_type=result_data['ecc_type'],
+                word_length=result_data['word_length'],
+                error_pattern=result_data['error_pattern'],
+                trials=result_data['trials'],
+                correctable_errors=result_data['correctable_errors'],
+                detected_errors=result_data['detected_errors'],
+                undetected_errors=result_data['undetected_errors'],
+                encode_time_avg=result_data['encode_time_avg'],
+                decode_time_avg=result_data['decode_time_avg'],
+                total_time_avg=result_data['total_time_avg'],
+                code_rate=result_data['code_rate'],
+                overhead_ratio=result_data['overhead_ratio'],
+                correction_rate=result_data['correction_rate'],
+                detection_rate=result_data['detection_rate'],
+                success_rate=result_data['success_rate'],
+                error_distribution=result_data['error_distribution']
+            )
+            results.append(result)
+        
+        # Temporarily set results to generate summary
+        original_results = self.results
+        self.results = results
+        
+        # Generate and save summary
+        summary = self.generate_summary()
+        with open(summary_file, 'w') as f:
+            json.dump(summary, f, indent=2)
+        
+        # Restore original results
+        self.results = original_results
+
+    def get_completion_status(self, output_dir: str = "results") -> Dict[str, Any]:
+        """
+        Get the completion status of benchmark configurations from individual files.
+        
+        Args:
+            output_dir: Directory containing results
+            
+        Returns:
+            Dictionary with completion statistics
+        """
+        output_path = Path(output_dir)
+        benchmarks_dir = output_path / "benchmarks"
+        
+        if not benchmarks_dir.exists():
+            return {
+                "total_configs": len(self.config.ecc_types) * len(self.config.word_lengths) * len(self.config.error_patterns),
+                "completed_configs": 0,
+                "completion_percentage": 0.0,
+                "missing_configs": []
+            }
+        
+        # Count individual result files
+        completed_configs = set()
+        for result_file in benchmarks_dir.glob("*.json"):
+            try:
+                with open(result_file, 'r') as f:
+                    result_data = json.load(f)
+                    config_key = (
+                        result_data.get('ecc_type', ''),
+                        result_data.get('word_length', 0),
+                        result_data.get('error_pattern', '')
+                    )
+                    completed_configs.add(config_key)
+            except (json.JSONDecodeError, FileNotFoundError):
+                continue
+        
+        total_configs = len(self.config.ecc_types) * len(self.config.word_lengths) * len(self.config.error_patterns)
+        completed_count = len(completed_configs)
+        
+        # Find missing configurations
+        missing_configs = []
+        for ecc_type in self.config.ecc_types:
+            for word_length in self.config.word_lengths:
+                for error_pattern in self.config.error_patterns:
+                    config_key = (ecc_type.__name__, word_length, error_pattern)
+                    if config_key not in completed_configs:
+                        missing_configs.append(f"{ecc_type.__name__} ({word_length} bits, {error_pattern} errors)")
+        
+        return {
+            "total_configs": total_configs,
+            "completed_configs": completed_count,
+            "completion_percentage": (completed_count / total_configs) * 100.0,
+            "missing_configs": missing_configs
+        }
+
+    def _load_existing_results(self) -> List[BenchmarkResult]:
+        """Load existing benchmark results from individual JSON files."""
+        output_path = Path("results")
+        benchmarks_dir = output_path / "benchmarks"
+        
+        if not benchmarks_dir.exists():
+            return []
+        
+        results = []
+        for result_file in benchmarks_dir.glob("*.json"):
+            try:
+                with open(result_file, 'r') as f:
+                    result_data = json.load(f)
+                    
+                    result = BenchmarkResult(
+                        ecc_type=result_data['ecc_type'],
+                        word_length=result_data['word_length'],
+                        error_pattern=result_data['error_pattern'],
+                        trials=result_data['trials'],
+                        correctable_errors=result_data['correctable_errors'],
+                        detected_errors=result_data['detected_errors'],
+                        undetected_errors=result_data['undetected_errors'],
+                        encode_time_avg=result_data['encode_time_avg'],
+                        decode_time_avg=result_data['decode_time_avg'],
+                        total_time_avg=result_data['total_time_avg'],
+                        code_rate=result_data['code_rate'],
+                        overhead_ratio=result_data['overhead_ratio'],
+                        correction_rate=result_data['correction_rate'],
+                        detection_rate=result_data['detection_rate'],
+                        success_rate=result_data['success_rate'],
+                        error_distribution=result_data['error_distribution']
+                    )
+                    results.append(result)
+            except (json.JSONDecodeError, FileNotFoundError) as e:
+                print(f"Warning: Could not load {result_file}: {e}")
+        
+        return results
 
 
 def create_default_config() -> BenchmarkConfig:

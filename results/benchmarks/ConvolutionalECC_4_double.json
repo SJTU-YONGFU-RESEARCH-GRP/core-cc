@@ -1,0 +1,22 @@
+{
+  "ecc_type": "ConvolutionalECC",
+  "word_length": 4,
+  "error_pattern": "double",
+  "trials": 1000,
+  "correctable_errors": 1000,
+  "detected_errors": 0,
+  "undetected_errors": 0,
+  "encode_time_avg": 4.1089057922363285e-06,
+  "decode_time_avg": 4.055070877075195e-05,
+  "total_time_avg": 4.465961456298828e-05,
+  "code_rate": 1.0,
+  "overhead_ratio": 0.0,
+  "correction_rate": 1.0,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 1000,
+    "detected": 0,
+    "undetected": 0
+  }
+}

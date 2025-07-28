@@ -1,0 +1,22 @@
+{
+  "ecc_type": "PolarECC",
+  "word_length": 4,
+  "error_pattern": "burst",
+  "trials": 1000,
+  "correctable_errors": 1000,
+  "detected_errors": 0,
+  "undetected_errors": 0,
+  "encode_time_avg": 2.8820037841796873e-06,
+  "decode_time_avg": 2.4778842926025392e-06,
+  "total_time_avg": 5.359888076782227e-06,
+  "code_rate": 1.0,
+  "overhead_ratio": 0.0,
+  "correction_rate": 1.0,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 1000,
+    "detected": 0,
+    "undetected": 0
+  }
+}

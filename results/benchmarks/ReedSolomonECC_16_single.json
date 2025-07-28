@@ -1,0 +1,22 @@
+{
+  "ecc_type": "ReedSolomonECC",
+  "word_length": 16,
+  "error_pattern": "single",
+  "trials": 1000,
+  "correctable_errors": 999,
+  "detected_errors": 1,
+  "undetected_errors": 0,
+  "encode_time_avg": 1.0317564010620117e-05,
+  "decode_time_avg": 0.00020348548889160157,
+  "total_time_avg": 0.00021380305290222168,
+  "code_rate": 0.12598425196850394,
+  "overhead_ratio": 6.9375,
+  "correction_rate": 0.999,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 999,
+    "detected": 1,
+    "undetected": 0
+  }
+}

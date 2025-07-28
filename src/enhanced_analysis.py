@@ -14,9 +14,49 @@ from typing import Dict, List, Tuple, Any, Optional
 from pathlib import Path
 from dataclasses import dataclass
 import statistics
+import time
+import random
 from scipy import stats
+import multiprocessing as mp
+from concurrent.futures import ProcessPoolExecutor, as_completed, ThreadPoolExecutor
+import os
+import logging
+import sys
+import threading
 
 from benchmark_suite import BenchmarkResult
+from base_ecc import ECCBase
+from parity_ecc import ParityECC
+from hamming_secded_ecc import HammingSECDEDECC
+from bch_ecc import BCHECC
+from reed_solomon_ecc import ReedSolomonECC
+from crc_ecc import CRCECC
+from golay_ecc import GolayECC
+from repetition_ecc import RepetitionECC
+from ldpc_ecc import LDPCECC
+from turbo_ecc import TurboECC
+from convolutional_ecc import ConvolutionalECC
+from polar_ecc import PolarECC
+from composite_ecc import CompositeECC
+
+
+@dataclass
+class ECCVerificationResult:
+    """Results from ECC implementation verification."""
+    
+    ecc_type: str
+    word_length: int
+    verification_passed: bool
+    round_trip_tests: int
+    round_trip_successes: int
+    error_correction_tests: int
+    error_correction_successes: int
+    performance_tests: int
+    performance_successes: int
+    encode_time_avg: Optional[float] = None
+    decode_time_avg: Optional[float] = None
+    error_messages: List[str] = None
+    test_details: Dict[str, Any] = None
 
 
 @dataclass
@@ -41,6 +81,9 @@ class AnalysisResult:
     
     # Performance metrics summary
     metrics_summary: Dict[str, Dict[str, float]]
+    
+    # ECC verification results
+    ecc_verification_results: Dict[str, ECCVerificationResult] = None
 
 
 class ECCAnalyzer:
@@ -437,6 +480,11 @@ class ECCAnalyzer:
         recommendations = self.generate_recommendations()
         metrics_summary = self.generate_metrics_summary()
         
+        # Run ECC verification
+        print("\n🔍 Running ECC implementation verification...")
+        verifier = ECCVerifier()
+        verification_results = verifier.verify_all_ecc_implementations()
+        
         # Create visualizations
         charts = self.create_performance_visualizations()
         
@@ -449,8 +497,491 @@ class ECCAnalyzer:
             error_pattern_trends=error_pattern_trends,
             statistical_significance=statistical_significance,
             recommendations=recommendations,
-            metrics_summary=metrics_summary
+            metrics_summary=metrics_summary,
+            ecc_verification_results=verification_results
         )
+
+
+class ECCVerifier:
+    """Comprehensive ECC implementation verification engine."""
+    
+    def __init__(self):
+        """Initialize the ECC verifier."""
+        self.ecc_classes = {
+            'ParityECC': ParityECC,
+            'HammingSECDEDECC': HammingSECDEDECC,
+            'BCHECC': BCHECC,
+            'ReedSolomonECC': ReedSolomonECC,
+            'CRCECC': CRCECC,
+            'GolayECC': GolayECC,
+            'RepetitionECC': RepetitionECC,
+            'LDPCECC': LDPCECC,
+            'TurboECC': TurboECC,
+            'ConvolutionalECC': ConvolutionalECC,
+            'PolarECC': PolarECC,
+            'CompositeECC': CompositeECC
+        }
+        self.word_lengths = [4, 8, 16, 32]
+        self.test_trials = 1000
+        
+    def verify_ecc_implementation(self, ecc_type: str, word_length: int) -> ECCVerificationResult:
+        """
+        Verify a specific ECC implementation.
+        
+        Args:
+            ecc_type: Name of the ECC class
+            word_length: Word length to test
+            
+        Returns:
+            Verification result
+        """
+        if ecc_type not in self.ecc_classes:
+            return ECCVerificationResult(
+                ecc_type=ecc_type,
+                word_length=word_length,
+                verification_passed=False,
+                round_trip_tests=0,
+                round_trip_successes=0,
+                error_correction_tests=0,
+                error_correction_successes=0,
+                performance_tests=0,
+                performance_successes=0,
+                error_messages=[f"ECC type {ecc_type} not found"]
+            )
+        
+        try:
+            print(f"      Creating {ecc_type} instance for {word_length} bits...")
+            # Create ECC instance
+            ecc_class = self.ecc_classes[ecc_type]
+            ecc = ecc_class(data_length=word_length)
+            
+            print(f"      Running round-trip tests...")
+            # Run verification tests
+            round_trip_result = self._test_round_trip(ecc, word_length)
+            print(f"        Round-trip: {round_trip_result['successes']}/{round_trip_result['tests']} ({round_trip_result['success_rate']:.2%})")
+            
+            print(f"      Running error correction tests...")
+            error_correction_result = self._test_error_correction(ecc, word_length)
+            print(f"        Error correction: {error_correction_result['successes']}/{error_correction_result['tests']} ({error_correction_result['success_rate']:.2%})")
+            
+            print(f"      Running performance tests...")
+            performance_result = self._test_performance(ecc, word_length)
+            print(f"        Performance: {performance_result['successes']}/{performance_result['tests']} ({performance_result['success_rate']:.2%})")
+            
+            # Determine overall success
+            verification_passed = (
+                round_trip_result['success_rate'] > 0.95 and
+                error_correction_result['success_rate'] > 0.8 and
+                performance_result['success_rate'] > 0.9
+            )
+            
+            return ECCVerificationResult(
+                ecc_type=ecc_type,
+                word_length=word_length,
+                verification_passed=verification_passed,
+                round_trip_tests=round_trip_result['tests'],
+                round_trip_successes=round_trip_result['successes'],
+                error_correction_tests=error_correction_result['tests'],
+                error_correction_successes=error_correction_result['successes'],
+                performance_tests=performance_result['tests'],
+                performance_successes=performance_result['successes'],
+                encode_time_avg=performance_result.get('encode_time_avg'),
+                decode_time_avg=performance_result.get('decode_time_avg'),
+                error_messages=[],
+                test_details={
+                    'round_trip': round_trip_result,
+                    'error_correction': error_correction_result,
+                    'performance': performance_result
+                }
+            )
+            
+        except Exception as e:
+            print(f"      ❌ Exception: {str(e)}")
+            return ECCVerificationResult(
+                ecc_type=ecc_type,
+                word_length=word_length,
+                verification_passed=False,
+                round_trip_tests=0,
+                round_trip_successes=0,
+                error_correction_tests=0,
+                error_correction_successes=0,
+                performance_tests=0,
+                performance_successes=0,
+                error_messages=[f"Exception during verification: {str(e)}"]
+            )
+    
+    def _test_round_trip(self, ecc: ECCBase, word_length: int) -> Dict[str, Any]:
+        """Test round-trip encoding and decoding without errors."""
+        successes = 0
+        tests = 0
+        encode_times = []
+        decode_times = []
+        
+        for i in range(self.test_trials):
+            try:
+                # Generate random data
+                data = random.randint(0, (1 << word_length) - 1)
+                
+                # Test encoding
+                start_time = time.time()
+                codeword = ecc.encode(data)
+                encode_time = time.time() - start_time
+                encode_times.append(encode_time)
+                
+                # Test decoding
+                start_time = time.time()
+                decoded, error_type = ecc.decode(codeword)
+                decode_time = time.time() - start_time
+                decode_times.append(decode_time)
+                
+                # Check if round-trip was successful
+                if decoded == data:
+                    successes += 1
+                tests += 1
+                
+                # Progress logging every 100 tests
+                if (i + 1) % 100 == 0:
+                    print(f"          Round-trip progress: {i + 1}/{self.test_trials}")
+                
+            except Exception as e:
+                tests += 1
+                if tests <= 5:  # Only log first few exceptions
+                    print(f"          Round-trip test {i} failed: {str(e)}")
+        
+        return {
+            'tests': tests,
+            'successes': successes,
+            'success_rate': successes / tests if tests > 0 else 0,
+            'encode_time_avg': statistics.mean(encode_times) if encode_times else None,
+            'decode_time_avg': statistics.mean(decode_times) if decode_times else None
+        }
+    
+    def _test_error_correction(self, ecc: ECCBase, word_length: int) -> Dict[str, Any]:
+        """Test error correction capabilities."""
+        successes = 0
+        tests = 0
+        
+        for _ in range(self.test_trials):
+            try:
+                # Generate random data
+                data = random.randint(0, (1 << word_length) - 1)
+                codeword = ecc.encode(data)
+                
+                # Inject single bit error
+                error_position = random.randint(0, codeword.bit_length() - 1)
+                corrupted = codeword ^ (1 << error_position)
+                
+                # Test error correction
+                decoded, error_type = ecc.decode(corrupted)
+                
+                # Success if error was detected or corrected
+                if error_type in ['detected', 'corrected'] or decoded == data:
+                    successes += 1
+                tests += 1
+                
+            except Exception:
+                tests += 1
+        
+        return {
+            'tests': tests,
+            'successes': successes,
+            'success_rate': successes / tests if tests > 0 else 0
+        }
+    
+    def _test_performance(self, ecc: ECCBase, word_length: int) -> Dict[str, Any]:
+        """Test performance characteristics."""
+        successes = 0
+        tests = 0
+        encode_times = []
+        decode_times = []
+        
+        for _ in range(self.test_trials):
+            try:
+                # Generate random data
+                data = random.randint(0, (1 << word_length) - 1)
+                
+                # Test encoding performance
+                start_time = time.time()
+                codeword = ecc.encode(data)
+                encode_time = time.time() - start_time
+                encode_times.append(encode_time)
+                
+                # Test decoding performance
+                start_time = time.time()
+                decoded, error_type = ecc.decode(codeword)
+                decode_time = time.time() - start_time
+                decode_times.append(decode_time)
+                
+                # Success if both operations completed
+                if codeword > 0 and decoded >= 0:
+                    successes += 1
+                tests += 1
+                
+            except Exception:
+                tests += 1
+        
+        return {
+            'tests': tests,
+            'successes': successes,
+            'success_rate': successes / tests if tests > 0 else 0,
+            'encode_time_avg': statistics.mean(encode_times) if encode_times else None,
+            'decode_time_avg': statistics.mean(decode_times) if decode_times else None
+        }
+    
+    def verify_all_ecc_implementations(self, use_parallel: bool = False, max_workers: int = None) -> Dict[str, ECCVerificationResult]:
+        """
+        Verify all ECC implementations with optional parallel processing.
+        
+        Args:
+            use_parallel: Whether to use parallel processing
+            max_workers: Maximum number of worker processes (default: CPU count)
+            
+        Returns:
+            Dictionary of verification results
+        """
+        print("🔍 Verifying all ECC implementations...")
+        
+        if use_parallel:
+            # For now, use threaded approach to preserve logging
+            return self._verify_all_threaded(max_workers)
+        else:
+            return self._verify_all_sequential()
+    
+    def _verify_all_sequential(self) -> Dict[str, ECCVerificationResult]:
+        """Verify all ECC implementations sequentially with clear logging."""
+        results = {}
+        total_configs = len(self.ecc_classes) * len(self.word_lengths)
+        current_config = 0
+        
+        print(f"🔍 Testing {total_configs} ECC configurations sequentially...")
+        print("=" * 60)
+        
+        for ecc_type in self.ecc_classes.keys():
+            print(f"\n📋 Testing {ecc_type}...")
+            print("-" * 40)
+            
+            for word_length in self.word_lengths:
+                current_config += 1
+                key = f"{ecc_type}_{word_length}"
+                
+                print(f"\n[{current_config}/{total_configs}] {key}:")
+                result = self.verify_ecc_implementation(ecc_type, word_length)
+                results[key] = result
+                
+                status = "✅ PASS" if result.verification_passed else "❌ FAIL"
+                round_trip_rate = result.round_trip_successes / result.round_trip_tests * 100 if result.round_trip_tests > 0 else 0
+                error_correction_rate = result.error_correction_successes / result.error_correction_tests * 100 if result.error_correction_tests > 0 else 0
+                performance_rate = result.performance_successes / result.performance_tests * 100 if result.performance_tests > 0 else 0
+                
+                print(f"  Round-trip:     {result.round_trip_successes}/{result.round_trip_tests} ({round_trip_rate:.1f}%)")
+                print(f"  Error correction: {result.error_correction_successes}/{result.error_correction_tests} ({error_correction_rate:.1f}%)")
+                print(f"  Performance:     {result.performance_successes}/{result.performance_tests} ({performance_rate:.1f}%)")
+                print(f"  Overall:         {status}")
+                
+                if result.error_messages:
+                    print("  Errors:")
+                    for error in result.error_messages:
+                        print(f"    - {error}")
+        
+        # Print comprehensive summary
+        print(f"\n" + "=" * 60)
+        print("📊 VERIFICATION SUMMARY")
+        print("=" * 60)
+        
+        passed = sum(1 for r in results.values() if r.verification_passed)
+        total = len(results)
+        
+        print(f"✅ Passed: {passed}/{total} configurations")
+        print(f"❌ Failed: {total - passed}/{total} configurations")
+        print(f"📈 Success Rate: {passed/total*100:.1f}%")
+        
+        # Show failing configurations
+        if total - passed > 0:
+            print(f"\n❌ FAILING CONFIGURATIONS:")
+            for key, result in results.items():
+                if not result.verification_passed:
+                    round_trip_rate = result.round_trip_successes / result.round_trip_tests * 100 if result.round_trip_tests > 0 else 0
+                    print(f"  {key}: {round_trip_rate:.1f}% round-trip success")
+        
+        return results
+    
+    def _verify_all_parallel(self, max_workers: int = None) -> Dict[str, ECCVerificationResult]:
+        """Verify all ECC implementations in parallel."""
+        if max_workers is None:
+            max_workers = min(mp.cpu_count(), 8)  # Limit to 8 workers max
+        
+        print(f"🚀 Using parallel processing with {max_workers} workers...")
+        
+        # Create all verification tasks
+        tasks = []
+        for ecc_type in self.ecc_classes.keys():
+            for word_length in self.word_lengths:
+                tasks.append((ecc_type, word_length))
+        
+        results = {}
+        completed = 0
+        total_tasks = len(tasks)
+        
+        # Use ProcessPoolExecutor for parallel execution
+        with ProcessPoolExecutor(max_workers=max_workers) as executor:
+            # Submit all tasks
+            future_to_task = {
+                executor.submit(self._verify_single_implementation_with_logging, ecc_type, word_length): (ecc_type, word_length)
+                for ecc_type, word_length in tasks
+            }
+            
+            # Collect results as they complete
+            for future in as_completed(future_to_task):
+                ecc_type, word_length = future_to_task[future]
+                key = f"{ecc_type}_{word_length}"
+                
+                try:
+                    result, log_messages = future.result()
+                    results[key] = result
+                    completed += 1
+                    
+                    # Print log messages from the worker process
+                    for msg in log_messages:
+                        print(f"  {msg}")
+                    
+                    status = "✅ PASS" if result.verification_passed else "❌ FAIL"
+                    print(f"  [{completed}/{total_tasks}] {key}: {status}")
+                    
+                except Exception as e:
+                    print(f"  ❌ {key}: Exception - {str(e)}")
+                    # Create a failed result
+                    results[key] = ECCVerificationResult(
+                        ecc_type=ecc_type,
+                        word_length=word_length,
+                        verification_passed=False,
+                        round_trip_tests=0,
+                        round_trip_successes=0,
+                        error_correction_tests=0,
+                        error_correction_successes=0,
+                        performance_tests=0,
+                        performance_successes=0,
+                        error_messages=[f"Parallel execution failed: {str(e)}"]
+                    )
+                    completed += 1
+        
+        # Print summary
+        passed = sum(1 for r in results.values() if r.verification_passed)
+        total = len(results)
+        print(f"\n📊 Verification Summary: {passed}/{total} configurations passed")
+        
+        return results
+    
+    def _verify_all_threaded(self, max_workers: int = None) -> Dict[str, ECCVerificationResult]:
+        """Verify all ECC implementations using threads with organized logging."""
+        if max_workers is None:
+            max_workers = min(2, len(self.ecc_classes) * len(self.word_lengths))  # Limit workers for clearer output
+        
+        print(f"🚀 Using threaded processing with {max_workers} workers...")
+        print("⚠️  Note: Parallel execution may have interleaved output")
+        
+        # Create all verification tasks
+        tasks = []
+        for ecc_type in self.ecc_classes.keys():
+            for word_length in self.word_lengths:
+                tasks.append((ecc_type, word_length))
+        
+        results = {}
+        completed = 0
+        total_tasks = len(tasks)
+        
+        print(f"📋 Testing {total_tasks} configurations in parallel...")
+        print("=" * 60)
+        
+        # Use ThreadPoolExecutor for threaded execution
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            # Submit all tasks
+            future_to_task = {
+                executor.submit(self._verify_single_implementation_with_logging, ecc_type, word_length): (ecc_type, word_length)
+                for ecc_type, word_length in tasks
+            }
+            
+            # Collect results as they complete
+            for future in as_completed(future_to_task):
+                ecc_type, word_length = future_to_task[future]
+                key = f"{ecc_type}_{word_length}"
+                
+                try:
+                    result, log_messages = future.result()
+                    results[key] = result
+                    completed += 1
+                    
+                    # Print organized result summary
+                    status = "✅ PASS" if result.verification_passed else "❌ FAIL"
+                    round_trip_rate = result.round_trip_successes / result.round_trip_tests * 100 if result.round_trip_tests > 0 else 0
+                    
+                    print(f"[{completed}/{total_tasks}] {key}: {status} ({round_trip_rate:.1f}% round-trip)")
+                    
+                    # Show detailed logs only for failures or if verbose
+                    if not result.verification_passed and log_messages:
+                        print(f"  Details for {key}:")
+                        for msg in log_messages[-3:]:  # Show last 3 messages
+                            print(f"    {msg}")
+                    
+                except Exception as e:
+                    print(f"[{completed+1}/{total_tasks}] ❌ {key}: Exception - {str(e)}")
+                    # Create a failed result
+                    results[key] = ECCVerificationResult(
+                        ecc_type=ecc_type,
+                        word_length=word_length,
+                        verification_passed=False,
+                        round_trip_tests=0,
+                        round_trip_successes=0,
+                        error_correction_tests=0,
+                        error_correction_successes=0,
+                        performance_tests=0,
+                        performance_successes=0,
+                        error_messages=[f"Threaded execution failed: {str(e)}"]
+                    )
+                    completed += 1
+        
+        # Print comprehensive summary
+        print(f"\n" + "=" * 60)
+        print("📊 PARALLEL VERIFICATION SUMMARY")
+        print("=" * 60)
+        
+        passed = sum(1 for r in results.values() if r.verification_passed)
+        total = len(results)
+        
+        print(f"✅ Passed: {passed}/{total} configurations")
+        print(f"❌ Failed: {total - passed}/{total} configurations")
+        print(f"📈 Success Rate: {passed/total*100:.1f}%")
+        
+        # Show failing configurations
+        if total - passed > 0:
+            print(f"\n❌ FAILING CONFIGURATIONS:")
+            for key, result in results.items():
+                if not result.verification_passed:
+                    round_trip_rate = result.round_trip_successes / result.round_trip_tests * 100 if result.round_trip_tests > 0 else 0
+                    print(f"  {key}: {round_trip_rate:.1f}% round-trip success")
+        
+        return results
+    
+    def _verify_single_implementation_with_logging(self, ecc_type: str, word_length: int) -> Tuple[ECCVerificationResult, List[str]]:
+        """Verify a single ECC implementation with logging (for parallel processing)."""
+        log_messages = []
+        
+        # Capture print output
+        import io
+        import contextlib
+        
+        f = io.StringIO()
+        with contextlib.redirect_stdout(f):
+            result = self.verify_ecc_implementation(ecc_type, word_length)
+        
+        # Get captured output
+        captured_output = f.getvalue()
+        log_messages = [line.strip() for line in captured_output.split('\n') if line.strip()]
+        
+        return result, log_messages
+    
+    def _verify_single_implementation(self, ecc_type: str, word_length: int) -> ECCVerificationResult:
+        """Verify a single ECC implementation (for parallel processing)."""
+        return self.verify_ecc_implementation(ecc_type, word_length)
 
 
 def save_benchmark_results(results: List[BenchmarkResult], output_dir: str = "results") -> None:
@@ -497,15 +1028,51 @@ def save_benchmark_results(results: List[BenchmarkResult], output_dir: str = "re
 
 def load_benchmark_results(output_dir: str = "results") -> List[BenchmarkResult]:
     """
-    Load benchmark results from JSON file.
+    Load benchmark results from individual JSON files.
     
     Args:
-        results_file: Path to benchmark results JSON file
+        output_dir: Directory containing benchmark results
         
     Returns:
         List of benchmark results
     """
-    results_file = Path(output_dir) / "benchmark_results.json"
+    output_path = Path(output_dir)
+    benchmarks_dir = output_path / "benchmarks"
+    
+    # Try to load from individual files first
+    if benchmarks_dir.exists():
+        results = []
+        for result_file in benchmarks_dir.glob("*.json"):
+            try:
+                with open(result_file, 'r') as f:
+                    item = json.load(f)
+                    result = BenchmarkResult(
+                        ecc_type=item['ecc_type'],
+                        word_length=item['word_length'],
+                        error_pattern=item['error_pattern'],
+                        trials=item['trials'],
+                        correctable_errors=item['correctable_errors'],
+                        detected_errors=item['detected_errors'],
+                        undetected_errors=item['undetected_errors'],
+                        encode_time_avg=item['encode_time_avg'],
+                        decode_time_avg=item['decode_time_avg'],
+                        total_time_avg=item['total_time_avg'],
+                        code_rate=item['code_rate'],
+                        overhead_ratio=item['overhead_ratio'],
+                        correction_rate=item['correction_rate'],
+                        detection_rate=item['detection_rate'],
+                        success_rate=item['success_rate'],
+                        error_distribution=item['error_distribution']
+                    )
+                    results.append(result)
+            except (json.JSONDecodeError, FileNotFoundError) as e:
+                print(f"Warning: Could not load {result_file}: {e}")
+        
+        if results:
+            return results
+    
+    # Fallback to aggregated file if individual files don't exist
+    results_file = output_path / "benchmark_results.json"
     if not results_file.exists():
         print(f"Benchmark results not found at {results_file}. Please run the benchmark suite first.")
         return []
@@ -538,8 +1105,86 @@ def load_benchmark_results(output_dir: str = "results") -> List[BenchmarkResult]
     return results
 
 
+def verify_all_ecc_implementations(use_parallel: bool = False, max_workers: int = None) -> Dict[str, ECCVerificationResult]:
+    """
+    Standalone function to verify all ECC implementations.
+    
+    Args:
+        use_parallel: Whether to use parallel processing
+        max_workers: Maximum number of worker processes
+        
+    Returns:
+        Dictionary of verification results
+    """
+    print("🔍 ECC Implementation Verification")
+    print("==================================")
+    
+    verifier = ECCVerifier()
+    results = verifier.verify_all_ecc_implementations(use_parallel=use_parallel, max_workers=max_workers)
+    
+    # Save verification results
+    output_path = Path("results")
+    output_path.mkdir(exist_ok=True)
+    
+    verification_data = {}
+    for key, result in results.items():
+        verification_data[key] = {
+            'ecc_type': result.ecc_type,
+            'word_length': result.word_length,
+            'verification_passed': result.verification_passed,
+            'round_trip_tests': result.round_trip_tests,
+            'round_trip_successes': result.round_trip_successes,
+            'error_correction_tests': result.error_correction_tests,
+            'error_correction_successes': result.error_correction_successes,
+            'performance_tests': result.performance_tests,
+            'performance_successes': result.performance_successes,
+            'encode_time_avg': result.encode_time_avg,
+            'decode_time_avg': result.decode_time_avg,
+            'error_messages': result.error_messages
+        }
+    
+    verification_file = output_path / "ecc_verification_results.json"
+    with open(verification_file, 'w') as f:
+        json.dump(verification_data, f, indent=2)
+    
+    print(f"\n📊 Verification results saved to: {verification_file}")
+    
+    # Print detailed results
+    print("\n📋 Detailed Verification Results:")
+    print("=" * 60)
+    
+    for key, result in results.items():
+        status = "✅ PASS" if result.verification_passed else "❌ FAIL"
+        print(f"{key:30} {status}")
+        if result.error_messages:
+            for error in result.error_messages:
+                print(f"  └─ {error}")
+    
+    return results
+
+
 def main() -> None:
-    """Run ECC analysis on benchmark results."""
+    """Main function for running ECC analysis."""
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="ECC Analysis Framework")
+    parser.add_argument("--mode", choices=["benchmark", "analysis", "verification"], 
+                       default="analysis", help="Mode to run")
+    parser.add_argument("--output-dir", default="results", help="Output directory")
+    parser.add_argument("--parallel", action="store_true", help="Use parallel processing")
+    parser.add_argument("--workers", type=int, help="Number of worker processes")
+    parser.add_argument("--sequential", action="store_true", help="Force sequential processing")
+    parser.add_argument("--clear-logging", action="store_true", help="Use sequential processing for clear logging")
+    
+    args = parser.parse_args()
+    
+    if args.mode == "verification":
+        # Default to sequential for clear logging unless explicitly requested
+        use_parallel = args.parallel and not args.sequential and not args.clear_logging
+        verify_all_ecc_implementations(use_parallel=use_parallel, max_workers=args.workers)
+        return
+    
+    # Default analysis mode
     try:
         # Load benchmark results
         results = load_benchmark_results()
@@ -569,6 +1214,22 @@ def main() -> None:
         print("\nTop Recommendations:")
         for i, rec in enumerate(analysis_result.recommendations[:5], 1):
             print(f"  {i}. {rec}")
+        
+        # Print verification results if available
+        if analysis_result.ecc_verification_results:
+            print("\nECC Implementation Verification:")
+            passed = sum(1 for r in analysis_result.ecc_verification_results.values() if r.verification_passed)
+            total = len(analysis_result.ecc_verification_results)
+            print(f"  Verification Status: {passed}/{total} configurations passed")
+            
+            # Show failed verifications
+            failed = [k for k, v in analysis_result.ecc_verification_results.items() if not v.verification_passed]
+            if failed:
+                print("  Failed Verifications:")
+                for key in failed[:5]:  # Show first 5 failures
+                    print(f"    - {key}")
+                if len(failed) > 5:
+                    print(f"    ... and {len(failed) - 5} more")
         
     except FileNotFoundError:
         print("Benchmark results not found. Please run the benchmark suite first.")

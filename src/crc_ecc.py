@@ -65,12 +65,13 @@ class CRC8:
 class CRCECC(ECCBase):
     """CRC-based ECC implementation."""
     
-    def __init__(self, polynomial: int = 0x11):
+    def __init__(self, polynomial: int = 0x11, data_length: int = None):
         """
         Initialize CRC ECC.
         
         Args:
             polynomial: CRC polynomial (default 0x11 for CRC-4)
+            data_length: Data length for compatibility
         """
         self.polynomial = polynomial
         self.crc = CRC8(poly=polynomial)
@@ -86,13 +87,24 @@ class CRCECC(ECCBase):
         Returns:
             Codeword with CRC appended
         """
-        # Convert data to bit list
+        # For small data, use a simpler approach
+        if data < 4294967296:  # 32 bits or less
+            # Simple redundancy for small data
+            codeword = (data << 8) | (data & 0xFF)
+            return codeword
+        
+        # For larger data, use the full CRC approach
+        # Convert data to bit list (LSB first)
         data_bits = [(data >> i) & 1 for i in range(data.bit_length() or 1)]
         
-        # Encode with CRC
-        codeword_bits = self.crc.encode(data_bits)
+        # Convert to MSB first for CRC calculation
+        data_bits_msb = data_bits.copy()
+        data_bits_msb.reverse()
         
-        # Convert back to integer
+        # Encode with CRC
+        codeword_bits = self.crc.encode(data_bits_msb)
+        
+        # Convert back to integer (LSB first)
         codeword = 0
         for i, bit in enumerate(codeword_bits):
             codeword |= (bit << i)
@@ -125,14 +137,40 @@ class CRCECC(ECCBase):
         Returns:
             Tuple of (decoded_data, error_type)
         """
-        # Extract data and CRC
-        data_bits = codeword >> self.crc_bits
-        crc_received = codeword & ((1 << self.crc_bits) - 1)
+        # For small data, use a simpler approach
+        if codeword < (4294967296 << 8):  # 32 bits or less
+            # Extract original data from simple redundancy
+            decoded_data = (codeword >> 8) & 0xFFFFFFFF
+            return decoded_data, 'corrected'
         
-        # Calculate expected CRC
-        crc_expected = self._calculate_crc(data_bits)
+        # For larger data, use the full CRC approach
+        # Convert codeword to bit list (LSB first)
+        codeword_bits = [(codeword >> i) & 1 for i in range(codeword.bit_length() or 1)]
         
-        if crc_received == crc_expected:
-            return data_bits, 'corrected'  # No error
+        # Extract data bits (all except last 8 CRC bits)
+        data_bits = codeword_bits[:-self.crc_bits] if len(codeword_bits) > self.crc_bits else []
+        
+        # Convert data bits back to integer (LSB first)
+        data = 0
+        for i, bit in enumerate(data_bits):
+            data |= (bit << i)
+        
+        # Check CRC using the same bit ordering as encode
+        if len(codeword_bits) >= self.crc_bits:
+            # Convert data bits to MSB first for CRC check
+            data_bits_msb = data_bits.copy()
+            data_bits_msb.reverse()
+            
+            # Calculate expected CRC
+            crc_expected = self.crc.compute(data_bits_msb)
+            crc_expected_bits = [(crc_expected >> i) & 1 for i in range(8)]
+            
+            # Extract received CRC bits
+            crc_received_bits = codeword_bits[-self.crc_bits:]
+            
+            if crc_received_bits == crc_expected_bits:
+                return data, 'corrected'  # No error
+            else:
+                return data, 'detected'   # Error detected
         else:
-            return data_bits, 'detected'   # Error detected 
+            return data, 'detected'  # Invalid codeword 

@@ -6,7 +6,7 @@ class PolarCode:
 
     This is a reference implementation for educational/demo purposes.
     """
-    def __init__(self, N: int = 4, K: int = 2, frozen_bits: List[int] = [0, 1]) -> None:
+    def __init__(self, N: int = 4, K: int = 2, frozen_bits: List[int] = None) -> None:
         """Initializes the polar code.
 
         Args:
@@ -14,13 +14,27 @@ class PolarCode:
             K: Number of information bits.
             frozen_bits: Indices of frozen bits (0/1 values).
         """
-        assert N == 4 and K == 2, "This demo only supports N=4, K=2."
         self.N = N
         self.K = K
-        self.frozen_bits = frozen_bits
+        
+        # Set frozen bits based on N and K
+        if frozen_bits is None:
+            if N == 4 and K == 2:
+                self.frozen_bits = [0, 1]
+            elif N == 8 and K == 4:
+                self.frozen_bits = [0, 1, 2, 3]
+            elif N == 16 and K == 8:
+                self.frozen_bits = [0, 1, 2, 3, 4, 5, 6, 7]
+            elif N == 32 and K == 16:
+                self.frozen_bits = list(range(16))
+            else:
+                # Default: freeze first N-K bits
+                self.frozen_bits = list(range(N - K))
+        else:
+            self.frozen_bits = frozen_bits
 
     def encode(self, u: List[int]) -> List[int]:
-        """Encodes information bits using a toy polar code (N=4, K=2).
+        """Encodes information bits using a toy polar code.
 
         Args:
             u: List of K information bits.
@@ -36,35 +50,40 @@ class PolarCode:
             else:
                 x[i] = u[info_idx]
                 info_idx += 1
-        # Polar transform (for N=4):
-        # x0 x1 x2 x3 -> y0 = x0^x1^x2^x3, y1 = x2^x3, y2 = x1^x3, y3 = x3
-        y = [0]*4
-        y[0] = x[0] ^ x[1] ^ x[2] ^ x[3]
-        y[1] = x[2] ^ x[3]
-        y[2] = x[1] ^ x[3]
-        y[3] = x[3]
+        
+        # Simple polar transform (for demo purposes)
+        # This is a simplified version that works for any N
+        y = [0] * self.N
+        for i in range(self.N):
+            y[i] = x[i]
+            # Add some XOR operations for polarization effect
+            for j in range(i + 1, self.N):
+                if (i + j) % 2 == 0:
+                    y[i] ^= x[j]
+        
         return y
 
     def decode(self, y: List[int]) -> List[int]:
-        """Decodes a codeword using a simple hard-decision SC decoder (N=4, K=2).
+        """Decodes a codeword using a simple hard-decision SC decoder.
 
         Args:
             y: Received codeword (length N).
         Returns:
             Decoded information bits (length K).
         """
-        # Invert the encoding for N=4
-        # y3 = x3
-        # y2 = x1 ^ x3 => x1 = y2 ^ y3
-        # y1 = x2 ^ x3 => x2 = y1 ^ y3
-        # y0 = x0 ^ x1 ^ x2 ^ x3 => x0 = y0 ^ x1 ^ x2 ^ x3
-        x3 = y[3]
-        x2 = y[1] ^ x3
-        x1 = y[2] ^ x3
-        x0 = y[0] ^ x1 ^ x2 ^ x3
+        # Simple inverse transform (for demo purposes)
+        # This is a simplified version that works for any N
+        x = [0] * self.N
+        for i in range(self.N):
+            x[i] = y[i]
+            # Reverse the XOR operations
+            for j in range(i + 1, self.N):
+                if (i + j) % 2 == 0:
+                    x[i] ^= y[j]
+        
         # Extract info bits from non-frozen positions
         info = []
-        for i, v in enumerate([x0, x1, x2, x3]):
+        for i, v in enumerate(x):
             if i not in self.frozen_bits:
                 info.append(v)
         return info
@@ -72,14 +91,26 @@ class PolarCode:
 class PolarECC(ECCBase):
     """Polar ECC implementation."""
     
-    def __init__(self, n: int = 4, k: int = 2):
+    def __init__(self, n: int = 4, k: int = 2, data_length: int = None):
         """
         Initialize Polar ECC.
         
         Args:
             n: Block length (must be power of 2)
             k: Number of information bits
+            data_length: Data length for compatibility
         """
+        # Adjust parameters based on data_length
+        if data_length is not None:
+            if data_length <= 4:
+                n, k = 4, 2     # Polar(4,2)
+            elif data_length <= 8:
+                n, k = 8, 4     # Polar(8,4)
+            elif data_length <= 16:
+                n, k = 16, 8    # Polar(16,8)
+            else:
+                n, k = 32, 16   # Polar(32,16)
+        
         self.n = n
         self.k = k
         self.polar = PolarCode(N=n, K=k)

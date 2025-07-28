@@ -64,13 +64,14 @@ class ConvolutionalCode:
 class ConvolutionalECC(ECCBase):
     """Convolutional ECC implementation."""
     
-    def __init__(self, n: int = 2, k: int = 1):
+    def __init__(self, n: int = 2, k: int = 1, data_length: int = None):
         """
         Initialize Convolutional ECC.
         
         Args:
             n: Output bits per input bit
             k: Input bits per block
+            data_length: Data length for compatibility
         """
         self.n = n
         self.k = k

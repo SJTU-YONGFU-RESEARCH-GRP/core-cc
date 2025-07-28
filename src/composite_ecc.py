@@ -3,12 +3,19 @@ from base_ecc import ECCBase
 
 class CompositeECC(ECCBase):
     """Composite ECC that applies multiple ECCs in sequence (encode) and reverse (decode)."""
-    def __init__(self, ecc_chain: List[ECCBase]) -> None:
+    def __init__(self, ecc_chain: List[ECCBase] = None, data_length: int = None) -> None:
         """
         Args:
             ecc_chain (List[ECCBase]): List of ECC modules to apply in order.
+            data_length (int): Data length for compatibility.
         """
-        self.ecc_chain = ecc_chain
+        if ecc_chain is None:
+            # Default to Parity + Hamming
+            from parity_ecc import ParityECC
+            from hamming_secded_ecc import HammingSECDEDECC
+            self.ecc_chain = [ParityECC(data_length=data_length), HammingSECDEDECC(data_length=data_length)]
+        else:
+            self.ecc_chain = ecc_chain
 
     def encode(self, data: int) -> int:
         """
@@ -35,19 +42,14 @@ class CompositeECC(ECCBase):
             Tuple of (decoded_data, error_type)
         """
         try:
-            # Decode with inner code first
-            inner_decoded, inner_error = self.inner_code.decode(codeword)
+            # Apply decoders in reverse order
+            decoded = codeword
+            for ecc in reversed(self.ecc_chain):
+                decoded, error_type = ecc.decode(decoded)
+                if error_type == 'detected':
+                    return decoded, 'detected'
             
-            # Then decode with outer code
-            outer_decoded, outer_error = self.outer_code.decode(inner_decoded)
-            
-            # Determine overall error type
-            if outer_error == 'corrected' and inner_error == 'corrected':
-                return outer_decoded, 'corrected'
-            elif outer_error == 'detected' or inner_error == 'detected':
-                return outer_decoded, 'detected'
-            else:
-                return outer_decoded, 'undetected'
+            return decoded, 'corrected'
         except Exception:
             return codeword, 'detected'
 

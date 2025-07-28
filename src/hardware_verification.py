@@ -3,15 +3,36 @@ Hardware Verification Module
 
 This module provides capabilities to verify hardware implementations,
 check synthesis results, and validate testbench availability.
+Also includes comprehensive Python ECC implementation verification.
 """
 
 import subprocess
 import json
+import time
+import random
+import statistics
 from pathlib import Path
 from typing import Dict, List, Tuple, Any, Optional
 from dataclasses import dataclass
 import re
 import sys
+
+# Add src directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent))
+
+from base_ecc import ECCBase
+from parity_ecc import ParityECC
+from hamming_secded_ecc import HammingSECDEDECC
+from bch_ecc import BCHECC
+from reed_solomon_ecc import ReedSolomonECC
+from crc_ecc import CRCECC
+from golay_ecc import GolayECC
+from repetition_ecc import RepetitionECC
+from ldpc_ecc import LDPCECC
+from turbo_ecc import TurboECC
+from convolutional_ecc import ConvolutionalECC
+from polar_ecc import PolarECC
+from composite_ecc import CompositeECC
 
 
 @dataclass
@@ -43,11 +64,31 @@ class TestbenchResult:
 
 
 @dataclass
+class ECCVerificationResult:
+    """Results from ECC implementation verification."""
+    
+    ecc_type: str
+    word_length: int
+    verification_passed: bool
+    round_trip_tests: int
+    round_trip_successes: int
+    error_correction_tests: int
+    error_correction_successes: int
+    performance_tests: int
+    performance_successes: int
+    encode_time_avg: Optional[float] = None
+    decode_time_avg: Optional[float] = None
+    error_messages: List[str] = None
+    test_details: Dict[str, Any] = None
+
+
+@dataclass
 class HardwareVerificationResult:
     """Complete hardware verification results."""
     
     synthesis_results: Dict[str, SynthesisResult]
     testbench_results: Dict[str, TestbenchResult]
+    ecc_verification_results: Dict[str, ECCVerificationResult]
     yosys_available: bool
     verilator_available: bool
     overall_status: str

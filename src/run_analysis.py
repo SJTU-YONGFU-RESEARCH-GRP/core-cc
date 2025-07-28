@@ -174,7 +174,7 @@ def run_analysis(output_dir: str = "results") -> bool:
     
     try:
         # Load benchmark results
-        results = load_benchmark_results(f"{output_dir}/benchmark_results.json")
+        results = load_benchmark_results(output_dir)
         
         if not results:
             print("No benchmark results found. Please run benchmarks first.")

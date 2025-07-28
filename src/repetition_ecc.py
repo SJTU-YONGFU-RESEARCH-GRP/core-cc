@@ -46,12 +46,13 @@ class RepetitionCode:
 class RepetitionECC(ECCBase):
     """Repetition ECC implementation."""
     
-    def __init__(self, repetition_factor: int = 3):
+    def __init__(self, repetition_factor: int = 3, data_length: int = None):
         """
         Initialize Repetition ECC.
         
         Args:
             repetition_factor: Number of repetitions per bit (must be odd)
+            data_length: Data length for compatibility
         """
         self.repetition_factor = repetition_factor
         self.repetition = RepetitionCode(n=repetition_factor)
