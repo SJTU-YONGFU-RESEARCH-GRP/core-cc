@@ -1,0 +1,22 @@
+{
+  "ecc_type": "SpatiallyCoupledLDPCECC",
+  "word_length": 4,
+  "error_pattern": "double",
+  "trials": 1000,
+  "correctable_errors": 530,
+  "detected_errors": 470,
+  "undetected_errors": 0,
+  "encode_time_avg": 9.167909622192384e-06,
+  "decode_time_avg": 4.8371553421020506e-05,
+  "total_time_avg": 5.753946304321289e-05,
+  "code_rate": 0.5714285714285714,
+  "overhead_ratio": 0.75,
+  "correction_rate": 0.53,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 530,
+    "detected": 470,
+    "undetected": 0
+  }
+}

@@ -48,6 +48,21 @@ from ldpc_ecc import LDPCECC
 from turbo_ecc import TurboECC
 from convolutional_ecc import ConvolutionalECC
 from polar_ecc import PolarECC
+from extended_hamming_ecc import ExtendedHammingECC
+from product_code_ecc import ProductCodeECC
+from concatenated_ecc import ConcatenatedECC
+from reed_muller_ecc import ReedMullerECC
+from fire_code_ecc import FireCodeECC
+from spatially_coupled_ldpc_ecc import SpatiallyCoupledLDPCECC
+from non_binary_ldpc_ecc import NonBinaryLDPCECC
+from raptor_code_ecc import RaptorCodeECC
+from composite_ecc import CompositeECC
+from system_ecc import SystemECC
+from adaptive_ecc import AdaptiveECC
+from three_d_memory_ecc import ThreeDMemoryECC
+from primary_secondary_ecc import PrimarySecondaryECC
+from cyclic_ecc import CyclicECC
+from burst_error_ecc import BurstErrorECC
 
 
 def get_optimal_workers() -> int:
@@ -100,11 +115,25 @@ def run_benchmarks(
     print(f"System: {cpu_count} CPU cores, {memory_gb:.1f} GB RAM")
     print(f"Parallel mode: {'Processes' if use_processes else 'Threads'}")
     
-    # Configure benchmark suite
+    # Configure benchmark suite with ALL 21 ECC types
     config = BenchmarkConfig(
         ecc_types=[
-            ParityECC, HammingSECDEDECC, BCHECC, ReedSolomonECC, CRCECC,
-            GolayECC, RepetitionECC, LDPCECC, TurboECC, ConvolutionalECC, PolarECC
+            # Basic ECC Codes (3 types)
+            ParityECC, HammingSECDEDECC, RepetitionECC,
+            
+            # Advanced ECC Codes (4 types)
+            BCHECC, ReedSolomonECC, CRCECC, GolayECC,
+            
+            # Modern ECC Codes (4 types)
+            LDPCECC, TurboECC, ConvolutionalECC, PolarECC,
+            
+            # Advanced Composite ECC Codes (10 types)
+            ExtendedHammingECC, ProductCodeECC, ConcatenatedECC, ReedMullerECC,
+            FireCodeECC, SpatiallyCoupledLDPCECC, NonBinaryLDPCECC, RaptorCodeECC,
+            CompositeECC, SystemECC,
+            
+            # New Advanced ECC Codes (6 types)
+            AdaptiveECC, ThreeDMemoryECC, PrimarySecondaryECC, CyclicECC, BurstErrorECC
         ],
         word_lengths=[4, 8, 16, 32],
         error_patterns=['single', 'double', 'burst', 'random'],

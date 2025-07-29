@@ -1,0 +1,22 @@
+{
+  "ecc_type": "PrimarySecondaryECC",
+  "word_length": 4,
+  "error_pattern": "random",
+  "trials": 1000,
+  "correctable_errors": 914,
+  "detected_errors": 86,
+  "undetected_errors": 0,
+  "encode_time_avg": 5.4302215576171875e-06,
+  "decode_time_avg": 1.3823032379150391e-05,
+  "total_time_avg": 1.925325393676758e-05,
+  "code_rate": 0.5,
+  "overhead_ratio": 1.0,
+  "correction_rate": 0.914,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 914,
+    "detected": 86,
+    "undetected": 0
+  }
+}

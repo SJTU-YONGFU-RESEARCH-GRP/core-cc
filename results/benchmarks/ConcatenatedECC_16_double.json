@@ -1,0 +1,22 @@
+{
+  "ecc_type": "ConcatenatedECC",
+  "word_length": 16,
+  "error_pattern": "double",
+  "trials": 1000,
+  "correctable_errors": 854,
+  "detected_errors": 146,
+  "undetected_errors": 0,
+  "encode_time_avg": 4.757785797119141e-05,
+  "decode_time_avg": 5.209183692932129e-05,
+  "total_time_avg": 9.96696949005127e-05,
+  "code_rate": 0.35555555555555557,
+  "overhead_ratio": 1.8125,
+  "correction_rate": 0.854,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 854,
+    "detected": 146,
+    "undetected": 0
+  }
+}

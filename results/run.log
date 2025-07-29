@@ -6,8 +6,8 @@ Output directory: /mnt/d/proj/ecc/results
 Auto-detected optimal workers: 12
 System: 16 CPU cores, 58.9 GB RAM
 Parallel mode: Processes
-📋 Total configurations to test: 176
-🔧 ECC Types: ['ParityECC', 'HammingSECDEDECC', 'BCHECC', 'ReedSolomonECC', 'CRCECC', 'GolayECC', 'RepetitionECC', 'LDPCECC', 'TurboECC', 'ConvolutionalECC', 'PolarECC']
+📋 Total configurations to test: 416
+🔧 ECC Types: ['ParityECC', 'HammingSECDEDECC', 'RepetitionECC', 'BCHECC', 'ReedSolomonECC', 'CRCECC', 'GolayECC', 'LDPCECC', 'TurboECC', 'ConvolutionalECC', 'PolarECC', 'ExtendedHammingECC', 'ProductCodeECC', 'ConcatenatedECC', 'ReedMullerECC', 'FireCodeECC', 'SpatiallyCoupledLDPCECC', 'NonBinaryLDPCECC', 'RaptorCodeECC', 'CompositeECC', 'SystemECC', 'AdaptiveECC', 'ThreeDMemoryECC', 'PrimarySecondaryECC', 'CyclicECC', 'BurstErrorECC']
 📏 Word Lengths: [4, 8, 16, 32]
 ⚠️  Error Patterns: ['single', 'double', 'burst', 'random']
 🔄 Trials per configuration: 1000
@@ -44,6 +44,22 @@ Parallel mode: Processes
 ⏭️  Skipping HammingSECDEDECC (32 bits, double errors) - already exists
 ⏭️  Skipping HammingSECDEDECC (32 bits, burst errors) - already exists
 ⏭️  Skipping HammingSECDEDECC (32 bits, random errors) - already exists
+⏭️  Skipping RepetitionECC (4 bits, single errors) - already exists
+⏭️  Skipping RepetitionECC (4 bits, double errors) - already exists
+⏭️  Skipping RepetitionECC (4 bits, burst errors) - already exists
+⏭️  Skipping RepetitionECC (4 bits, random errors) - already exists
+⏭️  Skipping RepetitionECC (8 bits, single errors) - already exists
+⏭️  Skipping RepetitionECC (8 bits, double errors) - already exists
+⏭️  Skipping RepetitionECC (8 bits, burst errors) - already exists
+⏭️  Skipping RepetitionECC (8 bits, random errors) - already exists
+⏭️  Skipping RepetitionECC (16 bits, single errors) - already exists
+⏭️  Skipping RepetitionECC (16 bits, double errors) - already exists
+⏭️  Skipping RepetitionECC (16 bits, burst errors) - already exists
+⏭️  Skipping RepetitionECC (16 bits, random errors) - already exists
+⏭️  Skipping RepetitionECC (32 bits, single errors) - already exists
+⏭️  Skipping RepetitionECC (32 bits, double errors) - already exists
+⏭️  Skipping RepetitionECC (32 bits, burst errors) - already exists
+⏭️  Skipping RepetitionECC (32 bits, random errors) - already exists
 ⏭️  Skipping BCHECC (4 bits, single errors) - already exists
 ⏭️  Skipping BCHECC (4 bits, double errors) - already exists
 ⏭️  Skipping BCHECC (4 bits, burst errors) - already exists
@@ -108,22 +124,6 @@ Parallel mode: Processes
 ⏭️  Skipping GolayECC (32 bits, double errors) - already exists
 ⏭️  Skipping GolayECC (32 bits, burst errors) - already exists
 ⏭️  Skipping GolayECC (32 bits, random errors) - already exists
-⏭️  Skipping RepetitionECC (4 bits, single errors) - already exists
-⏭️  Skipping RepetitionECC (4 bits, double errors) - already exists
-⏭️  Skipping RepetitionECC (4 bits, burst errors) - already exists
-⏭️  Skipping RepetitionECC (4 bits, random errors) - already exists
-⏭️  Skipping RepetitionECC (8 bits, single errors) - already exists
-⏭️  Skipping RepetitionECC (8 bits, double errors) - already exists
-⏭️  Skipping RepetitionECC (8 bits, burst errors) - already exists
-⏭️  Skipping RepetitionECC (8 bits, random errors) - already exists
-⏭️  Skipping RepetitionECC (16 bits, single errors) - already exists
-⏭️  Skipping RepetitionECC (16 bits, double errors) - already exists
-⏭️  Skipping RepetitionECC (16 bits, burst errors) - already exists
-⏭️  Skipping RepetitionECC (16 bits, random errors) - already exists
-⏭️  Skipping RepetitionECC (32 bits, single errors) - already exists
-⏭️  Skipping RepetitionECC (32 bits, double errors) - already exists
-⏭️  Skipping RepetitionECC (32 bits, burst errors) - already exists
-⏭️  Skipping RepetitionECC (32 bits, random errors) - already exists
 ⏭️  Skipping LDPCECC (4 bits, single errors) - already exists
 ⏭️  Skipping LDPCECC (4 bits, double errors) - already exists
 ⏭️  Skipping LDPCECC (4 bits, burst errors) - already exists
@@ -188,15 +188,342 @@ Parallel mode: Processes
 ⏭️  Skipping PolarECC (32 bits, double errors) - already exists
 ⏭️  Skipping PolarECC (32 bits, burst errors) - already exists
 ⏭️  Skipping PolarECC (32 bits, random errors) - already exists
-📋 Skipped 176 existing configurations. Use --overwrite to re-run all.
-🎯 Remaining configurations to run: 0
+⏭️  Skipping ExtendedHammingECC (4 bits, single errors) - already exists
+⏭️  Skipping ExtendedHammingECC (4 bits, double errors) - already exists
+⏭️  Skipping ExtendedHammingECC (4 bits, burst errors) - already exists
+⏭️  Skipping ExtendedHammingECC (4 bits, random errors) - already exists
+⏭️  Skipping ExtendedHammingECC (8 bits, single errors) - already exists
+⏭️  Skipping ExtendedHammingECC (8 bits, double errors) - already exists
+⏭️  Skipping ExtendedHammingECC (8 bits, burst errors) - already exists
+⏭️  Skipping ExtendedHammingECC (8 bits, random errors) - already exists
+⏭️  Skipping ExtendedHammingECC (16 bits, single errors) - already exists
+⏭️  Skipping ExtendedHammingECC (16 bits, double errors) - already exists
+⏭️  Skipping ExtendedHammingECC (16 bits, burst errors) - already exists
+⏭️  Skipping ExtendedHammingECC (16 bits, random errors) - already exists
+⏭️  Skipping ExtendedHammingECC (32 bits, single errors) - already exists
+⏭️  Skipping ExtendedHammingECC (32 bits, double errors) - already exists
+⏭️  Skipping ExtendedHammingECC (32 bits, burst errors) - already exists
+⏭️  Skipping ExtendedHammingECC (32 bits, random errors) - already exists
+⏭️  Skipping ProductCodeECC (4 bits, single errors) - already exists
+⏭️  Skipping ProductCodeECC (4 bits, double errors) - already exists
+⏭️  Skipping ProductCodeECC (4 bits, burst errors) - already exists
+⏭️  Skipping ProductCodeECC (4 bits, random errors) - already exists
+⏭️  Skipping ProductCodeECC (8 bits, single errors) - already exists
+⏭️  Skipping ProductCodeECC (8 bits, double errors) - already exists
+⏭️  Skipping ProductCodeECC (8 bits, burst errors) - already exists
+⏭️  Skipping ProductCodeECC (8 bits, random errors) - already exists
+⏭️  Skipping ProductCodeECC (16 bits, single errors) - already exists
+⏭️  Skipping ProductCodeECC (16 bits, double errors) - already exists
+⏭️  Skipping ProductCodeECC (16 bits, burst errors) - already exists
+⏭️  Skipping ProductCodeECC (16 bits, random errors) - already exists
+⏭️  Skipping ProductCodeECC (32 bits, single errors) - already exists
+⏭️  Skipping ProductCodeECC (32 bits, double errors) - already exists
+⏭️  Skipping ProductCodeECC (32 bits, burst errors) - already exists
+⏭️  Skipping ProductCodeECC (32 bits, random errors) - already exists
+⏭️  Skipping ConcatenatedECC (4 bits, single errors) - already exists
+⏭️  Skipping ConcatenatedECC (4 bits, double errors) - already exists
+⏭️  Skipping ConcatenatedECC (4 bits, burst errors) - already exists
+⏭️  Skipping ConcatenatedECC (4 bits, random errors) - already exists
+⏭️  Skipping ConcatenatedECC (8 bits, single errors) - already exists
+⏭️  Skipping ConcatenatedECC (8 bits, double errors) - already exists
+⏭️  Skipping ConcatenatedECC (8 bits, burst errors) - already exists
+⏭️  Skipping ConcatenatedECC (8 bits, random errors) - already exists
+⏭️  Skipping ConcatenatedECC (16 bits, single errors) - already exists
+⏭️  Skipping ConcatenatedECC (16 bits, double errors) - already exists
+⏭️  Skipping ConcatenatedECC (16 bits, burst errors) - already exists
+⏭️  Skipping ConcatenatedECC (16 bits, random errors) - already exists
+⏭️  Skipping ConcatenatedECC (32 bits, single errors) - already exists
+⏭️  Skipping ConcatenatedECC (32 bits, double errors) - already exists
+⏭️  Skipping ConcatenatedECC (32 bits, burst errors) - already exists
+⏭️  Skipping ConcatenatedECC (32 bits, random errors) - already exists
+⏭️  Skipping ReedMullerECC (4 bits, single errors) - already exists
+⏭️  Skipping ReedMullerECC (4 bits, double errors) - already exists
+⏭️  Skipping ReedMullerECC (4 bits, burst errors) - already exists
+⏭️  Skipping ReedMullerECC (4 bits, random errors) - already exists
+⏭️  Skipping ReedMullerECC (8 bits, single errors) - already exists
+⏭️  Skipping ReedMullerECC (8 bits, double errors) - already exists
+⏭️  Skipping ReedMullerECC (8 bits, burst errors) - already exists
+⏭️  Skipping ReedMullerECC (8 bits, random errors) - already exists
+⏭️  Skipping ReedMullerECC (16 bits, single errors) - already exists
+⏭️  Skipping ReedMullerECC (16 bits, double errors) - already exists
+⏭️  Skipping ReedMullerECC (16 bits, burst errors) - already exists
+⏭️  Skipping ReedMullerECC (16 bits, random errors) - already exists
+⏭️  Skipping ReedMullerECC (32 bits, single errors) - already exists
+⏭️  Skipping ReedMullerECC (32 bits, double errors) - already exists
+⏭️  Skipping ReedMullerECC (32 bits, burst errors) - already exists
+⏭️  Skipping ReedMullerECC (32 bits, random errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (4 bits, single errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (4 bits, double errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (4 bits, burst errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (4 bits, random errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (8 bits, single errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (8 bits, double errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (8 bits, burst errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (8 bits, random errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (16 bits, single errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (16 bits, double errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (16 bits, burst errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (16 bits, random errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (32 bits, single errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (32 bits, double errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (32 bits, burst errors) - already exists
+⏭️  Skipping SpatiallyCoupledLDPCECC (32 bits, random errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (4 bits, single errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (4 bits, double errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (4 bits, burst errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (4 bits, random errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (8 bits, single errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (8 bits, double errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (8 bits, burst errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (8 bits, random errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (16 bits, single errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (16 bits, double errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (16 bits, burst errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (16 bits, random errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (32 bits, single errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (32 bits, double errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (32 bits, burst errors) - already exists
+⏭️  Skipping NonBinaryLDPCECC (32 bits, random errors) - already exists
+⏭️  Skipping RaptorCodeECC (4 bits, single errors) - already exists
+⏭️  Skipping RaptorCodeECC (4 bits, double errors) - already exists
+⏭️  Skipping RaptorCodeECC (4 bits, burst errors) - already exists
+⏭️  Skipping RaptorCodeECC (4 bits, random errors) - already exists
+⏭️  Skipping RaptorCodeECC (8 bits, single errors) - already exists
+⏭️  Skipping RaptorCodeECC (8 bits, double errors) - already exists
+⏭️  Skipping RaptorCodeECC (8 bits, burst errors) - already exists
+⏭️  Skipping RaptorCodeECC (8 bits, random errors) - already exists
+⏭️  Skipping RaptorCodeECC (16 bits, single errors) - already exists
+⏭️  Skipping RaptorCodeECC (16 bits, double errors) - already exists
+⏭️  Skipping RaptorCodeECC (16 bits, burst errors) - already exists
+⏭️  Skipping RaptorCodeECC (16 bits, random errors) - already exists
+⏭️  Skipping RaptorCodeECC (32 bits, single errors) - already exists
+⏭️  Skipping RaptorCodeECC (32 bits, double errors) - already exists
+⏭️  Skipping RaptorCodeECC (32 bits, burst errors) - already exists
+⏭️  Skipping RaptorCodeECC (32 bits, random errors) - already exists
+⏭️  Skipping SystemECC (4 bits, single errors) - already exists
+⏭️  Skipping SystemECC (4 bits, double errors) - already exists
+⏭️  Skipping SystemECC (4 bits, burst errors) - already exists
+⏭️  Skipping SystemECC (4 bits, random errors) - already exists
+⏭️  Skipping SystemECC (8 bits, single errors) - already exists
+⏭️  Skipping SystemECC (8 bits, double errors) - already exists
+⏭️  Skipping SystemECC (8 bits, burst errors) - already exists
+⏭️  Skipping SystemECC (8 bits, random errors) - already exists
+⏭️  Skipping SystemECC (16 bits, single errors) - already exists
+⏭️  Skipping SystemECC (16 bits, double errors) - already exists
+⏭️  Skipping SystemECC (16 bits, burst errors) - already exists
+⏭️  Skipping SystemECC (16 bits, random errors) - already exists
+⏭️  Skipping SystemECC (32 bits, single errors) - already exists
+⏭️  Skipping SystemECC (32 bits, double errors) - already exists
+⏭️  Skipping SystemECC (32 bits, burst errors) - already exists
+⏭️  Skipping SystemECC (32 bits, random errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (4 bits, single errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (4 bits, double errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (4 bits, burst errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (4 bits, random errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (8 bits, single errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (8 bits, double errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (8 bits, burst errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (8 bits, random errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (16 bits, single errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (16 bits, double errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (16 bits, burst errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (16 bits, random errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (32 bits, single errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (32 bits, double errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (32 bits, burst errors) - already exists
+⏭️  Skipping PrimarySecondaryECC (32 bits, random errors) - already exists
+⏭️  Skipping BurstErrorECC (4 bits, single errors) - already exists
+⏭️  Skipping BurstErrorECC (4 bits, double errors) - already exists
+⏭️  Skipping BurstErrorECC (4 bits, burst errors) - already exists
+⏭️  Skipping BurstErrorECC (4 bits, random errors) - already exists
+⏭️  Skipping BurstErrorECC (8 bits, single errors) - already exists
+⏭️  Skipping BurstErrorECC (8 bits, double errors) - already exists
+⏭️  Skipping BurstErrorECC (8 bits, burst errors) - already exists
+⏭️  Skipping BurstErrorECC (8 bits, random errors) - already exists
+⏭️  Skipping BurstErrorECC (16 bits, single errors) - already exists
+⏭️  Skipping BurstErrorECC (16 bits, double errors) - already exists
+⏭️  Skipping BurstErrorECC (16 bits, burst errors) - already exists
+⏭️  Skipping BurstErrorECC (16 bits, random errors) - already exists
+⏭️  Skipping BurstErrorECC (32 bits, single errors) - already exists
+⏭️  Skipping BurstErrorECC (32 bits, double errors) - already exists
+⏭️  Skipping BurstErrorECC (32 bits, burst errors) - already exists
+⏭️  Skipping BurstErrorECC (32 bits, random errors) - already exists
+📋 Skipped 336 existing configurations. Use --overwrite to re-run all.
+🎯 Remaining configurations to run: 80
 
-✅ All configurations already have results. Loading existing data...
-📊 Saved 0 benchmark results to results/benchmark_results.json
+🚀 Starting benchmark execution...
+⏱️  Estimated time: ~160 minutes (2 min per config)
+
+🔄 Using ProcessPoolExecutor with 12 workers
+Error in benchmark {'id': 0, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 12, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 13, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 14, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 15, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 16, 'ecc_type_name': 'CompositeECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 17, 'ecc_type_name': 'CompositeECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 18, 'ecc_type_name': 'CompositeECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 19, 'ecc_type_name': 'CompositeECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 20, 'ecc_type_name': 'CompositeECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 21, 'ecc_type_name': 'CompositeECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 22, 'ecc_type_name': 'CompositeECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 23, 'ecc_type_name': 'CompositeECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 24, 'ecc_type_name': 'CompositeECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 25, 'ecc_type_name': 'CompositeECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 26, 'ecc_type_name': 'CompositeECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 27, 'ecc_type_name': 'CompositeECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 28, 'ecc_type_name': 'CompositeECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 1, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 29, 'ecc_type_name': 'CompositeECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 6, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 5, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 8, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 4, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 10, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 3, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 7, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 30, 'ecc_type_name': 'CompositeECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 2, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 31, 'ecc_type_name': 'CompositeECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 33, 'ecc_type_name': 'AdaptiveECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 34, 'ecc_type_name': 'AdaptiveECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 35, 'ecc_type_name': 'AdaptiveECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 36, 'ecc_type_name': 'AdaptiveECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 32, 'ecc_type_name': 'AdaptiveECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 37, 'ecc_type_name': 'AdaptiveECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 38, 'ecc_type_name': 'AdaptiveECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 39, 'ecc_type_name': 'AdaptiveECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 40, 'ecc_type_name': 'AdaptiveECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 11, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 41, 'ecc_type_name': 'AdaptiveECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 43, 'ecc_type_name': 'AdaptiveECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 9, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 42, 'ecc_type_name': 'AdaptiveECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 44, 'ecc_type_name': 'AdaptiveECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 45, 'ecc_type_name': 'AdaptiveECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 47, 'ecc_type_name': 'AdaptiveECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 46, 'ecc_type_name': 'AdaptiveECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 48, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 49, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 53, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 52, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 54, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 50, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 55, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 56, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 57, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 51, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+🔄 Worker starting: FireCodeECC (16 bits, random errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (4 bits, random errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (32 bits, double errors) - 1000 trials
+🔄 Worker starting: CyclicECC (16 bits, double errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (16 bits, burst errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (8 bits, single errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (32 bits, double errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (16 bits, single errors) - 1000 trials
+🔄 Worker starting: CyclicECC (4 bits, random errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (8 bits, random errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (8 bits, burst errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (4 bits, single errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (32 bits, single errors) - 1000 trials
+🔄 Worker starting: CyclicECC (16 bits, single errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (4 bits, random errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (8 bits, double errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (32 bits, random errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (16 bits, burst errors) - 1000 trials
+🔄 Worker starting: CyclicECC (8 bits, burst errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (8 bits, burst errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (4 bits, single errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (32 bits, burst errors) - 1000 trials
+🔄 Worker starting: CyclicECC (16 bits, burst errors) - 1000 trials
+🔄 Worker starting: CyclicECC (32 bits, double errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (4 bits, single errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (32 bits, single errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (32 bits, double errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (32 bits, burst errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (32 bits, random errors) - 1000 trials
+🔄 Worker starting: CompositeECC (4 bits, single errors) - 1000 trials
+🔄 Worker starting: CompositeECC (4 bits, double errors) - 1000 trials
+🔄 Worker starting: CompositeECC (4 bits, burst errors) - 1000 trials
+🔄 Worker starting: CompositeECC (4 bits, random errors) - 1000 trials
+🔄 Worker starting: CompositeECC (8 bits, single errors) - 1000 trials
+🔄 Worker starting: CompositeECC (8 bits, double errors) - 1000 trials
+🔄 Worker starting: CompositeECC (8 bits, burst errors) - 1000 trials
+🔄 Worker starting: CompositeECC (8 bits, random errors) - 1000 trials
+🔄 Worker starting: CompositeECC (16 bits, single errors) - 1000 trials
+🔄 Worker starting: CompositeECC (16 bits, double errors) - 1000 trials
+🔄 Worker starting: CompositeECC (16 bits, burst errors) - 1000 trials
+🔄 Worker starting: CompositeECC (16 bits, random errors) - 1000 trials
+🔄 Worker starting: CompositeECC (32 bits, single errors) - 1000 trials
+🔄 Worker starting: CompositeECC (32 bits, double errors) - 1000 trials
+🔄 Worker starting: CompositeECC (32 bits, random errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (16 bits, double errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (8 bits, single errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (32 bits, random errors) - 1000 trials
+🔄 Worker starting: CyclicECC (16 bits, random errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (16 bits, single errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (4 bits, burst errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (16 bits, random errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (8 bits, double errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (32 bits, burst errors) - 1000 trials
+🔄 Worker starting: CyclicECC (4 bits, single errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (4 bits, burst errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (16 bits, single errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (4 bits, burst errors) - 1000 trials
+🔄 Worker starting: CyclicECC (4 bits, double errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (8 bits, double errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (4 bits, double errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (16 bits, burst errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (16 bits, double errors) - 1000 trials
+🔄 Worker starting: CyclicECC (8 bits, single errors) - 1000 trials
+🔄 Worker starting: CyclicECC (32 bits, single errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (8 bits, single errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (4 bits, random errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (32 bits, single errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (8 bits, random errors) - 1000 trials
+🔄 Worker starting: CyclicECC (4 bits, burst errors) - 1000 trials
+🔄 Worker starting: CyclicECC (32 bits, burst errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (4 bits, double errors) - 1000 trials
+🔄 Worker starting: CompositeECC (32 bits, burst errors) - 1000 trials
+🔄 Worker starting: AdaptiveECC (8 bits, random errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (4 bits, double errors) - 1000 trials
+🔄 Worker starting: CyclicECC (8 bits, double errors) - 1000 trials
+🔄 Worker starting: FireCodeECC (16 bits, double errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (8 bits, burst errors) - 1000 trials
+🔄 Worker starting: ThreeDMemoryECC (16 bits, random errors) - 1000 trials
+🔄 Worker starting: CyclicECC (8 bits, random errors) - 1000 trials
+🔄 Worker starting: CyclicECC (32 bits, random errors) - 1000 trials
+Error in benchmark {'id': 58, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 59, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 60, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 61, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 62, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 63, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 74, 'ecc_type_name': 'CyclicECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 68, 'ecc_type_name': 'CyclicECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 66, 'ecc_type_name': 'CyclicECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 69, 'ecc_type_name': 'CyclicECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 73, 'ecc_type_name': 'CyclicECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 67, 'ecc_type_name': 'CyclicECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 72, 'ecc_type_name': 'CyclicECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 64, 'ecc_type_name': 'CyclicECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 70, 'ecc_type_name': 'CyclicECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 71, 'ecc_type_name': 'CyclicECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 65, 'ecc_type_name': 'CyclicECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 75, 'ecc_type_name': 'CyclicECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 76, 'ecc_type_name': 'CyclicECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 77, 'ecc_type_name': 'CyclicECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 78, 'ecc_type_name': 'CyclicECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 79, 'ecc_type_name': 'CyclicECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+
+✅ Benchmarking completed!
+📊 Total results: 336
+🎯 Successful configurations: 336
+📊 Saved 336 benchmark results to results/benchmark_results.json
 
 Benchmarking completed successfully!
 Results saved to: results
-Total configurations tested: 0
+Total configurations tested: 336
 ===== Generating Report from Benchmark Results =====
 /mnt/d/proj/ecc/venv/lib/python3.10/site-packages/scipy/stats/_axis_nan_policy.py:586: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
   res = hypotest_fun_out(*samples, **kwds)
@@ -211,895 +538,479 @@ ECC ANALYSIS
 Running ECC analysis...
 
 🔍 Running ECC implementation verification...
+📋 Loaded verification cache with 26 entries
 🔍 Verifying all ECC implementations...
-🔍 Testing 48 ECC configurations sequentially...
+🔍 Testing 104 ECC configurations sequentially...
 ============================================================
 
 📋 Testing ParityECC...
 ----------------------------------------
 
-[1/48] ParityECC_4:
-      Creating ParityECC instance for 4 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 942/1000 (94.20%)
-      Running performance tests...
-        Performance: 941/1000 (94.10%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 942/1000 (94.2%)
-  Performance:     941/1000 (94.1%)
+[1/104] ParityECC_4:
+⏭️  Skipping ParityECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 97/100 (97.0%)
+  Performance:     90/100 (90.0%)
   Overall:         ✅ PASS
 
-[2/48] ParityECC_8:
+[2/104] ParityECC_8:
       Creating ParityECC instance for 8 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 994/1000 (99.40%)
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 995/1000 (99.50%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 994/1000 (99.4%)
-  Performance:     995/1000 (99.5%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 27 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
-[3/48] ParityECC_16:
+[3/104] ParityECC_16:
       Creating ParityECC instance for 16 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 28 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
-[4/48] ParityECC_32:
+[4/104] ParityECC_32:
       Creating ParityECC instance for 32 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 29 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
 📋 Testing HammingSECDEDECC...
 ----------------------------------------
 
-[5/48] HammingSECDEDECC_4:
-      Creating HammingSECDEDECC instance for 4 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 940/1000 (94.00%)
-      Running performance tests...
-        Performance: 931/1000 (93.10%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 940/1000 (94.0%)
-  Performance:     931/1000 (93.1%)
+[5/104] HammingSECDEDECC_4:
+⏭️  Skipping HammingSECDEDECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 94/100 (94.0%)
+  Performance:     93/100 (93.0%)
   Overall:         ✅ PASS
 
-[6/48] HammingSECDEDECC_8:
+[6/104] HammingSECDEDECC_8:
       Creating HammingSECDEDECC instance for 8 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 997/1000 (99.70%)
+        Error correction: 98/100 (98.00%)
       Running performance tests...
-        Performance: 994/1000 (99.40%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 997/1000 (99.7%)
-  Performance:     994/1000 (99.4%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 30 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 98/100 (98.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
-[7/48] HammingSECDEDECC_16:
+[7/104] HammingSECDEDECC_16:
       Creating HammingSECDEDECC instance for 16 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 31 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
-[8/48] HammingSECDEDECC_32:
+[8/104] HammingSECDEDECC_32:
       Creating HammingSECDEDECC instance for 32 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ✅ PASS
-
-📋 Testing BCHECC...
-----------------------------------------
-
-[9/48] BCHECC_4:
-      Creating BCHECC instance for 4 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 934/1000 (93.40%)
-      Running performance tests...
-        Performance: 935/1000 (93.50%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 934/1000 (93.4%)
-  Performance:     935/1000 (93.5%)
-  Overall:         ✅ PASS
-
-[10/48] BCHECC_8:
-      Creating BCHECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 996/1000 (99.60%)
-      Running performance tests...
-        Performance: 996/1000 (99.60%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 996/1000 (99.6%)
-  Performance:     996/1000 (99.6%)
-  Overall:         ✅ PASS
-
-[11/48] BCHECC_16:
-      Creating BCHECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ✅ PASS
-
-[12/48] BCHECC_32:
-      Creating BCHECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ✅ PASS
-
-📋 Testing ReedSolomonECC...
-----------------------------------------
-
-[13/48] ReedSolomonECC_4:
-      Creating ReedSolomonECC instance for 4 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 944/1000 (94.40%)
-      Running performance tests...
-        Performance: 937/1000 (93.70%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 944/1000 (94.4%)
-  Performance:     937/1000 (93.7%)
-  Overall:         ✅ PASS
-
-[14/48] ReedSolomonECC_8:
-      Creating ReedSolomonECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 999/1000 (99.90%)
-      Running performance tests...
-        Performance: 994/1000 (99.40%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 999/1000 (99.9%)
-  Performance:     994/1000 (99.4%)
-  Overall:         ✅ PASS
-
-[15/48] ReedSolomonECC_16:
-      Creating ReedSolomonECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ✅ PASS
-
-[16/48] ReedSolomonECC_32:
-      Creating ReedSolomonECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ✅ PASS
-
-📋 Testing CRCECC...
-----------------------------------------
-
-[17/48] CRCECC_4:
-      Creating CRCECC instance for 4 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 957/1000 (95.70%)
-      Running performance tests...
-        Performance: 951/1000 (95.10%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 957/1000 (95.7%)
-  Performance:     951/1000 (95.1%)
-  Overall:         ✅ PASS
-
-[18/48] CRCECC_8:
-      Creating CRCECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 997/1000 (99.70%)
-      Running performance tests...
-        Performance: 996/1000 (99.60%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 997/1000 (99.7%)
-  Performance:     996/1000 (99.6%)
-  Overall:         ✅ PASS
-
-[19/48] CRCECC_16:
-      Creating CRCECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ✅ PASS
-
-[20/48] CRCECC_32:
-      Creating CRCECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ✅ PASS
-
-📋 Testing GolayECC...
-----------------------------------------
-
-[21/48] GolayECC_4:
-      Creating GolayECC instance for 4 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 130/1000 (13.00%)
-      Running error correction tests...
-        Error correction: 942/1000 (94.20%)
-      Running performance tests...
-        Performance: 930/1000 (93.00%)
-  Round-trip:     130/1000 (13.0%)
-  Error correction: 942/1000 (94.2%)
-  Performance:     930/1000 (93.0%)
-  Overall:         ❌ FAIL
-
-[22/48] GolayECC_8:
-      Creating GolayECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 130/1000 (13.00%)
-      Running error correction tests...
-        Error correction: 997/1000 (99.70%)
-      Running performance tests...
-        Performance: 995/1000 (99.50%)
-  Round-trip:     130/1000 (13.0%)
-  Error correction: 997/1000 (99.7%)
-  Performance:     995/1000 (99.5%)
-  Overall:         ❌ FAIL
-
-[23/48] GolayECC_16:
-      Creating GolayECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 940/1000 (94.00%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     940/1000 (94.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ❌ FAIL
-
-[24/48] GolayECC_32:
-      Creating GolayECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 32 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
 📋 Testing RepetitionECC...
 ----------------------------------------
 
-[25/48] RepetitionECC_4:
-      Creating RepetitionECC instance for 4 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 938/1000 (93.80%)
-      Running performance tests...
-        Performance: 942/1000 (94.20%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 938/1000 (93.8%)
-  Performance:     942/1000 (94.2%)
+[9/104] RepetitionECC_4:
+⏭️  Skipping RepetitionECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 93/100 (93.0%)
+  Performance:     94/100 (94.0%)
   Overall:         ✅ PASS
 
-[26/48] RepetitionECC_8:
+[10/104] RepetitionECC_8:
       Creating RepetitionECC instance for 8 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 995/1000 (99.50%)
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 993/1000 (99.30%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 995/1000 (99.5%)
-  Performance:     993/1000 (99.3%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 33 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
-[27/48] RepetitionECC_16:
+[11/104] RepetitionECC_16:
       Creating RepetitionECC instance for 16 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 34 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
-[28/48] RepetitionECC_32:
+[12/104] RepetitionECC_32:
       Creating RepetitionECC instance for 32 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-/mnt/d/proj/ecc/venv/lib/python3.10/site-packages/pyldpc/decoder.py:62: UserWarning: Decoding stopped before convergence. You may want
-                       to increase maxiter
-  warnings.warn("""Decoding stopped before convergence. You may want
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 35 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing BCHECC...
+----------------------------------------
+
+[13/104] BCHECC_4:
+⏭️  Skipping BCHECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 93/100 (93.0%)
+  Performance:     97/100 (97.0%)
+  Overall:         ✅ PASS
+
+[14/104] BCHECC_8:
+      Creating BCHECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 99/100 (99.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 36 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 99/100 (99.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+[15/104] BCHECC_16:
+      Creating BCHECC instance for 16 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 37 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+[16/104] BCHECC_32:
+      Creating BCHECC instance for 32 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 38 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing ReedSolomonECC...
+----------------------------------------
+
+[17/104] ReedSolomonECC_4:
+⏭️  Skipping ReedSolomonECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 92/100 (92.0%)
+  Performance:     97/100 (97.0%)
+  Overall:         ✅ PASS
+
+[18/104] ReedSolomonECC_8:
+      Creating ReedSolomonECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 99/100 (99.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 39 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 99/100 (99.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+[19/104] ReedSolomonECC_16:
+      Creating ReedSolomonECC instance for 16 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 40 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+[20/104] ReedSolomonECC_32:
+      Creating ReedSolomonECC instance for 32 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 41 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing CRCECC...
+----------------------------------------
+
+[21/104] CRCECC_4:
+⏭️  Skipping CRCECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 95/100 (95.0%)
+  Performance:     93/100 (93.0%)
+  Overall:         ✅ PASS
+
+[22/104] CRCECC_8:
+      Creating CRCECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 99/100 (99.00%)
+💾 Saved verification cache with 42 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     99/100 (99.0%)
+  Overall:         ✅ PASS
+
+[23/104] CRCECC_16:
+      Creating CRCECC instance for 16 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 43 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+[24/104] CRCECC_32:
+      Creating CRCECC instance for 32 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 44 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing GolayECC...
+----------------------------------------
+
+[25/104] GolayECC_4:
+⏭️  Skipping GolayECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 94/100 (94.0%)
+  Performance:     97/100 (97.0%)
+  Overall:         ✅ PASS
+
+[26/104] GolayECC_8:
+      Creating GolayECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 99/100 (99.00%)
+💾 Saved verification cache with 45 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     99/100 (99.0%)
+  Overall:         ✅ PASS
+
+[27/104] GolayECC_16:
+      Creating GolayECC instance for 16 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 46 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+[28/104] GolayECC_32:
+      Creating GolayECC instance for 32 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 47 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
 📋 Testing LDPCECC...
 ----------------------------------------
 
-[29/48] LDPCECC_4:
-      Creating LDPCECC instance for 4 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 244/1000 (24.40%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     244/1000 (24.4%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ❌ FAIL
+[29/104] LDPCECC_4:
+⏭️  Skipping LDPCECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 94/100 (94.0%)
+  Performance:     96/100 (96.0%)
+  Overall:         ✅ PASS
 
-[30/48] LDPCECC_8:
+[30/104] LDPCECC_8:
       Creating LDPCECC instance for 8 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 51/1000 (5.10%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
+        Error correction: 99/100 (99.00%)
       Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     51/1000 (5.1%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ❌ FAIL
+        Performance: 98/100 (98.00%)
+💾 Saved verification cache with 48 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 99/100 (99.0%)
+  Performance:     98/100 (98.0%)
+  Overall:         ✅ PASS
 
-[31/48] LDPCECC_16:
+[31/104] LDPCECC_16:
       Creating LDPCECC instance for 16 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 0/1000 (0.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     0/1000 (0.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ❌ FAIL
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 49 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
 
-[32/48] LDPCECC_32:
+[32/104] LDPCECC_32:
       Creating LDPCECC instance for 32 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 50 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
 📋 Testing TurboECC...
 ----------------------------------------
 
-[33/48] TurboECC_4:
-      Creating TurboECC instance for 4 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
+[33/104] TurboECC_4:
+⏭️  Skipping TurboECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
-[34/48] TurboECC_8:
+[34/104] TurboECC_8:
       Creating TurboECC instance for 8 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
+        Error correction: 100/100 (100.00%)
       Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 51 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
-[35/48] TurboECC_16:
+[35/104] TurboECC_16:
       Creating TurboECC instance for 16 bits...
       Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
       Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ✅ PASS
-
-[36/48] TurboECC_32:
-      Creating TurboECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 1000/1000 (100.00%)
-      Running performance tests...
-        Performance: 1000/1000 (100.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 1000/1000 (100.0%)
-  Performance:     1000/1000 (100.0%)
-  Overall:         ✅ PASS
-
-📋 Testing ConvolutionalECC...
-----------------------------------------
-
-[37/48] ConvolutionalECC_4:
-      Creating ConvolutionalECC instance for 4 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000
-          Round-trip progress: 200/1000
-          Round-trip progress: 300/1000
-          Round-trip progress: 400/1000
-          Round-trip progress: 500/1000
-          Round-trip progress: 600/1000
-          Round-trip progress: 700/1000
-          Round-trip progress: 800/1000
-          Round-trip progress: 900/1000
-          Round-trip progress: 1000/1000
-        Round-trip: 1000/1000 (100.00%)
-      Running error correction tests...
-        Error correction: 962/1000 (96.20%)
-      Running performance tests...
-        Performance: 940/1000 (94.00%)
-  Round-trip:     1000/1000 (100.0%)
-  Error correction: 962/1000 (96.2%)
-  Performance:     940/1000 (94.0%)
-  Overall:         ✅ PASS
-
-[38/48] ConvolutionalECC_8:
-      Creating ConvolutionalECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/1000

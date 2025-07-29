@@ -1,26 +1,44 @@
 from typing import Tuple
 from base_ecc import ECCBase
 
-class SystemSECDEDECC(ECCBase):
+class SystemECC(ECCBase):
     """System-level Hamming SECDED ECC implementation for 8-bit data (example system ECC)."""
+    
+    def __init__(self, word_length: int = 8, data_length: int = None):
+        """
+        Initialize System ECC.
+        
+        Args:
+            word_length: Length of data word in bits (default: 8)
+            data_length: Alternative parameter name for word_length (for compatibility)
+        """
+        if data_length is not None:
+            self.word_length = data_length
+        else:
+            self.word_length = word_length
+            
+        # Import Hamming SECDED for the base implementation
+        from hamming_secded_ecc import HammingSECDEDECC
+        self.hamming = HammingSECDEDECC(data_length=self.word_length)
+    
     def encode(self, data: int) -> int:
         """
-        Encode 8-bit data into 13-bit codeword (adds an extra system-level parity bit).
+        Encode data into system-level codeword (adds an extra system-level parity bit).
 
         Args:
-            data (int): The input data to encode (8 bits).
+            data (int): The input data to encode.
 
         Returns:
-            int: The 13-bit codeword (12 bits Hamming SECDED + 1 system parity).
+            int: The codeword with system-level parity.
         """
-        # Use Hamming SECDED for 8 bits, then add a system-level parity bit
-        # (Reuse logic from HammingSECDEDECC, but add a parity bit as MSB)
-        from hamming_secded_ecc import HammingSECDEDECC
-        hamming = HammingSECDEDECC()
-        code12 = hamming.encode(data)
-        # Compute system-level parity (even parity over all 12 bits)
-        parity = bin(code12).count('1') % 2
-        return (parity << 12) | code12
+        # Use Hamming SECDED for base encoding
+        code = self.hamming.encode(data)
+        
+        # Compute system-level parity (even parity over all bits)
+        parity = bin(code).count('1') % 2
+        
+        # Add system parity bit as MSB
+        return (parity << code.bit_length()) | code
 
     def decode(self, codeword: int) -> Tuple[int, str]:
         """
@@ -33,9 +51,22 @@ class SystemSECDEDECC(ECCBase):
             Tuple of (decoded_data, error_type)
         """
         try:
-            # Decode with the system ECC
-            decoded_data = self.system_code.decode(codeword)
-            return decoded_data, 'corrected'
+            # Extract system parity bit (MSB)
+            codeword_bits = codeword.bit_length()
+            system_parity = (codeword >> (codeword_bits - 1)) & 1
+            
+            # Extract base codeword (all bits except system parity)
+            base_codeword = codeword & ((1 << (codeword_bits - 1)) - 1)
+            
+            # Check system parity
+            computed_parity = bin(base_codeword).count('1') % 2
+            if system_parity != computed_parity:
+                return base_codeword, 'detected'
+            
+            # Decode with base Hamming SECDED
+            decoded_data, error_type = self.hamming.decode(base_codeword)
+            return decoded_data, error_type
+            
         except Exception:
             # If decoding fails, error detected
             return codeword, 'detected'

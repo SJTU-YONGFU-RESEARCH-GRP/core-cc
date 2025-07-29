@@ -1,0 +1,22 @@
+{
+  "ecc_type": "ProductCodeECC",
+  "word_length": 4,
+  "error_pattern": "random",
+  "trials": 1000,
+  "correctable_errors": 649,
+  "detected_errors": 351,
+  "undetected_errors": 0,
+  "encode_time_avg": 1.295781135559082e-05,
+  "decode_time_avg": 1.5019893646240234e-05,
+  "total_time_avg": 2.7977705001831053e-05,
+  "code_rate": 0.16,
+  "overhead_ratio": 5.25,
+  "correction_rate": 0.649,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 649,
+    "detected": 351,
+    "undetected": 0
+  }
+}

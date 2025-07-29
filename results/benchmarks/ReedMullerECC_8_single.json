@@ -1,0 +1,22 @@
+{
+  "ecc_type": "ReedMullerECC",
+  "word_length": 8,
+  "error_pattern": "single",
+  "trials": 1000,
+  "correctable_errors": 1000,
+  "detected_errors": 0,
+  "undetected_errors": 0,
+  "encode_time_avg": 1.1298418045043946e-05,
+  "decode_time_avg": 5.8661460876464846e-05,
+  "total_time_avg": 6.995987892150879e-05,
+  "code_rate": 0.5,
+  "overhead_ratio": 1.0,
+  "correction_rate": 1.0,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 1000,
+    "detected": 0,
+    "undetected": 0
+  }
+}

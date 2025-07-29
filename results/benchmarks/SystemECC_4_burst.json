@@ -1,0 +1,22 @@
+{
+  "ecc_type": "SystemECC",
+  "word_length": 4,
+  "error_pattern": "burst",
+  "trials": 1000,
+  "correctable_errors": 0,
+  "detected_errors": 1000,
+  "undetected_errors": 0,
+  "encode_time_avg": 4.884719848632812e-06,
+  "decode_time_avg": 6.349086761474609e-07,
+  "total_time_avg": 5.519628524780273e-06,
+  "code_rate": 0.5,
+  "overhead_ratio": 1.0,
+  "correction_rate": 0.0,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 0,
+    "detected": 1000,
+    "undetected": 0
+  }
+}

@@ -31,6 +31,21 @@ from repetition_ecc import RepetitionECC
 from ldpc_ecc import LDPCECC
 from turbo_ecc import TurboECC
 from convolutional_ecc import ConvolutionalECC
+from extended_hamming_ecc import ExtendedHammingECC
+from product_code_ecc import ProductCodeECC
+from concatenated_ecc import ConcatenatedECC
+from reed_muller_ecc import ReedMullerECC
+from fire_code_ecc import FireCodeECC
+from spatially_coupled_ldpc_ecc import SpatiallyCoupledLDPCECC
+from non_binary_ldpc_ecc import NonBinaryLDPCECC
+from raptor_code_ecc import RaptorCodeECC
+from composite_ecc import CompositeECC
+from system_ecc import SystemECC
+from adaptive_ecc import AdaptiveECC
+from three_d_memory_ecc import ThreeDMemoryECC
+from primary_secondary_ecc import PrimarySecondaryECC
+from cyclic_ecc import CyclicECC
+from burst_error_ecc import BurstErrorECC
 
 
 @dataclass
@@ -256,6 +271,51 @@ class ECCBenchmarkSuite:
         elif ecc_type == GolayECC:
             # Golay code is fixed size
             return GolayECC()
+        elif ecc_type == ExtendedHammingECC:
+            # Extended Hamming with word length
+            return ExtendedHammingECC(data_length=word_length)
+        elif ecc_type == ProductCodeECC:
+            # Product Code with word length
+            return ProductCodeECC(data_length=word_length)
+        elif ecc_type == ConcatenatedECC:
+            # Concatenated ECC with word length
+            return ConcatenatedECC(data_length=word_length)
+        elif ecc_type == ReedMullerECC:
+            # Reed-Muller ECC with word length
+            return ReedMullerECC(data_length=word_length)
+        elif ecc_type == FireCodeECC:
+            # Fire Code ECC with word length
+            return FireCodeECC(data_length=word_length)
+        elif ecc_type == SpatiallyCoupledLDPCECC:
+            # Spatially Coupled LDPC with word length
+            return SpatiallyCoupledLDPCECC(data_length=word_length)
+        elif ecc_type == NonBinaryLDPCECC:
+            # Non-Binary LDPC with word length
+            return NonBinaryLDPCECC(data_length=word_length)
+        elif ecc_type == RaptorCodeECC:
+            # Raptor Code ECC with word length
+            return RaptorCodeECC(data_length=word_length)
+        elif ecc_type == CompositeECC:
+            # Composite ECC with word length
+            return CompositeECC(data_length=word_length)
+        elif ecc_type == SystemECC:
+            # System ECC with word length
+            return SystemECC(data_length=word_length)
+        elif ecc_type == AdaptiveECC:
+            # Adaptive ECC with word length
+            return AdaptiveECC(data_length=word_length)
+        elif ecc_type == ThreeDMemoryECC:
+            # 3D Memory ECC with word length
+            return ThreeDMemoryECC(data_length=word_length)
+        elif ecc_type == PrimarySecondaryECC:
+            # Primary/Secondary ECC with word length
+            return PrimarySecondaryECC(data_length=word_length)
+        elif ecc_type == CyclicECC:
+            # Cyclic ECC with word length
+            return CyclicECC(n=word_length*2, k=word_length, data_length=word_length)
+        elif ecc_type == BurstErrorECC:
+            # Burst Error ECC with word length
+            return BurstErrorECC(data_length=word_length)
         else:
             # Default instantiation for simple ECC types
             return ecc_type()
@@ -614,7 +674,22 @@ class ECCBenchmarkSuite:
                 'RepetitionECC': 'repetition_ecc',
                 'LDPCECC': 'ldpc_ecc',
                 'TurboECC': 'turbo_ecc',
-                'ConvolutionalECC': 'convolutional_ecc'
+                'ConvolutionalECC': 'convolutional_ecc',
+                'ExtendedHammingECC': 'extended_hamming_ecc',
+                'ProductCodeECC': 'product_code_ecc',
+                'ConcatenatedECC': 'concatenated_ecc',
+                'ReedMullerECC': 'reed_muller_ecc',
+                'FireCodeECC': 'fire_code_ecc',
+                'SpatiallyCoupledLDPCECC': 'spatially_coupled_ldpc_ecc',
+                'NonBinaryLDPCECC': 'non_binary_ldpc_ecc',
+                'RaptorCodeECC': 'raptor_code_ecc',
+                'CompositeECC': 'composite_ecc',
+                'BurstErrorECC': 'burst_error_ecc',
+                'SystemECC': 'system_ecc',
+                'AdaptiveECC': 'adaptive_ecc',
+                'ThreeDMemoryECC': 'three_d_memory_ecc',
+                'PrimarySecondaryECC': 'primary_secondary_ecc',
+                'CyclicECC': 'cyclic_ecc'
             }
             
             if ecc_type_name not in module_mapping:
@@ -665,6 +740,13 @@ class ECCBenchmarkSuite:
             # Golay uses default constructor
             ecc = ecc_type()
         elif ecc_type_name == 'ParityECC' or ecc_type_name == 'HammingSECDEDECC':
+            # These use default constructor but can accept word_length
+            ecc = ecc_type(word_length=word_length)
+        elif ecc_type_name in ['ExtendedHammingECC', 'ProductCodeECC', 'ConcatenatedECC', 
+                              'ReedMullerECC', 'FireCodeECC', 'SpatiallyCoupledLDPCECC', 
+                              'NonBinaryLDPCECC', 'RaptorCodeECC', 'CompositeECC', 
+                              'BurstErrorECC', 'SystemECC', 'AdaptiveECC', 'ThreeDMemoryECC', 
+                              'PrimarySecondaryECC', 'CyclicECC']:
             # These use default constructor but can accept word_length
             ecc = ecc_type(word_length=word_length)
         else: 
@@ -1285,7 +1367,15 @@ def create_default_config() -> BenchmarkConfig:
             LDPCECC,
             TurboECC,
             ConvolutionalECC,
-            PolarECC
+            PolarECC,
+            ExtendedHammingECC,
+            ProductCodeECC,
+            ConcatenatedECC,
+            ReedMullerECC,
+            FireCodeECC,
+            SpatiallyCoupledLDPCECC,
+            NonBinaryLDPCECC,
+            RaptorCodeECC
         ],
         word_lengths=[4, 8, 16, 32],
         error_patterns=["single", "double", "burst", "random"],

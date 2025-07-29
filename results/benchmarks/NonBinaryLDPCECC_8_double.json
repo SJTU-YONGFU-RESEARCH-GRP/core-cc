@@ -1,0 +1,22 @@
+{
+  "ecc_type": "NonBinaryLDPCECC",
+  "word_length": 8,
+  "error_pattern": "double",
+  "trials": 1000,
+  "correctable_errors": 176,
+  "detected_errors": 824,
+  "undetected_errors": 0,
+  "encode_time_avg": 9.946107864379883e-06,
+  "decode_time_avg": 0.00011876034736633301,
+  "total_time_avg": 0.0001287064552307129,
+  "code_rate": 0.5333333333333333,
+  "overhead_ratio": 0.875,
+  "correction_rate": 0.176,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 176,
+    "detected": 824,
+    "undetected": 0
+  }
+}

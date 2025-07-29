@@ -1,5 +1,8 @@
 from typing import Tuple
-from base_ecc import ECCBase
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from src.base_ecc import ECCBase
 
 class HammingSECDEDECC(ECCBase):
     """Hamming SECDED (Single Error Correction, Double Error Detection) ECC implementation."""

@@ -4,19 +4,19 @@
   "error_pattern": "single",
   "trials": 1000,
   "correctable_errors": 999,
-  "detected_errors": 1,
-  "undetected_errors": 0,
-  "encode_time_avg": 1.0075807571411133e-05,
-  "decode_time_avg": 0.00019937276840209961,
-  "total_time_avg": 0.00020944857597351074,
-  "code_rate": 0.25196850393700787,
-  "overhead_ratio": 2.96875,
+  "detected_errors": 0,
+  "undetected_errors": 1,
+  "encode_time_avg": 8.235692977905273e-06,
+  "decode_time_avg": 4.727911949157715e-05,
+  "total_time_avg": 5.551481246948242e-05,
+  "code_rate": 0.5,
+  "overhead_ratio": 1.0,
   "correction_rate": 0.999,
-  "detection_rate": 1.0,
-  "success_rate": 1.0,
+  "detection_rate": 0.999,
+  "success_rate": 0.999,
   "error_distribution": {
     "corrected": 999,
-    "detected": 1,
-    "undetected": 0
+    "detected": 0,
+    "undetected": 1
   }
 }

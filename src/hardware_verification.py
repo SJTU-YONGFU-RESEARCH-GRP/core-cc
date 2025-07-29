@@ -33,6 +33,14 @@ from turbo_ecc import TurboECC
 from convolutional_ecc import ConvolutionalECC
 from polar_ecc import PolarECC
 from composite_ecc import CompositeECC
+from extended_hamming_ecc import ExtendedHammingECC
+from product_code_ecc import ProductCodeECC
+from concatenated_ecc import ConcatenatedECC
+from reed_muller_ecc import ReedMullerECC
+from fire_code_ecc import FireCodeECC
+from spatially_coupled_ldpc_ecc import SpatiallyCoupledLDPCECC
+from non_binary_ldpc_ecc import NonBinaryLDPCECC
+from raptor_code_ecc import RaptorCodeECC
 
 
 @dataclass

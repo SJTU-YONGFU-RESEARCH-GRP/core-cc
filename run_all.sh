@@ -18,7 +18,7 @@ show_usage() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
     echo "Modes:"
-    echo "  -m, --mode MODE          Execution mode (theoretical|hardware|full|benchmark|analysis|performance|quick-test|concurrent-demo)"
+    echo "  -m, --mode MODE          Execution mode (theoretical|hardware|full|benchmark|analysis|performance|quick-test|concurrent-demo|design-exploration)"
     echo ""
     echo "Options:"
     echo "  -v, --verbose            Enable verbose output"
@@ -42,6 +42,7 @@ show_usage() {
     echo "  $0 -m theoretical --use-processes    # Use multiprocessing"
     echo "  $0 --quick-test                      # Quick performance test"
     echo "  $0 --concurrent-demo                 # Concurrent execution demo"
+    echo "  $0 -m design-exploration             # Run design space exploration"
     echo ""
     echo "Parallel Processing Examples:"
     echo "  $0 -m theoretical -p                 # Threaded execution"
@@ -52,6 +53,10 @@ show_usage() {
     echo "  $0 --performance-test                # Comprehensive performance analysis"
     echo "  $0 --quick-test                      # Quick performance verification"
     echo "  $0 --concurrent-demo                 # Visual concurrent execution demo"
+    echo ""
+    echo "Design Space Exploration:"
+    echo "  $0 -m design-exploration             # Explore primary/secondary ECC combinations"
+    echo "  $0 -m design-exploration --use-processes  # Use multiprocessing for exploration"
 }
 
 # Function to print section headers
@@ -197,6 +202,29 @@ run_concurrent_demo() {
     echo "Concurrent execution demo completed."
 }
 
+# Function to run design space exploration
+run_design_exploration() {
+    print_section "Running Design Space Exploration for Primary/Secondary ECC"
+    echo "Starting comprehensive design space exploration..."
+    echo "This will evaluate all possible primary/secondary ECC combinations."
+    
+    local parallel_args=""
+    if [ "$USE_PROCESSES" = true ]; then
+        parallel_args="--use-processes"
+    fi
+    if [ "$WORKERS" != "auto" ]; then
+        parallel_args="$parallel_args --workers $WORKERS"
+    fi
+    
+    # Run design space exploration
+    python3 src/run_design_exploration.py $parallel_args
+    
+    echo "Design space exploration completed."
+    echo "Results saved to: ecc_design_exploration_results.json"
+    echo "Visualizations saved to: ecc_design_results/"
+    echo "Analysis report saved to: design_space_analysis.json"
+}
+
 # Function to print completion message
 print_completion() {
     printf '\n===== ECC Framework Execution Completed =====\n'
@@ -225,7 +253,15 @@ print_completion() {
         printf 'ECC analysis and report generation completed.\n'
     fi
     
-    if [ "$SKIP_REPORT" = false ] && [ "$MODE" != "benchmark" ] && [ "$MODE" != "performance" ] && [ "$MODE" != "quick-test" ] && [ "$MODE" != "concurrent-demo" ]; then
+    if [ "$MODE" = "design-exploration" ]; then
+        printf 'Design space exploration completed.\n'
+        printf 'Results saved to: ecc_design_exploration_results.json\n'
+        printf 'Visualizations saved to: ecc_design_results/\n'
+        printf 'Analysis report saved to: design_space_analysis.json\n'
+        printf '\nTop recommendations available in the analysis report.\n'
+    fi
+    
+    if [ "$SKIP_REPORT" = false ] && [ "$MODE" != "benchmark" ] && [ "$MODE" != "performance" ] && [ "$MODE" != "quick-test" ] && [ "$MODE" != "concurrent-demo" ] && [ "$MODE" != "design-exploration" ]; then
         printf 'Report generated: results/ecc_analysis_report.md\n'
     fi
     
@@ -319,10 +355,10 @@ done
 
 # Validate mode
 case $MODE in
-    theoretical|hardware|full|performance|benchmark|analysis|quick-test|concurrent-demo)
+    theoretical|hardware|full|performance|benchmark|analysis|quick-test|concurrent-demo|design-exploration)
         ;;
     *)
-        echo "Error: Invalid mode '$MODE'. Valid modes are: theoretical, hardware, full, performance, benchmark, analysis, quick-test, concurrent-demo"
+        echo "Error: Invalid mode '$MODE'. Valid modes are: theoretical, hardware, full, performance, benchmark, analysis, quick-test, concurrent-demo, design-exploration"
         exit 1
         ;;
 esac
@@ -395,6 +431,9 @@ echo ""
             ;;
         concurrent-demo)
             run_concurrent_demo
+            ;;
+        design-exploration)
+            run_design_exploration
             ;;
     esac
     

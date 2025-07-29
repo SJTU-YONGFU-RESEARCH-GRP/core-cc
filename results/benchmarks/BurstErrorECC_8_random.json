@@ -1,0 +1,22 @@
+{
+  "ecc_type": "BurstErrorECC",
+  "word_length": 8,
+  "error_pattern": "random",
+  "trials": 1000,
+  "correctable_errors": 242,
+  "detected_errors": 758,
+  "undetected_errors": 0,
+  "encode_time_avg": 1.2685775756835937e-05,
+  "decode_time_avg": 0.00013155794143676757,
+  "total_time_avg": 0.0001442437171936035,
+  "code_rate": 0.5,
+  "overhead_ratio": 1.0,
+  "correction_rate": 0.242,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 242,
+    "detected": 758,
+    "undetected": 0
+  }
+}

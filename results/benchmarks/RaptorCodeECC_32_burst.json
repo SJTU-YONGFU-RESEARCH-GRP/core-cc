@@ -1,0 +1,22 @@
+{
+  "ecc_type": "RaptorCodeECC",
+  "word_length": 32,
+  "error_pattern": "burst",
+  "trials": 1000,
+  "correctable_errors": 1000,
+  "detected_errors": 0,
+  "undetected_errors": 0,
+  "encode_time_avg": 2.7673959732055662e-05,
+  "decode_time_avg": 1.2897253036499023e-05,
+  "total_time_avg": 4.057121276855469e-05,
+  "code_rate": 0.5,
+  "overhead_ratio": 1.0,
+  "correction_rate": 1.0,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 1000,
+    "detected": 0,
+    "undetected": 0
+  }
+}
