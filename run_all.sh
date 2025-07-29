@@ -45,9 +45,11 @@ show_usage() {
     echo "  $0 -m design-exploration             # Run design space exploration"
     echo ""
     echo "Parallel Processing Examples:"
-    echo "  $0 -m theoretical -p                 # Threaded execution"
-    echo "  $0 -m theoretical --use-processes    # Multiprocessing execution"
+    echo "  $0 -m theoretical -p                 # Auto-detected optimal parallel processing"
+    echo "  $0 -m theoretical --use-processes    # Process-based parallel processing"
     echo "  $0 -m theoretical --chunked          # Memory-efficient chunked processing"
+    echo "  $0 -m benchmark --use-processes      # Enhanced benchmark with multiprocessing"
+    echo "  $0 -m benchmark --with-report        # Benchmark with automatic report generation"
     echo ""
     echo "Performance Testing:"
     echo "  $0 --performance-test                # Comprehensive performance analysis"
@@ -72,11 +74,13 @@ run_theoretical_analysis() {
     
     local parallel_args=""
     if [ "$USE_PROCESSES" = true ]; then
-        parallel_args="--use-processes"
+        parallel_args="--parallel-method processes"
+    elif [ "$CHUNKED" = true ]; then
+        parallel_args="--parallel-method chunked"
+    else
+        parallel_args="--parallel-method auto"
     fi
-    if [ "$CHUNKED" = true ]; then
-        parallel_args="$parallel_args --chunked"
-    fi
+    
     if [ "$WORKERS" != "auto" ]; then
         parallel_args="$parallel_args --workers $WORKERS"
     fi
@@ -85,10 +89,15 @@ run_theoretical_analysis() {
     fi
     
     if [ "$VERBOSE" = true ]; then
-        echo "Executing: python3 src/run_analysis.py --benchmark-only $parallel_args"
+        echo "Executing: python3 src/benchmark_suite.py $parallel_args"
     fi
     
-    python3 src/run_analysis.py --benchmark-only $parallel_args
+    # Run benchmarks using enhanced benchmark suite
+    python3 src/benchmark_suite.py $parallel_args
+    
+    # Run analysis using enhanced analysis framework
+    echo "===== Running Enhanced ECC Analysis ====="
+    python3 src/enhanced_analysis.py --mode analysis
 }
 
 # Function to run hardware implementation
@@ -121,11 +130,13 @@ run_benchmarking() {
     
     local parallel_args=""
     if [ "$USE_PROCESSES" = true ]; then
-        parallel_args="--use-processes"
+        parallel_args="--parallel-method processes"
+    elif [ "$CHUNKED" = true ]; then
+        parallel_args="--parallel-method chunked"
+    else
+        parallel_args="--parallel-method auto"
     fi
-    if [ "$CHUNKED" = true ]; then
-        parallel_args="$parallel_args --chunked"
-    fi
+    
     if [ "$WORKERS" != "auto" ]; then
         parallel_args="$parallel_args --workers $WORKERS"
     fi
@@ -133,7 +144,8 @@ run_benchmarking() {
         parallel_args="$parallel_args --overwrite"
     fi
     
-    python3 src/run_analysis.py --benchmark-only $parallel_args
+    # Use the enhanced benchmark suite directly
+    python3 src/benchmark_suite.py $parallel_args
 }
 
 # Function to run ECC benchmarking with report generation
@@ -142,11 +154,13 @@ run_benchmarking_with_report() {
     
     local parallel_args=""
     if [ "$USE_PROCESSES" = true ]; then
-        parallel_args="--use-processes"
+        parallel_args="--parallel-method processes"
+    elif [ "$CHUNKED" = true ]; then
+        parallel_args="--parallel-method chunked"
+    else
+        parallel_args="--parallel-method auto"
     fi
-    if [ "$CHUNKED" = true ]; then
-        parallel_args="$parallel_args --chunked"
-    fi
+    
     if [ "$WORKERS" != "auto" ]; then
         parallel_args="$parallel_args --workers $WORKERS"
     fi
@@ -154,12 +168,12 @@ run_benchmarking_with_report() {
         parallel_args="$parallel_args --overwrite"
     fi
     
-    # Run benchmarks first
-    python3 src/run_analysis.py --benchmark-only $parallel_args
+    # Run benchmarks first using enhanced benchmark suite
+    python3 src/benchmark_suite.py $parallel_args
     
-    # Then generate report
+    # Then generate report using enhanced analysis
     echo "===== Generating Report from Benchmark Results ====="
-    python3 src/run_analysis.py --analysis-only --report-only
+    python3 src/enhanced_analysis.py --mode analysis
 }
 
 # Function to run analysis and report generation

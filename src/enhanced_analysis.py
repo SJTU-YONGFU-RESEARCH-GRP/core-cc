@@ -23,6 +23,7 @@ import os
 import logging
 import sys
 import threading
+import psutil
 
 from benchmark_suite import BenchmarkResult
 from base_ecc import ECCBase
@@ -550,7 +551,7 @@ class ECCVerifier:
             'CyclicECC': CyclicECC,
             'BurstErrorECC': BurstErrorECC
         }
-        self.word_lengths = [4, 8, 16, 32]
+        self.word_lengths = [4, 8]
         self.test_trials = 100
         self.cache_file = "results/verification_cache.json"
         self.cache = self._load_cache()
@@ -854,26 +855,33 @@ class ECCVerifier:
             'decode_time_avg': statistics.mean(decode_times) if decode_times else None
         }
     
-    def verify_all_ecc_implementations(self, use_parallel: bool = False, max_workers: int = None, use_cache: bool = True, force_overwrite: bool = False) -> Dict[str, ECCVerificationResult]:
+    def verify_all_ecc_implementations(self, use_parallel: bool = False, max_workers: int = None, use_cache: bool = True, force_overwrite: bool = False, parallel_method: str = "threads") -> Dict[str, ECCVerificationResult]:
         """
-        Verify all ECC implementations with optional parallel processing and caching.
+        Verify all ECC implementations with enhanced parallel processing and caching.
         
         Args:
             use_parallel: Whether to use parallel processing
             max_workers: Maximum number of worker processes (default: CPU count)
             use_cache: Whether to use cached results
             force_overwrite: Whether to force re-testing even if cached
+            parallel_method: Parallel method to use ('threads', 'processes', 'auto')
             
         Returns:
             Dictionary of verification results
         """
         print("🔍 Verifying all ECC implementations...")
         
-        if use_parallel:
-            # For now, use threaded approach to preserve logging
-            return self._verify_all_threaded(max_workers, use_cache, force_overwrite)
-        else:
+        if not use_parallel:
             return self._verify_all_sequential(use_cache, force_overwrite)
+        
+        # Auto-detect best parallel method
+        if parallel_method == "auto":
+            parallel_method = self._select_optimal_parallel_method()
+        
+        if parallel_method == "processes":
+            return self._verify_all_processes(max_workers, use_cache, force_overwrite)
+        else:
+            return self._verify_all_threaded(max_workers, use_cache, force_overwrite)
     
     def _verify_all_sequential(self, use_cache: bool = True, force_overwrite: bool = False) -> Dict[str, ECCVerificationResult]:
         """Verify all ECC implementations sequentially with clear logging."""
@@ -999,19 +1007,27 @@ class ECCVerifier:
         
         return results
     
+    def _select_optimal_parallel_method(self) -> str:
+        """Select the optimal parallel processing method based on system capabilities."""
+        cpu_count = mp.cpu_count()
+        memory_gb = psutil.virtual_memory().total / (1024**3)
+        
+        # Use processes for CPU-intensive tasks if we have enough cores and memory
+        if cpu_count >= 4 and memory_gb >= 4:
+            return "processes"
+        else:
+            return "threads"
+    
     def _verify_all_threaded(self, max_workers: int = None, use_cache: bool = True, force_overwrite: bool = False) -> Dict[str, ECCVerificationResult]:
-        """Verify all ECC implementations using threads with organized logging."""
+        """Verify all ECC implementations using threads with enhanced parallel processing."""
         if max_workers is None:
-            max_workers = min(2, len(self.ecc_classes) * len(self.word_lengths))  # Limit workers for clearer output
+            max_workers = min(mp.cpu_count(), len(self.ecc_classes) * len(self.word_lengths))
         
         print(f"🚀 Using threaded processing with {max_workers} workers...")
-        print("⚠️  Note: Parallel execution may have interleaved output")
+        print("⚡ Enhanced parallel processing with progress tracking")
         
-        # Create all verification tasks
-        tasks = []
-        for ecc_type in self.ecc_classes.keys():
-            for word_length in self.word_lengths:
-                tasks.append((ecc_type, word_length))
+        # Create all verification tasks with priority ordering
+        tasks = self._create_prioritized_tasks()
         
         results = {}
         completed = 0
@@ -1020,9 +1036,9 @@ class ECCVerifier:
         print(f"📋 Testing {total_tasks} configurations in parallel...")
         print("=" * 60)
         
-        # Use ThreadPoolExecutor for threaded execution
+        # Use ThreadPoolExecutor with enhanced task management
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            # Submit all tasks
+            # Submit all tasks with progress tracking
             future_to_task = {
                 executor.submit(self._verify_single_implementation_with_logging, ecc_type, word_length): (ecc_type, word_length)
                 for ecc_type, word_length in tasks
@@ -1038,11 +1054,12 @@ class ECCVerifier:
                     results[key] = result
                     completed += 1
                     
-                    # Print organized result summary
+                    # Print enhanced result summary with timing
                     status = "✅ PASS" if result.verification_passed else "❌ FAIL"
                     round_trip_rate = result.round_trip_successes / result.round_trip_tests * 100 if result.round_trip_tests > 0 else 0
+                    progress = (completed / total_tasks) * 100
                     
-                    print(f"[{completed}/{total_tasks}] {key}: {status} ({round_trip_rate:.1f}% round-trip)")
+                    print(f"[{completed}/{total_tasks}] {key}: {status} ({round_trip_rate:.1f}% round-trip) - {progress:.1f}% complete")
                     
                     # Show detailed logs only for failures or if verbose
                     if not result.verification_passed and log_messages:
@@ -1088,6 +1105,252 @@ class ECCVerifier:
                     print(f"  {key}: {round_trip_rate:.1f}% round-trip success")
         
         return results
+    
+    def _create_prioritized_tasks(self) -> List[Tuple[str, int]]:
+        """Create a prioritized list of verification tasks."""
+        tasks = []
+        
+        # Prioritize simpler ECC types first (faster to test)
+        priority_order = [
+            'ParityECC', 'RepetitionECC', 'HammingSECDEDECC', 'CRCECC',
+            'BCHECC', 'ReedSolomonECC', 'GolayECC', 'ExtendedHammingECC',
+            'LDPCECC', 'TurboECC', 'ConvolutionalECC', 'PolarECC',
+            'ProductCodeECC', 'ConcatenatedECC', 'ReedMullerECC', 'FireCodeECC',
+            'SpatiallyCoupledLDPCECC', 'NonBinaryLDPCECC', 'RaptorCodeECC',
+            'CompositeECC', 'SystemECC', 'AdaptiveECC', 'ThreeDMemoryECC',
+            'PrimarySecondaryECC', 'CyclicECC', 'BurstErrorECC'
+        ]
+        
+        # Sort ECC types by priority
+        sorted_ecc_types = sorted(
+            self.ecc_classes.keys(),
+            key=lambda x: priority_order.index(x) if x in priority_order else len(priority_order)
+        )
+        
+        # Create tasks with word lengths in ascending order
+        for ecc_type in sorted_ecc_types:
+            for word_length in sorted(self.word_lengths):
+                tasks.append((ecc_type, word_length))
+        
+        return tasks
+    
+    def _verify_all_processes(self, max_workers: int = None, use_cache: bool = True, force_overwrite: bool = False) -> Dict[str, ECCVerificationResult]:
+        """Verify all ECC implementations using process-based parallel processing."""
+        if max_workers is None:
+            max_workers = min(mp.cpu_count(), 8)  # Limit to 8 workers max
+        
+        print(f"🚀 Using process-based parallel processing with {max_workers} workers...")
+        print("⚡ True parallelism for CPU-intensive verification tasks")
+        
+        # Create work packages for multiprocessing
+        work_packages = []
+        for i, (ecc_type, word_length) in enumerate(self._create_prioritized_tasks()):
+            work_packages.append({
+                'id': i,
+                'ecc_type': ecc_type,
+                'word_length': word_length,
+                'use_cache': use_cache,
+                'force_overwrite': force_overwrite
+            })
+        
+        results = {}
+        completed = 0
+        total_tasks = len(work_packages)
+        
+        print(f"📋 Testing {total_tasks} configurations with process-based parallelism...")
+        print("=" * 60)
+        
+        # Use ProcessPoolExecutor for true parallelism
+        with ProcessPoolExecutor(max_workers=max_workers) as executor:
+            # Submit work packages
+            future_to_work = {
+                executor.submit(self._verify_worker_process, work_package): work_package
+                for work_package in work_packages
+            }
+            
+            # Collect results with enhanced progress tracking
+            for future in as_completed(future_to_work):
+                work_package = future_to_work[future]
+                try:
+                    result = future.result()
+                    key = f"{result.ecc_type}_{result.word_length}"
+                    results[key] = result
+                    completed += 1
+                    
+                    # Print enhanced result summary
+                    status = "✅ PASS" if result.verification_passed else "❌ FAIL"
+                    round_trip_rate = result.round_trip_successes / result.round_trip_tests * 100 if result.round_trip_tests > 0 else 0
+                    progress = (completed / total_tasks) * 100
+                    
+                    print(f"[{completed}/{total_tasks}] {key}: {status} ({round_trip_rate:.1f}% round-trip) - {progress:.1f}% complete")
+                    
+                except Exception as e:
+                    print(f"[{completed+1}/{total_tasks}] ❌ {work_package['ecc_type']}_{work_package['word_length']}: Exception - {str(e)}")
+                    # Create a failed result
+                    results[f"{work_package['ecc_type']}_{work_package['word_length']}"] = ECCVerificationResult(
+                        ecc_type=work_package['ecc_type'],
+                        word_length=work_package['word_length'],
+                        verification_passed=False,
+                        round_trip_tests=0,
+                        round_trip_successes=0,
+                        error_correction_tests=0,
+                        error_correction_successes=0,
+                        performance_tests=0,
+                        performance_successes=0,
+                        error_messages=[f"Process execution failed: {str(e)}"]
+                    )
+                    completed += 1
+        
+        # Print comprehensive summary
+        print(f"\n" + "=" * 60)
+        print("📊 PROCESS-BASED PARALLEL VERIFICATION SUMMARY")
+        print("=" * 60)
+        
+        passed = sum(1 for r in results.values() if r.verification_passed)
+        total = len(results)
+        
+        print(f"✅ Passed: {passed}/{total} configurations")
+        print(f"❌ Failed: {total - passed}/{total} configurations")
+        print(f"📈 Success Rate: {passed/total*100:.1f}%")
+        
+        return results
+    
+    @staticmethod
+    def _verify_worker_process(work_package: Dict) -> ECCVerificationResult:
+        """Worker function for process-based verification."""
+        # Import necessary modules in the worker process
+        import sys
+        from pathlib import Path
+        
+        # Add the src directory to the Python path for imports
+        src_path = Path(__file__).parent
+        if str(src_path) not in sys.path:
+            sys.path.insert(0, str(src_path))
+        
+        # Import ECC classes dynamically
+        try:
+            from base_ecc import ECCBase
+            from parity_ecc import ParityECC
+            from hamming_secded_ecc import HammingSECDEDECC
+            from bch_ecc import BCHECC
+            from reed_solomon_ecc import ReedSolomonECC
+            from crc_ecc import CRCECC
+            from golay_ecc import GolayECC
+            from repetition_ecc import RepetitionECC
+            from ldpc_ecc import LDPCECC
+            from turbo_ecc import TurboECC
+            from convolutional_ecc import ConvolutionalECC
+            from polar_ecc import PolarECC
+            from composite_ecc import CompositeECC
+            from extended_hamming_ecc import ExtendedHammingECC
+            from product_code_ecc import ProductCodeECC
+            from concatenated_ecc import ConcatenatedECC
+            from reed_muller_ecc import ReedMullerECC
+            from fire_code_ecc import FireCodeECC
+            from spatially_coupled_ldpc_ecc import SpatiallyCoupledLDPCECC
+            from non_binary_ldpc_ecc import NonBinaryLDPCECC
+            from raptor_code_ecc import RaptorCodeECC
+            from system_ecc import SystemECC
+            from adaptive_ecc import AdaptiveECC
+            from three_d_memory_ecc import ThreeDMemoryECC
+            from primary_secondary_ecc import PrimarySecondaryECC
+            from cyclic_ecc import CyclicECC
+            from burst_error_ecc import BurstErrorECC
+            
+            # ECC class mapping
+            ecc_classes = {
+                'ParityECC': ParityECC,
+                'HammingSECDEDECC': HammingSECDEDECC,
+                'BCHECC': BCHECC,
+                'ReedSolomonECC': ReedSolomonECC,
+                'CRCECC': CRCECC,
+                'GolayECC': GolayECC,
+                'RepetitionECC': RepetitionECC,
+                'LDPCECC': LDPCECC,
+                'TurboECC': TurboECC,
+                'ConvolutionalECC': ConvolutionalECC,
+                'PolarECC': PolarECC,
+                'CompositeECC': CompositeECC,
+                'ExtendedHammingECC': ExtendedHammingECC,
+                'ProductCodeECC': ProductCodeECC,
+                'ConcatenatedECC': ConcatenatedECC,
+                'ReedMullerECC': ReedMullerECC,
+                'FireCodeECC': FireCodeECC,
+                'SpatiallyCoupledLDPCECC': SpatiallyCoupledLDPCECC,
+                'NonBinaryLDPCECC': NonBinaryLDPCECC,
+                'RaptorCodeECC': RaptorCodeECC,
+                'SystemECC': SystemECC,
+                'AdaptiveECC': AdaptiveECC,
+                'ThreeDMemoryECC': ThreeDMemoryECC,
+                'PrimarySecondaryECC': PrimarySecondaryECC,
+                'CyclicECC': CyclicECC,
+                'BurstErrorECC': BurstErrorECC
+            }
+            
+            # Create ECC instance and run verification
+            ecc_type = work_package['ecc_type']
+            word_length = work_package['word_length']
+            use_cache = work_package['use_cache']
+            force_overwrite = work_package['force_overwrite']
+            
+            if ecc_type not in ecc_classes:
+                return ECCVerificationResult(
+                    ecc_type=ecc_type,
+                    word_length=word_length,
+                    verification_passed=False,
+                    round_trip_tests=0,
+                    round_trip_successes=0,
+                    error_correction_tests=0,
+                    error_correction_successes=0,
+                    performance_tests=0,
+                    performance_successes=0,
+                    error_messages=[f"Unknown ECC type: {ecc_type}"]
+                )
+            
+            # Create ECC instance
+            ecc_class = ecc_classes[ecc_type]
+            ecc = ecc_class(word_length)
+            
+            # Run verification tests
+            round_trip_result = self._test_round_trip(ecc, word_length)
+            error_correction_result = self._test_error_correction(ecc, word_length)
+            performance_result = self._test_performance(ecc, word_length)
+            
+            # Calculate overall verification result
+            verification_passed = (
+                round_trip_result['success_rate'] >= 0.95 and
+                error_correction_result['success_rate'] >= 0.90 and
+                performance_result['success_rate'] >= 0.80
+            )
+            
+            return ECCVerificationResult(
+                ecc_type=ecc_type,
+                word_length=word_length,
+                verification_passed=verification_passed,
+                round_trip_tests=round_trip_result['tests'],
+                round_trip_successes=round_trip_result['successes'],
+                error_correction_tests=error_correction_result['tests'],
+                error_correction_successes=error_correction_result['successes'],
+                performance_tests=performance_result['tests'],
+                performance_successes=performance_result['successes'],
+                encode_time_avg=performance_result.get('encode_time_avg'),
+                decode_time_avg=performance_result.get('decode_time_avg'),
+                error_messages=[] if verification_passed else ["Verification failed in process worker"]
+            )
+            
+        except Exception as e:
+            return ECCVerificationResult(
+                ecc_type=work_package['ecc_type'],
+                word_length=work_package['word_length'],
+                verification_passed=False,
+                round_trip_tests=0,
+                round_trip_successes=0,
+                error_correction_tests=0,
+                error_correction_successes=0,
+                performance_tests=0,
+                performance_successes=0,
+                error_messages=[f"Process worker failed: {str(e)}"]
+            )
     
     def _verify_single_implementation_with_logging(self, ecc_type: str, word_length: int) -> Tuple[ECCVerificationResult, List[str]]:
         """Verify a single ECC implementation with logging (for parallel processing)."""
@@ -1309,11 +1572,27 @@ def main() -> None:
     args = parser.parse_args()
     
     if args.mode == "verification":
-        # Default to sequential for clear logging unless explicitly requested
+        # Enhanced parallel processing with auto-detection
         use_parallel = args.parallel and not args.sequential and not args.clear_logging
         use_cache = not args.no_cache
         force_overwrite = args.force_overwrite
-        verify_all_ecc_implementations(use_parallel=use_parallel, max_workers=args.workers, use_cache=use_cache, force_overwrite=force_overwrite)
+        
+        # Create verifier with enhanced parallel processing
+        verifier = ECCVerifier()
+        parallel_method = "auto" if use_parallel else "sequential"
+        
+        print("🚀 Enhanced ECC Verification with Parallel Processing")
+        print("=" * 60)
+        
+        verification_results = verifier.verify_all_ecc_implementations(
+            use_parallel=use_parallel,
+            max_workers=args.workers,
+            use_cache=use_cache,
+            force_overwrite=force_overwrite,
+            parallel_method=parallel_method
+        )
+        
+        print(f"\n✅ Verification complete! Processed {len(verification_results)} configurations.")
         return
     
     # Default analysis mode

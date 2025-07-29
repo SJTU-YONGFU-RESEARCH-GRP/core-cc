@@ -125,10 +125,49 @@ class ECCBenchmarkSuite:
         self._run_benchmarks_with_processes = False
         self._use_chunked_processing = False
         self._overwrite_existing = False
+        self._parallel_method = "auto"  # auto, threads, processes, chunked
+        self._adaptive_workers = True
         
     def set_overwrite_existing(self, overwrite: bool = True) -> None:
         """Set whether to overwrite existing benchmark results."""
         self._overwrite_existing = overwrite
+    
+    def set_parallel_method(self, method: str = "auto") -> None:
+        """Set the parallel processing method."""
+        self._parallel_method = method
+    
+    def set_adaptive_workers(self, adaptive: bool = True) -> None:
+        """Set whether to use adaptive worker count based on system resources."""
+        self._adaptive_workers = adaptive
+    
+    def _select_optimal_parallel_method(self) -> str:
+        """Select the optimal parallel processing method based on system capabilities."""
+        cpu_count = multiprocessing.cpu_count()
+        memory_gb = psutil.virtual_memory().total / (1024**3)
+        
+        # Use processes for CPU-intensive tasks if we have enough cores and memory
+        if cpu_count >= 4 and memory_gb >= 4:
+            return "processes"
+        elif cpu_count >= 2:
+            return "threads"
+        else:
+            return "chunked"
+    
+    def _calculate_optimal_workers(self) -> int:
+        """Calculate optimal number of workers based on system resources."""
+        cpu_count = multiprocessing.cpu_count()
+        memory_gb = psutil.virtual_memory().total / (1024**3)
+        
+        if self._adaptive_workers:
+            # Adaptive worker calculation
+            if memory_gb >= 8:
+                return min(cpu_count, 12)  # More workers for high memory
+            elif memory_gb >= 4:
+                return min(cpu_count, 8)   # Moderate workers
+            else:
+                return min(cpu_count, 4)   # Conservative workers
+        else:
+            return self.config.max_workers
         
     def _check_existing_results(self, output_dir: str = "results") -> Dict[str, bool]:
         """
@@ -511,15 +550,20 @@ class ECCBenchmarkSuite:
         print()
         
         # Choose execution method based on configuration
-        if self._run_benchmarks_with_processes:
-            print(f"🔄 Using ProcessPoolExecutor with {self.config.max_workers} workers")
-            results = self._run_benchmarks_with_processes_parallel(configs)
-        elif self._use_chunked_processing:
-            print(f"📦 Using chunked processing with {self.config.max_workers} workers")
-            results = self._run_benchmarks_chunked(configs)
+        if self._parallel_method == "auto":
+            self._parallel_method = self._select_optimal_parallel_method()
+        
+        optimal_workers = self._calculate_optimal_workers()
+        
+        if self._parallel_method == "processes":
+            print(f"🔄 Using ProcessPoolExecutor with {optimal_workers} workers")
+            results = self._run_benchmarks_with_processes_parallel(configs, optimal_workers)
+        elif self._parallel_method == "chunked":
+            print(f"📦 Using chunked processing with {optimal_workers} workers")
+            results = self._run_benchmarks_chunked(configs, optimal_workers)
         else:
-            print(f"🧵 Using ThreadPoolExecutor with {self.config.max_workers} workers")
-            results = self._run_benchmarks_with_threads(configs)
+            print(f"🧵 Using ThreadPoolExecutor with {optimal_workers} workers")
+            results = self._run_benchmarks_with_threads(configs, optimal_workers)
         
         # Merge with existing results if not overwriting
         if not self._overwrite_existing:
@@ -539,10 +583,13 @@ class ECCBenchmarkSuite:
         self.results = results
         return results
     
-    def _run_benchmarks_with_threads(self, configs: List[Tuple]) -> List[BenchmarkResult]:
-        """Run benchmarks using ThreadPoolExecutor."""
+    def _run_benchmarks_with_threads(self, configs: List[Tuple], max_workers: int = None) -> List[BenchmarkResult]:
+        """Run benchmarks using ThreadPoolExecutor with enhanced parallel processing."""
+        if max_workers is None:
+            max_workers = self.config.max_workers
+        
         results = []
-        with ThreadPoolExecutor(max_workers=self.config.max_workers) as executor:
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Submit all tasks
             future_to_config = {
                 executor.submit(self._benchmark_single_config, ecc_type, word_length, error_pattern): 
@@ -550,8 +597,11 @@ class ECCBenchmarkSuite:
                 for ecc_type, word_length, error_pattern in configs
             }
             
-            # Collect results with progress tracking
+            # Collect results with enhanced progress tracking and performance monitoring
             completed = 0
+            start_time = time.time()
+            last_progress_time = start_time
+            
             for future in as_completed(future_to_config):
                 config = future_to_config[future]
                 try:
@@ -559,16 +609,35 @@ class ECCBenchmarkSuite:
                     results.append(result)
                     completed += 1
                     progress = (completed / len(configs)) * 100
+                    current_time = time.time()
+                    elapsed_time = current_time - start_time
+                    
+                    # Enhanced progress reporting with timing estimates
+                    if completed % max(1, len(configs) // 10) == 0 or completed == len(configs):  # Report every 10% or final
+                        if completed > 0:
+                            avg_time_per_config = elapsed_time / completed
+                            remaining_configs = len(configs) - completed
+                            estimated_remaining = avg_time_per_config * remaining_configs
+                            
+                            print(f"Progress: {progress:.1f}% - Completed: {config[0]} ({config[1]} bits, {config[2]} errors)")
+                            print(f"  Elapsed: {elapsed_time:.1f}s, ETA: {estimated_remaining:.1f}s")
+                        else:
+                            print(f"Progress: {progress:.1f}% - Completed: {config[0]} ({config[1]} bits, {config[2]} errors)")
+                    
+                    last_progress_time = current_time
                     print(f"Progress: {progress:.1f}% - Completed: {config[0]} ({config[1]} bits, {config[2]} errors)")
                 except Exception as e:
                     print(f"Error in benchmark {config}: {e}")
         
         return results
     
-    def _run_benchmarks_with_processes_parallel(self, configs: List[Tuple]) -> List[BenchmarkResult]:
-        """Run benchmarks using ProcessPoolExecutor for true parallelism."""
+    def _run_benchmarks_with_processes_parallel(self, configs: List[Tuple], max_workers: int = None) -> List[BenchmarkResult]:
+        """Run benchmarks using ProcessPoolExecutor for true parallelism with enhanced performance."""
+        if max_workers is None:
+            max_workers = self.config.max_workers
+        
         # For multiprocessing, we need to serialize the work
-        # Create work packages that can be pickled
+        # Create work packages that can be pickled with enhanced configuration
         work_packages = []
         for i, (ecc_type, word_length, error_pattern) in enumerate(configs):
             work_packages.append({
@@ -579,11 +648,13 @@ class ECCBenchmarkSuite:
                 'trials_per_config': self.config.trials_per_config,
                 'burst_length': self.config.burst_length,
                 'random_error_prob': self.config.random_error_prob,
-                'output_dir': 'results'  # Add output directory for incremental saving
+                'output_dir': 'results',  # Add output directory for incremental saving
+                'measure_timing': self.config.measure_timing,
+                'measure_memory': self.config.measure_memory
             })
         
         results = []
-        with ProcessPoolExecutor(max_workers=self.config.max_workers) as executor:
+        with ProcessPoolExecutor(max_workers=max_workers) as executor:
             # Submit work packages
             future_to_work = {
                 executor.submit(self._benchmark_worker, work_package): work_package
@@ -605,9 +676,18 @@ class ECCBenchmarkSuite:
         
         return results
     
-    def _run_benchmarks_chunked(self, configs: List[Tuple]) -> List[BenchmarkResult]:
-        """Run benchmarks in chunks to manage memory better."""
-        chunk_size = max(1, len(configs) // self.config.max_workers)
+    def _run_benchmarks_chunked(self, configs: List[Tuple], max_workers: int = None) -> List[BenchmarkResult]:
+        """Run benchmarks in chunks to manage memory better with enhanced chunking."""
+        if max_workers is None:
+            max_workers = self.config.max_workers
+        
+        # Adaptive chunk size based on system resources
+        memory_gb = psutil.virtual_memory().total / (1024**3)
+        if memory_gb >= 8:
+            chunk_size = max(1, len(configs) // (max_workers * 2))  # Smaller chunks for high memory
+        else:
+            chunk_size = max(1, len(configs) // max_workers)  # Standard chunking
+        
         results = []
         
         print(f"Processing {len(configs)} configurations in chunks of {chunk_size}")
@@ -616,7 +696,7 @@ class ECCBenchmarkSuite:
             chunk = configs[i:i + chunk_size]
             print(f"Processing chunk {i//chunk_size + 1}/{(len(configs) + chunk_size - 1)//chunk_size}")
             
-            with ThreadPoolExecutor(max_workers=min(self.config.max_workers, len(chunk))) as executor:
+            with ThreadPoolExecutor(max_workers=min(max_workers, len(chunk))) as executor:
                 future_to_config = {
                     executor.submit(self._benchmark_single_config, ecc_type, word_length, error_pattern): 
                     (ecc_type.__name__, word_length, error_pattern)
@@ -1388,25 +1468,49 @@ def create_default_config() -> BenchmarkConfig:
 
 
 def main() -> None:
-    """Run the ECC benchmark suite."""
-    config = create_default_config()
-    suite = ECCBenchmarkSuite(config)
+    """Run the ECC benchmark suite with enhanced parallel processing."""
+    import argparse
     
-    print("ECC Benchmark Suite")
-    print("==================")
-    print(f"ECC Types: {len(config.ecc_types)}")
-    print(f"Word Lengths: {config.word_lengths}")
-    print(f"Error Patterns: {config.error_patterns}")
-    print(f"Trials per config: {config.trials_per_config}")
-    print(f"Total configurations: {len(config.ecc_types) * len(config.word_lengths) * len(config.error_patterns)}")
+    parser = argparse.ArgumentParser(description="Enhanced ECC Benchmark Suite")
+    parser.add_argument("--parallel-method", choices=["auto", "threads", "processes", "chunked"], 
+                       default="auto", help="Parallel processing method")
+    parser.add_argument("--workers", type=int, help="Number of worker processes")
+    parser.add_argument("--adaptive", action="store_true", default=True, help="Use adaptive worker count")
+    parser.add_argument("--overwrite", action="store_true", help="Overwrite existing results")
+    parser.add_argument("--trials", type=int, default=10000, help="Trials per configuration")
+    
+    args = parser.parse_args()
+    
+    config = create_default_config()
+    config.trials_per_config = args.trials
+    
+    suite = ECCBenchmarkSuite(config)
+    suite.set_parallel_method(args.parallel_method)
+    suite.set_adaptive_workers(args.adaptive)
+    suite.set_overwrite_existing(args.overwrite)
+    
+    print("🚀 Enhanced ECC Benchmark Suite with Parallel Processing")
+    print("=" * 60)
+    print(f"📊 ECC Types: {len(config.ecc_types)}")
+    print(f"📏 Word Lengths: {config.word_lengths}")
+    print(f"⚠️  Error Patterns: {config.error_patterns}")
+    print(f"🔄 Trials per config: {config.trials_per_config}")
+    print(f"🎯 Total configurations: {len(config.ecc_types) * len(config.word_lengths) * len(config.error_patterns)}")
+    print(f"⚡ Parallel method: {args.parallel_method}")
+    print(f"🔧 Adaptive workers: {args.adaptive}")
     print()
+    
+    # Show system capabilities
+    cpu_count = multiprocessing.cpu_count()
+    memory_gb = psutil.virtual_memory().total / (1024**3)
+    print(f"💻 System: {cpu_count} CPUs, {memory_gb:.1f} GB RAM")
     
     results = suite.run_benchmarks()
     suite.save_results()
     
-    # Print summary
+    # Print enhanced summary
     summary = suite.generate_summary()
-    print("\nBenchmark Summary:")
+    print("\n📊 Enhanced Benchmark Summary:")
     print("==================")
     for ecc_type, stats in summary.items():
         print(f"{ecc_type}:")

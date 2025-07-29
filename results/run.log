@@ -1,16 +1,20 @@
 ===== Running ECC Benchmarking with Report Generation =====
-ECC Analysis Framework
-====================================
-Output directory: /mnt/d/proj/ecc/results
-
-Auto-detected optimal workers: 12
-System: 16 CPU cores, 58.9 GB RAM
-Parallel mode: Processes
-📋 Total configurations to test: 416
-🔧 ECC Types: ['ParityECC', 'HammingSECDEDECC', 'RepetitionECC', 'BCHECC', 'ReedSolomonECC', 'CRCECC', 'GolayECC', 'LDPCECC', 'TurboECC', 'ConvolutionalECC', 'PolarECC', 'ExtendedHammingECC', 'ProductCodeECC', 'ConcatenatedECC', 'ReedMullerECC', 'FireCodeECC', 'SpatiallyCoupledLDPCECC', 'NonBinaryLDPCECC', 'RaptorCodeECC', 'CompositeECC', 'SystemECC', 'AdaptiveECC', 'ThreeDMemoryECC', 'PrimarySecondaryECC', 'CyclicECC', 'BurstErrorECC']
+🚀 Enhanced ECC Benchmark Suite with Parallel Processing
+============================================================
+📊 ECC Types: 19
 📏 Word Lengths: [4, 8, 16, 32]
 ⚠️  Error Patterns: ['single', 'double', 'burst', 'random']
-🔄 Trials per configuration: 1000
+🔄 Trials per config: 10000
+🎯 Total configurations: 304
+⚡ Parallel method: processes
+🔧 Adaptive workers: True
+
+💻 System: 16 CPUs, 58.9 GB RAM
+📋 Total configurations to test: 304
+🔧 ECC Types: ['ParityECC', 'HammingSECDEDECC', 'BCHECC', 'ReedSolomonECC', 'CRCECC', 'GolayECC', 'RepetitionECC', 'LDPCECC', 'TurboECC', 'ConvolutionalECC', 'PolarECC', 'ExtendedHammingECC', 'ProductCodeECC', 'ConcatenatedECC', 'ReedMullerECC', 'FireCodeECC', 'SpatiallyCoupledLDPCECC', 'NonBinaryLDPCECC', 'RaptorCodeECC']
+📏 Word Lengths: [4, 8, 16, 32]
+⚠️  Error Patterns: ['single', 'double', 'burst', 'random']
+🔄 Trials per configuration: 10000
 
 ⏭️  Skipping ParityECC (4 bits, single errors) - already exists
 ⏭️  Skipping ParityECC (4 bits, double errors) - already exists
@@ -44,22 +48,6 @@ Parallel mode: Processes
 ⏭️  Skipping HammingSECDEDECC (32 bits, double errors) - already exists
 ⏭️  Skipping HammingSECDEDECC (32 bits, burst errors) - already exists
 ⏭️  Skipping HammingSECDEDECC (32 bits, random errors) - already exists
-⏭️  Skipping RepetitionECC (4 bits, single errors) - already exists
-⏭️  Skipping RepetitionECC (4 bits, double errors) - already exists
-⏭️  Skipping RepetitionECC (4 bits, burst errors) - already exists
-⏭️  Skipping RepetitionECC (4 bits, random errors) - already exists
-⏭️  Skipping RepetitionECC (8 bits, single errors) - already exists
-⏭️  Skipping RepetitionECC (8 bits, double errors) - already exists
-⏭️  Skipping RepetitionECC (8 bits, burst errors) - already exists
-⏭️  Skipping RepetitionECC (8 bits, random errors) - already exists
-⏭️  Skipping RepetitionECC (16 bits, single errors) - already exists
-⏭️  Skipping RepetitionECC (16 bits, double errors) - already exists
-⏭️  Skipping RepetitionECC (16 bits, burst errors) - already exists
-⏭️  Skipping RepetitionECC (16 bits, random errors) - already exists
-⏭️  Skipping RepetitionECC (32 bits, single errors) - already exists
-⏭️  Skipping RepetitionECC (32 bits, double errors) - already exists
-⏭️  Skipping RepetitionECC (32 bits, burst errors) - already exists
-⏭️  Skipping RepetitionECC (32 bits, random errors) - already exists
 ⏭️  Skipping BCHECC (4 bits, single errors) - already exists
 ⏭️  Skipping BCHECC (4 bits, double errors) - already exists
 ⏭️  Skipping BCHECC (4 bits, burst errors) - already exists
@@ -124,6 +112,22 @@ Parallel mode: Processes
 ⏭️  Skipping GolayECC (32 bits, double errors) - already exists
 ⏭️  Skipping GolayECC (32 bits, burst errors) - already exists
 ⏭️  Skipping GolayECC (32 bits, random errors) - already exists
+⏭️  Skipping RepetitionECC (4 bits, single errors) - already exists
+⏭️  Skipping RepetitionECC (4 bits, double errors) - already exists
+⏭️  Skipping RepetitionECC (4 bits, burst errors) - already exists
+⏭️  Skipping RepetitionECC (4 bits, random errors) - already exists
+⏭️  Skipping RepetitionECC (8 bits, single errors) - already exists
+⏭️  Skipping RepetitionECC (8 bits, double errors) - already exists
+⏭️  Skipping RepetitionECC (8 bits, burst errors) - already exists
+⏭️  Skipping RepetitionECC (8 bits, random errors) - already exists
+⏭️  Skipping RepetitionECC (16 bits, single errors) - already exists
+⏭️  Skipping RepetitionECC (16 bits, double errors) - already exists
+⏭️  Skipping RepetitionECC (16 bits, burst errors) - already exists
+⏭️  Skipping RepetitionECC (16 bits, random errors) - already exists
+⏭️  Skipping RepetitionECC (32 bits, single errors) - already exists
+⏭️  Skipping RepetitionECC (32 bits, double errors) - already exists
+⏭️  Skipping RepetitionECC (32 bits, burst errors) - already exists
+⏭️  Skipping RepetitionECC (32 bits, random errors) - already exists
 ⏭️  Skipping LDPCECC (4 bits, single errors) - already exists
 ⏭️  Skipping LDPCECC (4 bits, double errors) - already exists
 ⏭️  Skipping LDPCECC (4 bits, burst errors) - already exists
@@ -300,299 +304,265 @@ Parallel mode: Processes
 ⏭️  Skipping RaptorCodeECC (32 bits, double errors) - already exists
 ⏭️  Skipping RaptorCodeECC (32 bits, burst errors) - already exists
 ⏭️  Skipping RaptorCodeECC (32 bits, random errors) - already exists
-⏭️  Skipping SystemECC (4 bits, single errors) - already exists
-⏭️  Skipping SystemECC (4 bits, double errors) - already exists
-⏭️  Skipping SystemECC (4 bits, burst errors) - already exists
-⏭️  Skipping SystemECC (4 bits, random errors) - already exists
-⏭️  Skipping SystemECC (8 bits, single errors) - already exists
-⏭️  Skipping SystemECC (8 bits, double errors) - already exists
-⏭️  Skipping SystemECC (8 bits, burst errors) - already exists
-⏭️  Skipping SystemECC (8 bits, random errors) - already exists
-⏭️  Skipping SystemECC (16 bits, single errors) - already exists
-⏭️  Skipping SystemECC (16 bits, double errors) - already exists
-⏭️  Skipping SystemECC (16 bits, burst errors) - already exists
-⏭️  Skipping SystemECC (16 bits, random errors) - already exists
-⏭️  Skipping SystemECC (32 bits, single errors) - already exists
-⏭️  Skipping SystemECC (32 bits, double errors) - already exists
-⏭️  Skipping SystemECC (32 bits, burst errors) - already exists
-⏭️  Skipping SystemECC (32 bits, random errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (4 bits, single errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (4 bits, double errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (4 bits, burst errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (4 bits, random errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (8 bits, single errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (8 bits, double errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (8 bits, burst errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (8 bits, random errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (16 bits, single errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (16 bits, double errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (16 bits, burst errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (16 bits, random errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (32 bits, single errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (32 bits, double errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (32 bits, burst errors) - already exists
-⏭️  Skipping PrimarySecondaryECC (32 bits, random errors) - already exists
-⏭️  Skipping BurstErrorECC (4 bits, single errors) - already exists
-⏭️  Skipping BurstErrorECC (4 bits, double errors) - already exists
-⏭️  Skipping BurstErrorECC (4 bits, burst errors) - already exists
-⏭️  Skipping BurstErrorECC (4 bits, random errors) - already exists
-⏭️  Skipping BurstErrorECC (8 bits, single errors) - already exists
-⏭️  Skipping BurstErrorECC (8 bits, double errors) - already exists
-⏭️  Skipping BurstErrorECC (8 bits, burst errors) - already exists
-⏭️  Skipping BurstErrorECC (8 bits, random errors) - already exists
-⏭️  Skipping BurstErrorECC (16 bits, single errors) - already exists
-⏭️  Skipping BurstErrorECC (16 bits, double errors) - already exists
-⏭️  Skipping BurstErrorECC (16 bits, burst errors) - already exists
-⏭️  Skipping BurstErrorECC (16 bits, random errors) - already exists
-⏭️  Skipping BurstErrorECC (32 bits, single errors) - already exists
-⏭️  Skipping BurstErrorECC (32 bits, double errors) - already exists
-⏭️  Skipping BurstErrorECC (32 bits, burst errors) - already exists
-⏭️  Skipping BurstErrorECC (32 bits, random errors) - already exists
-📋 Skipped 336 existing configurations. Use --overwrite to re-run all.
-🎯 Remaining configurations to run: 80
+📋 Skipped 288 existing configurations. Use --overwrite to re-run all.
+🎯 Remaining configurations to run: 16
 
 🚀 Starting benchmark execution...
-⏱️  Estimated time: ~160 minutes (2 min per config)
+⏱️  Estimated time: ~32 minutes (2 min per config)
 
 🔄 Using ProcessPoolExecutor with 12 workers
-Error in benchmark {'id': 0, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 12, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 13, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 14, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 15, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 16, 'ecc_type_name': 'CompositeECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 17, 'ecc_type_name': 'CompositeECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 18, 'ecc_type_name': 'CompositeECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 19, 'ecc_type_name': 'CompositeECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 20, 'ecc_type_name': 'CompositeECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 21, 'ecc_type_name': 'CompositeECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 22, 'ecc_type_name': 'CompositeECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 23, 'ecc_type_name': 'CompositeECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 24, 'ecc_type_name': 'CompositeECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 25, 'ecc_type_name': 'CompositeECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 26, 'ecc_type_name': 'CompositeECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 27, 'ecc_type_name': 'CompositeECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 28, 'ecc_type_name': 'CompositeECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 1, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 29, 'ecc_type_name': 'CompositeECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 6, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 5, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 8, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 4, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 10, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 3, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 7, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 30, 'ecc_type_name': 'CompositeECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 2, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 31, 'ecc_type_name': 'CompositeECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CompositeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 33, 'ecc_type_name': 'AdaptiveECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 34, 'ecc_type_name': 'AdaptiveECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 35, 'ecc_type_name': 'AdaptiveECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 36, 'ecc_type_name': 'AdaptiveECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 32, 'ecc_type_name': 'AdaptiveECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 37, 'ecc_type_name': 'AdaptiveECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 38, 'ecc_type_name': 'AdaptiveECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 39, 'ecc_type_name': 'AdaptiveECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 40, 'ecc_type_name': 'AdaptiveECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 11, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 41, 'ecc_type_name': 'AdaptiveECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 43, 'ecc_type_name': 'AdaptiveECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 9, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 42, 'ecc_type_name': 'AdaptiveECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 44, 'ecc_type_name': 'AdaptiveECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 45, 'ecc_type_name': 'AdaptiveECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 47, 'ecc_type_name': 'AdaptiveECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 46, 'ecc_type_name': 'AdaptiveECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: AdaptiveECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 48, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 49, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 53, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 52, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 54, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 50, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 55, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 56, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 57, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 51, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-🔄 Worker starting: FireCodeECC (16 bits, random errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (4 bits, random errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (32 bits, double errors) - 1000 trials
-🔄 Worker starting: CyclicECC (16 bits, double errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (16 bits, burst errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (8 bits, single errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (32 bits, double errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (16 bits, single errors) - 1000 trials
-🔄 Worker starting: CyclicECC (4 bits, random errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (8 bits, random errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (8 bits, burst errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (4 bits, single errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (32 bits, single errors) - 1000 trials
-🔄 Worker starting: CyclicECC (16 bits, single errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (4 bits, random errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (8 bits, double errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (32 bits, random errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (16 bits, burst errors) - 1000 trials
-🔄 Worker starting: CyclicECC (8 bits, burst errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (8 bits, burst errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (4 bits, single errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (32 bits, burst errors) - 1000 trials
-🔄 Worker starting: CyclicECC (16 bits, burst errors) - 1000 trials
-🔄 Worker starting: CyclicECC (32 bits, double errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (4 bits, single errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (32 bits, single errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (32 bits, double errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (32 bits, burst errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (32 bits, random errors) - 1000 trials
-🔄 Worker starting: CompositeECC (4 bits, single errors) - 1000 trials
-🔄 Worker starting: CompositeECC (4 bits, double errors) - 1000 trials
-🔄 Worker starting: CompositeECC (4 bits, burst errors) - 1000 trials
-🔄 Worker starting: CompositeECC (4 bits, random errors) - 1000 trials
-🔄 Worker starting: CompositeECC (8 bits, single errors) - 1000 trials
-🔄 Worker starting: CompositeECC (8 bits, double errors) - 1000 trials
-🔄 Worker starting: CompositeECC (8 bits, burst errors) - 1000 trials
-🔄 Worker starting: CompositeECC (8 bits, random errors) - 1000 trials
-🔄 Worker starting: CompositeECC (16 bits, single errors) - 1000 trials
-🔄 Worker starting: CompositeECC (16 bits, double errors) - 1000 trials
-🔄 Worker starting: CompositeECC (16 bits, burst errors) - 1000 trials
-🔄 Worker starting: CompositeECC (16 bits, random errors) - 1000 trials
-🔄 Worker starting: CompositeECC (32 bits, single errors) - 1000 trials
-🔄 Worker starting: CompositeECC (32 bits, double errors) - 1000 trials
-🔄 Worker starting: CompositeECC (32 bits, random errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (16 bits, double errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (8 bits, single errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (32 bits, random errors) - 1000 trials
-🔄 Worker starting: CyclicECC (16 bits, random errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (16 bits, single errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (4 bits, burst errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (16 bits, random errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (8 bits, double errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (32 bits, burst errors) - 1000 trials
-🔄 Worker starting: CyclicECC (4 bits, single errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (4 bits, burst errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (16 bits, single errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (4 bits, burst errors) - 1000 trials
-🔄 Worker starting: CyclicECC (4 bits, double errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (8 bits, double errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (4 bits, double errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (16 bits, burst errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (16 bits, double errors) - 1000 trials
-🔄 Worker starting: CyclicECC (8 bits, single errors) - 1000 trials
-🔄 Worker starting: CyclicECC (32 bits, single errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (8 bits, single errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (4 bits, random errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (32 bits, single errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (8 bits, random errors) - 1000 trials
-🔄 Worker starting: CyclicECC (4 bits, burst errors) - 1000 trials
-🔄 Worker starting: CyclicECC (32 bits, burst errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (4 bits, double errors) - 1000 trials
-🔄 Worker starting: CompositeECC (32 bits, burst errors) - 1000 trials
-🔄 Worker starting: AdaptiveECC (8 bits, random errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (4 bits, double errors) - 1000 trials
-🔄 Worker starting: CyclicECC (8 bits, double errors) - 1000 trials
-🔄 Worker starting: FireCodeECC (16 bits, double errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (8 bits, burst errors) - 1000 trials
-🔄 Worker starting: ThreeDMemoryECC (16 bits, random errors) - 1000 trials
-🔄 Worker starting: CyclicECC (8 bits, random errors) - 1000 trials
-🔄 Worker starting: CyclicECC (32 bits, random errors) - 1000 trials
-Error in benchmark {'id': 58, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 59, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 60, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 61, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 62, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 63, 'ecc_type_name': 'ThreeDMemoryECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: ThreeDMemoryECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 74, 'ecc_type_name': 'CyclicECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 68, 'ecc_type_name': 'CyclicECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 66, 'ecc_type_name': 'CyclicECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 69, 'ecc_type_name': 'CyclicECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 73, 'ecc_type_name': 'CyclicECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 67, 'ecc_type_name': 'CyclicECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 72, 'ecc_type_name': 'CyclicECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 64, 'ecc_type_name': 'CyclicECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 70, 'ecc_type_name': 'CyclicECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 71, 'ecc_type_name': 'CyclicECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 65, 'ecc_type_name': 'CyclicECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 75, 'ecc_type_name': 'CyclicECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 76, 'ecc_type_name': 'CyclicECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 77, 'ecc_type_name': 'CyclicECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 78, 'ecc_type_name': 'CyclicECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
-Error in benchmark {'id': 79, 'ecc_type_name': 'CyclicECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 1000, 'burst_length': 3, 'random_error_prob': 0.1, 'output_dir': 'results'}: CyclicECC.__init__() got an unexpected keyword argument 'word_length'
+🔄 Worker starting: FireCodeECC (4 bits, double errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (32 bits, single errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (4 bits, random errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (16 bits, single errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (8 bits, random errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (32 bits, double errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (4 bits, single errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (32 bits, burst errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (4 bits, burst errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (32 bits, random errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (16 bits, burst errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (16 bits, double errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (8 bits, burst errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (8 bits, double errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (8 bits, single errors) - 10000 trials
+🔄 Worker starting: FireCodeECC (16 bits, random errors) - 10000 trials
+Error in benchmark {'id': 1, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'double', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 7, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'random', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 0, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'single', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 2, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'burst', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 3, 'ecc_type_name': 'FireCodeECC', 'word_length': 4, 'error_pattern': 'random', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 12, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'single', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 8, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'single', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 13, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'double', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 5, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'double', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 15, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'random', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 14, 'ecc_type_name': 'FireCodeECC', 'word_length': 32, 'error_pattern': 'burst', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 10, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'burst', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 9, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'double', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 4, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'single', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 6, 'ecc_type_name': 'FireCodeECC', 'word_length': 8, 'error_pattern': 'burst', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
+Error in benchmark {'id': 11, 'ecc_type_name': 'FireCodeECC', 'word_length': 16, 'error_pattern': 'random', 'trials_per_config': 10000, 'burst_length': 3, 'random_error_prob': 0.01, 'output_dir': 'results', 'measure_timing': True, 'measure_memory': False}: FireCodeECC.__init__() got an unexpected keyword argument 'word_length'
 
 ✅ Benchmarking completed!
 📊 Total results: 336
 🎯 Successful configurations: 336
-📊 Saved 336 benchmark results to results/benchmark_results.json
+Benchmark results saved to results
 
-Benchmarking completed successfully!
-Results saved to: results
-Total configurations tested: 336
+📊 Enhanced Benchmark Summary:
+==================
+BCHECC:
+  Avg Correction Rate: 1.00%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 4.985
+  Avg Overhead: -0.344
+  Avg Encode Time: 0.000 ms
+  Avg Decode Time: 0.000 ms
+
+BurstErrorECC:
+  Avg Correction Rate: 0.18%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.520
+  Avg Overhead: 0.930
+  Avg Encode Time: 0.049 ms
+  Avg Decode Time: 2.249 ms
+
+ConcatenatedECC:
+  Avg Correction Rate: 0.65%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.369
+  Avg Overhead: 1.920
+  Avg Encode Time: 0.043 ms
+  Avg Decode Time: 0.047 ms
+
+ConvolutionalECC:
+  Avg Correction Rate: 1.00%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.990
+  Avg Overhead: 0.322
+  Avg Encode Time: 0.022 ms
+  Avg Decode Time: 567.408 ms
+
+CRCECC:
+  Avg Correction Rate: 1.00%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.593
+  Avg Overhead: 0.871
+  Avg Encode Time: 0.000 ms
+  Avg Decode Time: 0.000 ms
+
+ExtendedHammingECC:
+  Avg Correction Rate: 0.38%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.716
+  Avg Overhead: 0.434
+  Avg Encode Time: 0.022 ms
+  Avg Decode Time: 0.023 ms
+
+GolayECC:
+  Avg Correction Rate: 1.00%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.607
+  Avg Overhead: 0.832
+  Avg Encode Time: 0.000 ms
+  Avg Decode Time: 0.000 ms
+
+HammingSECDEDECC:
+  Avg Correction Rate: 0.92%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.755
+  Avg Overhead: 0.357
+  Avg Encode Time: 0.018 ms
+  Avg Decode Time: 0.019 ms
+
+LDPCECC:
+  Avg Correction Rate: 1.00%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.729
+  Avg Overhead: 0.768
+  Avg Encode Time: 0.000 ms
+  Avg Decode Time: 0.000 ms
+
+NonBinaryLDPCECC:
+  Avg Correction Rate: 0.43%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.645
+  Avg Overhead: 0.752
+  Avg Encode Time: 0.047 ms
+  Avg Decode Time: 1.834 ms
+
+ParityECC:
+  Avg Correction Rate: 0.40%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.995
+  Avg Overhead: 0.016
+  Avg Encode Time: 0.003 ms
+  Avg Decode Time: 0.003 ms
+
+PolarECC:
+  Avg Correction Rate: 1.00%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.727
+  Avg Overhead: 0.734
+  Avg Encode Time: 0.000 ms
+  Avg Decode Time: 0.000 ms
+
+PrimarySecondaryECC:
+  Avg Correction Rate: 0.62%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.640
+  Avg Overhead: 0.754
+  Avg Encode Time: 0.042 ms
+  Avg Decode Time: 1.154 ms
+
+ProductCodeECC:
+  Avg Correction Rate: 0.51%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.332
+  Avg Overhead: 2.598
+  Avg Encode Time: 0.028 ms
+  Avg Decode Time: 0.032 ms
+
+RaptorCodeECC:
+  Avg Correction Rate: 1.00%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.807
+  Avg Overhead: 0.453
+  Avg Encode Time: 0.015 ms
+  Avg Decode Time: 0.007 ms
+
+ReedMullerECC:
+  Avg Correction Rate: 0.62%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 1.134
+  Avg Overhead: 0.561
+  Avg Encode Time: 0.045 ms
+  Avg Decode Time: 1.266 ms
+
+ReedSolomonECC:
+  Avg Correction Rate: 0.99%
+  Avg Detection Rate: 0.99%
+  Avg Success Rate: 0.99%
+  Avg Code Rate: 0.240
+  Avg Overhead: 6.420
+  Avg Encode Time: 0.008 ms
+  Avg Decode Time: 0.047 ms
+
+RepetitionECC:
+  Avg Correction Rate: 1.00%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.389
+  Avg Overhead: 1.666
+  Avg Encode Time: 0.010 ms
+  Avg Decode Time: 0.013 ms
+
+SpatiallyCoupledLDPCECC:
+  Avg Correction Rate: 0.61%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.734
+  Avg Overhead: 0.531
+  Avg Encode Time: 0.015 ms
+  Avg Decode Time: 0.155 ms
+
+SystemECC:
+  Avg Correction Rate: 0.30%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.714
+  Avg Overhead: 0.447
+  Avg Encode Time: 0.018 ms
+  Avg Decode Time: 0.008 ms
+
+TurboECC:
+  Avg Correction Rate: 1.00%
+  Avg Detection Rate: 1.00%
+  Avg Success Rate: 1.00%
+  Avg Code Rate: 0.347
+  Avg Overhead: 1.895
+  Avg Encode Time: 0.027 ms
+  Avg Decode Time: 0.006 ms
+
 ===== Generating Report from Benchmark Results =====
 /mnt/d/proj/ecc/venv/lib/python3.10/site-packages/scipy/stats/_axis_nan_policy.py:586: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
   res = hypotest_fun_out(*samples, **kwds)
-ECC Analysis Framework
-====================================
-Output directory: /mnt/d/proj/ecc/results
-
-===== Running Analysis Only =====
-============================================================
-ECC ANALYSIS
-============================================================
 Running ECC analysis...
 
 🔍 Running ECC implementation verification...
-📋 Loaded verification cache with 26 entries
+📋 Loaded verification cache with 55 entries
 🔍 Verifying all ECC implementations...
-🔍 Testing 104 ECC configurations sequentially...
+🔍 Testing 52 ECC configurations sequentially...
 ============================================================
 
 📋 Testing ParityECC...
 ----------------------------------------
 
-[1/104] ParityECC_4:
+[1/52] ParityECC_4:
 ⏭️  Skipping ParityECC_4 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 97/100 (97.0%)
   Performance:     90/100 (90.0%)
   Overall:         ✅ PASS
 
-[2/104] ParityECC_8:
-      Creating ParityECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 27 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[3/104] ParityECC_16:
-      Creating ParityECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 28 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[4/104] ParityECC_32:
-      Creating ParityECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 29 entries
+[2/52] ParityECC_8:
+⏭️  Skipping ParityECC_8 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 100/100 (100.0%)
   Performance:     100/100 (100.0%)
@@ -601,108 +571,32 @@ Running ECC analysis...
 📋 Testing HammingSECDEDECC...
 ----------------------------------------
 
-[5/104] HammingSECDEDECC_4:
+[3/52] HammingSECDEDECC_4:
 ⏭️  Skipping HammingSECDEDECC_4 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 94/100 (94.0%)
   Performance:     93/100 (93.0%)
   Overall:         ✅ PASS
 
-[6/104] HammingSECDEDECC_8:
-      Creating HammingSECDEDECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 98/100 (98.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 30 entries
+[4/52] HammingSECDEDECC_8:
+⏭️  Skipping HammingSECDEDECC_8 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 98/100 (98.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[7/104] HammingSECDEDECC_16:
-      Creating HammingSECDEDECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 31 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[8/104] HammingSECDEDECC_32:
-      Creating HammingSECDEDECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 32 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
   Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
 📋 Testing RepetitionECC...
 ----------------------------------------
 
-[9/104] RepetitionECC_4:
+[5/52] RepetitionECC_4:
 ⏭️  Skipping RepetitionECC_4 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 93/100 (93.0%)
   Performance:     94/100 (94.0%)
   Overall:         ✅ PASS
 
-[10/104] RepetitionECC_8:
-      Creating RepetitionECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 33 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[11/104] RepetitionECC_16:
-      Creating RepetitionECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 34 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[12/104] RepetitionECC_32:
-      Creating RepetitionECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 35 entries
+[6/52] RepetitionECC_8:
+⏭️  Skipping RepetitionECC_8 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 100/100 (100.0%)
   Performance:     100/100 (100.0%)
@@ -711,290 +605,134 @@ Running ECC analysis...
 📋 Testing BCHECC...
 ----------------------------------------
 
-[13/104] BCHECC_4:
+[7/52] BCHECC_4:
 ⏭️  Skipping BCHECC_4 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 93/100 (93.0%)
   Performance:     97/100 (97.0%)
   Overall:         ✅ PASS
 
-[14/104] BCHECC_8:
-      Creating BCHECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 99/100 (99.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 36 entries
+[8/52] BCHECC_8:
+⏭️  Skipping BCHECC_8 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 99/100 (99.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[15/104] BCHECC_16:
-      Creating BCHECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 37 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[16/104] BCHECC_32:
-      Creating BCHECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 38 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
   Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
 📋 Testing ReedSolomonECC...
 ----------------------------------------
 
-[17/104] ReedSolomonECC_4:
+[9/52] ReedSolomonECC_4:
 ⏭️  Skipping ReedSolomonECC_4 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 92/100 (92.0%)
   Performance:     97/100 (97.0%)
   Overall:         ✅ PASS
 
-[18/104] ReedSolomonECC_8:
-      Creating ReedSolomonECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 99/100 (99.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 39 entries
+[10/52] ReedSolomonECC_8:
+⏭️  Skipping ReedSolomonECC_8 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 99/100 (99.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[19/104] ReedSolomonECC_16:
-      Creating ReedSolomonECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 40 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[20/104] ReedSolomonECC_32:
-      Creating ReedSolomonECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 41 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
   Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
 📋 Testing CRCECC...
 ----------------------------------------
 
-[21/104] CRCECC_4:
+[11/52] CRCECC_4:
 ⏭️  Skipping CRCECC_4 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 95/100 (95.0%)
   Performance:     93/100 (93.0%)
   Overall:         ✅ PASS
 
-[22/104] CRCECC_8:
-      Creating CRCECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 99/100 (99.00%)
-💾 Saved verification cache with 42 entries
+[12/52] CRCECC_8:
+⏭️  Skipping CRCECC_8 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 100/100 (100.0%)
   Performance:     99/100 (99.0%)
   Overall:         ✅ PASS
 
-[23/104] CRCECC_16:
-      Creating CRCECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 43 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[24/104] CRCECC_32:
-      Creating CRCECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 44 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
 📋 Testing GolayECC...
 ----------------------------------------
 
-[25/104] GolayECC_4:
+[13/52] GolayECC_4:
 ⏭️  Skipping GolayECC_4 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 94/100 (94.0%)
   Performance:     97/100 (97.0%)
   Overall:         ✅ PASS
 
-[26/104] GolayECC_8:
-      Creating GolayECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 99/100 (99.00%)
-💾 Saved verification cache with 45 entries
+[14/52] GolayECC_8:
+⏭️  Skipping GolayECC_8 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 100/100 (100.0%)
   Performance:     99/100 (99.0%)
   Overall:         ✅ PASS
 
-[27/104] GolayECC_16:
-      Creating GolayECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 46 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[28/104] GolayECC_32:
-      Creating GolayECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 47 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
 📋 Testing LDPCECC...
 ----------------------------------------
 
-[29/104] LDPCECC_4:
+[15/52] LDPCECC_4:
 ⏭️  Skipping LDPCECC_4 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 94/100 (94.0%)
   Performance:     96/100 (96.0%)
   Overall:         ✅ PASS
 
-[30/104] LDPCECC_8:
-      Creating LDPCECC instance for 8 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 99/100 (99.00%)
-      Running performance tests...
-        Performance: 98/100 (98.00%)
-💾 Saved verification cache with 48 entries
+[16/52] LDPCECC_8:
+⏭️  Skipping LDPCECC_8 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 99/100 (99.0%)
   Performance:     98/100 (98.0%)
   Overall:         ✅ PASS
 
-[31/104] LDPCECC_16:
-      Creating LDPCECC instance for 16 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 49 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
-[32/104] LDPCECC_32:
-      Creating LDPCECC instance for 32 bits...
-      Running round-trip tests...
-          Round-trip progress: 100/100
-        Round-trip: 100/100 (100.00%)
-      Running error correction tests...
-        Error correction: 100/100 (100.00%)
-      Running performance tests...
-        Performance: 100/100 (100.00%)
-💾 Saved verification cache with 50 entries
-  Round-trip:     100/100 (100.0%)
-  Error correction: 100/100 (100.0%)
-  Performance:     100/100 (100.0%)
-  Overall:         ✅ PASS
-
 📋 Testing TurboECC...
 ----------------------------------------
 
-[33/104] TurboECC_4:
+[17/52] TurboECC_4:
 ⏭️  Skipping TurboECC_4 - cached PASS result
   Round-trip:     100/100 (100.0%)
   Error correction: 100/100 (100.0%)
   Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
-[34/104] TurboECC_8:
-      Creating TurboECC instance for 8 bits...
+[18/52] TurboECC_8:
+⏭️  Skipping TurboECC_8 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing ConvolutionalECC...
+----------------------------------------
+
+[19/52] ConvolutionalECC_4:
+⏭️  Skipping ConvolutionalECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 94/100 (94.0%)
+  Performance:     94/100 (94.0%)
+  Overall:         ✅ PASS
+
+[20/52] ConvolutionalECC_8:
+⏭️  Skipping ConvolutionalECC_8 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     98/100 (98.0%)
+  Overall:         ✅ PASS
+
+📋 Testing PolarECC...
+----------------------------------------
+
+[21/52] PolarECC_4:
+⏭️  Skipping PolarECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 89/100 (89.0%)
+  Performance:     97/100 (97.0%)
+  Overall:         ✅ PASS
+
+[22/52] PolarECC_8:
+      Creating PolarECC instance for 8 bits...
       Running round-trip tests...
           Round-trip progress: 100/100
         Round-trip: 100/100 (100.00%)
@@ -1002,15 +740,510 @@ Running ECC analysis...
         Error correction: 100/100 (100.00%)
       Running performance tests...
         Performance: 100/100 (100.00%)
-💾 Saved verification cache with 51 entries
+💾 Saved verification cache with 56 entries
   Round-trip:     100/100 (100.0%)
   Error correction: 100/100 (100.0%)
   Performance:     100/100 (100.0%)
   Overall:         ✅ PASS
 
-[35/104] TurboECC_16:
-      Creating TurboECC instance for 16 bits...
+📋 Testing ExtendedHammingECC...
+----------------------------------------
+
+[23/52] ExtendedHammingECC_4:
+⏭️  Skipping ExtendedHammingECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 93/100 (93.0%)
+  Performance:     95/100 (95.0%)
+  Overall:         ✅ PASS
+
+[24/52] ExtendedHammingECC_8:
+      Creating ExtendedHammingECC instance for 8 bits...
       Running round-trip tests...
           Round-trip progress: 100/100
         Round-trip: 100/100 (100.00%)
       Running error correction tests...
+        Error correction: 99/100 (99.00%)
+      Running performance tests...
+        Performance: 99/100 (99.00%)
+💾 Saved verification cache with 57 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 99/100 (99.0%)
+  Performance:     99/100 (99.0%)
+  Overall:         ✅ PASS
+
+📋 Testing ProductCodeECC...
+----------------------------------------
+
+[25/52] ProductCodeECC_4:
+⏭️  Skipping ProductCodeECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 97/100 (97.0%)
+  Performance:     96/100 (96.0%)
+  Overall:         ✅ PASS
+
+[26/52] ProductCodeECC_8:
+      Creating ProductCodeECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 58 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing ConcatenatedECC...
+----------------------------------------
+
+[27/52] ConcatenatedECC_4:
+⏭️  Skipping ConcatenatedECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 97/100 (97.0%)
+  Performance:     95/100 (95.0%)
+  Overall:         ✅ PASS
+
+[28/52] ConcatenatedECC_8:
+      Creating ConcatenatedECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 99/100 (99.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 59 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 99/100 (99.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing ReedMullerECC...
+----------------------------------------
+
+[29/52] ReedMullerECC_4:
+⏭️  Skipping ReedMullerECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 93/100 (93.0%)
+  Performance:     95/100 (95.0%)
+  Overall:         ✅ PASS
+
+[30/52] ReedMullerECC_8:
+      Creating ReedMullerECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 60 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing FireCodeECC...
+----------------------------------------
+
+[31/52] FireCodeECC_4:
+⏭️  Skipping FireCodeECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 96/100 (96.0%)
+  Performance:     92/100 (92.0%)
+  Overall:         ✅ PASS
+
+[32/52] FireCodeECC_8:
+      Creating FireCodeECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 99/100 (99.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 61 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 99/100 (99.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing SpatiallyCoupledLDPCECC...
+----------------------------------------
+
+[33/52] SpatiallyCoupledLDPCECC_4:
+⏭️  Skipping SpatiallyCoupledLDPCECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 95/100 (95.0%)
+  Performance:     92/100 (92.0%)
+  Overall:         ✅ PASS
+
+[34/52] SpatiallyCoupledLDPCECC_8:
+      Creating SpatiallyCoupledLDPCECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 62 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing NonBinaryLDPCECC...
+----------------------------------------
+
+[35/52] NonBinaryLDPCECC_4:
+⏭️  Skipping NonBinaryLDPCECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 96/100 (96.0%)
+  Performance:     91/100 (91.0%)
+  Overall:         ✅ PASS
+
+[36/52] NonBinaryLDPCECC_8:
+      Creating NonBinaryLDPCECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 63 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing RaptorCodeECC...
+----------------------------------------
+
+[37/52] RaptorCodeECC_4:
+⏭️  Skipping RaptorCodeECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 95/100 (95.0%)
+  Performance:     91/100 (91.0%)
+  Overall:         ✅ PASS
+
+[38/52] RaptorCodeECC_8:
+      Creating RaptorCodeECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 99/100 (99.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 64 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 99/100 (99.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing CompositeECC...
+----------------------------------------
+
+[39/52] CompositeECC_4:
+⏭️  Skipping CompositeECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 93/100 (93.0%)
+  Performance:     93/100 (93.0%)
+  Overall:         ✅ PASS
+
+[40/52] CompositeECC_8:
+      Creating CompositeECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 65 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing SystemECC...
+----------------------------------------
+
+[41/52] SystemECC_4:
+⏭️  Skipping SystemECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 93/100 (93.0%)
+  Performance:     94/100 (94.0%)
+  Overall:         ✅ PASS
+
+[42/52] SystemECC_8:
+      Creating SystemECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 66 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing AdaptiveECC...
+----------------------------------------
+
+[43/52] AdaptiveECC_4:
+⏭️  Skipping AdaptiveECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 93/100 (93.0%)
+  Performance:     95/100 (95.0%)
+  Overall:         ✅ PASS
+
+[44/52] AdaptiveECC_8:
+      Creating AdaptiveECC instance for 8 bits...
+      Running round-trip tests...
+🔄 Adapting ECC: HammingSECDED → HammingSECDEDECC (error_rate: 0.000)
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 99/100 (99.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 67 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 99/100 (99.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing ThreeDMemoryECC...
+----------------------------------------
+
+[45/52] ThreeDMemoryECC_4:
+⏭️  Skipping ThreeDMemoryECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 95/100 (95.0%)
+  Performance:     95/100 (95.0%)
+  Overall:         ✅ PASS
+
+[46/52] ThreeDMemoryECC_8:
+      Creating ThreeDMemoryECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+🔧 3D Memory: Corrected bit at layer 3, position 0
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 3, position 1
+🔧 3D Memory: Corrected bit at layer 1, position 0
+🔧 3D Memory: Corrected bit at layer 1, position 0
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 0
+🔧 3D Memory: Corrected bit at layer 1, position 1
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 1
+🔧 3D Memory: Corrected bit at layer 0, position 1
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 3, position 1
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 3, position 0
+🔧 3D Memory: Corrected bit at layer 1, position 0
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 0
+🔧 3D Memory: Corrected bit at layer 1, position 1
+🔧 3D Memory: Corrected bit at layer 3, position 0
+🔧 3D Memory: Corrected bit at layer 1, position 1
+🔧 3D Memory: Corrected bit at layer 1, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 1
+🔧 3D Memory: Corrected bit at layer 0, position 1
+🔧 3D Memory: Corrected bit at layer 3, position 0
+🔧 3D Memory: Corrected bit at layer 1, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 1
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 3, position 1
+🔧 3D Memory: Corrected bit at layer 0, position 1
+🔧 3D Memory: Corrected bit at layer 2, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 1
+🔧 3D Memory: Corrected bit at layer 0, position 1
+🔧 3D Memory: Corrected bit at layer 3, position 1
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 0
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 1
+🔧 3D Memory: Corrected bit at layer 3, position 1
+🔧 3D Memory: Corrected bit at layer 2, position 1
+🔧 3D Memory: Corrected bit at layer 3, position 0
+🔧 3D Memory: Corrected bit at layer 1, position 0
+🔧 3D Memory: Corrected bit at layer 0, position 1
+🔧 3D Memory: Corrected bit at layer 3, position 1
+🔧 3D Memory: Corrected bit at layer 2, position 0
+🔧 3D Memory: Corrected bit at layer 0, position 1
+🔧 3D Memory: Corrected bit at layer 1, position 0
+🔧 3D Memory: Corrected bit at layer 0, position 1
+🔧 3D Memory: Corrected bit at layer 2, position 0
+🔧 3D Memory: Corrected bit at layer 3, position 1
+🔧 3D Memory: Corrected bit at layer 2, position 1
+🔧 3D Memory: Corrected bit at layer 3, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 1
+🔧 3D Memory: Corrected bit at layer 3, position 0
+🔧 3D Memory: Corrected bit at layer 3, position 0
+🔧 3D Memory: Corrected bit at layer 3, position 1
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 0, position 0
+🔧 3D Memory: Corrected bit at layer 2, position 0
+        Error correction: 99/100 (99.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 68 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 99/100 (99.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing PrimarySecondaryECC...
+----------------------------------------
+
+[47/52] PrimarySecondaryECC_4:
+⏭️  Skipping PrimarySecondaryECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 91/100 (91.0%)
+  Performance:     95/100 (95.0%)
+  Overall:         ✅ PASS
+
+[48/52] PrimarySecondaryECC_8:
+      Creating PrimarySecondaryECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 99/100 (99.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 69 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 99/100 (99.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+📋 Testing CyclicECC...
+----------------------------------------
+
+[49/52] CyclicECC_4:
+⏭️  Skipping CyclicECC_4 - cached PASS result
+  Round-trip:     97/100 (97.0%)
+  Error correction: 94/100 (94.0%)
+  Performance:     93/100 (93.0%)
+  Overall:         ✅ PASS
+
+[50/52] CyclicECC_8:
+      Creating CyclicECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 95/100 (95.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 98/100 (98.00%)
+💾 Saved verification cache with 70 entries
+  Round-trip:     95/100 (95.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     98/100 (98.0%)
+  Overall:         ✅ PASS
+
+📋 Testing BurstErrorECC...
+----------------------------------------
+
+[51/52] BurstErrorECC_4:
+⏭️  Skipping BurstErrorECC_4 - cached PASS result
+  Round-trip:     100/100 (100.0%)
+  Error correction: 97/100 (97.0%)
+  Performance:     98/100 (98.0%)
+  Overall:         ✅ PASS
+
+[52/52] BurstErrorECC_8:
+      Creating BurstErrorECC instance for 8 bits...
+      Running round-trip tests...
+          Round-trip progress: 100/100
+        Round-trip: 100/100 (100.00%)
+      Running error correction tests...
+        Error correction: 100/100 (100.00%)
+      Running performance tests...
+        Performance: 100/100 (100.00%)
+💾 Saved verification cache with 71 entries
+  Round-trip:     100/100 (100.0%)
+  Error correction: 100/100 (100.0%)
+  Performance:     100/100 (100.0%)
+  Overall:         ✅ PASS
+
+============================================================
+📊 VERIFICATION SUMMARY
+============================================================
+✅ Passed: 52/52 configurations
+❌ Failed: 0/52 configurations
+📈 Success Rate: 100.0%
+Analysis complete. Generated 3 visualization charts.
+
+ECC Analysis Summary
+===================
+Total configurations analyzed: 336
+ECC types tested: 21
+
+Performance Rankings:
+  1. BCHECC
+  2. ReedMullerECC
+  3. ParityECC
+  4. RaptorCodeECC
+  5. HammingSECDEDECC
+  6. SpatiallyCoupledLDPCECC
+  7. LDPCECC
+  8. PolarECC
+  9. ExtendedHammingECC
+  10. SystemECC
+  11. ConvolutionalECC
+  12. NonBinaryLDPCECC
+  13. PrimarySecondaryECC
+  14. GolayECC
+  15. CRCECC
+  16. BurstErrorECC
+  17. RepetitionECC
+  18. ConcatenatedECC
+  19. TurboECC
+  20. ProductCodeECC
+  21. ReedSolomonECC
+
+Best ECC for Different Scenarios:
+  high_reliability: BCHECC
+  high_efficiency: BCHECC
+  high_speed: BCHECC
+  single_bit_errors: BCHECC
+  burst_errors: BCHECC
+  random_errors: BCHECC
+
+Top Recommendations:
+  1. **Overall Best Performer:** BCHECC ranks highest in composite performance score.
+  2. **For High Reliability:** BCHECC provides the highest success rate across all scenarios.
+  3. **For High Efficiency:** BCHECC offers the best code rate (data efficiency).
+  4. **For High Speed:** BCHECC has the fastest encoding/decoding times.
+  5. **For Single Bit Errors:** BCHECC provides the best correction rate for single bit errors.
+
+ECC Implementation Verification:
+  Verification Status: 52/52 configurations passed
+
+===== ECC Framework Execution Completed =====
+Mode executed: benchmark
+ECC benchmarking completed.
+Benchmark results saved to: results/benchmark_results.json
+Detailed logs available in: results/run.log
+
+Parallel processing options used:
+  - Multiprocessing enabled
+  - Workers: auto
