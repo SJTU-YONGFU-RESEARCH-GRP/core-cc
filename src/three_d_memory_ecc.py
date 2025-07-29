@@ -18,12 +18,24 @@ class ThreeDMemoryECC(ECCBase):
             bits_per_layer: Bits per memory layer (default: 2)
         """
         self.data_length = data_length
-        self.layers = layers
-        self.bits_per_layer = bits_per_layer
+        
+        # Adjust layers and bits_per_layer based on data_length
+        if data_length <= 8:
+            self.layers = 4
+            self.bits_per_layer = 2
+        elif data_length <= 16:
+            self.layers = 4
+            self.bits_per_layer = 4
+        elif data_length <= 32:
+            self.layers = 8
+            self.bits_per_layer = 4
+        else:
+            self.layers = layers
+            self.bits_per_layer = bits_per_layer
         
         # Calculate 3D memory parameters
-        self.total_bits = layers * bits_per_layer
-        self.parity_bits = layers + bits_per_layer + 1  # Layer parity + bit parity + overall parity
+        self.total_bits = self.layers * self.bits_per_layer
+        self.parity_bits = self.layers + self.bits_per_layer + 1  # Layer parity + bit parity + overall parity
         self.n = self.total_bits + self.parity_bits
         
         # Import base ECC for layer-level protection

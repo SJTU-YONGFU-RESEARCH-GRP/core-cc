@@ -2,21 +2,21 @@
   "ecc_type": "ReedSolomonECC",
   "word_length": 4,
   "error_pattern": "double",
-  "trials": 1000,
-  "correctable_errors": 937,
+  "trials": 10000,
+  "correctable_errors": 9302,
   "detected_errors": 0,
-  "undetected_errors": 63,
-  "encode_time_avg": 9.257078170776367e-06,
-  "decode_time_avg": 4.824185371398926e-05,
-  "total_time_avg": 5.7498931884765627e-05,
+  "undetected_errors": 698,
+  "encode_time_avg": 2.481374740600586e-05,
+  "decode_time_avg": 0.00011712362766265869,
+  "total_time_avg": 0.00014193737506866454,
   "code_rate": 0.0625,
   "overhead_ratio": 15.0,
-  "correction_rate": 0.937,
-  "detection_rate": 0.937,
-  "success_rate": 0.937,
+  "correction_rate": 0.9302,
+  "detection_rate": 0.9302,
+  "success_rate": 0.9302,
   "error_distribution": {
-    "corrected": 937,
+    "corrected": 9302,
     "detected": 0,
-    "undetected": 63
+    "undetected": 698
   }
 }

@@ -1,0 +1,22 @@
+{
+  "ecc_type": "FireCodeECC",
+  "word_length": 8,
+  "error_pattern": "burst",
+  "trials": 10000,
+  "correctable_errors": 7038,
+  "detected_errors": 2962,
+  "undetected_errors": 0,
+  "encode_time_avg": 6.034040451049804e-06,
+  "decode_time_avg": 2.3926687240600586e-05,
+  "total_time_avg": 2.996072769165039e-05,
+  "code_rate": 0.5714285714285714,
+  "overhead_ratio": 0.75,
+  "correction_rate": 0.7038,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 7038,
+    "detected": 2962,
+    "undetected": 0
+  }
+}

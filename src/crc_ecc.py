@@ -76,39 +76,29 @@ class CRCECC(ECCBase):
         self.polynomial = polynomial
         self.crc = CRC8(poly=polynomial)
         self.crc_bits = 8  # CRC-8 uses 8 bits
+        self.data_length = data_length
     
     def encode(self, data: int) -> int:
         """
-        Encode data with CRC.
+        Encode data using CRC.
         
         Args:
-            data: Input data
+            data: Input data as integer
             
         Returns:
-            Codeword with CRC appended
+            Encoded codeword as integer
         """
-        # For small data, use a simpler approach
-        if data < 4294967296:  # 32 bits or less
-            # Simple redundancy for small data
-            codeword = (data << 8) | (data & 0xFF)
-            return codeword
-        
-        # For larger data, use the full CRC approach
-        # Convert data to bit list (LSB first)
-        data_bits = [(data >> i) & 1 for i in range(data.bit_length() or 1)]
-        
-        # Convert to MSB first for CRC calculation
-        data_bits_msb = data_bits.copy()
-        data_bits_msb.reverse()
+        # Convert data to bit list with proper length
+        data_bits = [(data >> i) & 1 for i in range(self.data_length)]
         
         # Encode with CRC
-        codeword_bits = self.crc.encode(data_bits_msb)
+        codeword_bits = self.crc.encode(data_bits)
         
-        # Convert back to integer (LSB first)
+        # Convert back to integer
         codeword = 0
         for i, bit in enumerate(codeword_bits):
             codeword |= (bit << i)
-        
+            
         return codeword
     
     def _calculate_crc(self, data: int) -> int:
@@ -137,40 +127,28 @@ class CRCECC(ECCBase):
         Returns:
             Tuple of (decoded_data, error_type)
         """
-        # For small data, use a simpler approach
-        if codeword < (4294967296 << 8):  # 32 bits or less
-            # Extract original data from simple redundancy
-            decoded_data = (codeword >> 8) & 0xFFFFFFFF
-            return decoded_data, 'corrected'
-        
-        # For larger data, use the full CRC approach
-        # Convert codeword to bit list (LSB first)
-        codeword_bits = [(codeword >> i) & 1 for i in range(codeword.bit_length() or 1)]
-        
-        # Extract data bits (all except last 8 CRC bits)
-        data_bits = codeword_bits[:-self.crc_bits] if len(codeword_bits) > self.crc_bits else []
-        
-        # Convert data bits back to integer (LSB first)
-        data = 0
-        for i, bit in enumerate(data_bits):
-            data |= (bit << i)
-        
-        # Check CRC using the same bit ordering as encode
-        if len(codeword_bits) >= self.crc_bits:
-            # Convert data bits to MSB first for CRC check
-            data_bits_msb = data_bits.copy()
-            data_bits_msb.reverse()
+        try:
+            # Calculate expected codeword length: data_length + CRC_bits
+            expected_codeword_length = self.data_length + 8  # Assuming 8-bit CRC
             
-            # Calculate expected CRC
-            crc_expected = self.crc.compute(data_bits_msb)
-            crc_expected_bits = [(crc_expected >> i) & 1 for i in range(8)]
+            # Convert to bit list with proper length
+            codeword_bits = [(codeword >> i) & 1 for i in range(expected_codeword_length)]
             
-            # Extract received CRC bits
-            crc_received_bits = codeword_bits[-self.crc_bits:]
-            
-            if crc_received_bits == crc_expected_bits:
-                return data, 'corrected'  # No error
+            # Check CRC validity
+            if self.crc.check(codeword_bits):
+                # Extract data bits (all except last 8 CRC bits)
+                data_bits = codeword_bits[:-8]
+                
+                # Convert back to integer
+                decoded_data = 0
+                for i, bit in enumerate(data_bits):
+                    decoded_data |= (bit << i)
+                    
+                return decoded_data, 'corrected'
             else:
-                return data, 'detected'   # Error detected
-        else:
-            return data, 'detected'  # Invalid codeword 
+                # CRC check failed - error detected
+                return codeword, 'detected'
+            
+        except Exception:
+            # If decoding fails, error detected
+            return codeword, 'detected' 

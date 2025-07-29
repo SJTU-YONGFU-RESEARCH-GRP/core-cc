@@ -64,17 +64,14 @@ class ConvolutionalCode:
 class ConvolutionalECC(ECCBase):
     """Convolutional ECC implementation."""
     
-    def __init__(self, n: int = 2, k: int = 1, data_length: int = None):
+    def __init__(self, data_length: int = 8):
         """
         Initialize Convolutional ECC.
         
         Args:
-            n: Output bits per input bit
-            k: Input bits per block
-            data_length: Data length for compatibility
+            data_length: Data length in bits
         """
-        self.n = n
-        self.k = k
+        self.data_length = data_length
         self.conv = ConvolutionalCode()
     
     def encode(self, data: int) -> int:
@@ -87,12 +84,8 @@ class ConvolutionalECC(ECCBase):
         Returns:
             Codeword
         """
-        # Convert data to bit list
-        data_bits = [(data >> i) & 1 for i in range(data.bit_length() or 1)]
-        
-        # Ensure we have at least 1 bit
-        if not data_bits:
-            data_bits = [0]
+        # Convert data to bit list with proper length
+        data_bits = [(data >> i) & 1 for i in range(self.data_length)]
         
         # Encode with convolutional code
         codeword_bits = self.conv.encode(data_bits)
@@ -110,34 +103,31 @@ class ConvolutionalECC(ECCBase):
     
     def decode(self, codeword: int) -> Tuple[int, str]:
         """
-        Decode codeword with convolutional code.
+        Decode a convolutional codeword.
         
         Args:
-            codeword: Input codeword
+            codeword: The codeword to decode
             
         Returns:
             Tuple of (decoded_data, error_type)
         """
-        # Convert codeword to bit list
-        codeword_bits = [(codeword >> i) & 1 for i in range(codeword.bit_length() or 1)]
-        
-        # Ensure even length for convolutional decoding
-        if len(codeword_bits) % 2 != 0:
-            # Pad with zero if odd length
-            codeword_bits.append(0)
-        
         try:
+            # Calculate expected codeword length: data_length * 2 (rate 1/2)
+            expected_codeword_length = self.data_length * 2
+            
+            # Convert to bit list with proper length
+            codeword_bits = [(codeword >> i) & 1 for i in range(expected_codeword_length)]
+            
             # Decode with convolutional code
             decoded_bits = self.conv.viterbi_decode(codeword_bits)
             
             # Convert back to integer
-            data = 0
+            decoded_data = 0
             for i, bit in enumerate(decoded_bits):
-                data |= (bit << i)
+                decoded_data |= (bit << i)
+                
+            return decoded_data, 'corrected'
             
-            # For this demo implementation, assume errors are corrected
-            return data, 'corrected'
-        except Exception as e:
-            # If decoding fails, return original data and mark as detected
-            print(f"Decode error for ConvolutionalECC: {e}")
+        except Exception:
+            # If decoding fails, error detected
             return codeword, 'detected' 

@@ -823,12 +823,21 @@ class ECCBenchmarkSuite:
             # These use default constructor but can accept word_length
             ecc = ecc_type(word_length=word_length)
         elif ecc_type_name in ['ExtendedHammingECC', 'ProductCodeECC', 'ConcatenatedECC', 
-                              'ReedMullerECC', 'FireCodeECC', 'SpatiallyCoupledLDPCECC', 
+                              'ReedMullerECC', 'SpatiallyCoupledLDPCECC', 
                               'NonBinaryLDPCECC', 'RaptorCodeECC', 'CompositeECC', 
-                              'BurstErrorECC', 'SystemECC', 'AdaptiveECC', 'ThreeDMemoryECC', 
-                              'PrimarySecondaryECC', 'CyclicECC']:
+                              'BurstErrorECC', 'SystemECC', 'AdaptiveECC', 
+                              'PrimarySecondaryECC']:
             # These use default constructor but can accept word_length
             ecc = ecc_type(word_length=word_length)
+        elif ecc_type_name == 'FireCodeECC':
+            # FireCodeECC expects data_length parameter
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'ThreeDMemoryECC':
+            # ThreeDMemoryECC expects data_length parameter
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'CyclicECC':
+            # CyclicECC expects data_length parameter
+            ecc = ecc_type(n=word_length*2, k=word_length, data_length=word_length)
         else: 
             # Fallback for unknown types
             ecc = ecc_type()

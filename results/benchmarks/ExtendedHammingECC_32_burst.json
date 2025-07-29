@@ -2,13 +2,13 @@
   "ecc_type": "ExtendedHammingECC",
   "word_length": 32,
   "error_pattern": "burst",
-  "trials": 1000,
+  "trials": 10000,
   "correctable_errors": 0,
-  "detected_errors": 1000,
+  "detected_errors": 10000,
   "undetected_errors": 0,
-  "encode_time_avg": 4.198360443115235e-05,
-  "decode_time_avg": 4.3950796127319333e-05,
-  "total_time_avg": 8.593440055847168e-05,
+  "encode_time_avg": 0.000137396502494812,
+  "decode_time_avg": 0.00014381105899810792,
+  "total_time_avg": 0.00028120756149291993,
   "code_rate": 0.8205128205128205,
   "overhead_ratio": 0.21875,
   "correction_rate": 0.0,
@@ -16,7 +16,7 @@
   "success_rate": 1.0,
   "error_distribution": {
     "corrected": 0,
-    "detected": 1000,
+    "detected": 10000,
     "undetected": 0
   }
 }

@@ -2,13 +2,13 @@
   "ecc_type": "ParityECC",
   "word_length": 16,
   "error_pattern": "burst",
-  "trials": 1000,
+  "trials": 10000,
   "correctable_errors": 0,
-  "detected_errors": 1000,
+  "detected_errors": 10000,
   "undetected_errors": 0,
-  "encode_time_avg": 2.4018287658691406e-06,
-  "decode_time_avg": 2.583980560302734e-06,
-  "total_time_avg": 4.985809326171875e-06,
+  "encode_time_avg": 4.518055915832519e-06,
+  "decode_time_avg": 6.725788116455078e-06,
+  "total_time_avg": 1.1243844032287598e-05,
   "code_rate": 0.9411764705882353,
   "overhead_ratio": 0.0625,
   "correction_rate": 0.0,
@@ -16,7 +16,7 @@
   "success_rate": 1.0,
   "error_distribution": {
     "corrected": 0,
-    "detected": 1000,
+    "detected": 10000,
     "undetected": 0
   }
 }

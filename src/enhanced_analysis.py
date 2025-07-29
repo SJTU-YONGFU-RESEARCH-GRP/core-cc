@@ -532,8 +532,6 @@ class ECCVerifier:
             'CRCECC': CRCECC,
             'GolayECC': GolayECC,
             'LDPCECC': LDPCECC,
-            'TurboECC': TurboECC,
-            'ConvolutionalECC': ConvolutionalECC,
             'PolarECC': PolarECC,
             'ExtendedHammingECC': ExtendedHammingECC,
             'ProductCodeECC': ProductCodeECC,
@@ -549,10 +547,12 @@ class ECCVerifier:
             'ThreeDMemoryECC': ThreeDMemoryECC,
             'PrimarySecondaryECC': PrimarySecondaryECC,
             'CyclicECC': CyclicECC,
-            'BurstErrorECC': BurstErrorECC
+            'BurstErrorECC': BurstErrorECC,
+            'TurboECC': TurboECC,
+            'ConvolutionalECC': ConvolutionalECC
         }
-        self.word_lengths = [4, 8]
-        self.test_trials = 100
+        self.word_lengths = [4, 8, 16, 32]
+        self.test_trials = 1000
         self.cache_file = "results/verification_cache.json"
         self.cache = self._load_cache()
     
@@ -651,23 +651,85 @@ class ECCVerifier:
                     test_details=cached_result.get('test_details', {})
                 )
         
+        # Add overall timeout for this verification (60 seconds max)
+        start_time = time.time()
+        
         try:
             print(f"      Creating {ecc_type} instance for {word_length} bits...")
-            # Create ECC instance
+            # Create ECC instance with timeout
+            ecc_creation_start = time.time()
             ecc_class = self.ecc_classes[ecc_type]
             ecc = ecc_class(data_length=word_length)
+            creation_time = time.time() - ecc_creation_start
+            
+            if creation_time > 5.0:
+                print(f"      Warning: Slow ECC creation for {ecc_type} ({creation_time:.2f}s)")
+            
+            # Check overall timeout
+            if time.time() - start_time > 60:
+                print(f"      ⚠️  Timeout during ECC creation for {ecc_type}")
+                return ECCVerificationResult(
+                    ecc_type=ecc_type,
+                    word_length=word_length,
+                    verification_passed=False,
+                    round_trip_tests=0,
+                    round_trip_successes=0,
+                    error_correction_tests=0,
+                    error_correction_successes=0,
+                    performance_tests=0,
+                    performance_successes=0,
+                    error_messages=[f"Timeout during ECC creation"]
+                )
             
             print(f"      Running round-trip tests...")
-            # Run verification tests
+            # Run verification tests with timeout protection
+            round_trip_start = time.time()
             round_trip_result = self._test_round_trip(ecc, word_length)
+            round_trip_time = time.time() - round_trip_start
             print(f"        Round-trip: {round_trip_result['successes']}/{round_trip_result['tests']} ({round_trip_result['success_rate']:.2%})")
             
+            # Check overall timeout
+            if time.time() - start_time > 60:
+                print(f"      ⚠️  Timeout during round-trip tests for {ecc_type}")
+                return ECCVerificationResult(
+                    ecc_type=ecc_type,
+                    word_length=word_length,
+                    verification_passed=False,
+                    round_trip_tests=round_trip_result['tests'],
+                    round_trip_successes=round_trip_result['successes'],
+                    error_correction_tests=0,
+                    error_correction_successes=0,
+                    performance_tests=0,
+                    performance_successes=0,
+                    error_messages=[f"Timeout during round-trip tests"]
+                )
+            
             print(f"      Running error correction tests...")
+            error_correction_start = time.time()
             error_correction_result = self._test_error_correction(ecc, word_length)
+            error_correction_time = time.time() - error_correction_start
             print(f"        Error correction: {error_correction_result['successes']}/{error_correction_result['tests']} ({error_correction_result['success_rate']:.2%})")
             
+            # Check overall timeout
+            if time.time() - start_time > 60:
+                print(f"      ⚠️  Timeout during error correction tests for {ecc_type}")
+                return ECCVerificationResult(
+                    ecc_type=ecc_type,
+                    word_length=word_length,
+                    verification_passed=False,
+                    round_trip_tests=round_trip_result['tests'],
+                    round_trip_successes=round_trip_result['successes'],
+                    error_correction_tests=error_correction_result['tests'],
+                    error_correction_successes=error_correction_result['successes'],
+                    performance_tests=0,
+                    performance_successes=0,
+                    error_messages=[f"Timeout during error correction tests"]
+                )
+            
             print(f"      Running performance tests...")
+            performance_start = time.time()
             performance_result = self._test_performance(ecc, word_length)
+            performance_time = time.time() - performance_start
             print(f"        Performance: {performance_result['successes']}/{performance_result['tests']} ({performance_result['success_rate']:.2%})")
             
             # Determine overall success
@@ -749,16 +811,28 @@ class ECCVerifier:
                 # Generate random data
                 data = random.randint(0, (1 << word_length) - 1)
                 
-                # Test encoding
+                # Test encoding with timeout
                 start_time = time.time()
                 codeword = ecc.encode(data)
                 encode_time = time.time() - start_time
+                
+                # Check for timeout (1 second max per operation)
+                if encode_time > 1.0:
+                    print(f"          Warning: Encode timeout for {type(ecc).__name__}")
+                    continue
+                    
                 encode_times.append(encode_time)
                 
-                # Test decoding
+                # Test decoding with timeout
                 start_time = time.time()
                 decoded, error_type = ecc.decode(codeword)
                 decode_time = time.time() - start_time
+                
+                # Check for timeout (1 second max per operation)
+                if decode_time > 1.0:
+                    print(f"          Warning: Decode timeout for {type(ecc).__name__}")
+                    continue
+                    
                 decode_times.append(decode_time)
                 
                 # Check if round-trip was successful
@@ -766,13 +840,13 @@ class ECCVerifier:
                     successes += 1
                 tests += 1
                 
-                # Progress logging every 100 tests
-                if (i + 1) % 100 == 0:
+                # Progress logging every 2 tests (more frequent)
+                if (i + 1) % 2 == 0:
                     print(f"          Round-trip progress: {i + 1}/{self.test_trials}")
                 
             except Exception as e:
                 tests += 1
-                if tests <= 5:  # Only log first few exceptions
+                if tests <= 3:  # Only log first few exceptions
                     print(f"          Round-trip test {i} failed: {str(e)}")
         
         return {
@@ -788,23 +862,44 @@ class ECCVerifier:
         successes = 0
         tests = 0
         
-        for _ in range(self.test_trials):
+        for i in range(self.test_trials):
             try:
                 # Generate random data
                 data = random.randint(0, (1 << word_length) - 1)
+                
+                # Test encoding with timeout
+                start_time = time.time()
                 codeword = ecc.encode(data)
+                encode_time = time.time() - start_time
+                
+                # Check for timeout (1 second max per operation)
+                if encode_time > 1.0:
+                    print(f"          Warning: Encode timeout for {type(ecc).__name__}")
+                    continue
                 
                 # Inject single bit error
-                error_position = random.randint(0, codeword.bit_length() - 1)
+                codeword_length = max(1, codeword.bit_length())
+                error_position = random.randint(0, codeword_length - 1)
                 corrupted = codeword ^ (1 << error_position)
                 
-                # Test error correction
+                # Test error correction with timeout
+                start_time = time.time()
                 decoded, error_type = ecc.decode(corrupted)
+                decode_time = time.time() - start_time
+                
+                # Check for timeout (1 second max per operation)
+                if decode_time > 1.0:
+                    print(f"          Warning: Decode timeout for {type(ecc).__name__}")
+                    continue
                 
                 # Success if error was detected or corrected
                 if error_type in ['detected', 'corrected'] or decoded == data:
                     successes += 1
                 tests += 1
+                
+                # Progress logging every 2 tests
+                if (i + 1) % 2 == 0:
+                    print(f"          Error correction progress: {i + 1}/{self.test_trials}")
                 
             except Exception:
                 tests += 1
@@ -822,27 +917,43 @@ class ECCVerifier:
         encode_times = []
         decode_times = []
         
-        for _ in range(self.test_trials):
+        for i in range(self.test_trials):
             try:
                 # Generate random data
                 data = random.randint(0, (1 << word_length) - 1)
                 
-                # Test encoding performance
+                # Test encoding performance with timeout
                 start_time = time.time()
                 codeword = ecc.encode(data)
                 encode_time = time.time() - start_time
+                
+                # Check for timeout (1 second max per operation)
+                if encode_time > 1.0:
+                    print(f"          Warning: Encode timeout for {type(ecc).__name__}")
+                    continue
+                    
                 encode_times.append(encode_time)
                 
-                # Test decoding performance
+                # Test decoding performance with timeout
                 start_time = time.time()
                 decoded, error_type = ecc.decode(codeword)
                 decode_time = time.time() - start_time
+                
+                # Check for timeout (1 second max per operation)
+                if decode_time > 1.0:
+                    print(f"          Warning: Decode timeout for {type(ecc).__name__}")
+                    continue
+                    
                 decode_times.append(decode_time)
                 
                 # Success if both operations completed
                 if codeword > 0 and decoded >= 0:
                     successes += 1
                 tests += 1
+                
+                # Progress logging every 2 tests
+                if (i + 1) % 2 == 0:
+                    print(f"          Performance progress: {i + 1}/{self.test_trials}")
                 
             except Exception:
                 tests += 1
@@ -892,6 +1003,8 @@ class ECCVerifier:
         print(f"🔍 Testing {total_configs} ECC configurations sequentially...")
         print("=" * 60)
         
+        start_time = time.time()
+        
         for ecc_type in self.ecc_classes.keys():
             print(f"\n📋 Testing {ecc_type}...")
             print("-" * 40)
@@ -900,24 +1013,54 @@ class ECCVerifier:
                 current_config += 1
                 key = f"{ecc_type}_{word_length}"
                 
+                # Check for overall timeout (30 minutes max)
+                elapsed_time = time.time() - start_time
+                if elapsed_time > 1800:  # 30 minutes
+                    print(f"⚠️  Overall timeout reached. Stopping verification.")
+                    break
+                
                 print(f"\n[{current_config}/{total_configs}] {key}:")
-                result = self.verify_ecc_implementation(ecc_type, word_length, use_cache, force_overwrite)
-                results[key] = result
                 
-                status = "✅ PASS" if result.verification_passed else "❌ FAIL"
-                round_trip_rate = result.round_trip_successes / result.round_trip_tests * 100 if result.round_trip_tests > 0 else 0
-                error_correction_rate = result.error_correction_successes / result.error_correction_tests * 100 if result.error_correction_tests > 0 else 0
-                performance_rate = result.performance_successes / result.performance_tests * 100 if result.performance_tests > 0 else 0
-                
-                print(f"  Round-trip:     {result.round_trip_successes}/{result.round_trip_tests} ({round_trip_rate:.1f}%)")
-                print(f"  Error correction: {result.error_correction_successes}/{result.error_correction_tests} ({error_correction_rate:.1f}%)")
-                print(f"  Performance:     {result.performance_successes}/{result.performance_tests} ({performance_rate:.1f}%)")
-                print(f"  Overall:         {status}")
-                
-                if result.error_messages:
-                    print("  Errors:")
-                    for error in result.error_messages:
-                        print(f"    - {error}")
+                # Add timeout for individual verification
+                try:
+                    result = self.verify_ecc_implementation(ecc_type, word_length, use_cache, force_overwrite)
+                    results[key] = result
+                    
+                    status = "✅ PASS" if result.verification_passed else "❌ FAIL"
+                    round_trip_rate = result.round_trip_successes / result.round_trip_tests * 100 if result.round_trip_tests > 0 else 0
+                    error_correction_rate = result.error_correction_successes / result.error_correction_tests * 100 if result.error_correction_tests > 0 else 0
+                    performance_rate = result.performance_successes / result.performance_tests * 100 if result.performance_tests > 0 else 0
+                    
+                    print(f"  Round-trip:     {result.round_trip_successes}/{result.round_trip_tests} ({round_trip_rate:.1f}%)")
+                    print(f"  Error correction: {result.error_correction_successes}/{result.error_correction_tests} ({error_correction_rate:.1f}%)")
+                    print(f"  Performance:     {result.performance_successes}/{result.performance_tests} ({performance_rate:.1f}%)")
+                    print(f"  Overall:         {status}")
+                    
+                    if result.error_messages:
+                        print("  Errors:")
+                        for error in result.error_messages:
+                            print(f"    - {error}")
+                            
+                except Exception as e:
+                    print(f"  ❌ Verification failed for {key}: {str(e)}")
+                    results[key] = ECCVerificationResult(
+                        ecc_type=ecc_type,
+                        word_length=word_length,
+                        verification_passed=False,
+                        round_trip_tests=0,
+                        round_trip_successes=0,
+                        error_correction_tests=0,
+                        error_correction_successes=0,
+                        performance_tests=0,
+                        performance_successes=0,
+                        error_messages=[f"Verification failed: {str(e)}"]
+                    )
+            
+            # Check for overall timeout after each ECC type
+            elapsed_time = time.time() - start_time
+            if elapsed_time > 1800:  # 30 minutes
+                print(f"⚠️  Overall timeout reached. Stopping verification.")
+                break
         
         # Print comprehensive summary
         print(f"\n" + "=" * 60)

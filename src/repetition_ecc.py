@@ -56,28 +56,29 @@ class RepetitionECC(ECCBase):
         """
         self.repetition_factor = repetition_factor
         self.repetition = RepetitionCode(n=repetition_factor)
+        self.data_length = data_length
     
     def encode(self, data: int) -> int:
         """
-        Encode data with repetition code.
+        Encode data using repetition code.
         
         Args:
-            data: Input data
+            data: Input data as integer
             
         Returns:
-            Codeword with repeated bits
+            Encoded codeword as integer
         """
-        # Convert data to bit list
-        data_bits = [(data >> i) & 1 for i in range(data.bit_length() or 1)]
+        # Convert data to bit list with proper length
+        data_bits = [(data >> i) & 1 for i in range(self.data_length)]
         
-        # Encode with repetition
+        # Encode with repetition code
         codeword_bits = self.repetition.encode(data_bits)
         
         # Convert back to integer
         codeword = 0
         for i, bit in enumerate(codeword_bits):
             codeword |= (bit << i)
-        
+            
         return codeword
     
     def decode(self, codeword: int) -> Tuple[int, str]:
@@ -90,23 +91,23 @@ class RepetitionECC(ECCBase):
         Returns:
             Tuple of (decoded_data, error_type)
         """
-        # Convert to bit list
-        codeword_bits = [(codeword >> i) & 1 for i in range(codeword.bit_length() or 1)]
-        
-        # Group bits by repetition factor
-        groups = [codeword_bits[i:i+self.repetition_factor] for i in range(0, len(codeword_bits), self.repetition_factor)]
-        
-        # Decode each group by majority vote
-        decoded_bits = []
-        for group in groups:
-            if len(group) == self.repetition_factor:
-                # Majority vote
-                bit = 1 if sum(group) > len(group) // 2 else 0
-                decoded_bits.append(bit)
-        
-        # Convert back to integer
-        data = 0
-        for i, bit in enumerate(decoded_bits):
-            data |= (bit << i)
-        
-        return data, 'corrected'  # Assume errors are corrected 
+        try:
+            # Calculate expected codeword length: data_length * repetition_factor
+            expected_codeword_length = self.data_length * self.repetition_factor
+            
+            # Convert to bit list with proper length
+            codeword_bits = [(codeword >> i) & 1 for i in range(expected_codeword_length)]
+            
+            # Decode with repetition code
+            decoded_bits = self.repetition.decode(codeword_bits)
+            
+            # Convert back to integer
+            decoded_data = 0
+            for i, bit in enumerate(decoded_bits):
+                decoded_data |= (bit << i)
+                
+            return decoded_data, 'corrected'
+            
+        except Exception:
+            # If decoding fails, error detected
+            return codeword, 'detected' 

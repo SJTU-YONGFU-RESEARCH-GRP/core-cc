@@ -172,8 +172,11 @@ class TurboECC(ECCBase):
             Tuple of (decoded_data, error_type)
         """
         try:
-            # Convert to bit list
-            codeword_bits = [(codeword >> i) & 1 for i in range(codeword.bit_length() or 1)]
+            # Calculate expected codeword length: data_length + 2*data_length (parity bits)
+            expected_codeword_length = self.data_length * 3  # systematic + parity1 + parity2
+            
+            # Convert to bit list with proper length
+            codeword_bits = [(codeword >> i) & 1 for i in range(expected_codeword_length)]
             
             # Decode with Turbo code
             decoded_bits, error_type = self.turbo.decode(codeword_bits)
