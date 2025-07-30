@@ -1,0 +1,5 @@
+
+            read_verilog verilogs/composite_ecc.v
+            synth -top composite_ecc
+            stat
+            

@@ -1,0 +1,5 @@
+
+            read_verilog verilogs/bch_ecc.v
+            synth -top bch_ecc
+            stat
+            

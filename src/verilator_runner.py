@@ -109,7 +109,7 @@ int main(int argc, char** argv) {{
     
     print(f"    📄 Simulation log saved to: {sim_log}")
     
-    return {"stdout": sim.stdout, "stderr": sim.stderr} 
+    return {"stdout": sim.stdout, "stderr": sim.stderr}
 
 def test_hamming_encoder():
     """Test the Hamming encoder in isolation."""

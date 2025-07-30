@@ -1,0 +1,7 @@
+hamming_secded_ecc_tb.o: \
+ /mnt/d/proj/ecc/testbenches/hamming_secded_ecc_tb.c \
+ Vhamming_secded_ecc.h /usr/local/share/verilator/include/verilated.h \
+ /usr/local/share/verilator/include/verilatedos.h \
+ /usr/local/share/verilator/include/verilated_config.h \
+ /usr/local/share/verilator/include/verilated_types.h \
+ /usr/local/share/verilator/include/verilated_funcs.h

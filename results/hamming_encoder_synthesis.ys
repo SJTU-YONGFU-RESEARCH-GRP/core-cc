@@ -1,0 +1,5 @@
+
+            read_verilog verilogs/hamming_encoder.v
+            synth -top hamming_encoder
+            stat
+            

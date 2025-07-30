@@ -1,0 +1,5 @@
+
+    read_verilog /mnt/d/proj/ecc/verilogs/test_encoder.v
+    synth -top test_encoder
+    stat
+    

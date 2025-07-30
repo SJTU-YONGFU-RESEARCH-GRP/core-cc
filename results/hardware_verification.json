@@ -1,0 +1,224 @@
+{
+  "yosys_available": true,
+  "verilator_available": true,
+  "overall_status": "SYNTHESIS_ONLY",
+  "synthesis_results": {
+    "bch1572_ecc": {
+      "module_name": "bch1572_ecc",
+      "verilog_file": "verilogs/bch1572_ecc.v",
+      "synthesis_available": false,
+      "area_cells": null,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": "Synthesis failed: ERROR: Module `bch1572_ecc' not found!\n"
+    },
+    "bch31163_ecc": {
+      "module_name": "bch31163_ecc",
+      "verilog_file": "verilogs/bch31163_ecc.v",
+      "synthesis_available": false,
+      "area_cells": null,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": "Synthesis failed: ERROR: Module `bch31163_ecc' not found!\n"
+    },
+    "bch63326_ecc": {
+      "module_name": "bch63326_ecc",
+      "verilog_file": "verilogs/bch63326_ecc.v",
+      "synthesis_available": false,
+      "area_cells": null,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": "Synthesis failed: ERROR: Module `bch63326_ecc' not found!\n"
+    },
+    "bch74_ecc": {
+      "module_name": "bch74_ecc",
+      "verilog_file": "verilogs/bch74_ecc.v",
+      "synthesis_available": false,
+      "area_cells": null,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": "Synthesis failed: ERROR: Module `bch74_ecc' not found!\n"
+    },
+    "bch_ecc": {
+      "module_name": "bch_ecc",
+      "verilog_file": "verilogs/bch_ecc.v",
+      "synthesis_available": true,
+      "area_cells": 15,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "composite_ecc": {
+      "module_name": "composite_ecc",
+      "verilog_file": "verilogs/composite_ecc.v",
+      "synthesis_available": false,
+      "area_cells": null,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": "Synthesis failed: ERROR: Module `\\hamming_decoder' referenced in module `\\composite_ecc' in cell `\\h_dec' is not part of the design.\n"
+    },
+    "constant_encoder": {
+      "module_name": "constant_encoder",
+      "verilog_file": "verilogs/constant_encoder.v",
+      "synthesis_available": true,
+      "area_cells": 0,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "crc_ecc": {
+      "module_name": "crc_ecc",
+      "verilog_file": "verilogs/crc_ecc.v",
+      "synthesis_available": true,
+      "area_cells": 25,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "general_bch_ecc": {
+      "module_name": "general_bch_ecc",
+      "verilog_file": "verilogs/general_bch_ecc.v",
+      "synthesis_available": false,
+      "area_cells": null,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": "Synthesis failed: ERROR: Module `general_bch_ecc' not found!\n"
+    },
+    "golay_ecc": {
+      "module_name": "golay_ecc",
+      "verilog_file": "verilogs/golay_ecc.v",
+      "synthesis_available": true,
+      "area_cells": 25,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "hamming_decoder": {
+      "module_name": "hamming_decoder",
+      "verilog_file": "verilogs/hamming_decoder.v",
+      "synthesis_available": true,
+      "area_cells": 67,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "hamming_encoder": {
+      "module_name": "hamming_encoder",
+      "verilog_file": "verilogs/hamming_encoder.v",
+      "synthesis_available": true,
+      "area_cells": 16,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "hamming_secded_ecc": {
+      "module_name": "hamming_secded_ecc",
+      "verilog_file": "verilogs/hamming_secded_ecc.v",
+      "synthesis_available": true,
+      "area_cells": 29,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "ldpc_ecc": {
+      "module_name": "ldpc_ecc",
+      "verilog_file": "verilogs/ldpc_ecc.v",
+      "synthesis_available": true,
+      "area_cells": 25,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "parity_decoder": {
+      "module_name": "parity_decoder",
+      "verilog_file": "verilogs/parity_decoder.v",
+      "synthesis_available": true,
+      "area_cells": 8,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "parity_ecc": {
+      "module_name": "parity_ecc",
+      "verilog_file": "verilogs/parity_ecc.v",
+      "synthesis_available": true,
+      "area_cells": 27,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "parity_encoder": {
+      "module_name": "parity_encoder",
+      "verilog_file": "verilogs/parity_encoder.v",
+      "synthesis_available": true,
+      "area_cells": 7,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "polar_ecc": {
+      "module_name": "polar_ecc",
+      "verilog_file": "verilogs/polar_ecc.v",
+      "synthesis_available": true,
+      "area_cells": 25,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "reed_solomon_ecc": {
+      "module_name": "reed_solomon_ecc",
+      "verilog_file": "verilogs/reed_solomon_ecc.v",
+      "synthesis_available": true,
+      "area_cells": 17,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "repetition_ecc": {
+      "module_name": "repetition_ecc",
+      "verilog_file": "verilogs/repetition_ecc.v",
+      "synthesis_available": true,
+      "area_cells": 68,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "rs15_11_ecc": {
+      "module_name": "rs15_11_ecc",
+      "verilog_file": "verilogs/rs15_11_ecc.v",
+      "synthesis_available": false,
+      "area_cells": null,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": "Synthesis failed: ERROR: Module `rs15_11_ecc' not found!\n"
+    },
+    "simple_encoder": {
+      "module_name": "simple_encoder",
+      "verilog_file": "verilogs/simple_encoder.v",
+      "synthesis_available": true,
+      "area_cells": 0,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    },
+    "system_ecc": {
+      "module_name": "system_ecc",
+      "verilog_file": "verilogs/system_ecc.v",
+      "synthesis_available": false,
+      "area_cells": null,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": "Synthesis failed: ERROR: Module `system_ecc' not found!\n"
+    },
+    "test_encoder": {
+      "module_name": "test_encoder",
+      "verilog_file": "verilogs/test_encoder.v",
+      "synthesis_available": true,
+      "area_cells": 0,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": null
+    }
+  },
+  "testbench_results": {}
+}

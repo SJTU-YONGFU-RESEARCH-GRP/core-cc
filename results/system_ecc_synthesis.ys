@@ -1,0 +1,5 @@
+
+            read_verilog verilogs/system_ecc.v
+            synth -top system_ecc
+            stat
+            

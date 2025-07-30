@@ -1,0 +1,10 @@
+# Verilator Simulation Log for constant_tb
+# Testbench: /mnt/d/proj/ecc/testbenches/constant_tb.v
+# Modules: /mnt/d/proj/ecc/verilogs/constant_encoder.v
+# Return code: 0
+==================================================
+
+CONSTANT: data=10101010, codeword=101010101010, expected=101010101010
+TEST: PASS
+RESULT:PASS
+- /mnt/d/proj/ecc/testbenches/constant_tb.v:37: Verilog $finish

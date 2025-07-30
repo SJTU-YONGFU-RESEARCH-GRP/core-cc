@@ -1,0 +1,5 @@
+
+            read_verilog verilogs/hamming_secded_ecc.v
+            synth -top hamming_secded_ecc
+            stat
+            

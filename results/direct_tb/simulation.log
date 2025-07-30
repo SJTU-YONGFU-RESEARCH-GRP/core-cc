@@ -1,0 +1,10 @@
+# Verilator Simulation Log for direct_tb
+# Testbench: /mnt/d/proj/ecc/testbenches/direct_tb.v
+# Modules: /mnt/d/proj/ecc/verilogs/constant_encoder.v
+# Return code: 0
+==================================================
+
+DIRECT: data=10101010, codeword=101010101010, expected=101010101010
+TEST: PASS
+RESULT:PASS
+- /mnt/d/proj/ecc/testbenches/direct_tb.v:44: Verilog $finish

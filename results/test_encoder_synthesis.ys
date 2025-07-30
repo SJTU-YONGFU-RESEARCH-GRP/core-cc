@@ -1,0 +1,5 @@
+
+            read_verilog verilogs/test_encoder.v
+            synth -top test_encoder
+            stat
+            

@@ -360,6 +360,9 @@ class HardwareVerifier:
                 result = self.verify_testbench(testbench_file)
                 testbench_results[testbench_file.stem] = result
         
+        # Initialize empty ECC verification results
+        ecc_verification_results = {}
+        
         # Determine overall status
         synthesis_available = any(r.synthesis_available for r in synthesis_results.values())
         testbench_available = any(r.testbench_available for r in testbench_results.values())
@@ -376,6 +379,7 @@ class HardwareVerifier:
         return HardwareVerificationResult(
             synthesis_results=synthesis_results,
             testbench_results=testbench_results,
+            ecc_verification_results=ecc_verification_results,
             yosys_available=yosys_available,
             verilator_available=verilator_available,
             overall_status=overall_status

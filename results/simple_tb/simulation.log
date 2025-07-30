@@ -1,0 +1,9 @@
+# Verilator Simulation Log for simple_tb
+# Testbench: /mnt/d/proj/ecc/testbenches/simple_tb.v
+# Modules: /mnt/d/proj/ecc/verilogs/simple_encoder.v
+# Return code: 0
+==================================================
+
+data=00000001, codeword=000000000001
+data=10101010, codeword=101010101010
+- /mnt/d/proj/ecc/testbenches/simple_tb.v:18: Verilog $finish

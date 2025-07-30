@@ -1,0 +1,5 @@
+
+            read_verilog verilogs/rs15_11_ecc.v
+            synth -top rs15_11_ecc
+            stat
+            

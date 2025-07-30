@@ -11,6 +11,7 @@ USE_PROCESSES=false
 CHUNKED=false
 PERFORMANCE_TEST=false
 OVERWRITE=false
+CLEANUP_BUILD=false
 
 # Function to display usage information
 show_usage() {
@@ -18,7 +19,7 @@ show_usage() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
     echo "Modes:"
-    echo "  -m, --mode MODE          Execution mode (theoretical|hardware|full|benchmark|analysis|performance|quick-test|concurrent-demo|design-exploration)"
+    echo "  -m, --mode MODE          Execution mode (theoretical|hardware|hardware-verify|full|benchmark|analysis|performance|quick-test|concurrent-demo|design-exploration)"
     echo ""
     echo "Options:"
     echo "  -v, --verbose            Enable verbose output"
@@ -32,6 +33,7 @@ show_usage() {
     echo "  --concurrent-demo        Run concurrent execution demo"
     echo "  --overwrite              Overwrite existing benchmark results"
     echo "  --with-report            Generate report after benchmark"
+    echo "  --cleanup-build          Clean up and reorganize build directories"
     echo "  -h, --help               Show this help message"
     echo ""
     echo "Examples:"
@@ -43,6 +45,8 @@ show_usage() {
     echo "  $0 --quick-test                      # Quick performance test"
     echo "  $0 --concurrent-demo                 # Concurrent execution demo"
     echo "  $0 -m design-exploration             # Run design space exploration"
+    echo "  $0 -m hardware-verify               # Run hardware verification tests"
+    echo "  $0 --cleanup-build                  # Clean up build directories"
     echo ""
     echo "Parallel Processing Examples:"
     echo "  $0 -m theoretical -p                 # Auto-detected optimal parallel processing"
@@ -114,6 +118,41 @@ run_hardware_implementation() {
     echo "This will test all ECC implementations with detailed logging..."
     python3 src/verilate_all.py
     echo "Verilator simulation completed."
+}
+
+# Function to run hardware verification tests
+run_hardware_verification_tests() {
+    print_section "Running Hardware Verification Tests"
+    
+    # Check if required directories exist
+    if [ ! -d "verilogs" ]; then
+        echo "Error: verilogs directory not found"
+        return 1
+    fi
+    
+    if [ ! -d "testbenches" ]; then
+        echo "Error: testbenches directory not found"
+        return 1
+    fi
+    
+    # Run the hardware verification tests using Python
+    echo "Starting hardware verification tests..."
+    echo "This will test all ECC Verilog implementations against Python logic..."
+    
+    local verbose_flag=""
+    if [ "$VERBOSE" = true ]; then
+        verbose_flag="--verbose"
+    fi
+    
+    python3 src/hardware_verification_runner.py $verbose_flag
+    
+    # Check the exit code
+    if [ $? -eq 0 ]; then
+        echo "Hardware verification tests completed successfully."
+    else
+        echo "Hardware verification tests failed."
+        return 1
+    fi
 }
 
 # Function to generate comprehensive ECC analysis report
@@ -239,6 +278,19 @@ run_design_exploration() {
     echo "Analysis report saved to: design_space_analysis.json"
 }
 
+# Function to cleanup and reorganize build directories
+run_build_cleanup() {
+    print_section "Cleaning Up Build Directories"
+    echo "Reorganizing build directories under results/build for better organization..."
+    
+    # Run the cleanup script
+    python3 src/cleanup_build_dirs.py
+    
+    echo "Build directory cleanup completed."
+    echo "All build artifacts are now organized under results/build/"
+    echo "This improves project organization and makes maintenance easier."
+}
+
 # Function to print completion message
 print_completion() {
     printf '\n===== ECC Framework Execution Completed =====\n'
@@ -251,6 +303,13 @@ print_completion() {
     if [ "$MODE" = "hardware" ] || [ "$MODE" = "full" ]; then
         printf 'Hardware implementation analysis completed.\n'
         printf 'Note: If Verilator simulation was skipped, install Verilator to enable hardware verification.\n'
+    fi
+    
+    if [ "$MODE" = "hardware-verify" ]; then
+        printf 'Hardware verification tests completed.\n'
+        printf 'All ECC Verilog implementations verified against Python logic.\n'
+        printf 'Test results: PASS/FAIL for each ECC type.\n'
+        printf 'Results saved to: results/hardware_verification_results.json\n'
     fi
     
     if [ "$MODE" = "performance" ] || [ "$MODE" = "quick-test" ] || [ "$MODE" = "concurrent-demo" ]; then
@@ -275,6 +334,12 @@ print_completion() {
         printf '\nTop recommendations available in the analysis report.\n'
     fi
     
+    if [ "$CLEANUP_BUILD" = true ]; then
+        printf 'Build directory cleanup completed.\n'
+        printf 'All build artifacts organized under results/build/\n'
+        printf 'Project structure is now cleaner and easier to maintain.\n'
+    fi
+    
     if [ "$SKIP_REPORT" = false ] && [ "$MODE" != "benchmark" ] && [ "$MODE" != "performance" ] && [ "$MODE" != "quick-test" ] && [ "$MODE" != "concurrent-demo" ] && [ "$MODE" != "design-exploration" ]; then
         printf 'Report generated: results/ecc_analysis_report.md\n'
     fi
@@ -286,6 +351,12 @@ print_completion() {
         printf '\nFor debugging individual ECC implementations:\n'
         printf '  python3 src/verilate_single.py --list                    # List available testbenches\n'
         printf '  python3 src/verilate_single.py <testbench_name>          # Run specific testbench\n'
+    fi
+    
+    if [ "$MODE" = "hardware-verify" ]; then
+        printf '\nFor running individual hardware verification tests:\n'
+        printf '  python3 src/hardware_verification_runner.py --verbose     # Run with verbose output\n'
+        printf '  verilator --cc --exe --build verilogs/<ecc>.v testbenches/<ecc>_tb.c -o <ecc>_test\n'
     fi
     
     if [ "$USE_PROCESSES" = true ] || [ "$CHUNKED" = true ] || [ -n "$WORKERS" ]; then
@@ -355,6 +426,10 @@ while [[ $# -gt 0 ]]; do
             WITH_REPORT=true
             shift
             ;;
+        --cleanup-build)
+            CLEANUP_BUILD=true
+            shift
+            ;;
         -h|--help)
             show_usage
             exit 0
@@ -369,10 +444,10 @@ done
 
 # Validate mode
 case $MODE in
-    theoretical|hardware|full|performance|benchmark|analysis|quick-test|concurrent-demo|design-exploration)
+    theoretical|hardware|hardware-verify|full|performance|benchmark|analysis|quick-test|concurrent-demo|design-exploration)
         ;;
     *)
-        echo "Error: Invalid mode '$MODE'. Valid modes are: theoretical, hardware, full, performance, benchmark, analysis, quick-test, concurrent-demo, design-exploration"
+        echo "Error: Invalid mode '$MODE'. Valid modes are: theoretical, hardware, hardware-verify, full, performance, benchmark, analysis, quick-test, concurrent-demo, design-exploration"
         exit 1
         ;;
 esac
@@ -380,6 +455,12 @@ esac
 # Validate skip-report option
 if [ "$SKIP_REPORT" = true ] && [ "$MODE" = "theoretical" ]; then
     echo "Warning: --skip-report is not applicable for theoretical mode. Ignoring."
+    SKIP_REPORT=false
+fi
+
+# Validate skip-report option for hardware-verify mode
+if [ "$SKIP_REPORT" = true ] && [ "$MODE" = "hardware-verify" ]; then
+    echo "Warning: --skip-report is not applicable for hardware-verify mode. Ignoring."
     SKIP_REPORT=false
 fi
 
@@ -407,49 +488,60 @@ echo ""
 
 # Run selected mode and tee output to results/run.log
 {
-    case $MODE in
-        theoretical)
-            run_theoretical_analysis
-            if [ "$SKIP_REPORT" = false ]; then
-                generate_report
-            fi
-            ;;
-        hardware)
-            run_hardware_implementation
-            if [ "$SKIP_REPORT" = false ]; then
-                generate_report
-            fi
-            ;;
-        full)
-            run_theoretical_analysis
-            run_hardware_implementation
-            if [ "$SKIP_REPORT" = false ]; then
-                generate_report
-            fi
-            ;;
-        performance)
-            run_performance_testing
-            ;;
-        benchmark)
-            if [ "$WITH_REPORT" = true ]; then
-                run_benchmarking_with_report
-            else
-                run_benchmarking
-            fi
-            ;;
-        analysis)
-            run_analysis
-            ;;
-        quick-test)
-            run_quick_test
-            ;;
-        concurrent-demo)
-            run_concurrent_demo
-            ;;
-        design-exploration)
-            run_design_exploration
-            ;;
-    esac
+    # Handle cleanup mode
+    if [ "$CLEANUP_BUILD" = true ]; then
+        run_build_cleanup
+    else
+        case $MODE in
+            theoretical)
+                run_theoretical_analysis
+                if [ "$SKIP_REPORT" = false ]; then
+                    generate_report
+                fi
+                ;;
+            hardware)
+                run_hardware_implementation
+                if [ "$SKIP_REPORT" = false ]; then
+                    generate_report
+                fi
+                ;;
+            hardware-verify)
+                run_hardware_verification_tests
+                if [ "$SKIP_REPORT" = false ]; then
+                    generate_report
+                fi
+                ;;
+            full)
+                run_theoretical_analysis
+                run_hardware_implementation
+                if [ "$SKIP_REPORT" = false ]; then
+                    generate_report
+                fi
+                ;;
+            performance)
+                run_performance_testing
+                ;;
+            benchmark)
+                if [ "$WITH_REPORT" = true ]; then
+                    run_benchmarking_with_report
+                else
+                    run_benchmarking
+                fi
+                ;;
+            analysis)
+                run_analysis
+                ;;
+            quick-test)
+                run_quick_test
+                ;;
+            concurrent-demo)
+                run_concurrent_demo
+                ;;
+            design-exploration)
+                run_design_exploration
+                ;;
+        esac
+    fi
     
     print_completion
 } 2>&1 | tee results/run.log

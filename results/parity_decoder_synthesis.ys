@@ -1,0 +1,5 @@
+
+            read_verilog verilogs/parity_decoder.v
+            synth -top parity_decoder
+            stat
+            

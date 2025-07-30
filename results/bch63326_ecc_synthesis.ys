@@ -1,0 +1,5 @@
+
+            read_verilog verilogs/bch63326_ecc.v
+            synth -top bch63326_ecc
+            stat
+            
