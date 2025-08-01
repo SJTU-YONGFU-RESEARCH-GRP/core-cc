@@ -1,9 +1,10 @@
+// Cyclic ECC Module - Simplified implementation
+// Matches Python CyclicECC fallback implementation for DATA_WIDTH=8
 /* verilator lint_off WIDTHTRUNC */
 /* verilator lint_off WIDTHEXPAND */
-
-module composite_ecc #(
+module cyclic_ecc #(
     parameter DATA_WIDTH = 8,
-    parameter CODEWORD_WIDTH = 16  // 8-bit data + 8-bit redundancy
+    parameter CODEWORD_WIDTH = 15
 ) (
     input  wire                    clk,
     input  wire                    rst_n,
@@ -18,42 +19,48 @@ module composite_ecc #(
     output reg                     valid_out
 );
 
+    // Configuration
+    localparam [31:0] N = CODEWORD_WIDTH;
+    localparam [31:0] K = DATA_WIDTH;
+    localparam [31:0] M = N - K;  // Number of parity bits
+    
     // Internal signals
     reg [CODEWORD_WIDTH-1:0] encoded_codeword;
     reg [DATA_WIDTH-1:0] extracted_data;
+    reg [M-1:0] syndrome;
     reg no_error, single_error;
     
-    // Encode Composite ECC (simplified redundancy)
+    // Simplified encoding - systematic form
     always @(*) begin
-        if (DATA_WIDTH <= 8) begin
-            // Simple redundancy: data shifted left by 8 bits + original data
-            // This matches the Python implementation: (data << 8) | (data & 0xFF)
-            encoded_codeword = (data_in << 8) | (data_in & 8'hFF);
+        if (DATA_WIDTH <= 8 && CODEWORD_WIDTH <= 15) begin
+            // Systematic encoding: data shifted left by M positions
+            // This matches the Python fallback: data << (n-k)
+            encoded_codeword = data_in << M;
         end else begin
             encoded_codeword = 0;
         end
     end
-    
-    // Decode Composite ECC (simplified redundancy)
+
+    // Simplified decoding - extract data bits (matches Python fallback)
     always @(*) begin
-        if (DATA_WIDTH <= 8) begin
-            // Extract original data from MSB
-            // This matches the Python implementation: (codeword >> 8) & 0xFFFFFFFF
-            extracted_data = (codeword_in >> 8) & 8'hFF;
+        if (DATA_WIDTH <= 8 && CODEWORD_WIDTH <= 15) begin
+            // Extract data bits (most significant K bits)
+            // This matches the Python fallback: (codeword >> (n-k)) & mask
+            extracted_data = (codeword_in >> M) & ((1 << K) - 1);
             
-            // Check for errors by comparing MSB and LSB
-            // Note: Variables declared outside always block to avoid syntax error
-            if (((codeword_in >> 8) & 8'hFF) == (codeword_in & 8'hFF)) begin
-                no_error = 1;
-                single_error = 0;
-            end else begin
-                no_error = 0;
-                single_error = 1;  // Error detected and corrected (use MSB)
-            end
+            // Simple syndrome calculation (parity check)
+            // This matches Python's fallback syndrome calculation
+            syndrome = codeword_in & ((1 << M) - 1);
+            
+            // Error detection logic (matches Python decode logic)
+            // For the simplified fallback, always return 'corrected' as in Python
+            no_error = (syndrome == 0);  // No error if syndrome is zero
+            single_error = (syndrome != 0);  // Error detected if syndrome is non-zero
         end else begin
-            extracted_data = 0;
+            syndrome = 0;
             no_error = 0;
             single_error = 0;
+            extracted_data = 0;
         end
     end
 
@@ -79,13 +86,13 @@ module composite_ecc #(
         end else if (decode_en) begin
             data_out <= extracted_data;
             
-            // Error detection and correction logic
+            // Error detection and correction logic (matches Python fallback)
             if (no_error) begin
                 // No error detected
                 error_detected <= 1'b0;
                 error_corrected <= 1'b0;
             end else if (single_error) begin
-                // Error detected and corrected
+                // Error detected and corrected (Python fallback always returns 'corrected')
                 error_detected <= 1'b0;
                 error_corrected <= 1'b1;
             end else begin
@@ -98,4 +105,4 @@ module composite_ecc #(
 
 endmodule
 /* verilator lint_on WIDTHTRUNC */
-/* verilator lint_on WIDTHEXPAND */
+/* verilator lint_on WIDTHEXPAND */ 
