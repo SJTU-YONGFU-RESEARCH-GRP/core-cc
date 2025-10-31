@@ -43,6 +43,7 @@ A comprehensive framework for benchmarking, analyzing, and comparing different E
    - [6.4 Final Report](#final-report)
    - [6.5 Logs](#logs)
    - [6.6 Individual Testbench Execution](#individual-testbench-execution)
+   - [6.7 Clarifications](#clarifications-c-testbenches-verilog-sources-and-top-level-modules)
 
 7. [Performance & Metrics](#performance-metrics)
    - [7.1 Primary Metrics](#primary-metrics)
@@ -596,6 +597,12 @@ python3 src/verilate_single.py --list
 # Run specific testbench
 python3 src/verilate_single.py <testbench_name>
 ```
+
+### Clarifications: C Testbenches, Verilog Sources, and Top‑Level Modules
+
+- C testbenches in this repository compile against Verilator‑generated headers (emitted during the build into `results/build/obj_dir/`), not hand‑written project `.h` files. This is by design and enables each C testbench to drive the corresponding Verilog DUT produced by Verilator.
+- For each supported ECC, top‑level Verilog modules and C testbenches are included to enable end‑to‑end simulation (e.g., Hamming, BCH, and others). Many top‑level modules are intentionally self‑contained to simplify integration with Verilator; where sub‑blocks also exist (e.g., separate encoder/decoder), they can be used directly or wrapped.
+- If a wiring‑only (hierarchical) top is preferred for a given ECC, you can add a thin wrapper that instantiates the existing submodules or core top and exposes a stable interface. This does not change behavior and is compatible with the provided testbenches and build flow.
 
 ### Execution Plan and Logging
 
