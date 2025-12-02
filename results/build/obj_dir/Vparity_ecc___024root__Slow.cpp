@@ -17,7 +17,7 @@ Vparity_ecc___024root::Vparity_ecc___024root(Vparity_ecc__Syms* symsp, const cha
 }
 
 void Vparity_ecc___024root::__Vconfigure(bool first) {
-    (void)first;  // Prevent unused variable warning
+    if (false && first) {}  // Prevent unused
 }
 
 Vparity_ecc___024root::~Vparity_ecc___024root() {

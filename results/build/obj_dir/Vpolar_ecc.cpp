@@ -74,7 +74,7 @@ void Vpolar_ecc::eval_step() {
 bool Vpolar_ecc::eventsPending() { return false; }
 
 uint64_t Vpolar_ecc::nextTimeSlot() {
-    VL_FATAL_MT(__FILE__, __LINE__, "", "No delays in the design");
+    VL_FATAL_MT(__FILE__, __LINE__, "", "%Error: No delays in the design");
     return 0;
 }
 
@@ -103,4 +103,11 @@ unsigned Vpolar_ecc::threads() const { return 1; }
 void Vpolar_ecc::prepareClone() const { contextp()->prepareClone(); }
 void Vpolar_ecc::atClone() const {
     contextp()->threadPoolpOnClone();
+}
+
+//============================================================
+// Trace configuration
+
+VL_ATTR_COLD void Vpolar_ecc::trace(VerilatedVcdC* tfp, int levels, int options) {
+    vl_fatal(__FILE__, __LINE__, __FILE__,"'Vpolar_ecc::trace()' called on model that was Verilated without --trace option");
 }

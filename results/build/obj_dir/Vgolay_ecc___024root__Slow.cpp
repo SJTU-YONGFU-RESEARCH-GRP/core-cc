@@ -17,7 +17,7 @@ Vgolay_ecc___024root::Vgolay_ecc___024root(Vgolay_ecc__Syms* symsp, const char* 
 }
 
 void Vgolay_ecc___024root::__Vconfigure(bool first) {
-    (void)first;  // Prevent unused variable warning
+    if (false && first) {}  // Prevent unused
 }
 
 Vgolay_ecc___024root::~Vgolay_ecc___024root() {

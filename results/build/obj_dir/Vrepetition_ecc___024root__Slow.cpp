@@ -17,7 +17,7 @@ Vrepetition_ecc___024root::Vrepetition_ecc___024root(Vrepetition_ecc__Syms* syms
 }
 
 void Vrepetition_ecc___024root::__Vconfigure(bool first) {
-    (void)first;  // Prevent unused variable warning
+    if (false && first) {}  // Prevent unused
 }
 
 Vrepetition_ecc___024root::~Vrepetition_ecc___024root() {

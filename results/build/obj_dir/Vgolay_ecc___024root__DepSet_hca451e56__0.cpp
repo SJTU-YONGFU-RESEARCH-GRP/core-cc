@@ -6,81 +6,78 @@
 #include "Vgolay_ecc___024root.h"
 
 void Vgolay_ecc___024root___eval_act(Vgolay_ecc___024root* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vgolay_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval_act\n"); );
-    Vgolay_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-}
-
-void Vgolay_ecc___024root___nba_sequent__TOP__0(Vgolay_ecc___024root* vlSelf);
-
-void Vgolay_ecc___024root___eval_nba(Vgolay_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval_nba\n"); );
-    Vgolay_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    if ((3ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
-        Vgolay_ecc___024root___nba_sequent__TOP__0(vlSelf);
-    }
 }
 
 VL_INLINE_OPT void Vgolay_ecc___024root___nba_sequent__TOP__0(Vgolay_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___nba_sequent__TOP__0\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vgolay_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___nba_sequent__TOP__0\n"); );
     // Body
-    vlSelfRef.valid_out = ((IData)(vlSelfRef.rst_n) 
-                           && (IData)(vlSelfRef.encode_en));
-    if (vlSelfRef.rst_n) {
-        if (vlSelfRef.encode_en) {
-            vlSelfRef.codeword_out = ((IData)(vlSelfRef.data_in) 
-                                      << 8U);
+    vlSelf->valid_out = ((IData)(vlSelf->rst_n) && (IData)(vlSelf->encode_en));
+    if (vlSelf->rst_n) {
+        if (vlSelf->decode_en) {
+            vlSelf->error_corrected = 0U;
+            vlSelf->error_detected = 0U;
+            vlSelf->data_out = (0xffU & ((IData)(vlSelf->codeword_in) 
+                                         >> 8U));
         }
-        if (vlSelfRef.decode_en) {
-            vlSelfRef.error_corrected = 0U;
-            vlSelfRef.data_out = (0xffU & ((IData)(vlSelfRef.codeword_in) 
-                                           >> 8U));
-            vlSelfRef.error_detected = (0U != (0xffU 
-                                               & (IData)(vlSelfRef.codeword_in)));
+        if (vlSelf->encode_en) {
+            vlSelf->codeword_out = (0xffffU & (((IData)(vlSelf->data_in) 
+                                                << 8U) 
+                                               | (IData)(vlSelf->data_in)));
         }
     } else {
-        vlSelfRef.codeword_out = 0U;
-        vlSelfRef.error_corrected = 0U;
-        vlSelfRef.data_out = 0U;
-        vlSelfRef.error_detected = 0U;
+        vlSelf->error_corrected = 0U;
+        vlSelf->error_detected = 0U;
+        vlSelf->codeword_out = 0U;
+        vlSelf->data_out = 0U;
+    }
+}
+
+void Vgolay_ecc___024root___eval_nba(Vgolay_ecc___024root* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vgolay_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval_nba\n"); );
+    // Body
+    if ((1ULL & vlSelf->__VnbaTriggered.word(0U))) {
+        Vgolay_ecc___024root___nba_sequent__TOP__0(vlSelf);
     }
 }
 
 void Vgolay_ecc___024root___eval_triggers__act(Vgolay_ecc___024root* vlSelf);
 
 bool Vgolay_ecc___024root___eval_phase__act(Vgolay_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval_phase__act\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vgolay_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval_phase__act\n"); );
     // Init
-    VlTriggerVec<2> __VpreTriggered;
+    VlTriggerVec<1> __VpreTriggered;
     CData/*0:0*/ __VactExecute;
     // Body
     Vgolay_ecc___024root___eval_triggers__act(vlSelf);
-    __VactExecute = vlSelfRef.__VactTriggered.any();
+    __VactExecute = vlSelf->__VactTriggered.any();
     if (__VactExecute) {
-        __VpreTriggered.andNot(vlSelfRef.__VactTriggered, vlSelfRef.__VnbaTriggered);
-        vlSelfRef.__VnbaTriggered.thisOr(vlSelfRef.__VactTriggered);
+        __VpreTriggered.andNot(vlSelf->__VactTriggered, vlSelf->__VnbaTriggered);
+        vlSelf->__VnbaTriggered.thisOr(vlSelf->__VactTriggered);
         Vgolay_ecc___024root___eval_act(vlSelf);
     }
     return (__VactExecute);
 }
 
 bool Vgolay_ecc___024root___eval_phase__nba(Vgolay_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval_phase__nba\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vgolay_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval_phase__nba\n"); );
     // Init
     CData/*0:0*/ __VnbaExecute;
     // Body
-    __VnbaExecute = vlSelfRef.__VnbaTriggered.any();
+    __VnbaExecute = vlSelf->__VnbaTriggered.any();
     if (__VnbaExecute) {
         Vgolay_ecc___024root___eval_nba(vlSelf);
-        vlSelfRef.__VnbaTriggered.clear();
+        vlSelf->__VnbaTriggered.clear();
     }
     return (__VnbaExecute);
 }
@@ -93,9 +90,9 @@ VL_ATTR_COLD void Vgolay_ecc___024root___dump_triggers__act(Vgolay_ecc___024root
 #endif  // VL_DEBUG
 
 void Vgolay_ecc___024root___eval(Vgolay_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vgolay_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval\n"); );
     // Init
     IData/*31:0*/ __VnbaIterCount;
     CData/*0:0*/ __VnbaContinue;
@@ -103,28 +100,28 @@ void Vgolay_ecc___024root___eval(Vgolay_ecc___024root* vlSelf) {
     __VnbaIterCount = 0U;
     __VnbaContinue = 1U;
     while (__VnbaContinue) {
-        if (VL_UNLIKELY(((0x64U < __VnbaIterCount)))) {
+        if (VL_UNLIKELY((0x64U < __VnbaIterCount))) {
 #ifdef VL_DEBUG
             Vgolay_ecc___024root___dump_triggers__nba(vlSelf);
 #endif
-            VL_FATAL_MT("/mnt/d/proj/ecc/verilogs/golay_ecc.v", 5, "", "NBA region did not converge.");
+            VL_FATAL_MT("/home/cylinder/projects/core-cc/verilogs/golay_ecc.v", 5, "", "NBA region did not converge.");
         }
         __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
         __VnbaContinue = 0U;
-        vlSelfRef.__VactIterCount = 0U;
-        vlSelfRef.__VactContinue = 1U;
-        while (vlSelfRef.__VactContinue) {
-            if (VL_UNLIKELY(((0x64U < vlSelfRef.__VactIterCount)))) {
+        vlSelf->__VactIterCount = 0U;
+        vlSelf->__VactContinue = 1U;
+        while (vlSelf->__VactContinue) {
+            if (VL_UNLIKELY((0x64U < vlSelf->__VactIterCount))) {
 #ifdef VL_DEBUG
                 Vgolay_ecc___024root___dump_triggers__act(vlSelf);
 #endif
-                VL_FATAL_MT("/mnt/d/proj/ecc/verilogs/golay_ecc.v", 5, "", "Active region did not converge.");
+                VL_FATAL_MT("/home/cylinder/projects/core-cc/verilogs/golay_ecc.v", 5, "", "Active region did not converge.");
             }
-            vlSelfRef.__VactIterCount = ((IData)(1U) 
-                                         + vlSelfRef.__VactIterCount);
-            vlSelfRef.__VactContinue = 0U;
+            vlSelf->__VactIterCount = ((IData)(1U) 
+                                       + vlSelf->__VactIterCount);
+            vlSelf->__VactContinue = 0U;
             if (Vgolay_ecc___024root___eval_phase__act(vlSelf)) {
-                vlSelfRef.__VactContinue = 1U;
+                vlSelf->__VactContinue = 1U;
             }
         }
         if (Vgolay_ecc___024root___eval_phase__nba(vlSelf)) {
@@ -135,17 +132,17 @@ void Vgolay_ecc___024root___eval(Vgolay_ecc___024root* vlSelf) {
 
 #ifdef VL_DEBUG
 void Vgolay_ecc___024root___eval_debug_assertions(Vgolay_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval_debug_assertions\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vgolay_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vgolay_ecc___024root___eval_debug_assertions\n"); );
     // Body
-    if (VL_UNLIKELY(((vlSelfRef.clk & 0xfeU)))) {
+    if (VL_UNLIKELY((vlSelf->clk & 0xfeU))) {
         Verilated::overWidthError("clk");}
-    if (VL_UNLIKELY(((vlSelfRef.rst_n & 0xfeU)))) {
+    if (VL_UNLIKELY((vlSelf->rst_n & 0xfeU))) {
         Verilated::overWidthError("rst_n");}
-    if (VL_UNLIKELY(((vlSelfRef.encode_en & 0xfeU)))) {
+    if (VL_UNLIKELY((vlSelf->encode_en & 0xfeU))) {
         Verilated::overWidthError("encode_en");}
-    if (VL_UNLIKELY(((vlSelfRef.decode_en & 0xfeU)))) {
+    if (VL_UNLIKELY((vlSelf->decode_en & 0xfeU))) {
         Verilated::overWidthError("decode_en");}
 }
 #endif  // VL_DEBUG

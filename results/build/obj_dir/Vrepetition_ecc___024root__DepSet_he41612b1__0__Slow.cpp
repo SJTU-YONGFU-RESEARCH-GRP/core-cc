@@ -6,24 +6,24 @@
 #include "Vrepetition_ecc___024root.h"
 
 VL_ATTR_COLD void Vrepetition_ecc___024root___eval_static(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_static\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    vlSelfRef.__Vtrigprevexpr___TOP__clk__0 = vlSelfRef.clk;
-    vlSelfRef.__Vtrigprevexpr___TOP__rst_n__0 = vlSelfRef.rst_n;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_static\n"); );
 }
 
 VL_ATTR_COLD void Vrepetition_ecc___024root___eval_initial(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_initial\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_initial\n"); );
+    // Body
+    vlSelf->__Vtrigprevexpr___TOP__clk__0 = vlSelf->clk;
+    vlSelf->__Vtrigprevexpr___TOP__rst_n__0 = vlSelf->rst_n;
 }
 
 VL_ATTR_COLD void Vrepetition_ecc___024root___eval_final(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_final\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_final\n"); );
 }
 
 #ifdef VL_DEBUG
@@ -32,42 +32,42 @@ VL_ATTR_COLD void Vrepetition_ecc___024root___dump_triggers__stl(Vrepetition_ecc
 VL_ATTR_COLD bool Vrepetition_ecc___024root___eval_phase__stl(Vrepetition_ecc___024root* vlSelf);
 
 VL_ATTR_COLD void Vrepetition_ecc___024root___eval_settle(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_settle\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_settle\n"); );
     // Init
     IData/*31:0*/ __VstlIterCount;
     CData/*0:0*/ __VstlContinue;
     // Body
     __VstlIterCount = 0U;
-    vlSelfRef.__VstlFirstIteration = 1U;
+    vlSelf->__VstlFirstIteration = 1U;
     __VstlContinue = 1U;
     while (__VstlContinue) {
-        if (VL_UNLIKELY(((0x64U < __VstlIterCount)))) {
+        if (VL_UNLIKELY((0x64U < __VstlIterCount))) {
 #ifdef VL_DEBUG
             Vrepetition_ecc___024root___dump_triggers__stl(vlSelf);
 #endif
-            VL_FATAL_MT("/mnt/d/proj/ecc/verilogs/repetition_ecc.v", 1, "", "Settle region did not converge.");
+            VL_FATAL_MT("/home/cylinder/projects/core-cc/verilogs/repetition_ecc.v", 1, "", "Settle region did not converge.");
         }
         __VstlIterCount = ((IData)(1U) + __VstlIterCount);
         __VstlContinue = 0U;
         if (Vrepetition_ecc___024root___eval_phase__stl(vlSelf)) {
             __VstlContinue = 1U;
         }
-        vlSelfRef.__VstlFirstIteration = 0U;
+        vlSelf->__VstlFirstIteration = 0U;
     }
 }
 
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vrepetition_ecc___024root___dump_triggers__stl(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___dump_triggers__stl\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___dump_triggers__stl\n"); );
     // Body
-    if ((1U & (~ vlSelfRef.__VstlTriggered.any()))) {
+    if ((1U & (~ (IData)(vlSelf->__VstlTriggered.any())))) {
         VL_DBG_MSGF("         No triggers active\n");
     }
-    if ((1ULL & vlSelfRef.__VstlTriggered.word(0U))) {
+    if ((1ULL & vlSelf->__VstlTriggered.word(0U))) {
         VL_DBG_MSGF("         'stl' region trigger index 0 is active: Internal 'stl' trigger - first iteration\n");
     }
 }
@@ -76,11 +76,11 @@ VL_ATTR_COLD void Vrepetition_ecc___024root___dump_triggers__stl(Vrepetition_ecc
 void Vrepetition_ecc___024root___ico_sequent__TOP__0(Vrepetition_ecc___024root* vlSelf);
 
 VL_ATTR_COLD void Vrepetition_ecc___024root___eval_stl(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_stl\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_stl\n"); );
     // Body
-    if ((1ULL & vlSelfRef.__VstlTriggered.word(0U))) {
+    if ((1ULL & vlSelf->__VstlTriggered.word(0U))) {
         Vrepetition_ecc___024root___ico_sequent__TOP__0(vlSelf);
     }
 }
@@ -88,14 +88,14 @@ VL_ATTR_COLD void Vrepetition_ecc___024root___eval_stl(Vrepetition_ecc___024root
 VL_ATTR_COLD void Vrepetition_ecc___024root___eval_triggers__stl(Vrepetition_ecc___024root* vlSelf);
 
 VL_ATTR_COLD bool Vrepetition_ecc___024root___eval_phase__stl(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_phase__stl\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___eval_phase__stl\n"); );
     // Init
     CData/*0:0*/ __VstlExecute;
     // Body
     Vrepetition_ecc___024root___eval_triggers__stl(vlSelf);
-    __VstlExecute = vlSelfRef.__VstlTriggered.any();
+    __VstlExecute = vlSelf->__VstlTriggered.any();
     if (__VstlExecute) {
         Vrepetition_ecc___024root___eval_stl(vlSelf);
     }
@@ -104,14 +104,14 @@ VL_ATTR_COLD bool Vrepetition_ecc___024root___eval_phase__stl(Vrepetition_ecc___
 
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vrepetition_ecc___024root___dump_triggers__ico(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___dump_triggers__ico\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___dump_triggers__ico\n"); );
     // Body
-    if ((1U & (~ vlSelfRef.__VicoTriggered.any()))) {
+    if ((1U & (~ (IData)(vlSelf->__VicoTriggered.any())))) {
         VL_DBG_MSGF("         No triggers active\n");
     }
-    if ((1ULL & vlSelfRef.__VicoTriggered.word(0U))) {
+    if ((1ULL & vlSelf->__VicoTriggered.word(0U))) {
         VL_DBG_MSGF("         'ico' region trigger index 0 is active: Internal 'ico' trigger - first iteration\n");
     }
 }
@@ -119,44 +119,38 @@ VL_ATTR_COLD void Vrepetition_ecc___024root___dump_triggers__ico(Vrepetition_ecc
 
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vrepetition_ecc___024root___dump_triggers__act(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___dump_triggers__act\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___dump_triggers__act\n"); );
     // Body
-    if ((1U & (~ vlSelfRef.__VactTriggered.any()))) {
+    if ((1U & (~ (IData)(vlSelf->__VactTriggered.any())))) {
         VL_DBG_MSGF("         No triggers active\n");
     }
-    if ((1ULL & vlSelfRef.__VactTriggered.word(0U))) {
-        VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge clk)\n");
-    }
-    if ((2ULL & vlSelfRef.__VactTriggered.word(0U))) {
-        VL_DBG_MSGF("         'act' region trigger index 1 is active: @(negedge rst_n)\n");
+    if ((1ULL & vlSelf->__VactTriggered.word(0U))) {
+        VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge clk or negedge rst_n)\n");
     }
 }
 #endif  // VL_DEBUG
 
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vrepetition_ecc___024root___dump_triggers__nba(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___dump_triggers__nba\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___dump_triggers__nba\n"); );
     // Body
-    if ((1U & (~ vlSelfRef.__VnbaTriggered.any()))) {
+    if ((1U & (~ (IData)(vlSelf->__VnbaTriggered.any())))) {
         VL_DBG_MSGF("         No triggers active\n");
     }
-    if ((1ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
-        VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge clk)\n");
-    }
-    if ((2ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
-        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @(negedge rst_n)\n");
+    if ((1ULL & vlSelf->__VnbaTriggered.word(0U))) {
+        VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge clk or negedge rst_n)\n");
     }
 }
 #endif  // VL_DEBUG
 
 VL_ATTR_COLD void Vrepetition_ecc___024root___ctor_var_reset(Vrepetition_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___ctor_var_reset\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vrepetition_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vrepetition_ecc___024root___ctor_var_reset\n"); );
     // Body
     vlSelf->clk = VL_RAND_RESET_I(1);
     vlSelf->rst_n = VL_RAND_RESET_I(1);

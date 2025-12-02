@@ -17,7 +17,7 @@ Vhamming_secded_ecc___024root::Vhamming_secded_ecc___024root(Vhamming_secded_ecc
 }
 
 void Vhamming_secded_ecc___024root::__Vconfigure(bool first) {
-    (void)first;  // Prevent unused variable warning
+    if (false && first) {}  // Prevent unused
 }
 
 Vhamming_secded_ecc___024root::~Vhamming_secded_ecc___024root() {

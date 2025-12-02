@@ -36,6 +36,7 @@ module extended_hamming_ecc #(
     reg [12:0] hamming_codeword;
     reg extended_parity_bit;
     reg expected_extended_parity;
+    reg [3:0] temp_parity;
     
     // Count ones in a vector
     function [7:0] count_ones;
@@ -101,10 +102,12 @@ module extended_hamming_ecc #(
             hamming_codeword[11] = data_in[7];
             
             // Calculate and insert Hamming parity bits
-            hamming_codeword[0] = calculate_hamming_parity(data_in)[0];
-            hamming_codeword[1] = calculate_hamming_parity(data_in)[1];
-            hamming_codeword[3] = calculate_hamming_parity(data_in)[2];
-            hamming_codeword[7] = calculate_hamming_parity(data_in)[3];
+            // Calculate and insert Hamming parity bits
+            temp_parity = calculate_hamming_parity(data_in);
+            hamming_codeword[0] = temp_parity[0];
+            hamming_codeword[1] = temp_parity[1];
+            hamming_codeword[3] = temp_parity[2];
+            hamming_codeword[7] = temp_parity[3];
             
             // Calculate extended parity (even parity over all Hamming codeword bits)
             expected_extended_parity = count_ones(hamming_codeword) % 2;

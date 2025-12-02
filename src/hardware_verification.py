@@ -355,7 +355,7 @@ class HardwareVerifier:
         # Verify testbenches
         testbench_results = {}
         if self.testbench_dir.exists():
-            for testbench_file in self.testbench_dir.glob("*_tb.v"):
+            for testbench_file in self.testbench_dir.glob("*_tb.c"):
                 print(f"Verifying testbench {testbench_file.name}...")
                 result = self.verify_testbench(testbench_file)
                 testbench_results[testbench_file.stem] = result
@@ -475,7 +475,7 @@ class HardwareVerifier:
         return testbench_data
 
 
-def load_verification_results(results_file: str = "results/hardware_verification.json") -> Optional[HardwareVerificationResult]:
+def load_verification_results(results_file: str = "results/hardware_verification_results.json") -> Optional[HardwareVerificationResult]:
     """
     Load hardware verification results from JSON file.
     
@@ -504,23 +504,51 @@ def load_verification_results(results_file: str = "results/hardware_verification
         
         # Reconstruct testbench results
         testbench_results = {}
-        for name, result_data in data.get("testbench_results", {}).items():
-            testbench_results[name] = TestbenchResult(
-                testbench_name=result_data["testbench_name"],
-                testbench_file=result_data["testbench_file"],
-                testbench_available=result_data["testbench_available"],
-                verilator_available=result_data["verilator_available"],
-                simulation_status=result_data.get("simulation_status"),
-                test_cases=result_data.get("test_cases"),
-                error_message=result_data.get("error_message")
-            )
+        
+        # Handle results from hardware_verification_runner.py (ecc_results format)
+        if "ecc_results" in data:
+            print(f"DEBUG: Found ecc_results with {len(data['ecc_results'])} entries")
+            for name, result_data in data["ecc_results"].items():
+                # Construct testbench name
+                tb_name = f"{name}_tb"
+                
+                # Parse test cases
+                test_cases_dict = {}
+                if "test_results" in result_data:
+                    for test in result_data["test_results"]:
+                        test_cases_dict[test["test_name"]] = "PASS" if test["passed"] else "FAIL"
+                
+                # Create TestbenchResult from ECC result
+                testbench_results[tb_name] = TestbenchResult(
+                    testbench_name=tb_name,
+                    testbench_file=f"testbenches/{tb_name}.c",  # Inferred path
+                    testbench_available=True,
+                    verilator_available=data.get("verilator_available", True),
+                    simulation_status=result_data.get("overall_status"),
+                    test_cases=test_cases_dict,
+                    error_message=None  # Detailed errors are in test_results
+                )
+        
+        # Handle legacy results or direct Verilator runs (testbench_results format)
+        elif "testbench_results" in data:
+            for name, result_data in data["testbench_results"].items():
+                testbench_results[name] = TestbenchResult(
+                    testbench_name=result_data["testbench_name"],
+                    testbench_file=result_data["testbench_file"],
+                    testbench_available=result_data["testbench_available"],
+                    verilator_available=result_data["verilator_available"],
+                    simulation_status=result_data.get("simulation_status"),
+                    test_cases=result_data.get("test_cases"),
+                    error_message=result_data.get("error_message")
+                )
         
         return HardwareVerificationResult(
             synthesis_results=synthesis_results,
             testbench_results=testbench_results,
-            yosys_available=data["yosys_available"],
-            verilator_available=data["verilator_available"],
-            overall_status=data["overall_status"]
+            ecc_verification_results=data.get("ecc_verification_results", {}),
+            yosys_available=data.get("yosys_available", False),
+            verilator_available=data.get("verilator_available", True),
+            overall_status=data.get("overall_status", "UNKNOWN")
         )
         
     except FileNotFoundError:
@@ -561,4 +589,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main() 
+    main()

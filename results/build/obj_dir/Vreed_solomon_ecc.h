@@ -21,10 +21,6 @@ class alignas(VL_CACHE_LINE_BYTES) Vreed_solomon_ecc VL_NOT_FINAL : public Veril
 
   public:
 
-    // CONSTEXPR CAPABILITIES
-    // Verilated with --trace?
-    static constexpr bool traceCapable = false;
-
     // PORTS
     // The application code writes and reads these signals to
     // propagate new values into/out from the Verilated model.
@@ -37,8 +33,8 @@ class alignas(VL_CACHE_LINE_BYTES) Vreed_solomon_ecc VL_NOT_FINAL : public Veril
     VL_OUT8(&error_detected,0,0);
     VL_OUT8(&error_corrected,0,0);
     VL_OUT8(&valid_out,0,0);
-    VL_IN16(&codeword_in,14,0);
-    VL_OUT16(&codeword_out,14,0);
+    VL_IN16(&codeword_in,15,0);
+    VL_OUT16(&codeword_out,15,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.
@@ -76,7 +72,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vreed_solomon_ecc VL_NOT_FINAL : public Veril
     /// Returns time at next time slot. Aborts if !eventsPending()
     uint64_t nextTimeSlot();
     /// Trace signals in the model; called by application code
-    void trace(VerilatedTraceBaseC* tfp, int levels, int options = 0) { contextp()->trace(tfp, levels, options); }
+    void trace(VerilatedVcdC* tfp, int levels, int options = 0);
     /// Retrieve name of this model instance (as passed to constructor).
     const char* name() const;
 
@@ -90,9 +86,6 @@ class alignas(VL_CACHE_LINE_BYTES) Vreed_solomon_ecc VL_NOT_FINAL : public Veril
     /// Re-init after cloning the model at the process level (e.g. fork in Linux)
     /// Re-allocate necessary resources. Called after cloning.
     void atClone() const;
-  private:
-    // Internal functions - trace registration
-    void traceBaseModel(VerilatedTraceBaseC* tfp, int levels, int options);
 };
 
 #endif  // guard

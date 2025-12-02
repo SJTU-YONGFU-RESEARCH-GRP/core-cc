@@ -41,8 +41,8 @@ class alignas(VL_CACHE_LINE_BYTES) Vrepetition_ecc___024root final : public Veri
     IData/*31:0*/ __VactIterCount;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VicoTriggered;
-    VlTriggerVec<2> __VactTriggered;
-    VlTriggerVec<2> __VnbaTriggered;
+    VlTriggerVec<1> __VactTriggered;
+    VlTriggerVec<1> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vrepetition_ecc__Syms* const vlSymsp;

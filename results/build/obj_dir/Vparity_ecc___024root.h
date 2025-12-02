@@ -28,8 +28,8 @@ class alignas(VL_CACHE_LINE_BYTES) Vparity_ecc___024root final : public Verilate
     VL_IN16(codeword_in,8,0);
     VL_OUT16(codeword_out,8,0);
     IData/*31:0*/ __VactIterCount;
-    VlTriggerVec<2> __VactTriggered;
-    VlTriggerVec<2> __VnbaTriggered;
+    VlTriggerVec<1> __VactTriggered;
+    VlTriggerVec<1> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vparity_ecc__Syms* const vlSymsp;

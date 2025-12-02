@@ -11,16 +11,16 @@ VL_ATTR_COLD void Vpolar_ecc___024root___dump_triggers__act(Vpolar_ecc___024root
 #endif  // VL_DEBUG
 
 void Vpolar_ecc___024root___eval_triggers__act(Vpolar_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___eval_triggers__act\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vpolar_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___eval_triggers__act\n"); );
     // Body
-    vlSelfRef.__VactTriggered.setBit(0U, ((IData)(vlSelfRef.clk) 
-                                          & (~ (IData)(vlSelfRef.__Vtrigprevexpr___TOP__clk__0))));
-    vlSelfRef.__VactTriggered.setBit(1U, ((~ (IData)(vlSelfRef.rst_n)) 
-                                          & (IData)(vlSelfRef.__Vtrigprevexpr___TOP__rst_n__0)));
-    vlSelfRef.__Vtrigprevexpr___TOP__clk__0 = vlSelfRef.clk;
-    vlSelfRef.__Vtrigprevexpr___TOP__rst_n__0 = vlSelfRef.rst_n;
+    vlSelf->__VactTriggered.set(0U, (((IData)(vlSelf->clk) 
+                                      & (~ (IData)(vlSelf->__Vtrigprevexpr___TOP__clk__0))) 
+                                     | ((~ (IData)(vlSelf->rst_n)) 
+                                        & (IData)(vlSelf->__Vtrigprevexpr___TOP__rst_n__0))));
+    vlSelf->__Vtrigprevexpr___TOP__clk__0 = vlSelf->clk;
+    vlSelf->__Vtrigprevexpr___TOP__rst_n__0 = vlSelf->rst_n;
 #ifdef VL_DEBUG
     if (VL_UNLIKELY(vlSymsp->_vm_contextp__->debug())) {
         Vpolar_ecc___024root___dump_triggers__act(vlSelf);

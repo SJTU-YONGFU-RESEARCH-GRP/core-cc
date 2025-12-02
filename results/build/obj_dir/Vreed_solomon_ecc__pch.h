@@ -23,6 +23,4 @@
 #include "Vreed_solomon_ecc__Syms.h"
 #include "Vreed_solomon_ecc.h"
 
-// Additional include files added using '--compiler-include'
-
 #endif  // guard

@@ -74,7 +74,7 @@ void Vhamming_secded_ecc::eval_step() {
 bool Vhamming_secded_ecc::eventsPending() { return false; }
 
 uint64_t Vhamming_secded_ecc::nextTimeSlot() {
-    VL_FATAL_MT(__FILE__, __LINE__, "", "No delays in the design");
+    VL_FATAL_MT(__FILE__, __LINE__, "", "%Error: No delays in the design");
     return 0;
 }
 
@@ -103,4 +103,11 @@ unsigned Vhamming_secded_ecc::threads() const { return 1; }
 void Vhamming_secded_ecc::prepareClone() const { contextp()->prepareClone(); }
 void Vhamming_secded_ecc::atClone() const {
     contextp()->threadPoolpOnClone();
+}
+
+//============================================================
+// Trace configuration
+
+VL_ATTR_COLD void Vhamming_secded_ecc::trace(VerilatedVcdC* tfp, int levels, int options) {
+    vl_fatal(__FILE__, __LINE__, __FILE__,"'Vhamming_secded_ecc::trace()' called on model that was Verilated without --trace option");
 }

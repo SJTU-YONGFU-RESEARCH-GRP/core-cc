@@ -3,20 +3,20 @@
   "word_length": 16,
   "error_pattern": "random",
   "trials": 10000,
-  "correctable_errors": 9959,
+  "correctable_errors": 9967,
   "detected_errors": 0,
-  "undetected_errors": 41,
-  "encode_time_avg": 3.177318572998047e-05,
-  "decode_time_avg": 0.0001421229839324951,
-  "total_time_avg": 0.00017389616966247557,
-  "code_rate": 0.25,
-  "overhead_ratio": 3.0,
-  "correction_rate": 0.9959,
-  "detection_rate": 0.9959,
-  "success_rate": 0.9959,
+  "undetected_errors": 33,
+  "encode_time_avg": 6.882238388061523e-06,
+  "decode_time_avg": 3.7748217582702633e-05,
+  "total_time_avg": 4.4630455970764155e-05,
+  "code_rate": 0.25396825396825395,
+  "overhead_ratio": 2.9375,
+  "correction_rate": 0.9967,
+  "detection_rate": 0.9967,
+  "success_rate": 0.9967,
   "error_distribution": {
-    "corrected": 9959,
+    "corrected": 9967,
     "detected": 0,
-    "undetected": 41
+    "undetected": 33
   }
 }

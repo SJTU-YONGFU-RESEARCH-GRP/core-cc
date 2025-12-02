@@ -17,7 +17,7 @@ Vreed_solomon_ecc___024root::Vreed_solomon_ecc___024root(Vreed_solomon_ecc__Syms
 }
 
 void Vreed_solomon_ecc___024root::__Vconfigure(bool first) {
-    (void)first;  // Prevent unused variable warning
+    if (false && first) {}  // Prevent unused
 }
 
 Vreed_solomon_ecc___024root::~Vreed_solomon_ecc___024root() {

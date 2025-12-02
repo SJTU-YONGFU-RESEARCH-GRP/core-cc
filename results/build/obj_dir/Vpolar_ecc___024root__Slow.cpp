@@ -17,7 +17,7 @@ Vpolar_ecc___024root::Vpolar_ecc___024root(Vpolar_ecc__Syms* symsp, const char* 
 }
 
 void Vpolar_ecc___024root::__Vconfigure(bool first) {
-    (void)first;  // Prevent unused variable warning
+    if (false && first) {}  // Prevent unused
 }
 
 Vpolar_ecc___024root::~Vpolar_ecc___024root() {

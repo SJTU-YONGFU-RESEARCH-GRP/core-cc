@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# C/C++
+*.o
+*.d
+*.obj
+*.exe
+
+# Verilog/Verilator
+obj_dir/
+*.vcd
+*.ys
+
+# Project Specific
+results/
+.gemini/
+*.log

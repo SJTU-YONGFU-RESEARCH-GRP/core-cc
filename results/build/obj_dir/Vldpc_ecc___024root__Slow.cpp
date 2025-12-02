@@ -17,7 +17,7 @@ Vldpc_ecc___024root::Vldpc_ecc___024root(Vldpc_ecc__Syms* symsp, const char* v__
 }
 
 void Vldpc_ecc___024root::__Vconfigure(bool first) {
-    (void)first;  // Prevent unused variable warning
+    if (false && first) {}  // Prevent unused
 }
 
 Vldpc_ecc___024root::~Vldpc_ecc___024root() {

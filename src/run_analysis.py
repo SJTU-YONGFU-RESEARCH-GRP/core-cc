@@ -248,8 +248,11 @@ def generate_report(output_dir: str = "results") -> bool:
         return True
         
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         print(f"Error during report generation: {e}")
-        return False
+        print("Report generation failed!")
+        sys.exit(1)
 
 
 def load_custom_config(config_file: str) -> Optional[BenchmarkConfig]:

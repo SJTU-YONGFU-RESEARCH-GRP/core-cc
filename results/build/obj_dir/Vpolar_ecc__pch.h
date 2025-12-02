@@ -23,6 +23,4 @@
 #include "Vpolar_ecc__Syms.h"
 #include "Vpolar_ecc.h"
 
-// Additional include files added using '--compiler-include'
-
 #endif  // guard

@@ -29,8 +29,8 @@ class alignas(VL_CACHE_LINE_BYTES) Vgolay_ecc___024root final : public Verilated
     VL_IN16(codeword_in,15,0);
     VL_OUT16(codeword_out,15,0);
     IData/*31:0*/ __VactIterCount;
-    VlTriggerVec<2> __VactTriggered;
-    VlTriggerVec<2> __VnbaTriggered;
+    VlTriggerVec<1> __VactTriggered;
+    VlTriggerVec<1> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vgolay_ecc__Syms* const vlSymsp;

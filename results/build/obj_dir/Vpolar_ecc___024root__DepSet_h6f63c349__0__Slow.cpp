@@ -6,72 +6,66 @@
 #include "Vpolar_ecc___024root.h"
 
 VL_ATTR_COLD void Vpolar_ecc___024root___eval_static(Vpolar_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___eval_static\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vpolar_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    vlSelfRef.__Vtrigprevexpr___TOP__clk__0 = vlSelfRef.clk;
-    vlSelfRef.__Vtrigprevexpr___TOP__rst_n__0 = vlSelfRef.rst_n;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___eval_static\n"); );
 }
 
 VL_ATTR_COLD void Vpolar_ecc___024root___eval_initial(Vpolar_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___eval_initial\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vpolar_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___eval_initial\n"); );
+    // Body
+    vlSelf->__Vtrigprevexpr___TOP__clk__0 = vlSelf->clk;
+    vlSelf->__Vtrigprevexpr___TOP__rst_n__0 = vlSelf->rst_n;
 }
 
 VL_ATTR_COLD void Vpolar_ecc___024root___eval_final(Vpolar_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___eval_final\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vpolar_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___eval_final\n"); );
 }
 
 VL_ATTR_COLD void Vpolar_ecc___024root___eval_settle(Vpolar_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___eval_settle\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vpolar_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___eval_settle\n"); );
 }
 
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vpolar_ecc___024root___dump_triggers__act(Vpolar_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___dump_triggers__act\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vpolar_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___dump_triggers__act\n"); );
     // Body
-    if ((1U & (~ vlSelfRef.__VactTriggered.any()))) {
+    if ((1U & (~ (IData)(vlSelf->__VactTriggered.any())))) {
         VL_DBG_MSGF("         No triggers active\n");
     }
-    if ((1ULL & vlSelfRef.__VactTriggered.word(0U))) {
-        VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge clk)\n");
-    }
-    if ((2ULL & vlSelfRef.__VactTriggered.word(0U))) {
-        VL_DBG_MSGF("         'act' region trigger index 1 is active: @(negedge rst_n)\n");
+    if ((1ULL & vlSelf->__VactTriggered.word(0U))) {
+        VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge clk or negedge rst_n)\n");
     }
 }
 #endif  // VL_DEBUG
 
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vpolar_ecc___024root___dump_triggers__nba(Vpolar_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___dump_triggers__nba\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vpolar_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___dump_triggers__nba\n"); );
     // Body
-    if ((1U & (~ vlSelfRef.__VnbaTriggered.any()))) {
+    if ((1U & (~ (IData)(vlSelf->__VnbaTriggered.any())))) {
         VL_DBG_MSGF("         No triggers active\n");
     }
-    if ((1ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
-        VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge clk)\n");
-    }
-    if ((2ULL & vlSelfRef.__VnbaTriggered.word(0U))) {
-        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @(negedge rst_n)\n");
+    if ((1ULL & vlSelf->__VnbaTriggered.word(0U))) {
+        VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge clk or negedge rst_n)\n");
     }
 }
 #endif  // VL_DEBUG
 
 VL_ATTR_COLD void Vpolar_ecc___024root___ctor_var_reset(Vpolar_ecc___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___ctor_var_reset\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vpolar_ecc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vpolar_ecc___024root___ctor_var_reset\n"); );
     // Body
     vlSelf->clk = VL_RAND_RESET_I(1);
     vlSelf->rst_n = VL_RAND_RESET_I(1);

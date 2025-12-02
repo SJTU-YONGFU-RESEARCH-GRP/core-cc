@@ -17,7 +17,7 @@ Vcrc_ecc___024root::Vcrc_ecc___024root(Vcrc_ecc__Syms* symsp, const char* v__nam
 }
 
 void Vcrc_ecc___024root::__Vconfigure(bool first) {
-    (void)first;  // Prevent unused variable warning
+    if (false && first) {}  // Prevent unused
 }
 
 Vcrc_ecc___024root::~Vcrc_ecc___024root() {

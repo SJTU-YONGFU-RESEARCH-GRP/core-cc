@@ -1,11 +1,11 @@
 {
-  "timestamp": 1753877002.4420974,
-  "total_ecc_types": 9,
-  "passed_ecc_types": 2,
-  "failed_ecc_types": 7,
+  "timestamp": 1764688793.256626,
+  "total_ecc_types": 26,
+  "passed_ecc_types": 26,
+  "failed_ecc_types": 0,
   "verilator_available": true,
-  "execution_time": 4.849124908447266,
-  "overall_status": "FAIL",
+  "execution_time": 3.574639081954956,
+  "overall_status": "PASS",
   "ecc_results": {
     "parity_ecc": {
       "total_tests": 1,
@@ -19,23 +19,215 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.061911821365356445
+          "execution_time": 0.009005069732666016
         }
       ]
     },
     "hamming_secded_ecc": {
       "total_tests": 1,
-      "passed_tests": 0,
-      "failed_tests": 1,
-      "overall_status": "FAIL",
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
       "test_results": [
         {
           "test_name": "hardware_verification",
-          "passed": false,
+          "passed": true,
           "expected": "PASS",
-          "actual": "FAIL",
+          "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.05528688430786133
+          "execution_time": 0.0053408145904541016
+        }
+      ]
+    },
+    "extended_hamming_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.007058143615722656
+        }
+      ]
+    },
+    "cyclic_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.0057370662689208984
+        }
+      ]
+    },
+    "system_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.005086421966552734
+        }
+      ]
+    },
+    "reed_muller_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.0050737857818603516
+        }
+      ]
+    },
+    "fire_code_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.005924701690673828
+        }
+      ]
+    },
+    "product_code_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.0061261653900146484
+        }
+      ]
+    },
+    "concatenated_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.002396821975708008
+        }
+      ]
+    },
+    "composite_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.0027832984924316406
+        }
+      ]
+    },
+    "turbo_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.003572702407836914
+        }
+      ]
+    },
+    "spatially_coupled_ldpc_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.0023021697998046875
+        }
+      ]
+    },
+    "non_binary_ldpc_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.002410888671875
+        }
+      ]
+    },
+    "raptor_code_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.0023233890533447266
         }
       ]
     },
@@ -51,103 +243,183 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0769960880279541
+          "execution_time": 0.005686521530151367
         }
       ]
     },
     "reed_solomon_ecc": {
       "total_tests": 1,
-      "passed_tests": 0,
-      "failed_tests": 1,
-      "overall_status": "FAIL",
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
       "test_results": [
         {
           "test_name": "hardware_verification",
-          "passed": false,
+          "passed": true,
           "expected": "PASS",
-          "actual": "FAIL",
+          "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.06556987762451172
+          "execution_time": 0.005715847015380859
         }
       ]
     },
     "repetition_ecc": {
       "total_tests": 1,
-      "passed_tests": 0,
-      "failed_tests": 1,
-      "overall_status": "FAIL",
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
       "test_results": [
         {
           "test_name": "hardware_verification",
-          "passed": false,
+          "passed": true,
           "expected": "PASS",
-          "actual": "FAIL",
+          "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.09220600128173828
+          "execution_time": 0.005231618881225586
         }
       ]
     },
     "crc_ecc": {
       "total_tests": 1,
-      "passed_tests": 0,
-      "failed_tests": 1,
-      "overall_status": "FAIL",
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
       "test_results": [
         {
           "test_name": "hardware_verification",
-          "passed": false,
+          "passed": true,
           "expected": "PASS",
-          "actual": "FAIL",
+          "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.060793399810791016
+          "execution_time": 0.005160093307495117
         }
       ]
     },
     "golay_ecc": {
       "total_tests": 1,
-      "passed_tests": 0,
-      "failed_tests": 1,
-      "overall_status": "FAIL",
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
       "test_results": [
         {
           "test_name": "hardware_verification",
-          "passed": false,
+          "passed": true,
           "expected": "PASS",
-          "actual": "FAIL",
+          "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.03572988510131836
+          "execution_time": 0.0058553218841552734
         }
       ]
     },
     "ldpc_ecc": {
       "total_tests": 1,
-      "passed_tests": 0,
-      "failed_tests": 1,
-      "overall_status": "FAIL",
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
       "test_results": [
         {
           "test_name": "hardware_verification",
-          "passed": false,
+          "passed": true,
           "expected": "PASS",
-          "actual": "FAIL",
+          "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.05516219139099121
+          "execution_time": 0.005898952484130859
         }
       ]
     },
     "polar_ecc": {
       "total_tests": 1,
-      "passed_tests": 0,
-      "failed_tests": 1,
-      "overall_status": "FAIL",
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
       "test_results": [
         {
           "test_name": "hardware_verification",
-          "passed": false,
+          "passed": true,
           "expected": "PASS",
-          "actual": "FAIL",
+          "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.08963179588317871
+          "execution_time": 0.0060846805572509766
+        }
+      ]
+    },
+    "adaptive_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.0025594234466552734
+        }
+      ]
+    },
+    "burst_error_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.0024466514587402344
+        }
+      ]
+    },
+    "three_d_memory_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.0025730133056640625
+        }
+      ]
+    },
+    "primary_secondary_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.002242565155029297
+        }
+      ]
+    },
+    "convolutional_ecc": {
+      "total_tests": 1,
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "overall_status": "PASS",
+      "test_results": [
+        {
+          "test_name": "hardware_verification",
+          "passed": true,
+          "expected": "PASS",
+          "actual": "PASS",
+          "error_message": null,
+          "execution_time": 0.002986431121826172
         }
       ]
     }

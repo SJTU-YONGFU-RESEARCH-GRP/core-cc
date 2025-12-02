@@ -13,14 +13,12 @@ VM_TIMING = 0
 VM_COVERAGE = 0
 # Parallel builds?  0/1 (from --output-split)
 VM_PARALLEL_BUILDS = 0
-# Tracing output mode?  0/1 (from --trace-fst/--trace-saif/--trace-vcd)
+# Tracing output mode?  0/1 (from --trace/--trace-fst)
 VM_TRACE = 0
+# Tracing output mode in VCD format?  0/1 (from --trace)
+VM_TRACE_VCD = 0
 # Tracing output mode in FST format?  0/1 (from --trace-fst)
 VM_TRACE_FST = 0
-# Tracing output mode in SAIF format?  0/1 (from --trace-saif)
-VM_TRACE_SAIF = 0
-# Tracing output mode in VCD format?  0/1 (from --trace-vcd)
-VM_TRACE_VCD = 0
 
 ### Object file lists...
 # Generated module classes, fast-path, compile with highest optimization
@@ -32,6 +30,7 @@ VM_CLASSES_FAST += \
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \
 	Vcrc_ecc___024root__Slow \
+	Vcrc_ecc___024root__DepSet_h6fd66ba2__0__Slow \
 	Vcrc_ecc___024root__DepSet_h3b14f1cb__0__Slow \
 
 # Generated support classes, fast-path, compile with highest optimization

@@ -23,6 +23,4 @@
 #include "Vrepetition_ecc__Syms.h"
 #include "Vrepetition_ecc.h"
 
-// Additional include files added using '--compiler-include'
-
 #endif  // guard

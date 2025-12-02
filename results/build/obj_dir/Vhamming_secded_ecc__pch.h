@@ -23,6 +23,4 @@
 #include "Vhamming_secded_ecc__Syms.h"
 #include "Vhamming_secded_ecc.h"
 
-// Additional include files added using '--compiler-include'
-
 #endif  // guard

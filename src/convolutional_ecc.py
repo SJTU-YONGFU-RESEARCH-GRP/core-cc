@@ -43,11 +43,6 @@ class ConvolutionalCode:
             raise ValueError("Codeword length must be even.")
         n = len(codeword) // 2
         
-        # For very large codes, use simplified approach
-        if n > 16:
-            # Just extract the first n bits as a fallback
-            return codeword[:n]
-        
         # Viterbi algorithm implementation
         num_states = 1 << self.K
         trellis = [[float('inf')] * num_states for _ in range(n + 1)]
@@ -85,13 +80,16 @@ class ConvolutionalCode:
                         backpointer[t + 1][next_state] = state
         
         # Backward pass to find best path
+        # Prefer state 0 if costs are equal, or just pick min
         best_state = min(range(num_states), key=lambda s: trellis[n][s])
         decoded_bits = []
         
         for t in range(n, 0, -1):
             prev_state = backpointer[t][best_state]
             # Extract input bit from state transition
-            input_bit = (best_state >> (self.K - 1)) & 1
+            # State is ((prev_state << 1) | input_bit) & mask
+            # So input_bit is the LSB of best_state
+            input_bit = best_state & 1
             decoded_bits.append(input_bit)
             best_state = prev_state
         
@@ -124,6 +122,9 @@ class ConvolutionalECC(ECCBase):
         # Convert data to bit list with proper length
         data_bits = [(data >> i) & 1 for i in range(self.data_length)]
         
+        # Add tail bits to flush encoder to state 0 (K=2, so 2 bits)
+        data_bits.extend([0, 0])
+        
         # Encode with convolutional code
         codeword_bits = self.conv.encode(data_bits)
         
@@ -149,14 +150,18 @@ class ConvolutionalECC(ECCBase):
             Tuple of (decoded_data, error_type)
         """
         try:
-            # Calculate expected codeword length: data_length * 2 (rate 1/2)
-            expected_codeword_length = self.data_length * 2
+            # Calculate expected codeword length: (data_length + 2) * 2
+            expected_codeword_length = (self.data_length + 2) * 2
             
             # Convert to bit list with proper length
             codeword_bits = [(codeword >> i) & 1 for i in range(expected_codeword_length)]
             
             # Decode with convolutional code
             decoded_bits = self.conv.viterbi_decode(codeword_bits)
+            
+            # Remove tail bits
+            if len(decoded_bits) >= 2:
+                decoded_bits = decoded_bits[:-2]
             
             # Convert back to integer
             decoded_data = 0

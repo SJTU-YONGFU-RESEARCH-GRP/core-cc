@@ -23,6 +23,4 @@
 #include "Vgolay_ecc__Syms.h"
 #include "Vgolay_ecc.h"
 
-// Additional include files added using '--compiler-include'
-
 #endif  // guard

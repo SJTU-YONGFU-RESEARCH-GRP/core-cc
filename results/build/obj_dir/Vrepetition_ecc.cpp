@@ -74,7 +74,7 @@ void Vrepetition_ecc::eval_step() {
 bool Vrepetition_ecc::eventsPending() { return false; }
 
 uint64_t Vrepetition_ecc::nextTimeSlot() {
-    VL_FATAL_MT(__FILE__, __LINE__, "", "No delays in the design");
+    VL_FATAL_MT(__FILE__, __LINE__, "", "%Error: No delays in the design");
     return 0;
 }
 
@@ -103,4 +103,11 @@ unsigned Vrepetition_ecc::threads() const { return 1; }
 void Vrepetition_ecc::prepareClone() const { contextp()->prepareClone(); }
 void Vrepetition_ecc::atClone() const {
     contextp()->threadPoolpOnClone();
+}
+
+//============================================================
+// Trace configuration
+
+VL_ATTR_COLD void Vrepetition_ecc::trace(VerilatedVcdC* tfp, int levels, int options) {
+    vl_fatal(__FILE__, __LINE__, __FILE__,"'Vrepetition_ecc::trace()' called on model that was Verilated without --trace option");
 }

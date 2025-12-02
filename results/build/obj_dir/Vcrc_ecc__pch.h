@@ -23,6 +23,4 @@
 #include "Vcrc_ecc__Syms.h"
 #include "Vcrc_ecc.h"
 
-// Additional include files added using '--compiler-include'
-
 #endif  // guard

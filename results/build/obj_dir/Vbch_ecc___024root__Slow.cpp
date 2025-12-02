@@ -17,7 +17,7 @@ Vbch_ecc___024root::Vbch_ecc___024root(Vbch_ecc__Syms* symsp, const char* v__nam
 }
 
 void Vbch_ecc___024root::__Vconfigure(bool first) {
-    (void)first;  // Prevent unused variable warning
+    if (false && first) {}  // Prevent unused
 }
 
 Vbch_ecc___024root::~Vbch_ecc___024root() {

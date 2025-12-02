@@ -23,6 +23,4 @@
 #include "Vldpc_ecc__Syms.h"
 #include "Vldpc_ecc.h"
 
-// Additional include files added using '--compiler-include'
-
 #endif  // guard

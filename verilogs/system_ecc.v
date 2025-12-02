@@ -37,6 +37,7 @@ module system_ecc #(
     reg [HAMMING_N-1:0] hamming_codeword;
     reg system_parity_bit;
     reg expected_system_parity;
+    reg [3:0] temp_parity;
     
     // Count ones in a vector (for system parity calculation)
     function [7:0] count_ones;
@@ -129,8 +130,10 @@ module system_ecc #(
             end
             
             // Calculate and insert Hamming parity bits
+            // Calculate and insert Hamming parity bits
+            temp_parity = calculate_hamming_parity(data_in);
             for (int i = 0; i < 4; i = i + 1) begin
-                hamming_codeword[parity_positions[i]] = calculate_hamming_parity(data_in)[i];
+                hamming_codeword[parity_positions[i]] = temp_parity[i];
             end
             
             // Calculate system-level parity (even parity over all Hamming codeword bits)
