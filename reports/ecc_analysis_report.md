@@ -1,6 +1,6 @@
 # ECC (Error Correction Code) Analysis Report
 
-**Generated:** 2025-12-03 17:23:33  
+**Generated:** 2025-12-03 18:34:08  
 **Framework Version:** 3.0  
 **Analysis Scope:** Comprehensive analysis of 17 ECC types: SpatiallyCoupledLDPCECC, BCHECC, HammingSECDEDECC, NonBinaryLDPCECC, FireCodeECC, ReedSolomonECC, TurboECC, ParityECC, ConcatenatedECC, ConvolutionalECC, ReedMullerECC, ProductCodeECC, RaptorCodeECC, GolayECC, PolarECC, ExtendedHammingECC, LDPCECC
 
@@ -26,7 +26,7 @@ This report provides a comprehensive analysis of different Error Correction Code
 
 ## Performance Comparison
 
-![ECC Performance Comparison](ecc_performance_compparison.png)
+![ECC Performance Comparison](ecc_performance_comparison.png)
 
 *Detailed comparison of success, correction, and detection rates across all ECC types.*
 

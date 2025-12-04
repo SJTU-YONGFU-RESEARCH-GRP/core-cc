@@ -1,5 +1,0 @@
-
-            read_verilog verilogs/hamming_decoder.v
-            synth -top hamming_decoder
-            stat
-            

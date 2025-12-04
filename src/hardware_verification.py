@@ -473,6 +473,118 @@ class HardwareVerifier:
                 }
         
         return testbench_data
+    
+    def create_hardware_visualizations(self, results: HardwareVerificationResult, output_dir: str = "results") -> Dict[str, str]:
+        """
+        Create hardware visualization charts.
+        
+        Args:
+            results: Hardware verification results
+            output_dir: Directory to save charts
+            
+        Returns:
+            Dictionary mapping chart name to file path
+        """
+        try:
+            import matplotlib.pyplot as plt
+            import numpy as np
+        except ImportError:
+            print("Matplotlib or NumPy not available for hardware visualizations")
+            return {}
+            
+        output_path = Path(output_dir)
+        output_path.mkdir(exist_ok=True)
+        
+        charts = {}
+        
+        # Get synthesis data
+        synthesis_data = self.get_available_synthesis_data(results)
+        
+        if not synthesis_data:
+            return {}
+            
+        # Prepare data for plotting
+        modules = list(synthesis_data.keys())
+        cells = list(synthesis_data.values())
+        
+        # Calculate power estimates (rough estimate: 0.1mW per cell)
+        power = [c * 0.1 for c in cells]
+        
+        # Sort by cell count
+        sorted_indices = np.argsort(cells)
+        modules = [modules[i] for i in sorted_indices]
+        cells = [cells[i] for i in sorted_indices]
+        power = [power[i] for i in sorted_indices]
+        
+        # Set style for scientific publication
+        plt.rcParams.update({
+            'font.family': 'serif',
+            'font.serif': ['DejaVu Serif', 'Times New Roman', 'serif'],
+            'font.size': 12,
+            'font.weight': 'bold',  # Global bold font
+            'axes.labelweight': 'bold', # Bold axis labels
+            'axes.titleweight': 'bold', # Bold titles
+            'axes.labelsize': 12,
+            'axes.titlesize': 14,
+            'xtick.labelsize': 10,
+            'ytick.labelsize': 10,
+            'legend.fontsize': 10,
+            'figure.titlesize': 16,
+            'axes.grid': True,
+            'grid.alpha': 0.3,
+            'grid.linestyle': '--',
+            'axes.edgecolor': 'black',
+            'axes.linewidth': 1.0,
+            'lines.linewidth': 2.0,
+            'figure.dpi': 300,
+            'savefig.dpi': 300,
+            'savefig.bbox': 'tight'
+        })
+        
+        # Create dual-axis chart
+        fig, ax1 = plt.subplots(figsize=(14, 8))
+        
+        x = np.arange(len(modules))
+        width = 0.35
+        
+        # Plot Area (Cells)
+        rects1 = ax1.bar(x - width/2, cells, width, label='Area (Cells)', color='#c44e52', alpha=0.9, edgecolor='black')
+        ax1.set_ylabel('Area (Cells)', color='#c44e52', fontsize=12, fontweight='bold', fontfamily='serif')
+        ax1.tick_params(axis='y', labelcolor='#c44e52', labelsize=10)
+        for label in ax1.get_yticklabels():
+            label.set_fontweight('bold')
+        ax1.set_xticks(x)
+        ax1.set_xticklabels(modules, rotation=45, ha='right', fontsize=10, fontweight='bold', fontfamily='serif')
+        ax1.set_title('Hardware Cost Comparison: Area and Power', fontsize=16, fontweight='bold', fontfamily='serif', pad=20)
+        ax1.grid(True, axis='y', alpha=0.3, linestyle='--', color='gray')
+        
+        # Plot Power (mW) on secondary axis
+        ax2 = ax1.twinx()
+        rects2 = ax2.bar(x + width/2, power, width, label='Power Est. (mW)', color='#dd8452', alpha=0.9, edgecolor='black')
+        ax2.set_ylabel('Power Estimate (mW)', color='#dd8452', fontsize=12, fontweight='bold', fontfamily='serif')
+        ax2.tick_params(axis='y', labelcolor='#dd8452', labelsize=10)
+        for label in ax2.get_yticklabels():
+            label.set_fontweight('bold')
+        
+        # Add legend
+        lines1, labels1 = ax1.get_legend_handles_labels()
+        lines2, labels2 = ax2.get_legend_handles_labels()
+        ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper left', frameon=True, fancybox=False, edgecolor='black')
+        
+        plt.tight_layout()
+        
+        # Save as PNG
+        chart_path_png = output_path / "ecc_hardware_cost.png"
+        plt.savefig(chart_path_png, dpi=300, bbox_inches='tight')
+        charts['hardware_cost'] = str(chart_path_png)
+        
+        # Save as PDF
+        chart_path_pdf = output_path / "ecc_hardware_cost.pdf"
+        plt.savefig(chart_path_pdf, bbox_inches='tight')
+        
+        plt.close()
+        
+        return charts
 
 
 def load_verification_results(results_file: str = "results/hardware_verification_results.json") -> Optional[HardwareVerificationResult]:

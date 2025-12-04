@@ -1,5 +1,0 @@
-
-            read_verilog verilogs/simple_encoder.v
-            synth -top simple_encoder
-            stat
-            

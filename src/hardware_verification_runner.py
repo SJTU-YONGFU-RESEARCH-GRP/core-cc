@@ -74,13 +74,27 @@ class ECCTestSummary:
 
 
 @dataclass
+class SynthesisResult:
+    """Results from synthesis verification."""
+    module_name: str
+    verilog_file: str
+    synthesis_available: bool
+    area_cells: Optional[int] = None
+    timing_info: Optional[Dict[str, float]] = None
+    power_estimate: Optional[float] = None
+    error_message: Optional[str] = None
+
+
+@dataclass
 class HardwareVerificationSummary:
     """Complete hardware verification summary."""
     total_ecc_types: int
     passed_ecc_types: int
     failed_ecc_types: int
     ecc_summaries: Dict[str, ECCTestSummary]
+    synthesis_results: Dict[str, SynthesisResult]
     verilator_available: bool
+    yosys_available: bool
     execution_time: float
     overall_status: str  # "PASS" or "FAIL"
 
@@ -282,6 +296,25 @@ class HardwareVerificationRunner:
             print(f"Verilator found: {version.stdout.strip()}")
         
         return True
+
+    def check_yosys(self) -> bool:
+        """
+        Check if Yosys is installed and available.
+        
+        Returns:
+            bool: True if Yosys is available
+        """
+        if shutil.which("yosys") is None:
+            if self.verbose:
+                print("WARNING: Yosys is not installed or not in PATH.")
+            return False
+        
+        if self.verbose:
+            version = subprocess.run(["yosys", "--version"], 
+                                   capture_output=True, text=True)
+            print(f"Yosys found: {version.stdout.strip()}")
+        
+        return True
     
     def compile_test(self, ecc_type: str, config: Dict[str, Any]) -> bool:
         """
@@ -452,6 +485,100 @@ class HardwareVerificationRunner:
             test_results=test_results,
             overall_status=overall_status
         )
+
+    def run_synthesis(self, ecc_type: str, config: Dict[str, Any]) -> SynthesisResult:
+        """
+        Run synthesis for a single ECC type using Yosys.
+        
+        Args:
+            ecc_type: Name of the ECC type
+            config: Configuration dictionary
+            
+        Returns:
+            SynthesisResult: Synthesis results
+        """
+        verilog_file = self.verilogs_dir / config["verilog_file"]
+        module_name = ecc_type
+        
+        if not verilog_file.exists():
+            return SynthesisResult(
+                module_name=module_name,
+                verilog_file=str(verilog_file),
+                synthesis_available=False,
+                error_message="Verilog file not found"
+            )
+            
+        try:
+            # Create synthesis script
+            script = f"""
+            read_verilog {verilog_file}
+            synth -top {module_name}
+            stat
+            """
+            
+            script_path = self.results_dir / f"{module_name}_synthesis.ys"
+            with open(script_path, "w") as f:
+                f.write(script)
+            
+            # Run Yosys
+            result = subprocess.run(
+                ["yosys", "-s", str(script_path)],
+                capture_output=True,
+                text=True,
+                timeout=60
+            )
+            
+            if result.returncode == 0:
+                # Parse synthesis results
+                area_cells = None
+                timing_info = {}
+                
+                for line in result.stdout.splitlines():
+                    line = line.strip()
+                    if line.endswith(" cells"):
+                        try:
+                            # Format is usually "   27 cells"
+                            parts = line.split()
+                            if len(parts) >= 2 and parts[-1] == "cells":
+                                area_cells = int(parts[-2])
+                        except (ValueError, IndexError):
+                            pass
+                    elif "Critical path delay:" in line:
+                        try:
+                            delay = float(line.split(":")[1].strip().split()[0])
+                            timing_info["critical_path_delay"] = delay
+                        except (ValueError, IndexError):
+                            pass
+                            
+                return SynthesisResult(
+                    module_name=module_name,
+                    verilog_file=str(verilog_file),
+                    synthesis_available=True,
+                    area_cells=area_cells,
+                    timing_info=timing_info if timing_info else None
+                )
+            else:
+                return SynthesisResult(
+                    module_name=module_name,
+                    verilog_file=str(verilog_file),
+                    synthesis_available=False,
+                    error_message=f"Synthesis failed: {result.stderr}"
+                )
+                
+        except subprocess.TimeoutExpired:
+            return SynthesisResult(
+                module_name=module_name,
+                verilog_file=str(verilog_file),
+                synthesis_available=False,
+                error_message="Synthesis timed out"
+            )
+        except Exception as e:
+            return SynthesisResult(
+                module_name=module_name,
+                verilog_file=str(verilog_file),
+                synthesis_available=False,
+                error_message=f"Synthesis error: {str(e)}"
+            )
     
     def run_all_tests(self) -> HardwareVerificationSummary:
         """
@@ -470,13 +597,19 @@ class HardwareVerificationRunner:
                 passed_ecc_types=0,
                 failed_ecc_types=1,
                 ecc_summaries={},
+                synthesis_results={},
                 verilator_available=False,
+                yosys_available=False,
                 execution_time=0.0,
                 overall_status="FAIL"
             )
+            
+        # Check Yosys availability
+        yosys_available = self.check_yosys()
         
         start_time = time.time()
         ecc_summaries = {}
+        synthesis_results = {}
         passed_ecc_types = 0
         failed_ecc_types = 0
         
@@ -486,8 +619,18 @@ class HardwareVerificationRunner:
         for i, (ecc_type, config) in enumerate(self.ecc_configs.items(), 1):
             print(f"[{i}/{len(self.ecc_configs)}] Testing {ecc_type}...")
             
+            # Run verification test
             summary = self.run_test(ecc_type, config)
             ecc_summaries[ecc_type] = summary
+            
+            # Run synthesis if available
+            if yosys_available:
+                if self.verbose:
+                    print(f"  Running synthesis for {ecc_type}...")
+                synth_result = self.run_synthesis(ecc_type, config)
+                synthesis_results[ecc_type] = synth_result
+                if self.verbose and synth_result.synthesis_available:
+                    print(f"  Synthesis successful: {synth_result.area_cells} cells")
             
             if summary.overall_status == "PASS":
                 passed_ecc_types += 1
@@ -518,7 +661,9 @@ class HardwareVerificationRunner:
             passed_ecc_types=passed_ecc_types,
             failed_ecc_types=failed_ecc_types,
             ecc_summaries=ecc_summaries,
+            synthesis_results=synthesis_results,
             verilator_available=verilator_available,
+            yosys_available=yosys_available,
             execution_time=execution_time,
             overall_status=overall_status
         )
@@ -541,9 +686,11 @@ class HardwareVerificationRunner:
             "passed_ecc_types": summary.passed_ecc_types,
             "failed_ecc_types": summary.failed_ecc_types,
             "verilator_available": summary.verilator_available,
+            "yosys_available": summary.yosys_available,
             "execution_time": summary.execution_time,
             "overall_status": summary.overall_status,
-            "ecc_results": {}
+            "ecc_results": {},
+            "synthesis_results": {}
         }
         
         for ecc_type, ecc_summary in summary.ecc_summaries.items():
@@ -563,6 +710,17 @@ class HardwareVerificationRunner:
                     }
                     for tr in ecc_summary.test_results
                 ]
+            }
+            
+        for ecc_type, synth_result in summary.synthesis_results.items():
+            results["synthesis_results"][ecc_type] = {
+                "module_name": synth_result.module_name,
+                "verilog_file": synth_result.verilog_file,
+                "synthesis_available": synth_result.synthesis_available,
+                "area_cells": synth_result.area_cells,
+                "timing_info": synth_result.timing_info,
+                "power_estimate": synth_result.power_estimate,
+                "error_message": synth_result.error_message
             }
         
         with open(output_path, 'w') as f:

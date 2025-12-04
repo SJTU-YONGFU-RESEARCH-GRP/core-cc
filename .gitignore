@@ -20,3 +20,4 @@ obj_dir/
 results/
 .gemini/
 *.log
+reports/

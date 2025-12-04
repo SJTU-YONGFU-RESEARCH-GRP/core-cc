@@ -1,5 +1,0 @@
-
-            read_verilog verilogs/bch31163_ecc.v
-            synth -top bch31163_ecc
-            stat
-            

@@ -1,5 +1,0 @@
-
-            read_verilog verilogs/polar_ecc.v
-            synth -top polar_ecc
-            stat
-            

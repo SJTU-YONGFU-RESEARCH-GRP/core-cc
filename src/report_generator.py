@@ -149,8 +149,15 @@ class ECCReportGenerator:
         if trends_path.exists():
             charts_section += f"![ECC Word Length Trends](ecc_word_length_trends.png)\n\n"
             charts_section += "*Performance trends showing how ECC performance varies with word length.*\n\n"
-        
+            
         return charts_section
+    
+    def generate_performance_comparison_chart_section(self) -> str:
+        """Generate section for performance comparison chart."""
+        chart_path = self.results_dir / "ecc_performance_comparison.png"
+        if chart_path.exists():
+            return f"![ECC Performance Comparison](ecc_performance_comparison.png)\n\n*Detailed comparison of success, correction, and detection rates across all ECC types.*\n\n"
+        return ""
     
     def generate_performance_comparison_table(self) -> str:
         """Generate a performance comparison table from benchmark results."""
@@ -162,6 +169,7 @@ class ECCReportGenerator:
             return "## Performance Comparison\n\n*No benchmark summary available.*\n\n"
         
         table = "## Performance Comparison\n\n"
+        table += self.generate_performance_comparison_chart_section()
         table += "| ECC Type | Success Rate (%) | Correction Rate (%) | Detection Rate (%) | Code Rate | Overhead Ratio | Encode Time (ms) | Decode Time (ms) |\n"
         table += "|----------|------------------|-------------------|-------------------|-----------|----------------|------------------|------------------|\n"
         
@@ -178,6 +186,12 @@ class ECCReportGenerator:
             return "## Hardware Cost Comparison\n\n*No synthesis data available. Hardware verification not completed or tools not available.*\n\n"
         
         table = "## Hardware Cost Comparison\n\n"
+        
+        # Add hardware cost chart if available
+        chart_path = self.results_dir / "ecc_hardware_cost.png"
+        if chart_path.exists():
+            table += f"![ECC Hardware Cost Comparison](ecc_hardware_cost.png)\n\n*Comparison of area (cell count) and estimated power consumption.*\n\n"
+            
         table += "| Module | Area (Cells) | Relative Cost | Power Estimate |\n"
         table += "|--------|--------------|---------------|----------------|\n"
         
@@ -327,6 +341,14 @@ class ECCReportGenerator:
         # Load data
         benchmark_loaded = self.load_benchmark_data()
         hardware_loaded = self.load_hardware_data()
+        
+        # Generate hardware visualizations if results are available
+        if hardware_loaded and self.hardware_results:
+            try:
+                verifier = HardwareVerifier(results_dir=str(self.results_dir))
+                verifier.create_hardware_visualizations(self.hardware_results, str(self.results_dir))
+            except Exception as e:
+                print(f"Warning: Failed to generate hardware visualizations: {e}")
         
         # Get data
         synthesis_data = self.get_synthesis_data()

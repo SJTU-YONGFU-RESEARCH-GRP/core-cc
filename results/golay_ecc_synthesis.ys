@@ -1,5 +1,0 @@
-
-            read_verilog verilogs/golay_ecc.v
-            synth -top golay_ecc
-            stat
-            

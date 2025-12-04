@@ -1,5 +1,0 @@
-
-            read_verilog verilogs/bch74_ecc.v
-            synth -top bch74_ecc
-            stat
-            

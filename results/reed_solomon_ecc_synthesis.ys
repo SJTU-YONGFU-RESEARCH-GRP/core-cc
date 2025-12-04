@@ -1,5 +1,0 @@
-
-            read_verilog verilogs/reed_solomon_ecc.v
-            synth -top reed_solomon_ecc
-            stat
-            

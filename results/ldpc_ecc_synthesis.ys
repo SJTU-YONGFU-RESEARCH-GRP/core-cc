@@ -1,5 +1,0 @@
-
-            read_verilog verilogs/ldpc_ecc.v
-            synth -top ldpc_ecc
-            stat
-            

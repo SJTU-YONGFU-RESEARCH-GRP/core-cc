@@ -384,81 +384,162 @@ class ECCAnalyzer:
         
         charts = {}
         
-        # Set style
-        plt.style.use('seaborn-v0_8')
-        sns.set_palette("husl")
+        # Set style for scientific publication
+        # Use a style that mimics scientific papers (white background, no grid or minimal grid, serif fonts)
+        plt.rcParams.update({
+            'font.family': 'serif',
+            'font.serif': ['DejaVu Serif', 'Times New Roman', 'serif'],
+            'font.size': 12,
+            'font.weight': 'bold',  # Global bold font
+            'axes.labelweight': 'bold', # Bold axis labels
+            'axes.titleweight': 'bold', # Bold titles
+            'axes.labelsize': 12,
+            'axes.titlesize': 14,
+            'xtick.labelsize': 10,
+            'ytick.labelsize': 10,
+            'legend.fontsize': 10,
+            'figure.titlesize': 16,
+            'axes.grid': True,
+            'grid.alpha': 0.3,
+            'grid.linestyle': '--',
+            'axes.edgecolor': 'black',
+            'axes.linewidth': 1.0,
+            'lines.linewidth': 2.0,
+            'lines.markersize': 8,
+            'figure.dpi': 300,
+            'savefig.dpi': 300,
+            'savefig.bbox': 'tight'
+        })
+        # sns.set_palette("deep") # Use deep palette for better contrast
         
         # 1. Overall Performance Comparison
-        fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 12))
+        fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
         
         # Success Rate Comparison
+        # Ensure units are in percentage (0-100)
         success_rates = self.df.groupby('ecc_type')['success_rate'].mean().sort_values(ascending=False)
-        success_rates.plot(kind='bar', ax=ax1, color='skyblue')
-        ax1.set_title('Average Success Rate by ECC Type')
-        ax1.set_ylabel('Success Rate (%)')
-        ax1.tick_params(axis='x', rotation=45)
-        ax1.grid(True, alpha=0.3)
+        if success_rates.max() <= 1.0:
+            success_rates *= 100
+            
+        success_rates.plot(kind='bar', ax=ax1, color='#4c72b0', edgecolor='black', alpha=0.9, width=0.7)
+        ax1.set_title('Average Success Rate by ECC Type', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax1.set_ylabel('Success Rate (%)', fontsize=12, fontweight='bold', fontfamily='serif')
+        ax1.set_xlabel('', fontsize=12, fontfamily='serif')
+        ax1.tick_params(axis='x', rotation=45, labelsize=10)
+        ax1.tick_params(axis='y', labelsize=10)
+        for label in ax1.get_xticklabels() + ax1.get_yticklabels():
+            label.set_fontweight('bold')
+        ax1.grid(True, axis='y', alpha=0.3, linestyle='--', color='gray')
+        ax1.set_ylim(0, 105)
         
         # Code Rate Comparison
         code_rates = self.df.groupby('ecc_type')['code_rate'].mean().sort_values(ascending=False)
-        code_rates.plot(kind='bar', ax=ax2, color='lightcoral')
-        ax2.set_title('Average Code Rate by ECC Type')
-        ax2.set_ylabel('Code Rate')
-        ax2.tick_params(axis='x', rotation=45)
-        ax2.grid(True, alpha=0.3)
+        code_rates.plot(kind='bar', ax=ax2, color='#c44e52', edgecolor='black', alpha=0.9, width=0.7)
+        ax2.set_title('Average Code Rate by ECC Type', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax2.set_ylabel('Code Rate', fontsize=12, fontweight='bold', fontfamily='serif')
+        ax2.set_xlabel('', fontsize=12, fontfamily='serif')
+        ax2.tick_params(axis='x', rotation=45, labelsize=10)
+        ax2.tick_params(axis='y', labelsize=10)
+        for label in ax2.get_xticklabels() + ax2.get_yticklabels():
+            label.set_fontweight('bold')
+        ax2.grid(True, axis='y', alpha=0.3, linestyle='--', color='gray')
         
         # Performance vs Efficiency Scatter
         summary = self.generate_metrics_summary()
-        success_rates = [summary[ecc]['avg_success_rate'] for ecc in summary]
-        code_rates = [summary[ecc]['avg_code_rate'] for ecc in summary]
+        success_rates_list = [summary[ecc]['avg_success_rate'] for ecc in summary]
+        # Convert to percentage if needed
+        if max(success_rates_list) <= 1.0:
+            success_rates_list = [s * 100 for s in success_rates_list]
+            
+        code_rates_list = [summary[ecc]['avg_code_rate'] for ecc in summary]
         ecc_names = list(summary.keys())
         
-        scatter = ax3.scatter(code_rates, success_rates, s=100, alpha=0.7)
-        ax3.set_xlabel('Code Rate')
-        ax3.set_ylabel('Success Rate (%)')
-        ax3.set_title('Performance vs Efficiency Trade-off')
-        ax3.grid(True, alpha=0.3)
+        scatter = ax3.scatter(code_rates_list, success_rates_list, s=120, alpha=0.8, c='#55a868', edgecolor='black')
+        ax3.set_xlabel('Code Rate (Efficiency)', fontsize=12, fontweight='bold', fontfamily='serif')
+        ax3.set_ylabel('Success Rate (%)', fontsize=12, fontweight='bold', fontfamily='serif')
+        ax3.set_title('Performance vs Efficiency Trade-off', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax3.grid(True, alpha=0.3, linestyle='--', color='gray')
+        ax3.set_ylim(0, 105)
+        for label in ax3.get_xticklabels() + ax3.get_yticklabels():
+            label.set_fontweight('bold')
         
-        # Add labels
+        # Add labels with better positioning
         for i, ecc in enumerate(ecc_names):
-            ax3.annotate(ecc, (code_rates[i], success_rates[i]), 
-                        xytext=(5, 5), textcoords='offset points', fontsize=8)
+            ax3.annotate(ecc, (code_rates_list[i], success_rates_list[i]), 
+                        xytext=(5, 5), textcoords='offset points', fontsize=9, fontweight='bold', fontfamily='serif')
         
         # Error Pattern Performance
         error_pattern_data = self.df.groupby(['ecc_type', 'error_pattern'])['success_rate'].mean().unstack()
-        error_pattern_data.plot(kind='bar', ax=ax4, width=0.8)
-        ax4.set_title('Success Rate by Error Pattern')
-        ax4.set_ylabel('Success Rate (%)')
-        ax4.tick_params(axis='x', rotation=45)
-        ax4.legend(title='Error Pattern')
-        ax4.grid(True, alpha=0.3)
+        # Convert to percentage if needed
+        if error_pattern_data.max().max() <= 1.0:
+            error_pattern_data *= 100
+            
+        error_pattern_data.plot(kind='bar', ax=ax4, width=0.8, edgecolor='black', alpha=0.9, colormap='viridis')
+        ax4.set_title('Success Rate by Error Pattern', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax4.set_ylabel('Success Rate (%)', fontsize=12, fontweight='bold', fontfamily='serif')
+        ax4.set_xlabel('', fontsize=12, fontfamily='serif')
+        ax4.tick_params(axis='x', rotation=45, labelsize=10)
+        ax4.tick_params(axis='y', labelsize=10)
+        for label in ax4.get_xticklabels() + ax4.get_yticklabels():
+            label.set_fontweight('bold')
+        legend = ax4.legend(title='Error Pattern', bbox_to_anchor=(1.0, 1), loc='upper left', fontsize=10, title_fontsize=11)
+        plt.setp(legend.get_title(), fontweight='bold')
+        ax4.grid(True, axis='y', alpha=0.3, linestyle='--', color='gray')
+        ax4.set_ylim(0, 105)
         
         plt.tight_layout()
-        chart_path = output_path / "ecc_performance_analysis.png"
-        plt.savefig(chart_path, dpi=300, bbox_inches='tight')
+        
+        # Save as PNG
+        chart_path_png = output_path / "ecc_performance_analysis.png"
+        plt.savefig(chart_path_png, dpi=300, bbox_inches='tight')
+        charts['performance_analysis'] = str(chart_path_png)
+        
+        # Save as PDF
+        chart_path_pdf = output_path / "ecc_performance_analysis.pdf"
+        plt.savefig(chart_path_pdf, bbox_inches='tight')
+        
         plt.close()
-        charts['performance_analysis'] = str(chart_path)
         
         # 2. Word Length Trends
-        fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+        fig, axes = plt.subplots(2, 2, figsize=(16, 12))
         axes = axes.flatten()
         
         word_length_trends = self.analyze_word_length_trends()
-        for i, (ecc_type, trends) in enumerate(word_length_trends.items()):
-            if i < 4:  # Limit to 4 plots
+        # Sort by best average performance to show top performers
+        sorted_trends = sorted(word_length_trends.items(), 
+                             key=lambda x: sum(x[1].values())/len(x[1]), 
+                             reverse=True)
+        
+        for i, (ecc_type, trends) in enumerate(sorted_trends):
+            if i < 4:  # Limit to top 4 plots
                 word_lengths = list(trends.keys())
                 success_rates = list(trends.values())
-                axes[i].plot(word_lengths, success_rates, marker='o', linewidth=2, markersize=6)
-                axes[i].set_title(f'{ecc_type} - Word Length Trends')
-                axes[i].set_xlabel('Word Length (bits)')
-                axes[i].set_ylabel('Success Rate (%)')
-                axes[i].grid(True, alpha=0.3)
+                # Convert to percentage if needed
+                if max(success_rates) <= 1.0:
+                    success_rates = [s * 100 for s in success_rates]
+                    
+                axes[i].plot(word_lengths, success_rates, marker='o', linewidth=2.5, markersize=8, color='#4c72b0')
+                axes[i].set_title(f'{ecc_type}', fontsize=14, fontweight='bold', fontfamily='serif')
+                axes[i].set_xlabel('Word Length (bits)', fontsize=12, fontweight='bold', fontfamily='serif')
+                axes[i].set_ylabel('Success Rate (%)', fontsize=12, fontweight='bold', fontfamily='serif')
+                axes[i].set_ylim(0, 105)
+                axes[i].tick_params(axis='both', labelsize=10)
+                for label in axes[i].get_xticklabels() + axes[i].get_yticklabels():
+                    label.set_fontweight('bold')
+                axes[i].grid(True, alpha=0.3, linestyle='--', color='gray')
         
         plt.tight_layout()
-        chart_path = output_path / "ecc_word_length_trends.png"
-        plt.savefig(chart_path, dpi=300, bbox_inches='tight')
+        
+        # Save as PNG
+        chart_path_png = output_path / "ecc_word_length_trends.png"
+        plt.savefig(chart_path_png, dpi=300, bbox_inches='tight')
+        charts['word_length_trends'] = str(chart_path_png)
+        
+        # Save as PDF
+        chart_path_pdf = output_path / "ecc_word_length_trends.pdf"
+        plt.savefig(chart_path_pdf, bbox_inches='tight')
+        
         plt.close()
-        charts['word_length_trends'] = str(chart_path)
         
         # 3. Heatmap of Performance by Configuration
         pivot_data = self.df.pivot_table(
@@ -467,15 +548,94 @@ class ECCAnalyzer:
             columns='error_pattern', 
             aggfunc='mean'
         )
+        # Convert to percentage if needed
+        if pivot_data.max().max() <= 1.0:
+            pivot_data *= 100
         
-        plt.figure(figsize=(10, 8))
-        sns.heatmap(pivot_data, annot=True, fmt='.1f', cmap='RdYlGn', cbar_kws={'label': 'Success Rate (%)'})
-        plt.title('ECC Performance Heatmap by Error Pattern')
+        # Increase figure size for better spacing
+        plt.figure(figsize=(16, 14))
+        
+        # Create heatmap with bold annotations and larger spacing
+        ax = sns.heatmap(pivot_data, annot=True, fmt='.1f', cmap='RdYlGn', 
+                   cbar_kws={'label': 'Success Rate (%)'},
+                   linewidths=1.5, linecolor='white', square=True,
+                   annot_kws={'weight': 'bold', 'size': 10})
+                   
+        # Bold title and labels
+        plt.title('ECC Performance Heatmap by Error Pattern', fontsize=18, fontweight='bold', fontfamily='serif', pad=20)
+        plt.xlabel('Error Pattern', fontsize=14, fontweight='bold', fontfamily='serif')
+        plt.ylabel('ECC Type', fontsize=14, fontweight='bold', fontfamily='serif')
+        
+        # Bold tick labels
+        plt.xticks(fontsize=11, fontweight='bold', fontfamily='serif')
+        plt.yticks(fontsize=11, fontweight='bold', fontfamily='serif')
+        
+        # Bold colorbar label
+        cbar = ax.collections[0].colorbar
+        cbar.ax.set_ylabel('Success Rate (%)', fontsize=12, fontweight='bold', fontfamily='serif')
+        cbar.ax.tick_params(labelsize=10)
+        for l in cbar.ax.yaxis.get_ticklabels():
+            l.set_weight('bold')
+            l.set_family('serif')
+            
         plt.tight_layout()
-        chart_path = output_path / "ecc_performance_heatmap.png"
-        plt.savefig(chart_path, dpi=300, bbox_inches='tight')
+        
+        # Save as PNG
+        chart_path_png = output_path / "ecc_performance_heatmap.png"
+        plt.savefig(chart_path_png, dpi=300, bbox_inches='tight')
+        charts['performance_heatmap'] = str(chart_path_png)
+        
+        # Save as PDF
+        chart_path_pdf = output_path / "ecc_performance_heatmap.pdf"
+        plt.savefig(chart_path_pdf, bbox_inches='tight')
+        
         plt.close()
-        charts['performance_heatmap'] = str(chart_path)
+        
+        # 4. Detailed Performance Comparison (New Chart)
+        # Grouped bar chart for Success Rate, Correction Rate, Detection Rate
+        summary_df = pd.DataFrame(summary).T
+        metrics_to_plot = ['avg_success_rate', 'avg_correction_rate', 'avg_detection_rate']
+        labels = ['Success Rate', 'Correction Rate', 'Detection Rate']
+        
+        # Normalize correction/detection rates to percentages if they aren't already
+        for col in metrics_to_plot:
+            if summary_df[col].max() <= 1.0:
+                summary_df[col] *= 100
+            
+        fig, ax = plt.subplots(figsize=(18, 10))
+        
+        x = np.arange(len(summary_df))
+        width = 0.25
+        
+        # Sort by success rate
+        summary_df = summary_df.sort_values('avg_success_rate', ascending=False)
+        
+        rects1 = ax.bar(x - width, summary_df['avg_success_rate'], width, label='Success Rate', color='#4c72b0', edgecolor='black', alpha=0.9)
+        rects2 = ax.bar(x, summary_df['avg_correction_rate'], width, label='Correction Rate', color='#55a868', edgecolor='black', alpha=0.9)
+        rects3 = ax.bar(x + width, summary_df['avg_detection_rate'], width, label='Detection Rate', color='#c44e52', edgecolor='black', alpha=0.9)
+        
+        ax.set_ylabel('Rate (%)', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax.set_title('Detailed Performance Comparison by ECC Type', fontsize=18, fontweight='bold', fontfamily='serif', pad=20)
+        ax.set_xticks(x)
+        ax.set_xticklabels(summary_df.index, rotation=45, ha='right', fontsize=11, fontweight='bold', fontfamily='serif')
+        for label in ax.get_yticklabels():
+            label.set_fontweight('bold')
+        ax.legend(fontsize=12, frameon=True, fancybox=False, edgecolor='black')
+        ax.grid(True, axis='y', alpha=0.3, linestyle='--', color='gray')
+        ax.set_ylim(0, 105)
+        
+        plt.tight_layout()
+        
+        # Save as PNG
+        chart_path_png = output_path / "ecc_performance_comparison.png"
+        plt.savefig(chart_path_png, dpi=300, bbox_inches='tight')
+        charts['performance_comparison'] = str(chart_path_png)
+        
+        # Save as PDF
+        chart_path_pdf = output_path / "ecc_performance_comparison.pdf"
+        plt.savefig(chart_path_pdf, bbox_inches='tight')
+        
+        plt.close()
         
         return charts
     
