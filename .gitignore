@@ -17,7 +17,18 @@ obj_dir/
 *.ys
 
 # Project Specific
-results/
+results/*
+!results/run.log
+!results/ecc_analysis_report.md
+!results/*.png
+!results/*.pdf
+!results/hardware_verification_results.json
+!results/benchmark_results.csv
+!results/benchmark_summary.json
+!results/hardware_verification.json
+
+# Temporary & System
 .gemini/
 *.log
+!results/run.log
 reports/
