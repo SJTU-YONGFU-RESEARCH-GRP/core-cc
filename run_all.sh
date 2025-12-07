@@ -356,7 +356,7 @@ print_completion() {
     if [ "$MODE" = "hardware-verify" ]; then
         printf '\nFor running individual hardware verification tests:\n'
         printf '  python3 src/hardware_verification_runner.py --verbose     # Run with verbose output\n'
-        printf '  verilator --cc --exe --build verilogs/<ecc>.v testbenches/<ecc>_tb.c -o <ecc>_test\n'
+        printf '  verilator --cc --exe --build verilogs/<ecc>.v testbenches/<ecc>_tb.cpp -o <ecc>_test\n'
     fi
     
     if [ "$USE_PROCESSES" = true ] || [ "$CHUNKED" = true ] || [ -n "$WORKERS" ]; then

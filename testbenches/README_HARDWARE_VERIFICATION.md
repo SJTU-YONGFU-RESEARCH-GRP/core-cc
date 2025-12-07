@@ -1,12 +1,12 @@
 # ECC Hardware Verification System
 
-This directory contains Verilog implementations and C testbenches for verifying Error Correction Code (ECC) implementations against their Python counterparts.
+This directory contains Verilog implementations and C++ testbenches for verifying Error Correction Code (ECC) implementations against their Python counterparts.
 
 ## Overview
 
 The hardware verification system provides:
 - **Verilog ECC Modules**: Complete implementations matching Python algorithms
-- **C Testbenches**: Verification testbenches using Verilator
+- **C++ Testbenches**: Verification testbenches using Verilator
 - **Automated Testing**: Scripts to compile and run all tests
 - **PASS/FAIL Results**: Clear test outcomes with detailed reporting
 
@@ -72,15 +72,15 @@ The hardware verification system provides:
 testbenches/
 ├── README_HARDWARE_VERIFICATION.md    # This file
 ├── run_all_tests.sh                   # Automated test runner
-├── parity_ecc_tb.c                    # Parity ECC testbench
-├── hamming_secded_ecc_tb.c           # Hamming SECDED testbench
-├── bch_ecc_tb.c                      # BCH ECC testbench
-├── reed_solomon_ecc_tb.c             # Reed-Solomon ECC testbench
-├── repetition_ecc_tb.c               # Repetition ECC testbench
-├── crc_ecc_tb.c                      # CRC ECC testbench
-├── golay_ecc_tb.c                    # Golay ECC testbench
-├── ldpc_ecc_tb.c                     # LDPC ECC testbench
-└── polar_ecc_tb.c                    # Polar ECC testbench
+├── parity_ecc_tb.cpp                  # Parity ECC testbench
+├── hamming_secded_ecc_tb.cpp          # Hamming SECDED testbench
+├── bch_ecc_tb.cpp                     # BCH ECC testbench
+├── reed_solomon_ecc_tb.cpp            # Reed-Solomon ECC testbench
+├── repetition_ecc_tb.cpp              # Repetition ECC testbench
+├── crc_ecc_tb.cpp                     # CRC ECC testbench
+├── golay_ecc_tb.cpp                   # Golay ECC testbench
+├── ldpc_ecc_tb.cpp                    # LDPC ECC testbench
+└── polar_ecc_tb.cpp                   # Polar ECC testbench
 
 verilogs/
 ├── parity_ecc.v                       # Parity ECC Verilog module
@@ -130,13 +130,13 @@ chmod +x testbenches/run_all_tests.sh
 ```bash
 # Compile and run Parity ECC test
 verilator --cc --exe --build -j 0 \
-    verilogs/parity_ecc.v testbenches/parity_ecc_tb.c \
+    verilogs/parity_ecc.v testbenches/parity_ecc_tb.cpp \
     -o parity_ecc_test
 ./obj_dir/parity_ecc_test
 
 # Compile and run Hamming SECDED ECC test
 verilator --cc --exe --build -j 0 \
-    verilogs/hamming_secded_ecc.v testbenches/hamming_secded_ecc_tb.c \
+    verilogs/hamming_secded_ecc.v testbenches/hamming_secded_ecc_tb.cpp \
     -o hamming_secded_ecc_test
 ./obj_dir/hamming_secded_ecc_test
 ```
@@ -147,7 +147,7 @@ verilator --cc --exe --build -j 0 \
 
 Each testbench follows this verification methodology:
 
-1. **Python Algorithm Replication**: C functions replicate Python ECC algorithms
+1. **Python Algorithm Replication**: C++ functions replicate Python ECC algorithms
 2. **Test Case Generation**: Multiple test cases with different data patterns
 3. **Encoding Verification**: Compare Verilog encoder output with Python calculations
 4. **Decoding Verification**: Compare Verilog decoder output with Python calculations
@@ -276,9 +276,9 @@ module ecc_module #(
 
 ### Verification Against Python Results
 
-The C testbenches replicate Python ECC algorithms to ensure hardware implementations match software behavior:
+The C++ testbenches replicate Python ECC algorithms to ensure hardware implementations match software behavior:
 
-```c
+```cpp
 // Python-like parity calculation
 uint32_t calculate_parity(uint32_t data, int data_width) {
     uint32_t parity = 0;
@@ -324,7 +324,7 @@ Each test validates:
 
 3. **Test Failures**:
    - Check Verilog syntax
-   - Verify C testbench logic
+   - Verify C++ testbench logic
    - Compare with Python implementation
 
 ### Debug Mode
@@ -335,7 +335,7 @@ Enable verbose output for debugging:
 # Add debug flags to Verilator
 verilator --cc --exe --build -j 0 \
     -CFLAGS "-I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DDEBUG" \
-    verilogs/parity_ecc.v testbenches/parity_ecc_tb.c \
+    verilogs/parity_ecc.v testbenches/parity_ecc_tb.cpp \
     -o parity_ecc_test
 ```
 
@@ -352,8 +352,8 @@ verilator --cc --exe --build -j 0 \
    );
    ```
 
-2. **Create C Testbench**:
-   ```c
+2. **Create C++ Testbench**:
+   ```cpp
    void test_new_ecc() {
        Vnew_ecc* dut = new Vnew_ecc();
        // Test implementation
@@ -363,15 +363,15 @@ verilator --cc --exe --build -j 0 \
 3. **Add to Test Runner**:
    ```bash
    declare -A tests=(
-       ["new_ecc"]="verilogs/new_ecc.v testbenches/new_ecc_tb.c"
+       ["new_ecc"]="verilogs/new_ecc.v testbenches/new_ecc_tb.cpp"
    )
    ```
 
 ### Custom Test Cases
 
-Modify test cases in C testbenches:
+Modify test cases in C++ testbenches:
 
-```c
+```cpp
 uint32_t test_cases[] = {
     0x00, 0x55, 0xAA, 0xFF,  // Basic patterns
     0x12, 0x34, 0x56, 0x78,  // Random patterns
@@ -392,7 +392,7 @@ uint32_t test_cases[] = {
 
 ### Memory Usage
 
-| ECC Type | Verilog Size | C Testbench Size | Total Size |
+| ECC Type | Verilog Size | C++ Testbench Size | Total Size |
 |----------|--------------|------------------|------------|
 | **Parity** | ~2KB | ~8KB | ~10KB |
 | **Hamming SECDED** | ~5KB | ~15KB | ~20KB |
@@ -403,7 +403,7 @@ uint32_t test_cases[] = {
 
 The hardware verification system provides comprehensive testing of ECC implementations with:
 
-- **Accurate Verification**: C testbenches replicate Python algorithms
+- **Accurate Verification**: C++ testbenches replicate Python algorithms
 - **Comprehensive Testing**: Multiple test cases and error scenarios
 - **Clear Results**: PASS/FAIL reporting with detailed output
 - **Easy Integration**: Automated test runner for all ECC types

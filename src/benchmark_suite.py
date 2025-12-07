@@ -273,7 +273,12 @@ class ECCBenchmarkSuite:
             ECC instance
         """
         # Handle different ECC types that may need specific parameters
-        if ecc_type == BCHECC:
+        print(f"DEBUG: Instantiating {ecc_type.__name__} with word_length={word_length}")
+        if ecc_type == ParityECC:
+            return ParityECC(word_length=word_length)
+        elif ecc_type == HammingSECDEDECC:
+            return HammingSECDEDECC(word_length=word_length)
+        elif ecc_type == BCHECC:
             # BCH needs specific parameters based on word length
             if word_length <= 4:
                 return BCHECC(n=7, k=4, t=1)  # BCH(7,4,1)
@@ -303,10 +308,10 @@ class ECCBenchmarkSuite:
             return PolarECC(n=word_length * 2, k=word_length)
         elif ecc_type == RepetitionECC:
             # Repetition code with 3x repetition
-            return RepetitionECC(repetition_factor=3)
+            return RepetitionECC(repetition_factor=3, data_length=word_length)
         elif ecc_type == CRCECC:
             # CRC with appropriate polynomial
-            return CRCECC(polynomial=0x11)  # CRC-4
+            return CRCECC(polynomial=0x11, data_length=word_length)  # CRC-4
         elif ecc_type == GolayECC:
             # Golay code is fixed size
             return GolayECC()
@@ -784,60 +789,79 @@ class ECCBenchmarkSuite:
         # Create ECC instance
         word_length = work_package['word_length']
         if ecc_type_name == 'BCHECC':
-            # BCH only supports BCH(15,7,2) in this implementation
             from bch_ecc import BCHConfig
-            ecc = ecc_type(BCHConfig(n=15, k=7, t=2))
+            # BCH needs specific parameters based on word length
+            if word_length <= 4:
+                ecc = ecc_type(n=7, k=4, t=1)
+            elif word_length <= 8:
+                ecc = ecc_type(n=15, k=7, t=2)
+            else:
+                ecc = ecc_type(n=31, k=16, t=3)
         elif ecc_type_name == 'ReedSolomonECC':
-            # Reed-Solomon needs a config parameter
-            from reed_solomon_ecc import RSConfig
-            if word_length <= 4: config = RSConfig(n=7, k=4)
-            elif word_length <= 8: config = RSConfig(n=15, k=8)
-            else: config = RSConfig(n=31, k=16)
-            ecc = ecc_type(config)
+            # Reed-Solomon parameters
+            if word_length <= 4:
+                ecc = ecc_type(n=7, k=4)
+            elif word_length <= 8:
+                ecc = ecc_type(n=15, k=8)
+            else:
+                ecc = ecc_type(n=31, k=16)
         elif ecc_type_name == 'LDPCECC': 
-            # LDPC uses default constructor
-            ecc = ecc_type()
+            # LDPC parameters
+            ecc = ecc_type(n=word_length * 2)
         elif ecc_type_name == 'TurboECC': 
             # Turbo needs data_length parameter
             ecc = ecc_type(data_length=word_length)
         elif ecc_type_name == 'ConvolutionalECC': 
-            # Convolutional uses default constructor
-            ecc = ecc_type()
+            # Convolutional parameters
+            ecc = ecc_type(n=word_length * 2, k=word_length)
         elif ecc_type_name == 'PolarECC': 
-            # Polar only supports N=4, K=2 in this demo
-            ecc = ecc_type(n=4, k=2)
+            # Polar parameters
+            ecc = ecc_type(n=word_length * 2, k=word_length)
         elif ecc_type_name == 'RepetitionECC': 
-            # Repetition needs repetition factor
-            if word_length <= 4: ecc = ecc_type(repetition_factor=3)
-            elif word_length <= 8: ecc = ecc_type(repetition_factor=3)
-            else: ecc = ecc_type(repetition_factor=3)
+            # Repetition needs repetition factor and data_length
+            ecc = ecc_type(repetition_factor=3, data_length=word_length)
         elif ecc_type_name == 'CRCECC': 
-            # CRC needs polynomial
-            if word_length <= 4: ecc = ecc_type(polynomial=0x11)
-            elif word_length <= 8: ecc = ecc_type(polynomial=0x11)
-            else: ecc = ecc_type(polynomial=0x11)
+            # CRC needs polynomial and data_length
+            ecc = ecc_type(polynomial=0x11, data_length=word_length)
         elif ecc_type_name == 'GolayECC': 
             # Golay uses default constructor
             ecc = ecc_type()
-        elif ecc_type_name == 'ParityECC' or ecc_type_name == 'HammingSECDEDECC':
-            # These use default constructor but can accept word_length
+        elif ecc_type_name == 'ParityECC':
+            # Parity needs word_length
             ecc = ecc_type(word_length=word_length)
-        elif ecc_type_name in ['ExtendedHammingECC', 'ProductCodeECC', 'ConcatenatedECC', 
-                              'ReedMullerECC', 'SpatiallyCoupledLDPCECC', 
-                              'NonBinaryLDPCECC', 'RaptorCodeECC', 'CompositeECC', 
-                              'BurstErrorECC', 'SystemECC', 'AdaptiveECC', 
-                              'PrimarySecondaryECC']:
-            # These use default constructor but can accept word_length
+        elif ecc_type_name == 'HammingSECDEDECC':
+            # Hamming needs word_length
             ecc = ecc_type(word_length=word_length)
+        elif ecc_type_name == 'ExtendedHammingECC':
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'ProductCodeECC':
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'ConcatenatedECC':
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'ReedMullerECC':
+            ecc = ecc_type(data_length=word_length)
         elif ecc_type_name == 'FireCodeECC':
-            # FireCodeECC expects data_length parameter
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'SpatiallyCoupledLDPCECC':
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'NonBinaryLDPCECC':
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'RaptorCodeECC':
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'CompositeECC':
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'SystemECC':
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'AdaptiveECC':
             ecc = ecc_type(data_length=word_length)
         elif ecc_type_name == 'ThreeDMemoryECC':
-            # ThreeDMemoryECC expects data_length parameter
+            ecc = ecc_type(data_length=word_length)
+        elif ecc_type_name == 'PrimarySecondaryECC':
             ecc = ecc_type(data_length=word_length)
         elif ecc_type_name == 'CyclicECC':
-            # CyclicECC expects data_length parameter
             ecc = ecc_type(n=word_length*2, k=word_length, data_length=word_length)
+        elif ecc_type_name == 'BurstErrorECC':
+            ecc = ecc_type(data_length=word_length)
         else: 
             # Fallback for unknown types
             ecc = ecc_type()

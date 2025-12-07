@@ -1,8 +1,8 @@
 # ECC (Error Correction Code) Analysis Report
 
-**Generated:** 2025-12-04 12:43:54  
+**Generated:** 2025-12-07 01:31:14  
 **Framework Version:** 3.0  
-**Analysis Scope:** Comprehensive analysis of 17 ECC types: SpatiallyCoupledLDPCECC, BCHECC, HammingSECDEDECC, NonBinaryLDPCECC, FireCodeECC, ReedSolomonECC, TurboECC, ParityECC, ConcatenatedECC, ConvolutionalECC, ReedMullerECC, ProductCodeECC, RaptorCodeECC, GolayECC, PolarECC, ExtendedHammingECC, LDPCECC
+**Analysis Scope:** Comprehensive analysis of 19 ECC types: SpatiallyCoupledLDPCECC, BCHECC, HammingSECDEDECC, NonBinaryLDPCECC, CRCECC, FireCodeECC, ReedSolomonECC, TurboECC, ParityECC, ConcatenatedECC, ConvolutionalECC, ReedMullerECC, ProductCodeECC, RepetitionECC, RaptorCodeECC, GolayECC, PolarECC, ExtendedHammingECC, LDPCECC
 
 ## Executive Summary
 
@@ -32,23 +32,25 @@ This report provides a comprehensive analysis of different Error Correction Code
 
 | ECC Type | Success Rate (%) | Correction Rate (%) | Detection Rate (%) | Code Rate | Overhead Ratio | Encode Time (ms) | Decode Time (ms) |
 |----------|------------------|-------------------|-------------------|-----------|----------------|------------------|------------------|
-| SpatiallyCoupledLDPCECC | 1.0 | 0.7 | 1.0 | 0.600 | 0.811 | 0.015 | 0.149 |
-| BCHECC | 1.0 | 1.0 | 1.0 | 2.561 | -0.309 | 0.000 | 0.000 |
-| HammingSECDEDECC | 1.0 | 1.0 | 1.0 | 0.763 | 0.348 | 0.015 | 0.016 |
-| NonBinaryLDPCECC | 1.0 | 0.5 | 1.0 | 0.595 | 0.779 | 0.032 | 1.247 |
-| FireCodeECC | 1.0 | 0.4 | 1.0 | 0.651 | 0.584 | 0.002 | 0.009 |
-| ReedSolomonECC | 1.0 | 1.0 | 1.0 | 0.239 | 6.398 | 0.007 | 0.040 |
-| TurboECC | 1.0 | 1.0 | 1.0 | 0.347 | 1.895 | 0.020 | 0.006 |
-| ParityECC | 1.0 | 0.5 | 1.0 | 1.192 | -0.029 | 0.002 | 0.002 |
-| ConcatenatedECC | 1.0 | 0.8 | 1.0 | 0.638 | 1.590 | 0.028 | 0.031 |
-| ConvolutionalECC | 1.0 | 1.0 | 1.0 | 1.257 | 0.309 | 0.009 | 0.108 |
-| ReedMullerECC | 1.0 | 0.7 | 1.0 | 0.635 | 0.809 | 0.035 | 0.954 |
-| ProductCodeECC | 1.0 | 0.6 | 1.0 | 0.328 | 2.596 | 0.017 | 0.020 |
-| RaptorCodeECC | 1.0 | 1.0 | 1.0 | 0.623 | 0.766 | 0.014 | 0.005 |
-| GolayECC | 1.0 | 1.0 | 1.0 | 0.614 | 0.807 | 0.000 | 0.000 |
-| PolarECC | 1.0 | 1.0 | 1.0 | 0.744 | 0.705 | 0.000 | 0.000 |
-| ExtendedHammingECC | 1.0 | 0.5 | 1.0 | 0.956 | 0.299 | 0.016 | 0.017 |
-| LDPCECC | 1.0 | 1.0 | 1.0 | 0.738 | 0.719 | 0.000 | 0.000 |
+| SpatiallyCoupledLDPCECC | 1.0 | 0.7 | 1.0 | 0.734 | 0.562 | 0.015 | 0.144 |
+| BCHECC | 1.0 | 1.0 | 1.0 | 2.577 | -0.285 | 0.000 | 0.000 |
+| HammingSECDEDECC | 1.0 | 1.0 | 1.0 | 1.184 | 0.178 | 0.015 | 0.015 |
+| NonBinaryLDPCECC | 1.0 | 0.5 | 1.0 | 0.542 | 0.908 | 0.033 | 1.262 |
+| CRCECC | 1.0 | 0.5 | 1.0 | 0.793 | 0.400 | 0.016 | 0.015 |
+| FireCodeECC | 1.0 | 0.4 | 1.0 | 0.716 | 0.414 | 0.002 | 0.009 |
+| ReedSolomonECC | 0.7 | 0.7 | 0.7 | 1.121 | 4.156 | 0.008 | 0.055 |
+| TurboECC | 1.0 | 1.0 | 1.0 | 0.351 | 1.863 | 0.022 | 0.007 |
+| ParityECC | 1.0 | 0.5 | 1.0 | 1.153 | 0.004 | 0.002 | 0.002 |
+| ConcatenatedECC | 1.0 | 0.8 | 1.0 | 0.374 | 1.896 | 0.029 | 0.031 |
+| ConvolutionalECC | 1.0 | 1.0 | 1.0 | 1.125 | 0.332 | 0.010 | 0.120 |
+| ReedMullerECC | 1.0 | 0.7 | 1.0 | 0.910 | 0.512 | 0.036 | 0.964 |
+| ProductCodeECC | 1.0 | 0.6 | 1.0 | 0.571 | 2.209 | 0.018 | 0.021 |
+| RepetitionECC | 1.0 | 1.0 | 1.0 | 0.602 | 1.611 | 0.011 | 0.013 |
+| RaptorCodeECC | 1.0 | 1.0 | 1.0 | 0.626 | 0.766 | 0.014 | 0.005 |
+| GolayECC | 1.0 | 1.0 | 1.0 | 0.603 | 0.809 | 0.000 | 0.000 |
+| PolarECC | 1.0 | 1.0 | 1.0 | 0.765 | 0.689 | 0.000 | 0.000 |
+| ExtendedHammingECC | 1.0 | 0.5 | 1.0 | 0.691 | 0.508 | 0.016 | 0.017 |
+| LDPCECC | 1.0 | 1.0 | 1.0 | 0.753 | 0.764 | 0.000 | 0.000 |
 
 
 ## Hardware Cost Comparison
@@ -159,9 +161,9 @@ This report provides a comprehensive analysis of different Error Correction Code
 
 1. **Overall Best Performer:** BCHECC ranks highest in composite performance score.
 
-2. **Performance Range:** Success rates range from 1.0% to 1.0% across all ECC types.
+2. **Performance Range:** Success rates range from 0.7% to 1.0% across all ECC types.
 
-3. **Efficiency Range:** Code rates range from 0.239 to 2.561 across all ECC types.
+3. **Efficiency Range:** Code rates range from 0.351 to 2.577 across all ECC types.
 
 4. **Hardware Implementation:** Synthesis results available for hardware cost analysis.
 
@@ -173,7 +175,7 @@ This report provides a comprehensive analysis of different Error Correction Code
 
 **High Reliability Systems:** BCHECC
 **High Efficiency Applications:** BCHECC
-**High Speed Applications:** GolayECC
+**High Speed Applications:** BCHECC
 **Single Bit Error Correction:** BCHECC
 **Burst Error Handling:** BCHECC
 **Random Error Conditions:** BCHECC
@@ -183,11 +185,11 @@ This report provides a comprehensive analysis of different Error Correction Code
 1. **Overall Best Performer:** BCHECC ranks highest in composite performance score.
 2. **For High Reliability:** BCHECC provides the highest success rate across all scenarios.
 3. **For High Efficiency:** BCHECC offers the best code rate (data efficiency).
-4. **For High Speed:** GolayECC has the fastest encoding/decoding times.
+4. **For High Speed:** BCHECC has the fastest encoding/decoding times.
 5. **For Single Bit Errors:** BCHECC provides the best correction rate for single bit errors.
 6. **For Burst Errors:** BCHECC handles burst errors most effectively.
 7. **For Random Errors:** BCHECC performs best under random error conditions.
-8. **Performance Range:** Success rates range from 1.0% to 1.0% across all ECC types.
+8. **Performance Range:** Success rates range from 0.7% to 1.0% across all ECC types.
 
 ## Methodology
 

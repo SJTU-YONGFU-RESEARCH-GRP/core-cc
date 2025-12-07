@@ -119,157 +119,157 @@ class HardwareVerificationRunner:
         self.ecc_configs = {
             "parity_ecc": {
                 "verilog_file": "parity_ecc.v",
-                "testbench_file": "parity_ecc_tb.c",
+                "testbench_file": "parity_ecc_tb.cpp",
                 "python_class": ParityECC,
                 "data_width": 8
             },
             "hamming_secded_ecc": {
                 "verilog_file": "hamming_secded_ecc.v",
-                "testbench_file": "hamming_secded_ecc_tb.c",
+                "testbench_file": "hamming_secded_ecc_tb.cpp",
                 "python_class": HammingSECDEDECC,
                 "data_width": 8
             },
             "extended_hamming_ecc": {
                 "verilog_file": "extended_hamming_ecc.v",
-                "testbench_file": "extended_hamming_ecc_tb.c",
+                "testbench_file": "extended_hamming_ecc_tb.cpp",
                 "python_class": ExtendedHammingECC,
                 "data_width": 8
             },
             "cyclic_ecc": {
                 "verilog_file": "cyclic_ecc.v",
-                "testbench_file": "cyclic_ecc_tb.c",
+                "testbench_file": "cyclic_ecc_tb.cpp",
                 "python_class": CyclicECC,
                 "data_width": 8
             },
             "system_ecc": {
                 "verilog_file": "system_ecc.v",
-                "testbench_file": "system_ecc_tb.c",
+                "testbench_file": "system_ecc_tb.cpp",
                 "python_class": SystemECC,
                 "data_width": 8
             },
             "reed_muller_ecc": {
                 "verilog_file": "reed_muller_ecc.v",
-                "testbench_file": "reed_muller_ecc_tb.c",
+                "testbench_file": "reed_muller_ecc_tb.cpp",
                 "python_class": ReedMullerECC,
                 "data_width": 8
             },
             "fire_code_ecc": {
                 "verilog_file": "fire_code_ecc.v",
-                "testbench_file": "fire_code_ecc_tb.c",
+                "testbench_file": "fire_code_ecc_tb.cpp",
                 "python_class": FireCodeECC,
                 "data_width": 8
             },
                                         "product_code_ecc": {
                                 "verilog_file": "product_code_ecc.v",
-                                "testbench_file": "product_code_ecc_tb.c",
+                                "testbench_file": "product_code_ecc_tb.cpp",
                                 "python_class": ProductCodeECC,
                                 "data_width": 8
                             },
                             "concatenated_ecc": {
                                 "verilog_file": "concatenated_ecc.v",
-                                "testbench_file": "concatenated_ecc_tb.c",
+                                "testbench_file": "concatenated_ecc_tb.cpp",
                                 "python_class": ConcatenatedECC,
                                 "data_width": 8
                             },
                             "composite_ecc": {
                                 "verilog_file": "composite_ecc.v",
-                                "testbench_file": "composite_ecc_tb.c",
+                                "testbench_file": "composite_ecc_tb.cpp",
                                 "python_class": CompositeECC,
                                 "data_width": 8
                             },
                             "turbo_ecc": {
                                 "verilog_file": "turbo_ecc.v",
-                                "testbench_file": "turbo_ecc_tb.c",
+                                "testbench_file": "turbo_ecc_tb.cpp",
                                 "python_class": TurboECC,
                                 "data_width": 8
                             },
                             "spatially_coupled_ldpc_ecc": {
                                 "verilog_file": "spatially_coupled_ldpc_ecc.v",
-                                "testbench_file": "spatially_coupled_ldpc_ecc_tb.c",
+                                "testbench_file": "spatially_coupled_ldpc_ecc_tb.cpp",
                                 "python_class": SpatiallyCoupledLDPCECC,
                                 "data_width": 8
                             },
                             "non_binary_ldpc_ecc": {
                                 "verilog_file": "non_binary_ldpc_ecc.v",
-                                "testbench_file": "non_binary_ldpc_ecc_tb.c",
+                                "testbench_file": "non_binary_ldpc_ecc_tb.cpp",
                                 "python_class": NonBinaryLDPCECC,
                                 "data_width": 8
                             },
                             "raptor_code_ecc": {
                                 "verilog_file": "raptor_code_ecc.v",
-                                "testbench_file": "raptor_code_ecc_tb.c",
+                                "testbench_file": "raptor_code_ecc_tb.cpp",
                                 "python_class": RaptorCodeECC,
                                 "data_width": 8
                             },
             "bch_ecc": {
                 "verilog_file": "bch_ecc.v",
-                "testbench_file": "bch_ecc_tb.c",
+                "testbench_file": "bch_ecc_tb.cpp",
                 "python_class": BCHECC,
                 "data_width": 8
             },
             "reed_solomon_ecc": {
                 "verilog_file": "reed_solomon_ecc.v",
-                "testbench_file": "reed_solomon_ecc_tb.c",
+                "testbench_file": "reed_solomon_ecc_tb.cpp",
                 "python_class": ReedSolomonECC,
                 "data_width": 8
             },
             "repetition_ecc": {
                 "verilog_file": "repetition_ecc.v",
-                "testbench_file": "repetition_ecc_tb.c",
+                "testbench_file": "repetition_ecc_tb.cpp",
                 "python_class": RepetitionECC,
                 "data_width": 8
             },
             "crc_ecc": {
                 "verilog_file": "crc_ecc.v",
-                "testbench_file": "crc_ecc_tb.c",
+                "testbench_file": "crc_ecc_tb.cpp",
                 "python_class": CRCECC,
                 "data_width": 8
             },
             "golay_ecc": {
                 "verilog_file": "golay_ecc.v",
-                "testbench_file": "golay_ecc_tb.c",
+                "testbench_file": "golay_ecc_tb.cpp",
                 "python_class": GolayECC,
                 "data_width": 8
             },
             "ldpc_ecc": {
                 "verilog_file": "ldpc_ecc.v",
-                "testbench_file": "ldpc_ecc_tb.c",
+                "testbench_file": "ldpc_ecc_tb.cpp",
                 "python_class": LDPCECC,
                 "data_width": 8
             },
             "polar_ecc": {
                 "verilog_file": "polar_ecc.v",
-                "testbench_file": "polar_ecc_tb.c",
+                "testbench_file": "polar_ecc_tb.cpp",
                 "python_class": PolarECC,
                 "data_width": 8
             },
             "adaptive_ecc": {
                 "verilog_file": "adaptive_ecc.v",
-                "testbench_file": "adaptive_ecc_tb.c",
+                "testbench_file": "adaptive_ecc_tb.cpp",
                 "python_class": AdaptiveECC,
                 "data_width": 8
             },
             "burst_error_ecc": {
                 "verilog_file": "burst_error_ecc.v",
-                "testbench_file": "burst_error_ecc_tb.c",
+                "testbench_file": "burst_error_ecc_tb.cpp",
                 "python_class": BurstErrorECC,
                 "data_width": 8
             },
             "three_d_memory_ecc": {
                 "verilog_file": "three_d_memory_ecc.v",
-                "testbench_file": "three_d_memory_ecc_tb.c",
+                "testbench_file": "three_d_memory_ecc_tb.cpp",
                 "python_class": ThreeDMemoryECC,
                 "data_width": 8
             },
             "primary_secondary_ecc": {
                 "verilog_file": "primary_secondary_ecc.v",
-                "testbench_file": "primary_secondary_ecc_tb.c",
+                "testbench_file": "primary_secondary_ecc_tb.cpp",
                 "python_class": PrimarySecondaryECC,
                 "data_width": 8
             },
             "convolutional_ecc": {
                 "verilog_file": "convolutional_ecc.v",
-                "testbench_file": "convolutional_ecc_tb.c",
+                "testbench_file": "convolutional_ecc_tb.cpp",
                 "python_class": ConvolutionalECC,
                 "data_width": 8
             }

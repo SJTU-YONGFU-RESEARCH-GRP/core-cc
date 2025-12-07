@@ -949,7 +949,7 @@ Detailed logs available in: results/run.log
 
 For running individual hardware verification tests:
   python3 src/hardware_verification_runner.py --verbose     # Run with verbose output
-  verilator --cc --exe --build verilogs/<ecc>.v testbenches/<ecc>_tb.c -o <ecc>_test
+  verilator --cc --exe --build verilogs/<ecc>.v testbenches/<ecc>_tb.cpp -o <ecc>_test
 
 Parallel processing options used:
   - Workers: auto
