@@ -187,24 +187,23 @@ uint32_t decode_system_ecc(uint32_t codeword, SystemConfig* config, int* error_t
     // Check system parity
     uint32_t total_ones = count_ones(hamming_codeword);
     uint32_t computed_parity = total_ones % 2;
-    if (system_parity != computed_parity) {
-        // System parity error detected
-        *error_type = 2; // detected
-        return extract_data(hamming_codeword, config);
-    }
+    int parity_error = (system_parity != computed_parity);
     
     // Decode with base Hamming SECDED
     uint32_t syndrome = calculate_syndrome(hamming_codeword, config);
     
     if (syndrome == 0) {
-        // No error detected
-        *error_type = 0; // no error
-    } else if (syndrome <= config->hamming_n) {
-        // Single bit error detected and corrected
-        *error_type = 1; // corrected
+        if (parity_error) {
+            *error_type = 1; // Parity bit error (corrected)
+        } else {
+            *error_type = 0; // No error
+        }
     } else {
-        // Double bit error detected but not corrected
-        *error_type = 2; // detected
+        if (parity_error) {
+            *error_type = 1; // Single error (corrected)
+        } else {
+            *error_type = 2; // Double error (detected)
+        }
     }
     
     return extract_data(hamming_codeword, config);

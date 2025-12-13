@@ -26,17 +26,18 @@ class ReedSolomonECC(ECCBase):
             if n is None or k is None:
                 # Determine parameters based on data_length if provided
                 if data_length is not None:
-                    if data_length <= 4:
-                        n, k = 7, 4     # RS(7,4)
-                    elif data_length <= 8:
-                        n, k = 15, 8    # RS(15,8)
+                    if data_length <= 8:
+                        n, k = 3, 1     # RS(3,1) bytes
                     elif data_length <= 16:
-                        n, k = 31, 16   # RS(31,16)
+                        n, k = 5, 2     # RS(5,2) bytes
+                    elif data_length <= 32:
+                        n, k = 7, 4     # RS(7,4) bytes
                     else:
-                        n, k = 63, 32   # RS(63,32)
+                        k = (data_length + 7) // 8
+                        n = k + 4
                 else:
-                    # Default to RS(15,8) if no parameters provided
-                    n, k = 15, 8
+                    # Default to RS(7,4) bytes
+                    n, k = 7, 4
                 
                 self.config = RSConfig(n=n, k=k)
             else:
@@ -66,27 +67,17 @@ class ReedSolomonECC(ECCBase):
             # Fallback: simple repetition code
             return data
         
-        # For small data sizes, use a simpler approach
-        if self.data_length is not None and self.data_length <= 32:
-            # For small data, just append some redundancy
-            # This is a simplified approach that works better for testing
-            codeword = data
-            # Add some redundancy by repeating the data
-            redundancy_bits = 8
-            codeword = (data << redundancy_bits) | (data & 0xFF)
-            return codeword
-        
         # For larger data, use the full Reed-Solomon approach
         # Convert data to bytes, ensuring it fits in k bits
         data_bytes = data.to_bytes((data.bit_length() + 7) // 8, 'big')
         
-        # Ensure we have exactly k/8 bytes (or k bits)
-        target_bytes = self.config.k // 8
+        # Ensure we have exactly k bytes
+        target_bytes = self.config.k
         if len(data_bytes) > target_bytes:
-            # Truncate to k bits
+            # Truncate to k bytes
             data_bytes = data_bytes[:target_bytes]
         elif len(data_bytes) < target_bytes:
-            # Pad with zeros to k bits
+            # Pad with zeros to k bytes
             padding_needed = target_bytes - len(data_bytes)
             data_bytes = b'\x00' * padding_needed + data_bytes
         
@@ -117,23 +108,16 @@ class ReedSolomonECC(ECCBase):
             # Fallback: simple repetition code
             return codeword, 'corrected'
         
-        # For small data sizes, use a simpler approach
-        if self.data_length is not None and self.data_length <= 32:
-            # For small data, extract the original data
-            redundancy_bits = 8
-            decoded_data = (codeword >> redundancy_bits) & ((1 << self.data_length) - 1)
-            return decoded_data, 'corrected'
-        
         try:
             # Convert codeword to bytes (LSB first)
             codeword_bytes = bytearray()
             temp_codeword = codeword
-            for _ in range(self.config.n // 8):
+            for _ in range(self.config.n):
                 codeword_bytes.append(temp_codeword & 0xFF)
                 temp_codeword >>= 8
             
-            # Ensure we have exactly n/8 bytes
-            target_bytes = self.config.n // 8
+            # Ensure we have exactly n bytes
+            target_bytes = self.config.n
             if len(codeword_bytes) > target_bytes:
                 # Truncate to n bits
                 codeword_bytes = codeword_bytes[:target_bytes]
@@ -146,9 +130,8 @@ class ReedSolomonECC(ECCBase):
             decoded_bytes, decoded_ecc, err_pos = self.rs.decode(bytes(codeword_bytes))
             
             # Convert back to integer (LSB first)
-            decoded_data = 0
-            for i, byte in enumerate(decoded_bytes):
-                decoded_data |= (byte << (i * 8))
+            # Convert back to integer (Big Endian to match encode)
+            decoded_data = int.from_bytes(decoded_bytes, 'big')
             
             if err_pos:
                 return decoded_data, 'corrected'

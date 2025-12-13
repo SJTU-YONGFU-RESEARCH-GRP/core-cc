@@ -21,6 +21,18 @@ def cleanup_build_directories() -> None:
     
     # Create results/build directory
     results_build = Path("results/build")
+    if results_build.exists():
+        print(f"🗑️  Cleaning existing build artifacts in {results_build}")
+        # Remove existing obj_dir and build directories in results/build
+        for item in ["obj_dir", "build"]:
+            target = results_build / item
+            if target.exists():
+                print(f"  Removing {target}")
+                if target.is_dir():
+                    shutil.rmtree(str(target))
+                else:
+                    target.unlink()
+    
     results_build.mkdir(exist_ok=True, parents=True)
     
     # Directories to move from root to results/build
@@ -57,6 +69,15 @@ def cleanup_build_directories() -> None:
             print(f"  ✅ Moved {dir_name} successfully")
         else:
             print(f"  ℹ️  {dir_name} not found in root directory")
+            
+    # Remove verification cache files
+    cache_files = ["results/verification_cache.json", "results/hardware_verification_results.json"]
+    for cache_file in cache_files:
+        cache_path = Path(cache_file)
+        if cache_path.exists():
+            print(f"🗑️  Removing cache file: {cache_file}")
+            cache_path.unlink()
+            print(f"  ✅ Removed {cache_file}")
     
     print("✅ Build directory cleanup completed!")
 

@@ -15,7 +15,7 @@ def run_yosys(verilog_file: str, top_module: str, output_dir: str) -> Dict[str, 
         Dict[str, int]: Dictionary with area and Yosys log.
     """
     script = f"""
-    read_verilog {verilog_file}
+    read_verilog -sv {verilog_file}
     synth -top {top_module}
     stat
     """

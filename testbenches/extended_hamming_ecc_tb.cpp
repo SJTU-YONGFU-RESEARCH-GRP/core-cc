@@ -215,15 +215,15 @@ uint32_t decode_extended_hamming(uint32_t codeword, ExtendedHammingConfig* confi
             // No error
             *error_type = 0; // no error
         }
-    } else if (syndrome <= config->n) {
-        if (extended_parity_error) {
-            // Extended parity error and Hamming corrected - likely double-bit error
-            *error_type = 2; // detected
+        } else if (syndrome <= config->n) {
+            if (extended_parity_error) {
+                // Single bit error detected and corrected
+                *error_type = 1; // corrected
+            } else {
+                // Extended parity error and Hamming corrected - likely double-bit error
+                *error_type = 2; // detected
+            }
         } else {
-            // Single bit error detected and corrected
-            *error_type = 1; // corrected
-        }
-    } else {
         if (!extended_parity_error) {
             // No extended parity error but Hamming detected - single-bit error in extended parity
             *error_type = 1; // corrected

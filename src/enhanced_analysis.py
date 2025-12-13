@@ -639,10 +639,13 @@ class ECCAnalyzer:
         
         return charts
     
-    def run_complete_analysis(self) -> AnalysisResult:
+    def run_complete_analysis(self, use_cache: bool = True) -> AnalysisResult:
         """
         Run complete analysis and return results.
         
+        Args:
+            use_cache: Whether to use cached verification results
+            
         Returns:
             Complete analysis results
         """
@@ -659,7 +662,7 @@ class ECCAnalyzer:
         # Run ECC verification
         print("\n🔍 Running ECC implementation verification...")
         verifier = ECCVerifier()
-        verification_results = verifier.verify_all_ecc_implementations()
+        verification_results = verifier.verify_all_ecc_implementations(use_cache=use_cache)
         
         # Create visualizations
         charts = self.create_performance_visualizations()

@@ -127,18 +127,21 @@ class ExtendedHammingECC(ECCBase):
         decoded_data, hamming_error_type = self._decode_hamming(hamming_codeword)
         
         # Determine overall error type
-        if extended_parity_error and hamming_error_type == 'corrected':
-            # Extended parity error but Hamming corrected - likely double-bit error
-            return decoded_data, 'detected'
-        elif extended_parity_error and hamming_error_type == 'undetected':
-            # Extended parity error but no Hamming error - extended parity bit error
-            return decoded_data, 'corrected'
-        elif not extended_parity_error and hamming_error_type == 'detected':
-            # No extended parity error but Hamming detected - single-bit error in extended parity
-            return decoded_data, 'corrected'
+        # Determine overall error type
+        if syndrome == 0:
+            if extended_parity_error:
+                # Extended parity error but no Hamming error - extended parity bit error
+                return decoded_data, 'corrected'
+            else:
+                # No error
+                return decoded_data, 'no_error'
         else:
-            # Normal Hamming error handling
-            return decoded_data, hamming_error_type
+            if extended_parity_error:
+                # Single bit error detected and corrected
+                return decoded_data, 'corrected'
+            else:
+                # Double bit error detected but not corrected
+                return decoded_data, 'detected'
 
     def _decode_hamming(self, hamming_codeword: int) -> Tuple[int, str]:
         """Decode standard Hamming SECDED codeword."""

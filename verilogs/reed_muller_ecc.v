@@ -28,8 +28,9 @@ module reed_muller_ecc #(
     localparam [31:0] M = N - K;  // Number of parity bits
     
     // Data and parity positions
-    localparam int data_positions [0:7] = '{0, 1, 2, 3, 4, 5, 6, 7};
-    localparam int parity_positions [0:7] = '{8, 9, 10, 11, 12, 13, 14, 15};
+    // Data and parity positions
+    // localparam int data_positions [0:7] = '{0, 1, 2, 3, 4, 5, 6, 7};
+    // localparam int parity_positions [0:7] = '{8, 9, 10, 11, 12, 13, 14, 15};
 
     // Internal signals
     reg [N-1:0] encoded_codeword;
@@ -40,13 +41,18 @@ module reed_muller_ecc #(
     // Function to extract data from codeword (matches Python implementation)
     function [K-1:0] extract_data;
         input [N-1:0] codeword;
-        integer i;
         reg [K-1:0] data;
         begin
             data = 0;
-            for (i = 0; i < K; i = i + 1) begin
-                data[i] = codeword[data_positions[i]];
-            end
+            // Hardcoded for DATA_WIDTH=8
+            data[0] = codeword[0];
+            data[1] = codeword[1];
+            data[2] = codeword[2];
+            data[3] = codeword[3];
+            data[4] = codeword[4];
+            data[5] = codeword[5];
+            data[6] = codeword[6];
+            data[7] = codeword[7];
             extract_data = data;
         end
     endfunction
@@ -54,13 +60,18 @@ module reed_muller_ecc #(
     // Function to insert data into codeword (matches Python implementation)
     function [N-1:0] insert_data;
         input [K-1:0] data;
-        integer i;
         reg [N-1:0] codeword;
         begin
             codeword = 0;
-            for (i = 0; i < K; i = i + 1) begin
-                codeword[data_positions[i]] = data[i];
-            end
+            // Hardcoded for DATA_WIDTH=8
+            codeword[0] = data[0];
+            codeword[1] = data[1];
+            codeword[2] = data[2];
+            codeword[3] = data[3];
+            codeword[4] = data[4];
+            codeword[5] = data[5];
+            codeword[6] = data[6];
+            codeword[7] = data[7];
             insert_data = codeword;
         end
     endfunction
@@ -68,18 +79,61 @@ module reed_muller_ecc #(
     // Function to calculate parity bits (matches Python implementation)
     function [M-1:0] calculate_parity;
         input [N-1:0] codeword;
-        integer i, j, pos;
         reg [M-1:0] parity;
         begin
             parity = 0;
-            for (i = 0; i < M; i = i + 1) begin
-                pos = parity_positions[i];
-                for (j = 0; j < K; j = j + 1) begin
-                    if (codeword[data_positions[j]] && ((j + pos) % 2 == 0)) begin
-                        parity[i] = parity[i] ^ 1'b1;
-                    end
-                end
-            end
+            // Hardcoded parity calculation for DATA_WIDTH=8
+            // P0 (pos 8): checks 0, 2, 4, 6
+            if (codeword[0]) parity[0] = parity[0] ^ 1'b1;
+            if (codeword[2]) parity[0] = parity[0] ^ 1'b1;
+            if (codeword[4]) parity[0] = parity[0] ^ 1'b1;
+            if (codeword[6]) parity[0] = parity[0] ^ 1'b1;
+            
+            // P1 (pos 9): checks 1, 3, 5, 7
+            if (codeword[1]) parity[1] = parity[1] ^ 1'b1;
+            if (codeword[3]) parity[1] = parity[1] ^ 1'b1;
+            if (codeword[5]) parity[1] = parity[1] ^ 1'b1;
+            if (codeword[7]) parity[1] = parity[1] ^ 1'b1;
+            
+            // P2 (pos 10): checks 0, 2, 4, 6 (Same as P0)
+            if (codeword[0]) parity[2] = parity[2] ^ 1'b1;
+            if (codeword[2]) parity[2] = parity[2] ^ 1'b1;
+            if (codeword[4]) parity[2] = parity[2] ^ 1'b1;
+            if (codeword[6]) parity[2] = parity[2] ^ 1'b1;
+            
+            // P3 (pos 11): checks 1, 3, 5, 7 (Same as P1)
+            if (codeword[1]) parity[3] = parity[3] ^ 1'b1;
+            if (codeword[3]) parity[3] = parity[3] ^ 1'b1;
+            if (codeword[5]) parity[3] = parity[3] ^ 1'b1;
+            if (codeword[7]) parity[3] = parity[3] ^ 1'b1;
+            
+            // P4 (pos 12): checks 0, 2, 4, 6 (Same as P0)
+            if (codeword[0]) parity[4] = parity[4] ^ 1'b1;
+            if (codeword[2]) parity[4] = parity[4] ^ 1'b1;
+            if (codeword[4]) parity[4] = parity[4] ^ 1'b1;
+            if (codeword[6]) parity[4] = parity[4] ^ 1'b1;
+            
+            // P5 (pos 13): checks 1, 3, 5, 7 (Same as P1)
+            if (codeword[1]) parity[5] = parity[5] ^ 1'b1;
+            if (codeword[3]) parity[5] = parity[5] ^ 1'b1;
+            if (codeword[5]) parity[5] = parity[5] ^ 1'b1;
+            if (codeword[7]) parity[5] = parity[5] ^ 1'b1;
+            
+            // P6 (pos 14): checks 0, 2, 4, 6 (Same as P0)
+            if (codeword[0]) parity[6] = parity[6] ^ 1'b1;
+            if (codeword[2]) parity[6] = parity[6] ^ 1'b1;
+            if (codeword[4]) parity[6] = parity[6] ^ 1'b1;
+            if (codeword[6]) parity[6] = parity[6] ^ 1'b1;
+            
+            // P7 (pos 15): checks 1, 3, 5, 7 (Same as P1)
+            if (codeword[1]) parity[7] = parity[7] ^ 1'b1;
+            if (codeword[3]) parity[7] = parity[7] ^ 1'b1;
+            if (codeword[5]) parity[7] = parity[7] ^ 1'b1;
+            if (codeword[7]) parity[7] = parity[7] ^ 1'b1;
+            
+            // P7 (pos 15): checks all bits (overall parity)
+            // Simplified for now
+            
             calculate_parity = parity;
         end
     endfunction
@@ -87,7 +141,6 @@ module reed_muller_ecc #(
     // Function to calculate syndrome (matches Python implementation)
     function [M-1:0] calculate_syndrome;
         input [N-1:0] codeword;
-        integer i, j, pos;
         reg [M-1:0] syndrome;
         reg [M-1:0] expected_parity;
         reg [M-1:0] actual_parity;
@@ -96,20 +149,63 @@ module reed_muller_ecc #(
             expected_parity = 0;
             actual_parity = 0;
             
-            // Calculate expected parity
-            for (i = 0; i < M; i = i + 1) begin
-                pos = parity_positions[i];
-                for (j = 0; j < K; j = j + 1) begin
-                    if (codeword[data_positions[j]] && ((j + pos) % 2 == 0)) begin
-                        expected_parity[i] = expected_parity[i] ^ 1'b1;
-                    end
-                end
-            end
+            // Calculate expected parity (same logic as calculate_parity)
+            // P0
+            if (codeword[0]) expected_parity[0] = expected_parity[0] ^ 1'b1;
+            if (codeword[2]) expected_parity[0] = expected_parity[0] ^ 1'b1;
+            if (codeword[4]) expected_parity[0] = expected_parity[0] ^ 1'b1;
+            if (codeword[6]) expected_parity[0] = expected_parity[0] ^ 1'b1;
+            
+            // P1
+            if (codeword[1]) expected_parity[1] = expected_parity[1] ^ 1'b1;
+            if (codeword[3]) expected_parity[1] = expected_parity[1] ^ 1'b1;
+            if (codeword[5]) expected_parity[1] = expected_parity[1] ^ 1'b1;
+            if (codeword[7]) expected_parity[1] = expected_parity[1] ^ 1'b1;
+            // P2 (pos 10): checks 0, 2, 4, 6 (Same as P0)
+            if (codeword[0]) expected_parity[2] = expected_parity[2] ^ 1'b1;
+            if (codeword[2]) expected_parity[2] = expected_parity[2] ^ 1'b1;
+            if (codeword[4]) expected_parity[2] = expected_parity[2] ^ 1'b1;
+            if (codeword[6]) expected_parity[2] = expected_parity[2] ^ 1'b1;
+            
+            // P3 (pos 11): checks 1, 3, 5, 7 (Same as P1)
+            if (codeword[1]) expected_parity[3] = expected_parity[3] ^ 1'b1;
+            if (codeword[3]) expected_parity[3] = expected_parity[3] ^ 1'b1;
+            if (codeword[5]) expected_parity[3] = expected_parity[3] ^ 1'b1;
+            if (codeword[7]) expected_parity[3] = expected_parity[3] ^ 1'b1;
+            
+            // P4 (pos 12): checks 0, 2, 4, 6 (Same as P0)
+            if (codeword[0]) expected_parity[4] = expected_parity[4] ^ 1'b1;
+            if (codeword[2]) expected_parity[4] = expected_parity[4] ^ 1'b1;
+            if (codeword[4]) expected_parity[4] = expected_parity[4] ^ 1'b1;
+            if (codeword[6]) expected_parity[4] = expected_parity[4] ^ 1'b1;
+            
+            // P5 (pos 13): checks 1, 3, 5, 7 (Same as P1)
+            if (codeword[1]) expected_parity[5] = expected_parity[5] ^ 1'b1;
+            if (codeword[3]) expected_parity[5] = expected_parity[5] ^ 1'b1;
+            if (codeword[5]) expected_parity[5] = expected_parity[5] ^ 1'b1;
+            if (codeword[7]) expected_parity[5] = expected_parity[5] ^ 1'b1;
+            
+            // P6 (pos 14): checks 0, 2, 4, 6 (Same as P0)
+            if (codeword[0]) expected_parity[6] = expected_parity[6] ^ 1'b1;
+            if (codeword[2]) expected_parity[6] = expected_parity[6] ^ 1'b1;
+            if (codeword[4]) expected_parity[6] = expected_parity[6] ^ 1'b1;
+            if (codeword[6]) expected_parity[6] = expected_parity[6] ^ 1'b1;
+            
+            // P7 (pos 15): checks 1, 3, 5, 7 (Same as P1)
+            if (codeword[1]) expected_parity[7] = expected_parity[7] ^ 1'b1;
+            if (codeword[3]) expected_parity[7] = expected_parity[7] ^ 1'b1;
+            if (codeword[5]) expected_parity[7] = expected_parity[7] ^ 1'b1;
+            if (codeword[7]) expected_parity[7] = expected_parity[7] ^ 1'b1;
             
             // Get actual parity
-            for (i = 0; i < M; i = i + 1) begin
-                actual_parity[i] = codeword[parity_positions[i]];
-            end
+            actual_parity[0] = codeword[8];
+            actual_parity[1] = codeword[9];
+            actual_parity[2] = codeword[10];
+            actual_parity[3] = codeword[11];
+            actual_parity[4] = codeword[12];
+            actual_parity[5] = codeword[13];
+            actual_parity[6] = codeword[14];
+            actual_parity[7] = codeword[15];
             
             syndrome = expected_parity ^ actual_parity;
             calculate_syndrome = syndrome;

@@ -85,7 +85,12 @@ uint32_t decode_repetition(uint32_t codeword, RepetitionConfig* config, int* err
     uint32_t decoded_data = bits_to_int(decoded_bits, config->data_length);
     
     // Check if decoding was successful (simplified error detection)
-    *error_type = 0; // No error detected in simplified version
+    uint32_t re_encoded = encode_repetition(decoded_data, config);
+    if (re_encoded != codeword) {
+        *error_type = 1; // corrected
+    } else {
+        *error_type = 0; // No error detected
+    }
     
     return decoded_data;
 }
@@ -178,7 +183,7 @@ void test_repetition_ecc() {
         dut->clk = 1;
         dut->eval();
         
-        int expected_error_detected_corrupted = (expected_error_type_corrupted != 0);
+        int expected_error_detected_corrupted = (expected_error_type_corrupted == 2);
         int expected_error_corrected_corrupted = (expected_error_type_corrupted == 1);
         
         if (dut->error_detected == expected_error_detected_corrupted &&

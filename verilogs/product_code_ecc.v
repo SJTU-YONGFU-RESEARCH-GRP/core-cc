@@ -61,13 +61,13 @@ module product_code_ecc #(
 
     // Function to unpack sub-words back to data
     function [DATA_WIDTH-1:0] unpack_data;
-        input [SUB_WORD_LENGTH-1:0] sub_words_array [0:3];
+        input [SUB_WORD_LENGTH*4-1:0] packed_sub_words;
         integer i;
         reg [DATA_WIDTH-1:0] data;
         begin
             data = 0;
             for (i = 0; i < NUM_SUB_WORDS; i = i + 1) begin
-                data = data | (sub_words_array[i] << (i * SUB_WORD_LENGTH));
+                data = data | (packed_sub_words[i*SUB_WORD_LENGTH +: SUB_WORD_LENGTH] << (i * SUB_WORD_LENGTH));
             end
             unpack_data = data;
         end
@@ -218,7 +218,7 @@ module product_code_ecc #(
             end
             
             // Unpack decoded sub-words
-            extracted_data = unpack_data(decoded_sub_words);
+            extracted_data = unpack_data({decoded_sub_words[3], decoded_sub_words[2], decoded_sub_words[1], decoded_sub_words[0]});
         end else begin
             extracted_data = 0;
             error_detected_internal = 0;

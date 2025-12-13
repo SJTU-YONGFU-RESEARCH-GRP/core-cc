@@ -12,6 +12,7 @@ CHUNKED=false
 PERFORMANCE_TEST=false
 OVERWRITE=false
 CLEANUP_BUILD=false
+NO_CACHE=false
 
 # Function to display usage information
 show_usage() {
@@ -34,6 +35,7 @@ show_usage() {
     echo "  --overwrite              Overwrite existing benchmark results"
     echo "  --with-report            Generate report after benchmark"
     echo "  --cleanup-build          Clean up and reorganize build directories"
+    echo "  --no-cache               Disable usage of cached verification results"
     echo "  -h, --help               Show this help message"
     echo ""
     echo "Examples:"
@@ -159,7 +161,16 @@ run_hardware_verification_tests() {
 generate_report() {
     print_section "Generating ECC Analysis Report"
     echo "Generating comprehensive analysis report..."
-    python3 src/run_analysis.py --report-only
+    local report_args="--report-only"
+    if [ "$VERBOSE" = true ]; then
+        report_args="$report_args --verbose"
+    fi
+    if [ "$NO_CACHE" = true ]; then
+        report_args="$report_args --no-cache"
+    fi
+    
+    echo "DEBUG: report_args=$report_args"
+    python3 src/run_analysis.py $report_args
     echo "Analysis report generated."
 }
 
@@ -426,8 +437,13 @@ while [[ $# -gt 0 ]]; do
             WITH_REPORT=true
             shift
             ;;
+
         --cleanup-build)
             CLEANUP_BUILD=true
+            shift
+            ;;
+        --no-cache)
+            NO_CACHE=true
             shift
             ;;
         -h|--help)

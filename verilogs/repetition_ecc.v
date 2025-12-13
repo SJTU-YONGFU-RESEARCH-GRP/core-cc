@@ -25,47 +25,44 @@ module repetition_ecc #(parameter DATA_WIDTH = 8, parameter REPETITION_FACTOR = 
     endgenerate
     
     // Decoding logic with majority voting
+    // Decoding and Error Logic
+    reg [DATA_WIDTH-1:0] decoded_data_reg;
+    reg error_detected_comb;
+    reg error_corrected_comb;
+    
     wire [DATA_WIDTH-1:0] decoded_data;
-    genvar j;
-    generate
-        for (j = 0; j < DATA_WIDTH; j = j + 1) begin : decode_gen
-            // Count ones in each repetition group
-            wire [REPETITION_FACTOR-1:0] repetition_bits = codeword_in[j*REPETITION_FACTOR +: REPETITION_FACTOR];
-            reg [$clog2(REPETITION_FACTOR+1)-1:0] ones_count;
-            
-            // Count ones in repetition group
-            integer k;
-            always @(*) begin
-                ones_count = 0;
-                for (k = 0; k < REPETITION_FACTOR; k = k + 1) begin
-                    ones_count = ones_count + repetition_bits[k];
+    assign decoded_data = decoded_data_reg;
+
+    always @(*) begin
+        integer j, k;
+        integer ones_count;
+        
+        decoded_data_reg = 0;
+        error_detected_comb = 0;
+        error_corrected_comb = 0;
+        
+        for (j = 0; j < DATA_WIDTH; j = j + 1) begin
+            ones_count = 0;
+            for (k = 0; k < REPETITION_FACTOR; k = k + 1) begin
+                if (codeword_in[j*REPETITION_FACTOR + k]) begin
+                    ones_count = ones_count + 1;
                 end
             end
             
             // Majority vote
-            assign decoded_data[j] = (ones_count > REPETITION_FACTOR/2) ? 1'b1 : 1'b0;
-        end
-    endgenerate
-    
-    // Error detection and correction logic
-    reg error_detected_comb, error_corrected_comb;
-    always @(*) begin
-        error_detected_comb = 1'b0;
-        error_corrected_comb = 1'b0;
-        for (int j = 0; j < DATA_WIDTH; j = j + 1) begin
-            int ones = 0;
-            for (int k = 0; k < REPETITION_FACTOR; k = k + 1) begin
-                if (codeword_in[j*REPETITION_FACTOR + k])
-                    ones++;
-            end
-            // For REPETITION_FACTOR=3, only set error flags if all bits are not the same (i.e., more than one bit error)
-            if (ones == 0 || ones == REPETITION_FACTOR) begin
-                // All bits are the same, no error
-                // error_detected_comb = 0; error_corrected_comb = 0;
+            if (ones_count > REPETITION_FACTOR/2) begin
+                decoded_data_reg[j] = 1'b1;
             end else begin
-                // Single bit error (ones==1 or ones==2), do not set error flags
-                // Only for more than one bit error (not possible for 3), set error flags
-                // So leave error_detected_comb and error_corrected_comb as 0
+                decoded_data_reg[j] = 1'b0;
+            end
+            
+            // Error detection (if not all bits are same)
+            if (ones_count != 0 && ones_count != REPETITION_FACTOR) begin
+                // For Repetition(3), any disagreement is a corrected error
+                // We don't really have "detected but uncorrected" unless we can't decide majority
+                // But for odd repetition factor, we always correct.
+                // So we mark it as corrected.
+                error_corrected_comb = 1'b1;
             end
         end
     end

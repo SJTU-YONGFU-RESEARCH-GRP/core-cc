@@ -19,8 +19,9 @@ from hardware_verification import HardwareVerifier, load_verification_results
 class ECCReportGenerator:
     """Generate comprehensive ECC analysis reports based on benchmark results and hardware verification."""
     
-    def __init__(self, results_dir: str = "results"):
+    def __init__(self, results_dir: str = "results", use_cache: bool = True):
         self.results_dir = Path(results_dir)
+        self.use_cache = use_cache
         self.report_data = {}
         self.benchmark_results = None
         self.analysis_results = None
@@ -39,7 +40,7 @@ class ECCReportGenerator:
             if self.benchmark_results:
                 # Run analysis
                 analyzer = ECCAnalyzer(self.benchmark_results)
-                self.analysis_results = analyzer.run_complete_analysis()
+                self.analysis_results = analyzer.run_complete_analysis(use_cache=self.use_cache)
                 return True
             else:
                 print("Failed to load or generate benchmark results.")
@@ -211,13 +212,18 @@ class ECCReportGenerator:
         """Generate detailed analysis of each ECC type."""
         analysis = "## Detailed ECC Analysis\n\n"
         
+        # Get synthesis data
+        synthesis_data = self.get_synthesis_data()
+        parity_cells = synthesis_data.get("parity_ecc", "N/A")
+        hamming_cells = synthesis_data.get("hamming_secded_ecc", "N/A")
+        
         # Parity ECC Analysis
         analysis += "### Parity Bit ECC\n\n"
         analysis += "**Characteristics:**\n"
         analysis += "- **Error Detection:** Single-bit error detection only\n"
         analysis += "- **Error Correction:** None\n"
         analysis += "- **Redundancy:** 1 bit per 8-bit data (12.5% overhead)\n"
-        analysis += "- **Hardware Cost:** Lowest (7+8 = 15 cells)\n"
+        analysis += f"- **Hardware Cost:** Lowest ({parity_cells} cells)\n"
         analysis += "- **Latency:** Single cycle\n"
         analysis += "- **Power Consumption:** Minimal\n\n"
         analysis += "**Use Cases:**\n"
@@ -232,7 +238,7 @@ class ECCReportGenerator:
         analysis += "- **Error Detection:** Double-bit error detection\n"
         analysis += "- **Error Correction:** Single-bit error correction\n"
         analysis += "- **Redundancy:** 4 bits per 8-bit data (50% overhead)\n"
-        analysis += "- **Hardware Cost:** Medium (16+21 = 37 cells)\n"
+        analysis += f"- **Hardware Cost:** Medium ({hamming_cells} cells)\n"
         analysis += "- **Latency:** Single cycle\n"
         analysis += "- **Power Consumption:** Moderate\n\n"
         analysis += "**Use Cases:**\n"
@@ -260,6 +266,12 @@ class ECCReportGenerator:
         verilator_results = self.get_verilator_results()
         
         verification = "## Hardware Verification Results\n\n"
+        
+        if self.hardware_results:
+            if self.hardware_results.execution_time:
+                verification += f"**Total Verification Time:** {self.hardware_results.execution_time:.2f}s\n"
+            if self.hardware_results.average_runtime_per_module:
+                verification += f"**Average Runtime per Module:** {self.hardware_results.average_runtime_per_module:.4f}s\n\n"
         
         if not verilator_results:
             verification += "*No hardware verification data available. Verilator not available or no testbenches run.*\n\n"

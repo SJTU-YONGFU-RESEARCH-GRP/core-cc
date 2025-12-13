@@ -27,38 +27,40 @@ module hamming_secded_ecc #(
     localparam [31:0] K = DATA_WIDTH;
     localparam [31:0] PARITY_BITS = N - K;
     
-    // Parity bit positions for DATA_WIDTH=8 (Hamming(12,8))
-    localparam int parity_positions [0:3] = '{0, 1, 3, 7};
-    localparam int data_positions [0:7] = '{2, 4, 5, 6, 8, 9, 10, 11};
-
-    // Internal signals
-    wire [N-1:0] syndrome;
-    reg [N-1:0] encoded_codeword;
-    wire [K-1:0] extracted_data;
-    wire single_error, double_error;
-    
     // Function to calculate parity bits (matching Python implementation exactly)
     function [PARITY_BITS-1:0] calculate_parity;
         input [K-1:0] data;
-        integer i, j, pos;
+        integer i;
         reg [PARITY_BITS-1:0] parity;
         reg [N-1:0] temp_codeword;
         begin
             temp_codeword = 0;
             if (DATA_WIDTH <= 8) begin
-                for (i = 0; i < 8; i = i + 1) begin
-                    temp_codeword[data_positions[i]] = data[i];
-                end
+                // Hardcoded data positions for DATA_WIDTH=8
+                temp_codeword[2] = data[0];
+                temp_codeword[4] = data[1];
+                temp_codeword[5] = data[2];
+                temp_codeword[6] = data[3];
+                temp_codeword[8] = data[4];
+                temp_codeword[9] = data[5];
+                temp_codeword[10] = data[6];
+                temp_codeword[11] = data[7];
             end
+            
             parity = 0;
-            for (i = 0; i < PARITY_BITS; i = i + 1) begin
-                pos = parity_positions[i];
-                for (j = 0; j < N; j = j + 1) begin
-                    if (j != pos && temp_codeword[j] && ((j + 1) & (1 << i))) begin
-                        parity[i] = parity[i] ^ 1'b1;
-                    end
-                end
-            end
+            // Hardcoded parity calculation for DATA_WIDTH=8 (Hamming(12,8))
+            // P1 (pos 0): checks 0, 2, 4, 6, 8, 10
+            parity[0] = temp_codeword[2] ^ temp_codeword[4] ^ temp_codeword[6] ^ temp_codeword[8] ^ temp_codeword[10];
+            
+            // P2 (pos 1): checks 1, 2, 5, 6, 9, 10
+            parity[1] = temp_codeword[2] ^ temp_codeword[5] ^ temp_codeword[6] ^ temp_codeword[9] ^ temp_codeword[10];
+            
+            // P4 (pos 3): checks 3, 4, 5, 6, 11
+            parity[2] = temp_codeword[4] ^ temp_codeword[5] ^ temp_codeword[6] ^ temp_codeword[11];
+            
+            // P8 (pos 7): checks 7, 8, 9, 10, 11
+            parity[3] = temp_codeword[8] ^ temp_codeword[9] ^ temp_codeword[10] ^ temp_codeword[11];
+            
             calculate_parity = parity;
         end
     endfunction
@@ -66,14 +68,18 @@ module hamming_secded_ecc #(
     // Function to extract data from codeword (matching Python _extract_data exactly)
     function [K-1:0] extract_data;
         input [N-1:0] codeword;
-        integer i;
         reg [K-1:0] data;
         begin
             data = 0;
             if (DATA_WIDTH <= 8) begin
-                for (i = 0; i < 8; i = i + 1) begin
-                    data[i] = codeword[data_positions[i]];
-                end
+                data[0] = codeword[2];
+                data[1] = codeword[4];
+                data[2] = codeword[5];
+                data[3] = codeword[6];
+                data[4] = codeword[8];
+                data[5] = codeword[9];
+                data[6] = codeword[10];
+                data[7] = codeword[11];
             end
             extract_data = data;
         end
@@ -82,27 +88,26 @@ module hamming_secded_ecc #(
     // Function to calculate syndrome (matching Python decode logic exactly)
     function [PARITY_BITS-1:0] calculate_syndrome;
         input [N-1:0] codeword;
-        integer i, j, pos;
         reg [PARITY_BITS-1:0] syndrome;
         reg [PARITY_BITS-1:0] expected_parity;
         reg [PARITY_BITS-1:0] actual_parity;
         begin
-            syndrome = 0;
-            if (DATA_WIDTH <= 8) begin
-                for (i = 0; i < PARITY_BITS; i = i + 1) begin
-                    pos = parity_positions[i];
-                    actual_parity[i] = codeword[pos];
-                end
-            end
-            expected_parity = 0;
-            for (i = 0; i < PARITY_BITS; i = i + 1) begin
-                pos = parity_positions[i];
-                for (j = 0; j < N; j = j + 1) begin
-                    if (j != pos && codeword[j] && ((j + 1) & (1 << i))) begin
-                        expected_parity[i] = expected_parity[i] ^ 1'b1;
-                    end
-                end
-            end
+            // Extract actual parity bits
+            actual_parity[0] = codeword[0];
+            actual_parity[1] = codeword[1];
+            actual_parity[2] = codeword[3];
+            actual_parity[3] = codeword[7];
+            
+            // Calculate expected parity
+            // P1
+            expected_parity[0] = codeword[2] ^ codeword[4] ^ codeword[6] ^ codeword[8] ^ codeword[10];
+            // P2
+            expected_parity[1] = codeword[2] ^ codeword[5] ^ codeword[6] ^ codeword[9] ^ codeword[10];
+            // P4
+            expected_parity[2] = codeword[4] ^ codeword[5] ^ codeword[6] ^ codeword[11];
+            // P8
+            expected_parity[3] = codeword[8] ^ codeword[9] ^ codeword[10] ^ codeword[11];
+            
             syndrome = expected_parity ^ actual_parity;
             calculate_syndrome = syndrome;
         end
@@ -110,6 +115,12 @@ module hamming_secded_ecc #(
     
     // Encode: create codeword with data and parity bits
     wire [PARITY_BITS-1:0] parity_bits;
+    reg [N-1:0] encoded_codeword;
+    wire [PARITY_BITS-1:0] syndrome;
+    wire single_error;
+    wire double_error;
+    wire [DATA_WIDTH-1:0] extracted_data;
+    
     assign parity_bits = calculate_parity(data_in);
     
     // Build encoded codeword (matching Python encode exactly)

@@ -187,7 +187,7 @@ def run_hardware_verification(output_dir: str = "results") -> bool:
         return False
 
 
-def run_analysis(output_dir: str = "results") -> bool:
+def run_analysis(output_dir: str = "results", use_cache: bool = True) -> bool:
     """
     Run ECC analysis on benchmark results.
     
@@ -211,7 +211,7 @@ def run_analysis(output_dir: str = "results") -> bool:
         
         # Run analysis
         analyzer = ECCAnalyzer(results)
-        analysis_result = analyzer.run_complete_analysis()
+        analysis_result = analyzer.run_complete_analysis(use_cache=use_cache)
         
         print(f"\nAnalysis completed successfully!")
         print(f"ECC types analyzed: {len(analysis_result.metrics_summary)}")
@@ -224,7 +224,7 @@ def run_analysis(output_dir: str = "results") -> bool:
         return False
 
 
-def generate_report(output_dir: str = "results") -> bool:
+def generate_report(output_dir: str = "results", use_cache: bool = True) -> bool:
     """
     Generate comprehensive ECC analysis report.
     
@@ -239,7 +239,7 @@ def generate_report(output_dir: str = "results") -> bool:
     print("=" * 60)
     
     try:
-        generator = ECCReportGenerator(results_dir=output_dir)
+        generator = ECCReportGenerator(results_dir=output_dir, use_cache=use_cache)
         generator.save_report()
         
         print(f"\nReport generation completed successfully!")
@@ -356,6 +356,10 @@ Parallel Processing Options:
                        help='Use chunked processing to manage memory better')
     parser.add_argument('--memory-limit', type=float, default=0.75,
                        help='Memory usage limit as fraction of total RAM (default: 0.75)')
+    parser.add_argument('--no-cache', action='store_true',
+                       help='Disable usage of cached verification results')
+    parser.add_argument('--verbose', '-v', action='store_true',
+                       help='Enable verbose output')
     
     args = parser.parse_args()
     
@@ -394,7 +398,7 @@ Parallel Processing Options:
     
     if args.analysis_only:
         print("===== Running Analysis Only =====")
-        success = run_analysis(str(output_dir))
+        success = run_analysis(str(output_dir), use_cache=not args.no_cache)
         if not success:
             print("Analysis failed!")
             return 1
@@ -403,7 +407,7 @@ Parallel Processing Options:
     
     if args.report_only:
         print("===== Running Report Generation Only =====")
-        success = generate_report(str(output_dir))
+        success = generate_report(str(output_dir), use_cache=not args.no_cache)
         if not success:
             print("Report generation failed!")
             return 1
@@ -436,7 +440,7 @@ Parallel Processing Options:
     
     # Step 3: Run analysis
     if not args.skip_analysis:
-        success = run_analysis(str(output_dir))
+        success = run_analysis(str(output_dir), use_cache=not args.no_cache)
         if not success:
             print("Analysis failed, but continuing with report generation...")
     else:
@@ -444,7 +448,7 @@ Parallel Processing Options:
     
     # Step 4: Generate report
     if not args.skip_report:
-        success = generate_report(str(output_dir))
+        success = generate_report(str(output_dir), use_cache=not args.no_cache)
         if not success:
             print("Report generation failed!")
             return 1

@@ -100,6 +100,8 @@ class HardwareVerificationResult:
     yosys_available: bool
     verilator_available: bool
     overall_status: str
+    execution_time: Optional[float] = None
+    average_runtime_per_module: Optional[float] = None
 
 
 class HardwareVerifier:
@@ -180,7 +182,7 @@ class HardwareVerifier:
         # Run synthesis
         try:
             script = f"""
-            read_verilog {verilog_file}
+            read_verilog -sv {verilog_file}
             synth -top {module_name}
             stat
             """
@@ -399,6 +401,8 @@ class HardwareVerifier:
             "yosys_available": results.yosys_available,
             "verilator_available": results.verilator_available,
             "overall_status": results.overall_status,
+            "execution_time": results.execution_time,
+            "average_runtime_per_module": results.average_runtime_per_module,
             "synthesis_results": {},
             "testbench_results": {}
         }
@@ -660,7 +664,9 @@ def load_verification_results(results_file: str = "results/hardware_verification
             ecc_verification_results=data.get("ecc_verification_results", {}),
             yosys_available=data.get("yosys_available", False),
             verilator_available=data.get("verilator_available", True),
-            overall_status=data.get("overall_status", "UNKNOWN")
+            overall_status=data.get("overall_status", "UNKNOWN"),
+            execution_time=data.get("execution_time"),
+            average_runtime_per_module=data.get("average_runtime_per_module")
         )
         
     except FileNotFoundError:

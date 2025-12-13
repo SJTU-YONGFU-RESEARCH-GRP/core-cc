@@ -96,6 +96,7 @@ class HardwareVerificationSummary:
     verilator_available: bool
     yosys_available: bool
     execution_time: float
+    average_runtime_per_module: float
     overall_status: str  # "PASS" or "FAIL"
 
 
@@ -344,11 +345,12 @@ class HardwareVerificationRunner:
         
         # Compile with Verilator
         cmd = [
-            "verilator", "--cc", "--exe", "--build", "-j", "0",
+            "verilator", "--cc", "--exe", "--build",
             "-CFLAGS", "-I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd",
             str(verilog_file), str(testbench_file),
             "-o", ecc_type,
-            "--Mdir", str(build_dir / "obj_dir")
+            "--Mdir", str(build_dir / "obj_dir"),
+            "-j", "1"  # Use single thread to avoid "locked Thread Pool" errors
         ]
         
         if self.verbose:
@@ -375,116 +377,95 @@ class HardwareVerificationRunner:
             print(f"Compilation error for {ecc_type}: {e}")
             return False
     
-    def run_test(self, ecc_type: str, config: Dict[str, Any]) -> ECCTestSummary:
+    def run_testbench(self, ecc_name: str) -> Dict[str, Any]:
         """
-        Run tests for a single ECC type.
+        Run the Verilator testbench for a specific ECC module.
         
         Args:
-            ecc_type: Name of the ECC type
-            config: Configuration dictionary
+            ecc_name: Name of the ECC module (e.g., 'parity_ecc')
             
         Returns:
-            ECCTestSummary: Test results summary
+            Dictionary containing test results and metrics
         """
-        test_results = []
-        total_tests = 0
-        passed_tests = 0
-        failed_tests = 0
+        print(f"Running hardware verification for {ecc_name}...")
         
-        # First compile the test
-        if not self.compile_test(ecc_type, config):
-            return ECCTestSummary(
-                ecc_type=ecc_type,
-                total_tests=0,
-                passed_tests=0,
-                failed_tests=1,
-                test_results=[],
-                overall_status="FAIL"
-            )
+        # Paths
+        tb_dir = self.testbenches_dir / f"{ecc_name}_tb"
+        build_dir = self.results_dir / "build" / "obj_dir"
+        exe_path = build_dir / ecc_name
         
-        # Run the compiled test
-        executable = Path("results/build/obj_dir") / ecc_type
+        # Check if executable exists
+        if not exe_path.exists():
+            # Try to compile it first
+            print(f"Executable not found for {ecc_name}, attempting to compile...")
+            
+            # Get config for this ECC type
+            if ecc_name not in self.ecc_configs:
+                return {
+                    "status": "FAIL",
+                    "error": f"Configuration not found for {ecc_name}",
+                    "runtime": 0.0
+                }
+            
+            config = self.ecc_configs[ecc_name]
+            compile_success = self.compile_test(ecc_name, config)
+            
+            if not compile_success:
+                return {
+                    "status": "FAIL",
+                    "error": "Compilation failed",
+                    "runtime": 0.0
+                }
         
-        if not executable.exists():
-            print(f"ERROR: Executable not found: {executable}")
-            return ECCTestSummary(
-                ecc_type=ecc_type,
-                total_tests=0,
-                passed_tests=0,
-                failed_tests=1,
-                test_results=[],
-                overall_status="FAIL"
-            )
-        
+        # Run the simulation
         try:
             start_time = time.time()
-            result = subprocess.run([str(executable)], capture_output=True, text=True, timeout=30)
-            execution_time = time.time() - start_time
+            result = subprocess.run(
+                [str(exe_path)],
+                capture_output=True,
+                text=True,
+                timeout=60  # 60 second timeout per test
+            )
+            runtime = time.time() - start_time
             
-            # Parse the output to determine PASS/FAIL
-            output = result.stdout + result.stderr
+            # Parse output
+            output = result.stdout
             
+            if result.returncode != 0:
+                return {
+                    "status": "FAIL",
+                    "error": f"Simulation failed with return code {result.returncode}",
+                    "output": output,
+                    "runtime": runtime
+                }
+            
+            # Check for "RESULT: PASS" in output
             if "RESULT: PASS" in output:
-                overall_status = "PASS"
-                passed_tests = 1
-                total_tests = 1
-            elif "RESULT: FAIL" in output:
-                overall_status = "FAIL"
-                failed_tests = 1
-                total_tests = 1
+                return {
+                    "status": "PASS",
+                    "output": output,
+                    "runtime": runtime
+                }
             else:
-                overall_status = "FAIL"
-                failed_tests = 1
-                total_tests = 1
-            
-            test_results.append(TestResult(
-                ecc_type=ecc_type,
-                test_name="hardware_verification",
-                passed=(overall_status == "PASS"),
-                expected="PASS",
-                actual=overall_status,
-                execution_time=execution_time
-            ))
-            
-            if self.verbose:
-                print(f"Test output for {ecc_type}:")
-                print(output)
-            
+                return {
+                    "status": "FAIL",
+                    "error": "Simulation completed but 'RESULT: PASS' not found",
+                    "output": output,
+                    "runtime": runtime
+                }
+                
         except subprocess.TimeoutExpired:
-            print(f"Test timeout for {ecc_type}")
-            overall_status = "FAIL"
-            failed_tests = 1
-            total_tests = 1
-            test_results.append(TestResult(
-                ecc_type=ecc_type,
-                test_name="hardware_verification",
-                passed=False,
-                expected="PASS",
-                actual="TIMEOUT",
-                error_message="Test execution timeout"
-            ))
+            return {
+                "status": "FAIL",
+                "error": "Simulation timed out",
+                "runtime": 60.0
+            }
         except Exception as e:
-            print(f"Test error for {ecc_type}: {e}")
-            overall_status = "FAIL"
-            failed_tests = 1
-            total_tests = 1
-            test_results.append(TestResult(
-                ecc_type=ecc_type,
-                test_name="hardware_verification",
-                passed=False,
-                expected="PASS",
-                actual="ERROR",
-                error_message=str(e)
-            ))
-        
-        return ECCTestSummary(
-            ecc_type=ecc_type,
-            total_tests=total_tests,
-            passed_tests=passed_tests,
-            failed_tests=failed_tests,
-            test_results=test_results,
-            overall_status=overall_status
-        )
+            return {
+                "status": "FAIL",
+                "error": str(e),
+                "runtime": 0.0
+            }
 
     def run_synthesis(self, ecc_type: str, config: Dict[str, Any]) -> SynthesisResult:
         """
@@ -511,7 +492,7 @@ class HardwareVerificationRunner:
         try:
             # Create synthesis script
             script = f"""
-            read_verilog {verilog_file}
+            read_verilog -sv {verilog_file}
             synth -top {module_name}
             stat
             """
@@ -620,7 +601,31 @@ class HardwareVerificationRunner:
             print(f"[{i}/{len(self.ecc_configs)}] Testing {ecc_type}...")
             
             # Run verification test
-            summary = self.run_test(ecc_type, config)
+            # result is a dict: {"status": "PASS/FAIL", "output": ..., "runtime": ...}
+            result_dict = self.run_testbench(ecc_type)
+            
+            # Convert dict to ECCTestSummary
+            passed = (result_dict["status"] == "PASS")
+            
+            test_result = TestResult(
+                ecc_type=ecc_type,
+                test_name="hardware_verification",
+                passed=passed,
+                expected="PASS",
+                actual=result_dict["status"],
+                error_message=result_dict.get("error"),
+                execution_time=result_dict.get("runtime", 0.0)
+            )
+            
+            summary = ECCTestSummary(
+                ecc_type=ecc_type,
+                total_tests=1,
+                passed_tests=1 if passed else 0,
+                failed_tests=0 if passed else 1,
+                test_results=[test_result],
+                overall_status=result_dict["status"]
+            )
+            
             ecc_summaries[ecc_type] = summary
             
             # Run synthesis if available
@@ -634,23 +639,41 @@ class HardwareVerificationRunner:
             
             if summary.overall_status == "PASS":
                 passed_ecc_types += 1
-                print(f"  ✅ {ecc_type}: PASS")
+                print(f"  ✅ {ecc_type}: PASS ({summary.test_results[0].execution_time:.3f}s)")
             else:
                 failed_ecc_types += 1
-                print(f"  ❌ {ecc_type}: FAIL")
+                print(f"  ❌ {ecc_type}: FAIL ({summary.test_results[0].execution_time:.3f}s)")
+                if result_dict.get("error"):
+                    print(f"    Error: {result_dict['error']}")
+                if result_dict.get("output") and result_dict["status"] == "FAIL":
+                    if self.verbose:
+                        print("    Full Output:")
+                        print(result_dict["output"])
+                    else:
+                        print("    Output snippet:")
+                        print("\n".join(result_dict["output"].splitlines()[-10:]))  # Print last 10 lines
             
             print()
         
         execution_time = time.time() - start_time
+        
+        # Calculate average runtime
+        total_runtime = sum(summary.test_results[0].execution_time for summary in ecc_summaries.values() if summary.test_results and summary.test_results[0].execution_time is not None)
+        avg_runtime = total_runtime / len(ecc_summaries) if ecc_summaries else 0.0
         
         # Print summary
         print("=== Test Summary ===")
         print(f"Total ECC types: {len(self.ecc_configs)}")
         print(f"Passed: {passed_ecc_types}")
         print(f"Failed: {failed_ecc_types}")
+        print(f"Total Duration: {execution_time:.2f}s")
+        print(f"Avg Runtime/Module: {avg_runtime:.3f}s")
         
-        overall_status = "PASS" if failed_ecc_types == 0 else "FAIL"
-        
+        if failed_ecc_types > 0:
+            overall_status = "FAIL"
+        else:
+            overall_status = "PASS"
+            
         if overall_status == "PASS":
             print("RESULT: ALL TESTS PASSED")
         else:
@@ -665,6 +688,7 @@ class HardwareVerificationRunner:
             verilator_available=verilator_available,
             yosys_available=yosys_available,
             execution_time=execution_time,
+            average_runtime_per_module=avg_runtime,
             overall_status=overall_status
         )
     
@@ -688,6 +712,7 @@ class HardwareVerificationRunner:
             "verilator_available": summary.verilator_available,
             "yosys_available": summary.yosys_available,
             "execution_time": summary.execution_time,
+            "average_runtime_per_module": summary.average_runtime_per_module,
             "overall_status": summary.overall_status,
             "ecc_results": {},
             "synthesis_results": {}

@@ -1,11 +1,12 @@
 {
-  "timestamp": 1765042264.311541,
+  "timestamp": 1765614113.063903,
   "total_ecc_types": 26,
   "passed_ecc_types": 26,
   "failed_ecc_types": 0,
   "verilator_available": true,
   "yosys_available": true,
-  "execution_time": 84.88039588928223,
+  "execution_time": 136.27882838249207,
+  "average_runtime_per_module": 0.0032881681735698995,
   "overall_status": "PASS",
   "ecc_results": {
     "parity_ecc": {
@@ -20,7 +21,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004193544387817383
+          "execution_time": 0.00440526008605957
         }
       ]
     },
@@ -36,7 +37,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004276275634765625
+          "execution_time": 0.004453897476196289
         }
       ]
     },
@@ -52,7 +53,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0044231414794921875
+          "execution_time": 0.004499197006225586
         }
       ]
     },
@@ -68,7 +69,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0042896270751953125
+          "execution_time": 0.004595279693603516
         }
       ]
     },
@@ -84,7 +85,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0042724609375
+          "execution_time": 0.004336118698120117
         }
       ]
     },
@@ -100,7 +101,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.005143880844116211
+          "execution_time": 0.004478931427001953
         }
       ]
     },
@@ -116,7 +117,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004323244094848633
+          "execution_time": 0.004643678665161133
         }
       ]
     },
@@ -132,7 +133,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004648447036743164
+          "execution_time": 0.004228830337524414
         }
       ]
     },
@@ -148,7 +149,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.002018451690673828
+          "execution_time": 0.0018568038940429688
         }
       ]
     },
@@ -164,7 +165,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0017006397247314453
+          "execution_time": 0.001760721206665039
         }
       ]
     },
@@ -180,7 +181,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0016512870788574219
+          "execution_time": 0.001707315444946289
         }
       ]
     },
@@ -196,7 +197,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0016608238220214844
+          "execution_time": 0.0017397403717041016
         }
       ]
     },
@@ -212,7 +213,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0017254352569580078
+          "execution_time": 0.0016121864318847656
         }
       ]
     },
@@ -228,7 +229,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.00151824951171875
+          "execution_time": 0.0018684864044189453
         }
       ]
     },
@@ -244,7 +245,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004404306411743164
+          "execution_time": 0.004389286041259766
         }
       ]
     },
@@ -260,7 +261,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004387855529785156
+          "execution_time": 0.0043599605560302734
         }
       ]
     },
@@ -276,7 +277,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004297733306884766
+          "execution_time": 0.0044934749603271484
         }
       ]
     },
@@ -292,7 +293,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004935741424560547
+          "execution_time": 0.004527091979980469
         }
       ]
     },
@@ -308,7 +309,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004239559173583984
+          "execution_time": 0.004418611526489258
         }
       ]
     },
@@ -324,7 +325,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004128456115722656
+          "execution_time": 0.004484891891479492
         }
       ]
     },
@@ -340,7 +341,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004412174224853516
+          "execution_time": 0.0042879581451416016
         }
       ]
     },
@@ -356,7 +357,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.001623392105102539
+          "execution_time": 0.0016033649444580078
         }
       ]
     },
@@ -372,7 +373,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0015337467193603516
+          "execution_time": 0.0016961097717285156
         }
       ]
     },
@@ -388,7 +389,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0016143321990966797
+          "execution_time": 0.001708984375
         }
       ]
     },
@@ -404,7 +405,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0016827583312988281
+          "execution_time": 0.001688241958618164
         }
       ]
     },
@@ -420,7 +421,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0016591548919677734
+          "execution_time": 0.00164794921875
         }
       ]
     }
@@ -438,20 +439,20 @@
     "hamming_secded_ecc": {
       "module_name": "hamming_secded_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/hamming_secded_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 114,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/hamming_secded_ecc.v:31: ERROR: syntax error, unexpected TOK_ID, expecting ',' or ';' or '='\n"
+      "error_message": null
     },
     "extended_hamming_ecc": {
       "module_name": "extended_hamming_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/extended_hamming_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 116,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/extended_hamming_ecc.v:26: ERROR: syntax error, unexpected TOK_ID, expecting ',' or ';' or '='\n"
+      "error_message": null
     },
     "cyclic_ecc": {
       "module_name": "cyclic_ecc",
@@ -465,20 +466,20 @@
     "system_ecc": {
       "module_name": "system_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/system_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 51,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/system_ecc.v:27: ERROR: syntax error, unexpected TOK_ID, expecting ',' or ';' or '='\n"
+      "error_message": null
     },
     "reed_muller_ecc": {
       "module_name": "reed_muller_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/reed_muller_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 318,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/reed_muller_ecc.v:31: ERROR: syntax error, unexpected TOK_ID, expecting ',' or ';' or '='\n"
+      "error_message": null
     },
     "fire_code_ecc": {
       "module_name": "fire_code_ecc",
@@ -492,20 +493,20 @@
     "product_code_ecc": {
       "module_name": "product_code_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/product_code_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 60,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/product_code_ecc.v:64: ERROR: input/output/inout ports cannot have unpacked dimensions.\n"
+      "error_message": null
     },
     "concatenated_ecc": {
       "module_name": "concatenated_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/concatenated_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 133,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/concatenated_ecc.v:160: ERROR: For loop inline variable declaration is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "composite_ecc": {
       "module_name": "composite_ecc",
@@ -519,29 +520,29 @@
     "turbo_ecc": {
       "module_name": "turbo_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/turbo_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 37,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/turbo_ecc.v:62: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "spatially_coupled_ldpc_ecc": {
       "module_name": "spatially_coupled_ldpc_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/spatially_coupled_ldpc_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 348,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/spatially_coupled_ldpc_ecc.v:140: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "non_binary_ldpc_ecc": {
       "module_name": "non_binary_ldpc_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/non_binary_ldpc_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 314,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/non_binary_ldpc_ecc.v:150: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "raptor_code_ecc": {
       "module_name": "raptor_code_ecc",
@@ -573,11 +574,11 @@
     "repetition_ecc": {
       "module_name": "repetition_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/repetition_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 184,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/repetition_ecc.v:55: ERROR: syntax error, unexpected TOK_ID, expecting '='\n"
+      "error_message": null
     },
     "crc_ecc": {
       "module_name": "crc_ecc",
@@ -618,38 +619,38 @@
     "adaptive_ecc": {
       "module_name": "adaptive_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/adaptive_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 77,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/adaptive_ecc.v:109: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "burst_error_ecc": {
       "module_name": "burst_error_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/burst_error_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 46,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/burst_error_ecc.v:118: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "three_d_memory_ecc": {
       "module_name": "three_d_memory_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/three_d_memory_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 72,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/three_d_memory_ecc.v:141: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "primary_secondary_ecc": {
       "module_name": "primary_secondary_ecc",
       "verilog_file": "/home/cylinder/projects/core-cc/verilogs/primary_secondary_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
+      "synthesis_available": true,
+      "area_cells": 47,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: /home/cylinder/projects/core-cc/verilogs/primary_secondary_ecc.v:132: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "convolutional_ecc": {
       "module_name": "convolutional_ecc",

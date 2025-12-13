@@ -452,12 +452,25 @@ class ECCBenchmarkSuite:
             corrupted = self._inject_errors(codeword, error_pattern, word_length)
             
             # Measure decoding time
-            start_time = time.perf_counter()
+            start_time = time.time()
             decoded, error_type = ecc.decode(corrupted)
-            decode_time = time.perf_counter() - start_time
+            decode_time = time.time() - start_time
             decode_times.append(decode_time)
             
             total_times.append(encode_time + decode_time)
+            
+            # Verify data integrity
+            if decoded != data:
+                # Data mismatch!
+                if error_type == 'corrected':
+                    # False correction (Silent Data Corruption)
+                    error_type = 'undetected'
+                elif error_type == 'undetected':
+                    # Already classified as undetected
+                    pass
+                elif error_type == 'detected':
+                    # Detected but not corrected (valid behavior)
+                    pass
             
             # Count error types
             error_distribution[error_pattern] += 1
@@ -547,7 +560,7 @@ class ECCBenchmarkSuite:
         # If no configurations to run, load existing results
         if not configs:
             print("✅ All configurations already have results. Loading existing data...")
-            self._load_existing_results()
+            self.results = self._load_existing_results()
             return self.results
         
         print(f"🚀 Starting benchmark execution...")
