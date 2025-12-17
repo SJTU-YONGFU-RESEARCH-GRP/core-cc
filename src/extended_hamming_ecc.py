@@ -116,39 +116,17 @@ class ExtendedHammingECC(ECCBase):
         hamming_codeword = codeword & ~(1 << self.extended_parity_position)
         extended_parity = (codeword >> self.extended_parity_position) & 1
         
-        # Calculate expected extended parity
+        # Calculate expected extended parity (from received hamming codeword)
         total_ones = bin(hamming_codeword).count('1')
         expected_extended_parity = total_ones % 2
         
         # Check extended parity
         extended_parity_error = (extended_parity != expected_extended_parity)
         
-        # Decode Hamming part
-        decoded_data, hamming_error_type = self._decode_hamming(hamming_codeword)
-        
-        # Determine overall error type
-        # Determine overall error type
-        if syndrome == 0:
-            if extended_parity_error:
-                # Extended parity error but no Hamming error - extended parity bit error
-                return decoded_data, 'corrected'
-            else:
-                # No error
-                return decoded_data, 'no_error'
-        else:
-            if extended_parity_error:
-                # Single bit error detected and corrected
-                return decoded_data, 'corrected'
-            else:
-                # Double bit error detected but not corrected
-                return decoded_data, 'detected'
-
-    def _decode_hamming(self, hamming_codeword: int) -> Tuple[int, str]:
-        """Decode standard Hamming SECDED codeword."""
-        # Calculate syndrome
+        # Calculate syndrome for Hamming part
         syndrome = 0
         for i, pos in enumerate(self.parity_positions):
-            # Calculate expected parity
+            # Calculate expected parity for this group
             expected_parity = 0
             for j in range(self.n):
                 if j != pos and ((hamming_codeword >> j) & 1):
@@ -161,17 +139,39 @@ class ExtendedHammingECC(ECCBase):
             if expected_parity != actual_parity:
                 syndrome |= (1 << i)
         
+        # SECDED Logic Table:
+        # Syndrome == 0, Parity Error == 0  -> No Error
+        # Syndrome == 0, Parity Error == 1  -> Parity Bit Error (Correctable - ignore)
+        # Syndrome != 0, Parity Error == 1  -> Single Bit Error (Correctable)
+        # Syndrome != 0, Parity Error == 0  -> Double Bit Error (Detectable)
+        
         if syndrome == 0:
-            # No error detected
-            return self._extract_data(hamming_codeword), 'corrected'
-        elif syndrome <= self.n:
-            # Single bit error detected and corrected
-            error_bit = syndrome - 1
-            corrected_codeword = hamming_codeword ^ (1 << error_bit)
-            return self._extract_data(corrected_codeword), 'corrected'
+            if extended_parity_error:
+                # Extended parity bit error only - data is fine
+                return self._extract_data(hamming_codeword), 'corrected'
+            else:
+                # No error
+                return self._extract_data(hamming_codeword), 'corrected' # Treat no error as "successful correction of 0 bits"
         else:
-            # Double bit error detected but not corrected
-            return self._extract_data(hamming_codeword), 'detected'
+            if extended_parity_error:
+                # Single bit error in Hamming part -> Correct it
+                if syndrome <= self.n: # Syndrome points to valid bit position (1-based)
+                    error_bit = syndrome - 1
+                    # Correct the bit
+                    corrected_codeword = hamming_codeword ^ (1 << error_bit)
+                    return self._extract_data(corrected_codeword), 'corrected'
+                else:
+                    # Syndrome points outside valid range? Should not happen for single error
+                    # Treating as detected
+                    return self._extract_data(hamming_codeword), 'detected'
+            else:
+                # Double bit error (Syndrome != 0 but overall parity checks out, meaning 2 errors flipped parity twice)
+                # Detect only
+                return self._extract_data(hamming_codeword), 'detected'
+
+    def _decode_hamming(self, hamming_codeword: int) -> Tuple[int, str]:
+        """Decode standard Hamming SECDED codeword. (Deprecated - logic moved to decode)"""
+        pass
 
     def _extract_data(self, codeword: int) -> int:
         """Extract data bits from codeword."""

@@ -23,20 +23,39 @@ class ReedSolomonECC(ECCBase):
             self.config = config
         else:
             # Use provided parameters or defaults
+            # Use provided parameters or defaults
             if n is None or k is None:
                 # Determine parameters based on data_length if provided
                 if data_length is not None:
-                    if data_length <= 8:
-                        n, k = 3, 1     # RS(3,1) bytes
-                    elif data_length <= 16:
-                        n, k = 5, 2     # RS(5,2) bytes
-                    elif data_length <= 32:
-                        n, k = 7, 4     # RS(7,4) bytes
-                    else:
-                        k = (data_length + 7) // 8
-                        n = k + 4
+                    # K must be at least data_length (in bytes)
+                    # We default to T=2 (corrects 2 bytes), so N = K + 4
+                    k = max(1, (data_length + 7) // 8)  # Convert bits/bytes to symbol count? 
+                    # data_length passed from benchmark is in *bytes* or *bits*?
+                    # benchmark_suite says: data = random.getrandbits(word_length)
+                    # And ecc(data_length=word_length)
+                    # Wait, benchmark_suite passes `word_length` (bits) or bytes?
+                    # In benchmark_suite: `ecc_class(word_length)`
+                    # Most ECCs treat `data_length` as bits?
+                    # Let's check LDPCECC: `if data_length <= 8: ...` (implies chunks implies bytes? No, LDPCECC treats as bits in logic, but context implies bits)
+                    # Actually standard RS works on bytes.
+                    # If word_length=32 (bits) -> 4 bytes.
+                    # So k should be 4.
+                    
+                    # Assume data_length is in BITS for consistency with other ECCs?
+                    # Let's check usage.
+                    # benchmark_suite: `ecc = ecc_class(word_length)` -> word_length is bits (e.g. 16, 32).
+                    # RS.__init__: `k = (data_length + 7) // 8`
+                    
+                    k = (data_length + 7) // 8
+                    n = k + 4 # T=2 capability
+                    
+                    # Ensure n <= 255 (GF(2^8) limit)
+                    if n > 255:
+                         # Truncate or error? For verifying, cap it.
+                         n = 255
+                         if k > 251: k = 251 # Maintain T=2
                 else:
-                    # Default to RS(7,4) bytes
+                    # Default
                     n, k = 7, 4
                 
                 self.config = RSConfig(n=n, k=k)

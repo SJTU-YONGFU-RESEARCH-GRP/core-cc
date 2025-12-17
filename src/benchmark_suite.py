@@ -826,7 +826,7 @@ class ECCBenchmarkSuite:
             ecc = ecc_type(data_length=word_length)
         elif ecc_type_name == 'ConvolutionalECC': 
             # Convolutional parameters
-            ecc = ecc_type(n=word_length * 2, k=word_length)
+            ecc = ecc_type(data_length=word_length)
         elif ecc_type_name == 'PolarECC': 
             # Polar parameters
             ecc = ecc_type(n=word_length * 2, k=word_length)
@@ -924,10 +924,10 @@ class ECCBenchmarkSuite:
                 data = random.getrandbits(word_length)
             
             # Encode
-            start_time = time.time()
+            start_time = time.perf_counter()
             try:
                 encoded = ecc.encode(data)
-                encode_time = time.time() - start_time
+                encode_time = time.perf_counter() - start_time
                 encode_times.append(encode_time)
             except Exception as e:
                 print(f"Encode error for {ecc_type_name}: {e}")
@@ -969,22 +969,41 @@ class ECCBenchmarkSuite:
                         encoded = encoded ^ (1 << i)
             
             # Decode
-            start_time = time.time()
+            start_time = time.perf_counter()
             try:
                 decoded, error_type = ecc.decode(encoded)
-                decode_time = time.time() - start_time
+                decode_time = time.perf_counter() - start_time
                 decode_times.append(decode_time)
                 
-                # Count error types
+                # Verify data integrity
+                # Check if decoded data matches original data
+                data_match = (decoded == data)
+                
+                # Count error types with verification
                 if error_type == 'corrected':
-                    correctable_errors += 1
+                    if data_match:
+                        correctable_errors += 1
+                    else:
+                        # Claimed corrected but data is wrong -> Failed correction
+                        undetected_errors += 1
+                        # print(f"False correction for {ecc_type_name}: claimed corrected but data mismatch")
                 elif error_type == 'detected':
                     detected_errors += 1
                 elif error_type == 'undetected':
-                    undetected_errors += 1
+                    if data_match:
+                        # No error or corrected without realizing? 
+                        # If data matches, it's a success (or no error was injected/effective)
+                        # But 'undetected' usually means "I see no error".
+                        # If we injected an error and it says "undetected" but data matches, 
+                        # it means the error didn't affect the data (e.g. parity bit flip only)?
+                        # Or the ECC is just robust.
+                        # For now, count as correctable/success if data matches.
+                        correctable_errors += 1
+                    else:
+                        undetected_errors += 1
                     
             except Exception as e:
-                print(f"Decode error for {ecc_type_name}: {e}")
+                # print(f"Decode error for {ecc_type_name}: {e}")
                 undetected_errors += 1
                 continue
         
@@ -1018,17 +1037,54 @@ class ECCBenchmarkSuite:
         
         # Calculate rates
         correction_rate = correctable_errors / total_trials
-        detection_rate = (correctable_errors + detected_errors) / total_trials
+        # Detection Rate: Fraction of failures that were successfully flagged (but not corrected)
+        detection_rate = detected_errors / total_trials
+        # Success Rate: Fraction of safe outcomes (either corrected or detected)
         success_rate = (correctable_errors + detected_errors) / total_trials
         
-        # Calculate code rate and overhead (simplified)
+        # Calculate code rate and overhead
         try:
             original_size = word_length
-            # Use the bit length of the encoded data
-            encoded_size = encoded_bits if 'encoded_bits' in locals() else word_length
+            
+            # Determine encoded size more accurately than bit_length()
+            encoded_size = word_length # Default fallback
+            
+            # Try to infer from config
+            if hasattr(ecc, 'config'):
+                if hasattr(ecc.config, 'n') and hasattr(ecc.config, 'k'):
+                    # Check if n/k are in bits or bytes
+                    # If k matches word_length, it's bits
+                    if ecc.config.k == word_length:
+                        encoded_size = ecc.config.n
+                    # If k*8 matches word_length, it's bytes
+                    elif ecc.config.k * 8 == word_length:
+                        encoded_size = ecc.config.n * 8
+                    # If k is close to word_length (e.g. padded), assume bits
+                    elif abs(ecc.config.k - word_length) < 8:
+                        encoded_size = ecc.config.n
+                    # If k*8 is close to word_length, assume bytes
+                    elif abs(ecc.config.k * 8 - word_length) < 8:
+                        encoded_size = ecc.config.n * 8
+                    else:
+                        # Fallback: calculate rate and apply to word_length
+                        rate = ecc.config.k / ecc.config.n
+                        encoded_size = int(word_length / rate)
+            
+            # Special handling for ConvolutionalECC
+            elif 'Convolutional' in ecc_type_name:
+                # (data + 2) * 2
+                encoded_size = (word_length + 2) * 2
+                
+            # Fallback to bit_length if we couldn't determine it, but ensure it's at least original size
+            # (unless we have a specific reason to believe it's compression)
+            if encoded_size == word_length and 'encoded_bits' in locals():
+                 # Use bit_length but lower bound by word_length to avoid "compression" artifacts from leading zeros
+                 encoded_size = max(encoded_bits, word_length)
+
             code_rate = original_size / encoded_size
             overhead_ratio = (encoded_size - original_size) / original_size
-        except:
+        except Exception as e:
+            # print(f"Metric calc error: {e}")
             code_rate = 1.0
             overhead_ratio = 0.0
         

@@ -153,6 +153,15 @@ class ECCReportGenerator:
             
         return charts_section
     
+        return ""
+    
+    def generate_efficiency_latency_chart_section(self) -> str:
+        """Generate section for efficiency vs latency trade-off chart."""
+        chart_path = self.results_dir / "ecc_efficiency_latency_tradeoff.png"
+        if chart_path.exists():
+            return f"![ECC Efficiency vs Latency Trade-off](ecc_efficiency_latency_tradeoff.png)\n\n*Trade-off between Code Rate (Efficiency) and Total Latency (Speed). Top-left is better (High Efficiency, Low Latency).*\n\n"
+        return ""
+
     def generate_performance_comparison_chart_section(self) -> str:
         """Generate section for performance comparison chart."""
         chart_path = self.results_dir / "ecc_performance_comparison.png"
@@ -171,11 +180,12 @@ class ECCReportGenerator:
         
         table = "## Performance Comparison\n\n"
         table += self.generate_performance_comparison_chart_section()
+        table += self.generate_efficiency_latency_chart_section()
         table += "| ECC Type | Success Rate (%) | Correction Rate (%) | Detection Rate (%) | Code Rate | Overhead Ratio | Encode Time (ms) | Decode Time (ms) |\n"
         table += "|----------|------------------|-------------------|-------------------|-----------|----------------|------------------|------------------|\n"
         
         for ecc_type, metrics in summary.items():
-            table += f"| {ecc_type} | {metrics['avg_success_rate']:.1f} | {metrics['avg_correction_rate']:.1f} | {metrics['avg_detection_rate']:.1f} | {metrics['avg_code_rate']:.3f} | {metrics['avg_overhead_ratio']:.3f} | {metrics['avg_encode_time_ms']:.3f} | {metrics['avg_decode_time_ms']:.3f} |\n"
+            table += f"| {ecc_type} | {metrics['avg_success_rate']:.1f} | {metrics['avg_correction_rate']:.1f} | {metrics['avg_detection_rate']:.1f} | {metrics['avg_code_rate']:.3f} | {metrics['avg_overhead_ratio']:.3f} | {metrics['avg_encode_time_ms']:.6f} | {metrics['avg_decode_time_ms']:.6f} |\n"
         
         return table
     
@@ -328,6 +338,7 @@ class ECCReportGenerator:
                 'high_efficiency': 'High Efficiency Applications',
                 'high_speed': 'High Speed Applications',
                 'single_bit_errors': 'Single Bit Error Correction',
+                'double_bit_errors': 'Double Bit Error Correction',
                 'burst_errors': 'Burst Error Handling',
                 'random_errors': 'Random Error Conditions'
             }

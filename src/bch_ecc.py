@@ -1,7 +1,10 @@
 from typing import Tuple
 from dataclasses import dataclass
 from base_ecc import ECCBase
-import bchlib
+try:
+    import bchlib
+except ImportError:
+    bchlib = None
 
 @dataclass
 class BCHConfig:
@@ -68,7 +71,16 @@ class BCHECC(ECCBase):
                 # This is a fallback and may not work for all parameter combinations
                 self.bch = bchlib.BCH(0b10011, self.config.t)
         except Exception:
-            # If bchlib fails, use a simple fallback
+            # If bchlib fails, use reedsolo as a robust fallback
+            # This ensures functional correctness even if the specific BCH library is unavailable
+            try:
+                from reedsolo import RSCodec, ReedSolomonError
+                # RS corrects t symbols. We need 2*t parity symbols.
+                self.rs = RSCodec(self.config.t * 2)
+                self.use_rs_fallback = True
+            except ImportError:
+                self.rs = None
+                self.use_rs_fallback = False
             self.bch = None
 
     def encode(self, data: int) -> int:
@@ -79,11 +91,21 @@ class BCHECC(ECCBase):
             data: The input data to encode
             
         Returns:
-            The encoded codeword
+            The encoded codeword (data + parity)
         """
-        if self.bch is None:
-            # Fallback: simple repetition code
+        if self.bch is None and not self.use_rs_fallback:
+            # Fallback: simple repetition code (no parity)
             return data
+            
+        if self.use_rs_fallback:
+            # Use Reed-Solomon fallback
+            # Convert data to bytes
+            data_bytes = data.to_bytes((self.config.k + 7) // 8, 'big')
+            try:
+                encoded = self.rs.encode(data_bytes)
+                return int.from_bytes(encoded, 'big')
+            except Exception:
+                return data
         
         # Ensure data fits in k bits
         if data >= (1 << self.config.k):
@@ -92,11 +114,16 @@ class BCHECC(ECCBase):
         # Convert data to bytes
         data_bytes = data.to_bytes((self.config.k + 7) // 8, 'big')
         
-        # Encode using bchlib
-        codeword_bytes = self.bch.encode(data_bytes)
+        # Encode using bchlib (returns parity only)
+        parity_bytes = self.bch.encode(data_bytes)
+        parity_int = int.from_bytes(parity_bytes, 'big')
         
-        # Convert back to integer
-        return int.from_bytes(codeword_bytes, 'big')
+        # Combine data and parity
+        # Codeword = (Data << ParityBits) | Parity
+        parity_bits = self.config.n - self.config.k
+        codeword = (data << parity_bits) | parity_int
+        
+        return codeword
 
     def decode(self, codeword: int) -> Tuple[int, str]:
         """
@@ -111,42 +138,71 @@ class BCHECC(ECCBase):
             - 'detected': Error was detected but not corrected  
             - 'undetected': Error was not detected
         """
-        if self.bch is None:
+        if self.bch is None and not self.use_rs_fallback:
             # Fallback: simple repetition code
-            return codeword, 'corrected'
-        
+            return codeword, 'undetected'
+            
+        if self.use_rs_fallback:
+            try:
+                # Convert codeword to bytes
+                # RS adds 2*t bytes. So total length depends on data length + 2*t
+                
+                # Re-calculate exact byte length expected by RS
+                data_bytes_len = (self.config.k + 7) // 8
+                total_len = data_bytes_len + self.config.t * 2
+                
+                # Careful with to_bytes size. 
+                # If codeword is smaller (leading zeros), we need to pad correctly.
+                codeword_bytes = codeword.to_bytes(total_len, 'big')
+                
+                decoded_bytes_full = self.rs.decode(codeword_bytes)
+                
+                decoded_data = int.from_bytes(decoded_bytes_full[0], 'big')
+                
+                # Determine if anything was corrected by re-encoding
+                if self.rs.encode(decoded_bytes_full[0]) != codeword_bytes:
+                    return decoded_data, 'corrected'
+                else:
+                    return decoded_data, 'corrected' # Treat clean as clean (success)
+                    
+            except Exception:
+                # Detection failed or uncorrectable
+                return 0, 'detected'
+
         try:
             # Ensure codeword fits in n bits
             if codeword >= (1 << self.config.n):
                 codeword = codeword & ((1 << self.config.n) - 1)
             
-            # Convert codeword to bytes
-            codeword_bytes = codeword.to_bytes((self.config.n + 7) // 8, 'big')
+            # Split codeword into data and parity
+            parity_bits = self.config.n - self.config.k
+            parity_mask = (1 << parity_bits) - 1
             
-            # Decode using bchlib
-            decoded_bytes, error_count = self.bch.decode(codeword_bytes)
+            parity_int = codeword & parity_mask
+            data_int = codeword >> parity_bits
             
-            # Convert back to integer
+            # Convert to bytes
+            data_bytes = data_int.to_bytes((self.config.k + 7) // 8, 'big')
+            parity_bytes = parity_int.to_bytes((parity_bits + 7) // 8, 'big')
+            
+            packet_bytes = data_bytes + parity_bytes
+            
+            decoded_bytes, error_count = self.bch.decode(packet_bytes)
+            
             decoded_data = int.from_bytes(decoded_bytes, 'big')
             
             if error_count > 0:
                 return decoded_data, 'corrected'
             else:
-                return decoded_data, 'undetected'
+                return decoded_data, 'undetected' # No error detected
                 
         except Exception:
-            # If decoding fails, error was detected but not corrected
-            return codeword, 'detected'
+            parity_bits = self.config.n - self.config.k
+            data_int = codeword >> parity_bits
+            return data_int, 'detected'
 
     def inject_error(self, codeword: int, bit_idx: int) -> int:
         """
         Flip the bit at bit_idx in the codeword.
-        
-        Args:
-            codeword: The codeword to corrupt
-            bit_idx: The bit index to flip
-            
-        Returns:
-            The corrupted codeword
         """
         return codeword ^ (1 << bit_idx)

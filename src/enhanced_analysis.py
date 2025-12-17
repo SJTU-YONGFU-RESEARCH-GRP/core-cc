@@ -16,7 +16,10 @@ from dataclasses import dataclass
 import statistics
 import time
 import random
-from scipy import stats
+try:
+    from scipy import stats
+except ImportError:
+    stats = None
 import multiprocessing as mp
 from concurrent.futures import ProcessPoolExecutor, as_completed, ThreadPoolExecutor
 import os
@@ -132,9 +135,13 @@ class ECCAnalyzer:
                 'total_time_avg': result.total_time_avg,
                 'code_rate': result.code_rate,
                 'overhead_ratio': result.overhead_ratio,
-                'correction_rate': result.correction_rate,
-                'detection_rate': result.detection_rate,
-                'success_rate': result.success_rate
+                # Recalculate rates to ensure consistency with new definitions
+                # Correction Rate: Corrected / Trials
+                'correction_rate': result.correctable_errors / result.trials if result.trials > 0 else 0.0,
+                # Detection Rate: Detected (but not corrected) / Trials
+                'detection_rate': result.detected_errors / result.trials if result.trials > 0 else 0.0,
+                # Success Rate: (Corrected + Detected) / Trials
+                'success_rate': (result.correctable_errors + result.detected_errors) / result.trials if result.trials > 0 else 0.0
             })
         return pd.DataFrame(data)
     
@@ -158,12 +165,18 @@ class ECCAnalyzer:
             
             # Normalize time (lower is better)
             max_time = self.df['total_time_avg'].max()
-            normalized_time = 1 - (avg_total_time / max_time)
+            normalized_time = 1 - (avg_total_time / max_time) if max_time > 0 else 1.0
             
             # Composite score (higher is better)
-            score = (0.5 * avg_success_rate + 
-                    0.3 * avg_code_rate * 100 + 
+            # Weight: 60% Success, 20% Efficiency, 20% Speed (Prioritize Reliability)
+            # Scale all to 0-100 range
+            score = (0.6 * avg_success_rate * 100 + 
+                    0.2 * avg_code_rate * 100 + 
                     0.2 * normalized_time * 100)
+            
+            # Penalize if success rate is low (unreliable implementation)
+            if avg_success_rate < 0.9:
+                score = score * 0.5  # Significant penalty for non-robust codes
             
             ecc_scores[ecc_type] = score
         
@@ -182,16 +195,38 @@ class ECCAnalyzer:
         """
         scenarios = {}
         
-        # Best for high reliability (success rate)
+        # Helper to get valid candidates (success rate > threshold)
+        def get_valid_candidates(threshold=0.85):
+            valid = []
+            for ecc_type in self.df['ecc_type'].unique():
+                rate = self.df[self.df['ecc_type'] == ecc_type]['success_rate'].mean()
+                if rate >= threshold:
+                    valid.append(ecc_type)
+            return valid
+            
+        # If no candidates meet high threshold, lower it
+        valid_ecc = get_valid_candidates(0.85)
+        if not valid_ecc:
+            valid_ecc = get_valid_candidates(0.5)
+        if not valid_ecc:
+            valid_ecc = list(self.df['ecc_type'].unique()) # Fallback to all
+        
+        # Filter dataframe to valid ECCs only
+        valid_df = self.df[self.df['ecc_type'].isin(valid_ecc)]
+        
+        if valid_df.empty:
+            return scenarios
+
+        # Best for high reliability (success rate) - use full DF as we want absolute best
         best_reliability = self.df.groupby('ecc_type')['success_rate'].mean().idxmax()
         scenarios['high_reliability'] = best_reliability
         
-        # Best for efficiency (code rate)
-        best_efficiency = self.df.groupby('ecc_type')['code_rate'].mean().idxmax()
+        # Best for efficiency (code rate) - must be valid
+        best_efficiency = valid_df.groupby('ecc_type')['code_rate'].mean().idxmax()
         scenarios['high_efficiency'] = best_efficiency
         
-        # Best for speed (lowest total time)
-        best_speed = self.df.groupby('ecc_type')['total_time_avg'].mean().idxmin()
+        # Best for speed (lowest total time) - must be valid
+        best_speed = valid_df.groupby('ecc_type')['total_time_avg'].mean().idxmin()
         scenarios['high_speed'] = best_speed
         
         # Best for single bit errors
@@ -199,6 +234,13 @@ class ECCAnalyzer:
         if not single_bit_data.empty:
             best_single = single_bit_data.groupby('ecc_type')['correction_rate'].mean().idxmax()
             scenarios['single_bit_errors'] = best_single
+
+        # Best for double bit errors
+        double_bit_data = self.df[self.df['error_pattern'] == 'double']
+        if not double_bit_data.empty:
+            # Prioritize correction rate, fallback to success (detection)
+            best_double = double_bit_data.groupby('ecc_type')['success_rate'].mean().idxmax()
+            scenarios['double_bit_errors'] = best_double
         
         # Best for burst errors
         burst_data = self.df[self.df['error_pattern'] == 'burst']
@@ -276,15 +318,23 @@ class ECCAnalyzer:
                     data1 = self.df[self.df['ecc_type'] == ecc1]['success_rate']
                     data2 = self.df[self.df['ecc_type'] == ecc2]['success_rate']
                     
-                    # Perform t-test
-                    t_stat, p_value = stats.ttest_ind(data1, data2)
-                    
-                    comparison_key = f"{ecc1}_vs_{ecc2}"
-                    significance[comparison_key] = {
-                        't_statistic': t_stat,
-                        'p_value': p_value,
-                        'significant': p_value < 0.05
-                    }
+                    if stats is not None:
+                        # Perform t-test
+                        t_stat, p_value = stats.ttest_ind(data1, data2)
+                        
+                        comparison_key = f"{ecc1}_vs_{ecc2}"
+                        significance[comparison_key] = {
+                            't_statistic': t_stat,
+                            'p_value': p_value,
+                            'significant': p_value < 0.05
+                        }
+                    else:
+                        comparison_key = f"{ecc1}_vs_{ecc2}"
+                        significance[comparison_key] = {
+                            't_statistic': 0.0,
+                            'p_value': 1.0,
+                            'significant': False
+                        }
         
         return significance
     
@@ -318,6 +368,9 @@ class ECCAnalyzer:
         # Error pattern specific recommendations
         if 'single_bit_errors' in scenarios:
             recommendations.append(f"**For Single Bit Errors:** {scenarios['single_bit_errors']} provides the best correction rate for single bit errors.")
+        
+        if 'double_bit_errors' in scenarios:
+            recommendations.append(f"**For Double Bit Errors:** {scenarios['double_bit_errors']} handles double bit errors most effectively.")
         
         if 'burst_errors' in scenarios:
             recommendations.append(f"**For Burst Errors:** {scenarios['burst_errors']} handles burst errors most effectively.")
@@ -590,8 +643,46 @@ class ECCAnalyzer:
         plt.savefig(chart_path_pdf, bbox_inches='tight')
         
         plt.close()
+
+        # 4. Efficiency vs Latency Trade-off (Scatter Plot)
+        plt.figure(figsize=(14, 10))
         
-        # 4. Detailed Performance Comparison (New Chart)
+        summary = self.generate_metrics_summary()
+        code_rates = [summary[ecc]['avg_code_rate'] for ecc in summary]
+        total_times = [summary[ecc]['avg_total_time_ms'] for ecc in summary] # Already in ms
+        overhead_ratios = [summary[ecc]['avg_overhead_ratio'] for ecc in summary]
+        ecc_names = list(summary.keys())
+        
+        # Normalize overhead for marker size (min size 100, max size 1000)
+        # Avoid negative overheads (shouldn't exist now)
+        overhead_sizes = [max(100, min(1000, (o + 0.1) * 300)) for o in overhead_ratios]
+        
+        # Create scatter plot
+        scatter = plt.scatter(code_rates, total_times, s=overhead_sizes, c=range(len(ecc_names)), 
+                             cmap='tab20', alpha=0.8, edgecolor='black', linewidth=1.5)
+        
+        plt.title('Efficiency vs Latency Trade-off', fontsize=18, fontweight='bold', fontfamily='serif', pad=20)
+        plt.xlabel('Code Rate (Higher is Better)', fontsize=14, fontweight='bold', fontfamily='serif')
+        plt.ylabel('Total Latency (ms) [Log Scale]', fontsize=14, fontweight='bold', fontfamily='serif')
+        
+        # Use log scale for Y axis as times vary significantly
+        plt.yscale('log')
+        plt.grid(True, which="both", ls="--", alpha=0.3)
+        
+        # Add labels
+        texts = []
+        for i, ecc in enumerate(ecc_names):
+            texts.append(plt.text(code_rates[i], total_times[i], ecc, 
+                                 fontsize=9, fontweight='bold', fontfamily='serif'))
+        
+        plt.tight_layout()
+        
+        # Save as PNG
+        chart_path_png = output_path / "ecc_efficiency_latency_tradeoff.png"
+        plt.savefig(chart_path_png, dpi=300, bbox_inches='tight')
+        charts['efficiency_latency_tradeoff'] = str(chart_path_png)
+        
+        plt.close()
         # Grouped bar chart for Success Rate, Correction Rate, Detection Rate
         summary_df = pd.DataFrame(summary).T
         metrics_to_plot = ['avg_success_rate', 'avg_correction_rate', 'avg_detection_rate']

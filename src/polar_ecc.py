@@ -1,146 +1,223 @@
 from typing import List, Tuple
+import math
 from base_ecc import ECCBase
 
 class PolarCode:
-    """Simple Polar Code ECC implementation (toy, N=4).
-
-    This is a reference implementation for educational/demo purposes.
+    """
+    Polar Code ECC implementation using Arikan's recursive construction.
+    Supports Encoding (x = u * G_N) and SC Decoding.
+    N must be a power of 2.
     """
     def __init__(self, N: int = 4, K: int = 2, frozen_bits: List[int] = None) -> None:
-        """Initializes the polar code.
-
-        Args:
-            N: Block length (must be power of 2).
-            K: Number of information bits.
-            frozen_bits: Indices of frozen bits (0/1 values).
-        """
         self.N = N
         self.K = K
+        self.n = int(math.log2(N))
         
-        # Set frozen bits based on N and K
+        # Determine frozen bits (Capacity/Reliability based)
+        # For simplicity (and N=16 validation), we use a static reliability sequence.
+        # This sequence orders channels from least reliable to most reliable.
+        # Reference: 5G Polar Sequence or simple Bhattacharyya bounds.
+        # For N=16, reliability order (indices):
+        # 0, 1, 2, 4, 8, 3, 5, 6, 9, 10, 12, 7, 11, 13, 14, 15 (Approximate)
+        # We freeze the first (N-K) least reliable channels.
+        
         if frozen_bits is None:
-            if N == 4 and K == 2:
-                self.frozen_bits = [0, 1]
-            elif N == 8 and K == 4:
-                self.frozen_bits = [0, 1, 2, 3]
-            elif N == 16 and K == 8:
-                self.frozen_bits = [0, 1, 2, 3, 4, 5, 6, 7]
-            elif N == 32 and K == 16:
-                self.frozen_bits = list(range(16))
-            else:
-                # Default: freeze first N-K bits
-                self.frozen_bits = list(range(N - K))
+            # Simple reliability sequence for N=16
+            reliability_sequence = [0, 1, 2, 4, 8, 3, 5, 6, 9, 10, 12, 7, 11, 13, 14, 15]
+            # Truncate to N length if N < 16 (e.g. N=4: 0, 1, 2, 3)
+            # This is a fixed sequence, might need adjustment for general N.
+            if N == 4:
+                reliability_sequence = [0, 1, 2, 3]
+            elif N == 8:
+                reliability_sequence = [0, 1, 2, 4, 3, 5, 6, 7] # Adjusted
+            
+            # Identify frozen indices (the first N-K items in reliability sequence)
+            num_frozen = N - K
+            self.frozen_bits = set(reliability_sequence[:num_frozen])
         else:
-            self.frozen_bits = frozen_bits
+            self.frozen_bits = set(frozen_bits)
 
-    def encode(self, u: List[int]) -> List[int]:
-        """Encodes information bits using a toy polar code.
-
-        Args:
-            u: List of K information bits.
-        Returns:
-            Encoded codeword of length N.
+    def encode(self, u_k: List[int]) -> List[int]:
         """
-        # Place info bits in non-frozen positions
-        x = [0] * self.N
+        Encodes K information bits into N codeword bits.
+        Constructs full u vector (N bits) with frozen bits = 0, others = info.
+        Then x = u * G_N.
+        """
+        # Construct u vector (N bits)
+        u = [0] * self.N
         info_idx = 0
         for i in range(self.N):
-            if i in self.frozen_bits:
-                x[i] = 0  # frozen to 0
-            else:
-                x[i] = u[info_idx]
-                info_idx += 1
-        
-        # Simple polar transform (for demo purposes)
-        # This is a simplified version that works for any N
-        y = [0] * self.N
-        for i in range(self.N):
-            y[i] = x[i]
-            # Add some XOR operations for polarization effect
-            for j in range(i + 1, self.N):
-                if (i + j) % 2 == 0:
-                    y[i] ^= x[j]
-        
-        return y
-
-    def decode(self, y: List[int]) -> List[int]:
-        """Decodes a codeword using a simple hard-decision SC decoder.
-
-        Args:
-            y: Received codeword (length N).
-        Returns:
-            Decoded information bits (length K).
-        """
-        # Simple inverse transform (for demo purposes)
-        # This is a simplified version that works for any N
-        x = [0] * self.N
-        for i in range(self.N):
-            x[i] = y[i]
-            # Reverse the XOR operations
-            for j in range(i + 1, self.N):
-                if (i + j) % 2 == 0:
-                    x[i] ^= y[j]
-        
-        # Extract info bits from non-frozen positions
-        info = []
-        for i, v in enumerate(x):
             if i not in self.frozen_bits:
-                info.append(v)
-        return info
+                u[i] = u_k[info_idx] if info_idx < len(u_k) else 0
+                info_idx += 1
+                
+        # Recursive encoding
+        return self._transform(u)
+
+    def _transform(self, u: List[int]) -> List[int]:
+        """Recursive Polar Transform."""
+        if len(u) == 1:
+            return u
+            
+        n = len(u)
+        half = n // 2
+        
+        # Even/Odd split (or Top/Bottom in some notations)
+        # Standard Arikan: u1_N = (u1_N/2 XOR u2_N/2, u2_N/2) ? 
+        # Actually G_2 = [1 0; 1 1]. (Lower triangular)
+        # x = u * G.
+        # x0 = u0 + u1
+        # x1 = u1
+        
+        # Recursive step: x = (x_odd, x_even) ?
+        # Standard recursive implementation:
+        # u_upper = u[0:half] XOR u[half:n]
+        # u_lower = u[half:n]
+        
+        u1 = [u[i] ^ u[i+half] for i in range(half)]
+        u2 = u[half:]
+        
+        x1 = self._transform(u1)
+        x2 = self._transform(u2)
+        
+        return x1 + x2 # Concatenate
+
+    def decode(self, y: List[float]) -> List[int]:
+        """
+        Successive Cancellation Decoder (Hard/Soft).
+        Expects LLRs or hard bits. For Hard Decision, convert to BPSK (-1, +1).
+        """
+        # Convert hard bits (0/1) to LLR approximation if needed
+        # 0 -> +Large, 1 -> -Large
+        llrs = [(1.0 if bit == 0 else -1.0) for bit in y]
+        
+        # Run SC
+        u_hat = self._sc_decode(llrs, self.N)
+        
+        # Extract info bits
+        info_bits = []
+        for i in range(self.N):
+            if i not in self.frozen_bits:
+                info_bits.append(u_hat[i])
+                
+        return info_bits
+
+    def _sc_decode(self, llrs: List[float], n: int) -> List[int]:
+        """Recursive SC Decoding."""
+        if n == 1:
+            # Leaf node: Make hard decision
+            return [0 if llrs[0] >= 0 else 1]
+            
+        half = n // 2
+        
+        # Calculate LLRs for u1 (Upper branch)
+        # LLR(u1) = f(LLR_upper, LLR_lower) ~= sign(L1)*sign(L2)*min(|L1|, |L2|)
+        llrs_u1 = []
+        for i in range(half):
+            l1 = llrs[i]
+            l2 = llrs[i+half]
+            # Min-Sum approximation
+            val = (1 if l1*l2 > 0 else -1) * min(abs(l1), abs(l2))
+            llrs_u1.append(val)
+            
+        # Decode u1 recursively
+        u_hat_1 = self._sc_decode(llrs_u1, half)
+        
+        # Calculate LLRs for u2 (Lower branch) given u_hat_1
+        # LLR(u2) = g(L1, L2, u1) = L2 + (1-2*u1)*L1
+        llrs_u2 = []
+        for i in range(half):
+            l1 = llrs[i]
+            l2 = llrs[i+half]
+            bit = u_hat_1[i]
+            val = l2 + ((1 if bit == 0 else -1) * l1)
+            llrs_u2.append(val)
+            
+        # Decode u2 recursively
+        u_hat_2 = self._sc_decode(llrs_u2, half)
+        
+        # Combine results to form u decision at this level
+        # Need to re-encode to pass back up? 
+        # Actually SC returns the u-decisions.
+        # But we need u_hat corresponding to the inputs of the transform at this level.
+        # The return value from recursive call IS u_hat for that sub-block.
+        
+        return u_hat_1 + u_hat_2
+
 
 class PolarECC(ECCBase):
-    """Polar ECC implementation."""
+    """Polar ECC wrapper."""
     
-    def __init__(self, n: int = 4, k: int = 2, data_length: int = None):
-        """
-        Initialize Polar ECC.
+    def __init__(self, n: int = 16, k: int = 8, data_length: int = None):
+        # Native parameters
+        self.native_n = 16
+        self.native_k = 8
         
-        Args:
-            n: Block length (must be power of 2)
-            k: Number of information bits
-            data_length: Data length for compatibility
-        """
-        # Adjust parameters based on data_length
         if data_length is not None:
-            if data_length <= 4:
-                n, k = 4, 2     # Polar(4,2)
-            elif data_length <= 8:
-                n, k = 8, 4     # Polar(8,4)
-            elif data_length <= 16:
-                n, k = 16, 8    # Polar(16,8)
-            else:
-                n, k = 32, 16   # Polar(32,16)
+             self.num_blocks = data_length
+        else:
+             self.num_blocks = 1
+             
+        self.n = self.native_n * self.num_blocks
+        self.k = self.native_k * self.num_blocks
         
-        self.n = n
-        self.k = k
-        self.polar = PolarCode(N=n, K=k)
+        # Initialize Polar Code for the NATIVE block size
+        self.polar = PolarCode(N=self.native_n, K=self.native_k)
     
-    def encode(self, data: int) -> int:
-        """
-        Encode data with Polar code.
-        
-        Args:
-            data: Input data (k bits max)
-            
-        Returns:
-            Codeword (n bits)
-        """
-        # For all data sizes, use a simpler approach
-        # Simple redundancy for all data
-        codeword = (data << 8) | (data & 0xFF)
+    def _encode_block(self, data: int) -> int:
+        # Extract bits
+        u = [(data >> i) & 1 for i in range(self.native_k)]
+        # Encode
+        codeword_bits = self.polar.encode(u)
+        # Pack to int
+        codeword = 0
+        for i, bit in enumerate(codeword_bits):
+            codeword |= (bit << i)
         return codeword
     
-    def decode(self, codeword: int) -> Tuple[int, str]:
-        """
-        Decode a Polar codeword.
+    def encode(self, data: int) -> int:
+        codeword = 0
+        for i in range(self.num_blocks):
+            chunk = (data >> (i * 8)) & 0xFF
+            cw_chunk = self._encode_block(chunk)
+            codeword |= (cw_chunk << (i * 16))
+        return codeword
+    
+    def _decode_block(self, codeword: int) -> Tuple[int, str]:
+        # Maximum Likelihood Decoding (for N=16)
+        best_dist = self.native_n + 1
+        best_data = 0
         
-        Args:
-            codeword: The codeword to decode
+        # Iterate all possible info words (0..255)
+        for cand_data in range(1 << self.native_k):
+            # Encode candidate
+            cand_cw = self._encode_block(cand_data)
             
-        Returns:
-            Tuple of (decoded_data, error_type)
-        """
-        # For all data sizes, use a simpler approach
-        # Extract original data from simple redundancy
-        decoded_data = (codeword >> 8) & 0xFFFFFFFF
-        return decoded_data, 'corrected' 
+            # Hamming distance
+            diff = cand_cw ^ codeword
+            dist = bin(diff).count('1')
+            
+            if dist < best_dist:
+                best_dist = dist
+                best_data = cand_data
+                if dist == 0:
+                    break 
+        
+        status = 'corrected' if best_dist > 0 else 'corrected'
+        return best_data, status
+    
+    def decode(self, codeword: int) -> Tuple[int, str]:
+        data = 0
+        overall_status = 'corrected'
+        
+        for i in range(self.num_blocks):
+            cw_chunk = (codeword >> (i * 16)) & 0xFFFF
+            d_chunk, status = self._decode_block(cw_chunk)
+            data |= (d_chunk << (i * 8))
+            if status == 'detected':
+                overall_status = 'detected'
+                
+        return data, overall_status
+
+    def inject_error(self, codeword: int, bit_idx: int) -> int:
+        return codeword ^ (1 << bit_idx)
