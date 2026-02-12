@@ -562,7 +562,7 @@ class HardwareVerifier:
         # Add value labels on bars
         for bar, cell_count in zip(bars, cells):
             ax.text(bar.get_x() + bar.get_width() / 2., bar.get_height(),
-                    f'{cell_count}', ha='center', va='bottom', fontsize=8, fontweight='bold')
+                    f'{cell_count}', ha='center', va='bottom', fontsize=11, fontweight='bold')
         
         plt.tight_layout()
         
