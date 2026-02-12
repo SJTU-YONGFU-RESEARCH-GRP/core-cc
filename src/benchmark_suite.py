@@ -1557,7 +1557,14 @@ def create_default_config() -> BenchmarkConfig:
             FireCodeECC,
             SpatiallyCoupledLDPCECC,
             NonBinaryLDPCECC,
-            RaptorCodeECC
+            RaptorCodeECC,
+            AdaptiveECC,
+            BurstErrorECC,
+            CompositeECC,
+            CyclicECC,
+            PrimarySecondaryECC,
+            SystemECC,
+            ThreeDMemoryECC
         ],
         word_lengths=[4, 8, 16, 32],
         error_patterns=["single", "double", "burst", "random"],

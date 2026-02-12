@@ -1,12 +1,12 @@
 {
-  "timestamp": 1765952020.6534212,
+  "timestamp": 1769011984.4414732,
   "total_ecc_types": 26,
   "passed_ecc_types": 26,
   "failed_ecc_types": 0,
   "verilator_available": true,
   "yosys_available": true,
-  "execution_time": 136.26650142669678,
-  "average_runtime_per_module": 0.003664713639479417,
+  "execution_time": 4.933988809585571,
+  "average_runtime_per_module": 0.005170061038090632,
   "overall_status": "PASS",
   "ecc_results": {
     "parity_ecc": {
@@ -21,7 +21,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0042874813079833984
+          "execution_time": 0.00831747055053711
         }
       ]
     },
@@ -37,7 +37,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004769086837768555
+          "execution_time": 0.008651971817016602
         }
       ]
     },
@@ -53,7 +53,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004374980926513672
+          "execution_time": 0.0053501129150390625
         }
       ]
     },
@@ -69,7 +69,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0044193267822265625
+          "execution_time": 0.005728006362915039
         }
       ]
     },
@@ -85,7 +85,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004811763763427734
+          "execution_time": 0.00506901741027832
         }
       ]
     },
@@ -101,7 +101,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.00431060791015625
+          "execution_time": 0.0054931640625
         }
       ]
     },
@@ -117,7 +117,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004378318786621094
+          "execution_time": 0.007574796676635742
         }
       ]
     },
@@ -133,7 +133,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004244327545166016
+          "execution_time": 0.005994319915771484
         }
       ]
     },
@@ -149,7 +149,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0017085075378417969
+          "execution_time": 0.0025103092193603516
         }
       ]
     },
@@ -165,7 +165,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.00167083740234375
+          "execution_time": 0.0037949085235595703
         }
       ]
     },
@@ -181,7 +181,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0016350746154785156
+          "execution_time": 0.0033597946166992188
         }
       ]
     },
@@ -197,7 +197,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0016553401947021484
+          "execution_time": 0.003468751907348633
         }
       ]
     },
@@ -213,7 +213,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0017845630645751953
+          "execution_time": 0.002444028854370117
         }
       ]
     },
@@ -229,7 +229,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0017764568328857422
+          "execution_time": 0.0032546520233154297
         }
       ]
     },
@@ -245,7 +245,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0044591426849365234
+          "execution_time": 0.0060024261474609375
         }
       ]
     },
@@ -261,7 +261,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004601478576660156
+          "execution_time": 0.005536317825317383
         }
       ]
     },
@@ -277,7 +277,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004532575607299805
+          "execution_time": 0.004984855651855469
         }
       ]
     },
@@ -293,7 +293,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004682064056396484
+          "execution_time": 0.0059320926666259766
         }
       ]
     },
@@ -309,7 +309,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.012614965438842773
+          "execution_time": 0.013260126113891602
         }
       ]
     },
@@ -325,7 +325,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.004539012908935547
+          "execution_time": 0.005343914031982422
         }
       ]
     },
@@ -341,7 +341,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0056400299072265625
+          "execution_time": 0.006400346755981445
         }
       ]
     },
@@ -357,7 +357,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0016283988952636719
+          "execution_time": 0.005583524703979492
         }
       ]
     },
@@ -373,7 +373,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0017201900482177734
+          "execution_time": 0.0023202896118164062
         }
       ]
     },
@@ -389,7 +389,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0016446113586425781
+          "execution_time": 0.002521038055419922
         }
       ]
     },
@@ -405,7 +405,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0017507076263427734
+          "execution_time": 0.0029726028442382812
         }
       ]
     },
@@ -421,7 +421,7 @@
           "expected": "PASS",
           "actual": "PASS",
           "error_message": null,
-          "execution_time": 0.0016427040100097656
+          "execution_time": 0.0025527477264404297
         }
       ]
     }

@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 venv/
+.venv/
 .env
 
 # C/C++
@@ -32,3 +33,5 @@ results/*
 *.log
 !results/run.log
 reports/
+
+

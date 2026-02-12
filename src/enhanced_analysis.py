@@ -644,42 +644,63 @@ class ECCAnalyzer:
         
         plt.close()
 
-        # 4. Efficiency vs Latency Trade-off (Scatter Plot)
-        plt.figure(figsize=(14, 10))
+        # 4. Efficiency vs Latency Trade-off (Sorted Bubble Chart)
+        plt.figure(figsize=(18, 10))
         
         summary = self.generate_metrics_summary()
-        code_rates = [summary[ecc]['avg_code_rate'] for ecc in summary]
-        total_times = [summary[ecc]['avg_total_time_ms'] for ecc in summary] # Already in ms
-        overhead_ratios = [summary[ecc]['avg_overhead_ratio'] for ecc in summary]
         ecc_names = list(summary.keys())
+        code_rates = np.array([summary[ecc]['avg_code_rate'] for ecc in ecc_names])
+        total_times = np.array([summary[ecc]['avg_total_time_ms'] for ecc in ecc_names])  # Already in ms
+        overhead_ratios = np.array([summary[ecc]['avg_overhead_ratio'] for ecc in ecc_names])
+        
+        # Sort by latency (ascending)
+        sort_idx = np.argsort(total_times)
+        ecc_names = [ecc_names[i] for i in sort_idx]
+        code_rates = code_rates[sort_idx]
+        total_times = total_times[sort_idx]
+        overhead_ratios = overhead_ratios[sort_idx]
         
         # Normalize overhead for marker size (min size 100, max size 1000)
-        # Avoid negative overheads (shouldn't exist now)
         overhead_sizes = [max(100, min(1000, (o + 0.1) * 300)) for o in overhead_ratios]
         
-        # Create scatter plot
-        scatter = plt.scatter(code_rates, total_times, s=overhead_sizes, c=range(len(ecc_names)), 
-                             cmap='tab20', alpha=0.8, edgecolor='black', linewidth=1.5)
+        x_positions = np.arange(len(ecc_names))
+        scatter = plt.scatter(
+            x_positions,
+            total_times,
+            s=overhead_sizes,
+            c=code_rates,
+            cmap='viridis',
+            alpha=0.85,
+            edgecolor='black',
+            linewidth=1.2
+        )
         
-        plt.title('Efficiency vs Latency Trade-off', fontsize=18, fontweight='bold', fontfamily='serif', pad=20)
-        plt.xlabel('Code Rate (Higher is Better)', fontsize=14, fontweight='bold', fontfamily='serif')
+        plt.title('Efficiency vs Latency Trade-off (Sorted by Latency)', fontsize=18, fontweight='bold', fontfamily='serif', pad=20)
+        plt.xlabel('ECC Type (Sorted by Latency)', fontsize=14, fontweight='bold', fontfamily='serif')
         plt.ylabel('Total Latency (ms) [Log Scale]', fontsize=14, fontweight='bold', fontfamily='serif')
         
-        # Use log scale for Y axis as times vary significantly
         plt.yscale('log')
         plt.grid(True, which="both", ls="--", alpha=0.3)
         
-        # Add labels
-        texts = []
-        for i, ecc in enumerate(ecc_names):
-            texts.append(plt.text(code_rates[i], total_times[i], ecc, 
-                                 fontsize=9, fontweight='bold', fontfamily='serif'))
+        plt.xticks(x_positions, ecc_names, rotation=60, ha='right', fontsize=9, fontweight='bold', fontfamily='serif')
+        for label in plt.gca().get_yticklabels():
+            label.set_fontweight('bold')
+            label.set_fontfamily('serif')
+        
+        cbar = plt.colorbar(scatter)
+        cbar.set_label('Code Rate (Higher is Better)', fontsize=12, fontweight='bold', fontfamily='serif')
+        cbar.ax.tick_params(labelsize=10)
+        for label in cbar.ax.get_yticklabels():
+            label.set_fontweight('bold')
+            label.set_family('serif')
         
         plt.tight_layout()
         
         # Save as PNG
         chart_path_png = output_path / "ecc_efficiency_latency_tradeoff.png"
+        chart_path_pdf = output_path / "ecc_efficiency_latency_tradeoff.pdf"
         plt.savefig(chart_path_png, dpi=300, bbox_inches='tight')
+        plt.savefig(chart_path_pdf, bbox_inches='tight')
         charts['efficiency_latency_tradeoff'] = str(chart_path_png)
         
         plt.close()
@@ -701,9 +722,9 @@ class ECCAnalyzer:
         # Sort by success rate
         summary_df = summary_df.sort_values('avg_success_rate', ascending=False)
         
-        rects1 = ax.bar(x - width, summary_df['avg_success_rate'], width, label='Success Rate', color='#4c72b0', edgecolor='black', alpha=0.9)
-        rects2 = ax.bar(x, summary_df['avg_correction_rate'], width, label='Correction Rate', color='#55a868', edgecolor='black', alpha=0.9)
-        rects3 = ax.bar(x + width, summary_df['avg_detection_rate'], width, label='Detection Rate', color='#c44e52', edgecolor='black', alpha=0.9)
+        rects1 = ax.bar(x - width, summary_df['avg_success_rate'], width, label='Success Rate', color='#0000FF', edgecolor='black', alpha=0.9)
+        rects2 = ax.bar(x, summary_df['avg_correction_rate'], width, label='Correction Rate', color='#008000', edgecolor='black', alpha=0.9)
+        rects3 = ax.bar(x + width, summary_df['avg_detection_rate'], width, label='Detection Rate', color='#FF0000', edgecolor='black', alpha=0.9)
         
         ax.set_ylabel('Rate (%)', fontsize=14, fontweight='bold', fontfamily='serif')
         ax.set_title('Detailed Performance Comparison by ECC Type', fontsize=18, fontweight='bold', fontfamily='serif', pad=20)

@@ -511,14 +511,10 @@ class HardwareVerifier:
         modules = list(synthesis_data.keys())
         cells = list(synthesis_data.values())
         
-        # Calculate power estimates (rough estimate: 0.1mW per cell)
-        power = [c * 0.1 for c in cells]
-        
         # Sort by cell count
         sorted_indices = np.argsort(cells)
         modules = [modules[i] for i in sorted_indices]
         cells = [cells[i] for i in sorted_indices]
-        power = [power[i] for i in sorted_indices]
         
         # Set style for scientific publication
         plt.rcParams.update({
@@ -545,35 +541,28 @@ class HardwareVerifier:
             'savefig.bbox': 'tight'
         })
         
-        # Create dual-axis chart
-        fig, ax1 = plt.subplots(figsize=(14, 8))
+        # Create single-axis bar chart
+        fig, ax = plt.subplots(figsize=(14, 8))
         
         x = np.arange(len(modules))
-        width = 0.35
+        width = 0.6
         
         # Plot Area (Cells)
-        rects1 = ax1.bar(x - width/2, cells, width, label='Area (Cells)', color='#c44e52', alpha=0.9, edgecolor='black')
-        ax1.set_ylabel('Area (Cells)', color='#c44e52', fontsize=12, fontweight='bold', fontfamily='serif')
-        ax1.tick_params(axis='y', labelcolor='#c44e52', labelsize=10)
-        for label in ax1.get_yticklabels():
+        bars = ax.bar(x, cells, width, label='Area (Cells)', color='#0000FF', alpha=0.9, edgecolor='black')
+        ax.set_ylabel('Area (Cells)', fontsize=12, fontweight='bold', fontfamily='serif')
+        ax.set_xlabel('Module', fontsize=12, fontweight='bold', fontfamily='serif')
+        ax.tick_params(axis='y', labelsize=10)
+        for label in ax.get_yticklabels():
             label.set_fontweight('bold')
-        ax1.set_xticks(x)
-        ax1.set_xticklabels(modules, rotation=45, ha='right', fontsize=10, fontweight='bold', fontfamily='serif')
-        ax1.set_title('Hardware Cost Comparison: Area and Power', fontsize=16, fontweight='bold', fontfamily='serif', pad=20)
-        ax1.grid(True, axis='y', alpha=0.3, linestyle='--', color='gray')
+        ax.set_xticks(x)
+        ax.set_xticklabels(modules, rotation=45, ha='right', fontsize=10, fontweight='bold', fontfamily='serif')
+        ax.set_title('Hardware Cost Comparison: Area (Cells)', fontsize=16, fontweight='bold', fontfamily='serif', pad=20)
+        ax.grid(True, axis='y', alpha=0.3, linestyle='--', color='gray')
         
-        # Plot Power (mW) on secondary axis
-        ax2 = ax1.twinx()
-        rects2 = ax2.bar(x + width/2, power, width, label='Power Est. (mW)', color='#dd8452', alpha=0.9, edgecolor='black')
-        ax2.set_ylabel('Power Estimate (mW)', color='#dd8452', fontsize=12, fontweight='bold', fontfamily='serif')
-        ax2.tick_params(axis='y', labelcolor='#dd8452', labelsize=10)
-        for label in ax2.get_yticklabels():
-            label.set_fontweight('bold')
-        
-        # Add legend
-        lines1, labels1 = ax1.get_legend_handles_labels()
-        lines2, labels2 = ax2.get_legend_handles_labels()
-        ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper left', frameon=True, fancybox=False, edgecolor='black')
+        # Add value labels on bars
+        for bar, cell_count in zip(bars, cells):
+            ax.text(bar.get_x() + bar.get_width() / 2., bar.get_height(),
+                    f'{cell_count}', ha='center', va='bottom', fontsize=8, fontweight='bold')
         
         plt.tight_layout()
         

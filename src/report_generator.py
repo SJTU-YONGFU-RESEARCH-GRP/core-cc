@@ -201,20 +201,19 @@ class ECCReportGenerator:
         # Add hardware cost chart if available
         chart_path = self.results_dir / "ecc_hardware_cost.png"
         if chart_path.exists():
-            table += f"![ECC Hardware Cost Comparison](ecc_hardware_cost.png)\n\n*Comparison of area (cell count) and estimated power consumption.*\n\n"
+            table += f"![ECC Hardware Cost Comparison](ecc_hardware_cost.png)\n\n*Relative hardware cost comparison of ECC modules (in Yosys internal cells).*\n\n"
             
-        table += "| Module | Area (Cells) | Relative Cost | Power Estimate |\n"
-        table += "|--------|--------------|---------------|----------------|\n"
+        table += "| Module | Area (Cells) | Relative Cost |\n"
+        table += "|--------|--------------|---------------|\n"
         
         if synthesis_data:
             min_cost = min(synthesis_data.values())
             
             for module, cells in synthesis_data.items():
                 relative_cost = (cells / min_cost) if min_cost > 0 else 1
-                power_estimate = cells * 0.1  # Rough power estimate based on cell count
-                table += f"| {module} | {cells} | {relative_cost:.1f}x | {power_estimate:.1f}mW |\n"
+                table += f"| {module} | {cells} | {relative_cost:.1f}x |\n"
         else:
-            table += "| No synthesis data available | - | - | - |\n"
+            table += "| No synthesis data available | - | - |\n"
         
         return table
     

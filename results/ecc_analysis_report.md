@@ -1,8 +1,8 @@
 # ECC (Error Correction Code) Analysis Report
 
-**Generated:** 2025-12-17 14:45:55  
+**Generated:** 2026-02-12 20:33:23  
 **Framework Version:** 3.0  
-**Analysis Scope:** Comprehensive analysis of 19 ECC types: SpatiallyCoupledLDPCECC, BCHECC, HammingSECDEDECC, NonBinaryLDPCECC, CRCECC, FireCodeECC, ReedSolomonECC, TurboECC, ParityECC, ConcatenatedECC, ConvolutionalECC, ReedMullerECC, ProductCodeECC, RepetitionECC, RaptorCodeECC, GolayECC, PolarECC, ExtendedHammingECC, LDPCECC
+**Analysis Scope:** Comprehensive analysis of 26 ECC types: AdaptiveECC, SpatiallyCoupledLDPCECC, BCHECC, ThreeDMemoryECC, HammingSECDEDECC, NonBinaryLDPCECC, CRCECC, FireCodeECC, ReedSolomonECC, TurboECC, ParityECC, ConcatenatedECC, ConvolutionalECC, CyclicECC, BurstErrorECC, ReedMullerECC, SystemECC, ProductCodeECC, RepetitionECC, RaptorCodeECC, GolayECC, PolarECC, ExtendedHammingECC, PrimarySecondaryECC, CompositeECC, LDPCECC
 
 ## Executive Summary
 
@@ -36,8 +36,10 @@ This report provides a comprehensive analysis of different Error Correction Code
 
 | ECC Type | Success Rate (%) | Correction Rate (%) | Detection Rate (%) | Code Rate | Overhead Ratio | Encode Time (ms) | Decode Time (ms) |
 |----------|------------------|-------------------|-------------------|-----------|----------------|------------------|------------------|
+| AdaptiveECC | 0.7 | 0.7 | 0.0 | 0.616 | 1.879 | 0.141238 | 0.035248 |
 | SpatiallyCoupledLDPCECC | 0.7 | 0.4 | 0.3 | 0.660 | 0.672 | 0.015299 | 0.147850 |
 | BCHECC | 0.3 | 0.3 | 0.0 | 0.534 | 0.875 | 0.000156 | 0.000219 |
+| ThreeDMemoryECC | 0.9 | 0.5 | 0.4 | 0.591 | 0.953 | 0.013334 | 0.332995 |
 | HammingSECDEDECC | 0.6 | 0.5 | 0.0 | 0.815 | 0.268 | 0.016300 | 0.016705 |
 | NonBinaryLDPCECC | 0.8 | 0.4 | 0.5 | 0.573 | 0.836 | 0.033664 | 1.290733 |
 | CRCECC | 0.7 | 0.2 | 0.5 | 0.802 | 0.332 | 0.015974 | 0.015623 |
@@ -47,13 +49,18 @@ This report provides a comprehensive analysis of different Error Correction Code
 | ParityECC | 0.8 | 0.2 | 0.5 | 0.957 | 0.051 | 0.002389 | 0.002368 |
 | ConcatenatedECC | 0.9 | 0.7 | 0.2 | 0.370 | 1.941 | 0.028896 | 0.031183 |
 | ConvolutionalECC | 0.7 | 0.7 | 0.0 | 0.412 | 1.469 | 0.018643 | 0.255017 |
+| CyclicECC | 0.6 | 0.6 | 0.0 | 0.565 | 0.820 | 0.010591 | 0.000414 |
+| BurstErrorECC | 0.9 | 0.3 | 0.7 | 0.574 | 0.832 | 0.033178 | 1.697502 |
 | ReedMullerECC | 0.7 | 0.4 | 0.3 | 0.595 | 0.807 | 0.037095 | 0.999630 |
+| SystemECC | 0.8 | 0.2 | 0.6 | 0.740 | 0.398 | 0.016489 | 0.007876 |
 | ProductCodeECC | 0.9 | 0.5 | 0.4 | 0.335 | 2.482 | 0.018122 | 0.020654 |
 | RepetitionECC | 0.7 | 0.7 | 0.0 | 0.357 | 1.883 | 0.009461 | 0.010565 |
 | RaptorCodeECC | 0.4 | 0.4 | 0.0 | 0.596 | 0.803 | 0.014479 | 0.004711 |
 | GolayECC | 0.5 | 0.5 | 0.0 | 0.644 | 1.043 | 0.001787 | 0.001889 |
 | PolarECC | 0.4 | 0.4 | 0.0 | 0.723 | 0.680 | 0.014355 | 2.960308 |
 | ExtendedHammingECC | 0.8 | 0.5 | 0.2 | 0.704 | 0.469 | 0.015610 | 0.016437 |
+| PrimarySecondaryECC | 0.7 | 0.4 | 0.3 | 0.578 | 0.820 | 0.035498 | 0.958133 |
+| CompositeECC | 0.5 | 0.5 | 0.0 | 0.608 | 0.803 | 0.000228 | 0.000247 |
 | LDPCECC | 0.6 | 0.2 | 0.4 | 0.719 | 0.938 | 0.013971 | 0.219938 |
 
 
@@ -61,42 +68,42 @@ This report provides a comprehensive analysis of different Error Correction Code
 
 ![ECC Hardware Cost Comparison](ecc_hardware_cost.png)
 
-*Comparison of area (cell count) and estimated power consumption.*
+*Relative hardware cost comparison of ECC modules (in Yosys internal cells).*
 
-| Module | Area (Cells) | Relative Cost | Power Estimate |
-|--------|--------------|---------------|----------------|
-| parity_ecc | 27 | 1.8x | 2.7mW |
-| hamming_secded_ecc | 114 | 7.6x | 11.4mW |
-| extended_hamming_ecc | 116 | 7.7x | 11.6mW |
-| cyclic_ecc | 24 | 1.6x | 2.4mW |
-| system_ecc | 51 | 3.4x | 5.1mW |
-| reed_muller_ecc | 318 | 21.2x | 31.8mW |
-| fire_code_ecc | 65 | 4.3x | 6.5mW |
-| product_code_ecc | 60 | 4.0x | 6.0mW |
-| concatenated_ecc | 133 | 8.9x | 13.3mW |
-| composite_ecc | 33 | 2.2x | 3.3mW |
-| turbo_ecc | 37 | 2.5x | 3.7mW |
-| spatially_coupled_ldpc_ecc | 348 | 23.2x | 34.8mW |
-| non_binary_ldpc_ecc | 314 | 20.9x | 31.4mW |
-| raptor_code_ecc | 25 | 1.7x | 2.5mW |
-| bch_ecc | 15 | 1.0x | 1.5mW |
-| reed_solomon_ecc | 17 | 1.1x | 1.7mW |
-| repetition_ecc | 184 | 12.3x | 18.4mW |
-| crc_ecc | 205 | 13.7x | 20.5mW |
-| golay_ecc | 390 | 26.0x | 39.0mW |
-| ldpc_ecc | 598 | 39.9x | 59.8mW |
-| polar_ecc | 261 | 17.4x | 26.1mW |
-| adaptive_ecc | 77 | 5.1x | 7.7mW |
-| burst_error_ecc | 46 | 3.1x | 4.6mW |
-| three_d_memory_ecc | 72 | 4.8x | 7.2mW |
-| primary_secondary_ecc | 47 | 3.1x | 4.7mW |
-| convolutional_ecc | 31 | 2.1x | 3.1mW |
+| Module | Area (Cells) | Relative Cost |
+|--------|--------------|---------------|
+| parity_ecc | 27 | 1.8x |
+| hamming_secded_ecc | 114 | 7.6x |
+| extended_hamming_ecc | 116 | 7.7x |
+| cyclic_ecc | 24 | 1.6x |
+| system_ecc | 51 | 3.4x |
+| reed_muller_ecc | 318 | 21.2x |
+| fire_code_ecc | 65 | 4.3x |
+| product_code_ecc | 60 | 4.0x |
+| concatenated_ecc | 133 | 8.9x |
+| composite_ecc | 33 | 2.2x |
+| turbo_ecc | 37 | 2.5x |
+| spatially_coupled_ldpc_ecc | 348 | 23.2x |
+| non_binary_ldpc_ecc | 314 | 20.9x |
+| raptor_code_ecc | 25 | 1.7x |
+| bch_ecc | 15 | 1.0x |
+| reed_solomon_ecc | 17 | 1.1x |
+| repetition_ecc | 184 | 12.3x |
+| crc_ecc | 205 | 13.7x |
+| golay_ecc | 390 | 26.0x |
+| ldpc_ecc | 598 | 39.9x |
+| polar_ecc | 261 | 17.4x |
+| adaptive_ecc | 77 | 5.1x |
+| burst_error_ecc | 46 | 3.1x |
+| three_d_memory_ecc | 72 | 4.8x |
+| primary_secondary_ecc | 47 | 3.1x |
+| convolutional_ecc | 31 | 2.1x |
 
 
 ## Hardware Verification Results
 
-**Total Verification Time:** 136.27s
-**Average Runtime per Module:** 0.0037s
+**Total Verification Time:** 4.93s
+**Average Runtime per Module:** 0.0052s
 
 ### Testbench Summary
 
@@ -197,7 +204,7 @@ This report provides a comprehensive analysis of different Error Correction Code
 **High Reliability Systems:** ReedSolomonECC
 **High Efficiency Applications:** FireCodeECC
 **High Speed Applications:** FireCodeECC
-**Single Bit Error Correction:** ConcatenatedECC
+**Single Bit Error Correction:** AdaptiveECC
 **Double Bit Error Correction:** ExtendedHammingECC
 **Burst Error Handling:** NonBinaryLDPCECC
 **Random Error Conditions:** ReedSolomonECC
@@ -208,7 +215,7 @@ This report provides a comprehensive analysis of different Error Correction Code
 2. **For High Reliability:** ReedSolomonECC provides the highest success rate across all scenarios.
 3. **For High Efficiency:** FireCodeECC offers the best code rate (data efficiency).
 4. **For High Speed:** FireCodeECC has the fastest encoding/decoding times.
-5. **For Single Bit Errors:** ConcatenatedECC provides the best correction rate for single bit errors.
+5. **For Single Bit Errors:** AdaptiveECC provides the best correction rate for single bit errors.
 6. **For Double Bit Errors:** ExtendedHammingECC handles double bit errors most effectively.
 7. **For Burst Errors:** NonBinaryLDPCECC handles burst errors most effectively.
 8. **For Random Errors:** ReedSolomonECC performs best under random error conditions.
