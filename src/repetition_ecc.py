@@ -57,6 +57,10 @@ class RepetitionECC(ECCBase):
         self.repetition_factor = repetition_factor
         self.repetition = RepetitionCode(n=repetition_factor)
         self.data_length = data_length
+        
+        if self.data_length is not None:
+             self.n = self.data_length * self.repetition_factor
+             self.k = self.data_length
     
     def encode(self, data: int) -> int:
         """

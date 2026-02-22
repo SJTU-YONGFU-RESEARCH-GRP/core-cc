@@ -3,141 +3,103 @@
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
+#include <time.h>
 
-// Configuration for 8-bit data (matches Python)
-#define K 8   // Data bits
-#define N 16  // Total codeword bits (rate 1/2)
-#define CONSTRAINT_LENGTH 2  // Constraint length (matches Python)
+// Verilator generated header
+#include "Vconvolutional_ecc.h"
+#include "verilated.h"
+#include "ecc_test_utils.h"
 
-// Generator polynomials (matches Python)
-#define G1 0x03  // Generator 1: 3 (octal) = 0b11
-#define G2 0x02  // Generator 2: 2 (octal) = 0b10
+#ifndef DATA_WIDTH
+#define DATA_WIDTH 8
+#endif
 
-// Function to calculate parity (matches Python _parity)
-uint8_t calculate_parity(uint8_t x) {
-    uint8_t parity = 0;
-    for (int i = 0; i < 8; i++) {
-        parity ^= (x >> i) & 1;
-    }
-    return parity;
-}
+// Port Access Logic
 
-// Function to encode convolutional code (matches Python encode)
-uint16_t encode_convolutional(uint8_t data) {
-    uint16_t codeword = 0;
-    uint8_t state = 0;
+// Convolutional (DATA+2)*2
+#if DATA_WIDTH > 64
+    #define SET_DATA_IN(dut, val) SET_WIDE_PORT(dut, data_in, val, DATA_WIDTH)
+    #define GET_DATA_OUT(dut, val) GET_WIDE_PORT(dut, data_out, val, DATA_WIDTH)
+#else
+    #define SET_DATA_IN(dut, val) (dut)->data_in = to_u64(val)
+    #define GET_DATA_OUT(dut, val) (val) = from_u64((dut)->data_out)
+#endif
+
+#if ((DATA_WIDTH + 2) * 2) > 64
+    #define SET_CODEWORD_IN(dut, val) \
+        do { \
+            int nwords = sizeof((dut)->codeword_in) / sizeof(uint32_t); \
+            for(int w=0; w<nwords && w<MAX_WORDS; w++) (dut)->codeword_in[w] = (val).words[w]; \
+        } while(0)
+    #define GET_CODEWORD_OUT(dut, val) \
+         do { \
+            (val).clear(); \
+            int nwords = sizeof((dut)->codeword_out) / sizeof(uint32_t); \
+            for(int w=0; w<nwords && w<MAX_WORDS; w++) (val).words[w] = (dut)->codeword_out[w]; \
+        } while(0)
+#else
+    #define SET_CODEWORD_IN(dut, val) (dut)->codeword_in = to_u64(val)
+    #define GET_CODEWORD_OUT(dut, val) (val) = from_u64((dut)->codeword_out)
+#endif
+
+
+void test_convolutional_ecc() {
+    Vconvolutional_ecc* dut = new Vconvolutional_ecc();
     
-    // Encode each data bit (matches Python algorithm)
-    for (int i = 0; i < K; i++) {
-        uint8_t data_bit = (data >> i) & 1;
+    printf("=== convolutional_ecc Test (DATA_WIDTH=%d) ===\n", DATA_WIDTH);
+    
+    const int NUM_TESTS = 20;
+    srand(12345);
+    int pass_count = 0;
+    int fail_count = 0;
+    
+    for (int i = 0; i < NUM_TESTS; i++) {
+        BitArray test_data;
+        for(int w=0; w<MAX_WORDS; w++) test_data.words[w] = rand() | (rand()<<16);
+        for(int b=DATA_WIDTH; b<MAX_WORDS*32; b++) test_data.set_bit(b, 0);
         
-        // Update state
-        state = ((state << 1) | data_bit) & ((1 << CONSTRAINT_LENGTH) - 1);
-        
-        // Calculate output bits (rate 1/2) - matches Python g1=5, g2=7
-        uint8_t output1 = calculate_parity(state & 5);    // g1 = 5 (101 in binary)
-        uint8_t output2 = calculate_parity(state & 7);    // g2 = 7 (111 in binary)
-        
-        codeword |= output1 << (2*i);
-        codeword |= output2 << (2*i + 1);
-    }
-    
-    return codeword;
-}
-
-// Function to extract systematic bits (simplified decoding for hardware)
-uint8_t extract_systematic(uint16_t codeword) {
-    uint8_t data = 0;
-    
-    // Simplified extraction: take every other bit as systematic
-    // This is a simplified approach for hardware implementation
-    for (int i = 0; i < K; i++) {
-        data |= ((codeword >> (2*i)) & 1) << i;
-    }
-    
-    return data;
-}
-
-// Function to encode Convolutional ECC (matches Python algorithm)
-uint16_t encode_convolutional_ecc(uint8_t data) {
-    return encode_convolutional(data);
-}
-
-// Function to decode Convolutional ECC (simplified for hardware)
-uint8_t decode_convolutional_ecc(uint16_t codeword) {
-    // Simplified decoding: extract systematic bits
-    return extract_systematic(codeword);
-}
-
-// Function to inject error
-uint16_t inject_error(uint16_t codeword, int bit_idx) {
-    return codeword ^ (1 << bit_idx);
-}
-
-// Test function
-int test_convolutional_ecc() {
-    printf("Testing Convolutional ECC...\n");
-    
-    int passed = 0;
-    int total = 0;
-    
-    // Test basic encoding/decoding
-    for (int test_data = 0; test_data < 256; test_data++) {
-        total++;
+        // Reset
+        dut->rst_n = 0; dut->eval();
+        dut->rst_n = 1; dut->eval();
         
         // Encode
-        uint16_t encoded = encode_convolutional_ecc(test_data);
+        dut->encode_en = 1; dut->decode_en = 0;
+        SET_DATA_IN(dut, test_data);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        // Decode without errors
-        uint8_t decoded = decode_convolutional_ecc(encoded);
+        BitArray encoded_cw;
+        GET_CODEWORD_OUT(dut, encoded_cw);
         
-        if (decoded == test_data) {
-            passed++;
+        // Feed back
+        dut->encode_en = 0; dut->decode_en = 1;
+        SET_CODEWORD_IN(dut, encoded_cw);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
+        
+        BitArray decoded_data;
+        GET_DATA_OUT(dut, decoded_data);
+        
+        // Verify Loopback
+        // Mocks usually copy data[DATA_WIDTH-1:0] out. 
+        // If data matches, valid.
+        
+        if (decoded_data == test_data) {
+            pass_count++;
         } else {
-            printf("FAIL: Data %d -> Encoded %04X -> Decoded %d\n", test_data, encoded, decoded);
+            // printf("FAIL Test %d\n", i);
+            fail_count++;
         }
     }
     
-    // Test rate 1/2 encoding
-    for (int test_data = 0; test_data < 256; test_data += 16) {
-        total++;
-        
-        uint16_t encoded = encode_convolutional_ecc(test_data);
-        
-        // Check that codeword length is correct (rate 1/2)
-        if ((encoded & 0xFFFF) == encoded) {
-            passed++; // Codeword fits in 16 bits
-        } else {
-            printf("FAIL: Codeword too large for data %d\n", test_data);
-        }
-    }
+    printf("Passed: %d, Failed: %d\n", pass_count, fail_count);
+    if (fail_count == 0) printf("RESULT: PASS\n");
+    else printf("RESULT: FAIL\n");
     
-    // Test convolutional coding properties
-    for (int test_data = 0; test_data < 256; test_data += 32) {
-        total++;
-        
-        uint16_t encoded = encode_convolutional_ecc(test_data);
-        
-        // Check if output bits are generated (allow all-zero for zero input)
-        if (encoded == 0 && test_data != 0) {
-            printf("FAIL: No output bits for data %d\n", test_data);
-        } else {
-            passed++;
-        }
-    }
-    
-    printf("Convolutional ECC: %d/%d tests passed\n", passed, total);
-    return passed == total;
+    delete dut;
 }
 
 int main() {
-    if (test_convolutional_ecc()) {
-        printf("✅ All Convolutional ECC tests passed!\n");
-        printf("RESULT: PASS\n");
-        return 0;
-    } else {
-        printf("❌ Some Convolutional ECC tests failed!\n");
-        printf("RESULT: FAIL\n");
-        return 1;
-    }
-} 
+    test_convolutional_ecc();
+    return 0;
+}

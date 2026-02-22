@@ -31,9 +31,15 @@ class SpatiallyCoupledLDPCECC(ECCBase):
         elif self.word_length <= 16:
             self.k = 16
             self.n = 32
-        else:
+        elif self.word_length <= 32:
             self.k = 32
             self.n = 64
+        elif self.word_length <= 64:
+            self.k = 64
+            self.n = 128
+        else:
+            self.k = 128
+            self.n = 256
         
         # Generate deterministic matrices
         self.G = self._generate_generator_matrix()

@@ -1,98 +1,54 @@
 /* verilator lint_off WIDTHTRUNC */
 /* verilator lint_off WIDTHEXPAND */
-
 module composite_ecc #(
-    parameter DATA_WIDTH = 8,
-    parameter CODEWORD_WIDTH = 16  // 8-bit data + 8-bit redundancy
+    parameter DATA_WIDTH = 8
 ) (
     input  wire                    clk,
     input  wire                    rst_n,
     input  wire                    encode_en,
     input  wire                    decode_en,
-    input  wire [DATA_WIDTH-1:0]  data_in,
-    input  wire [CODEWORD_WIDTH-1:0] codeword_in,
-    output reg  [CODEWORD_WIDTH-1:0] codeword_out,
-    output reg  [DATA_WIDTH-1:0]  data_out,
+    input  wire [DATA_WIDTH-1:0]   data_in,
+    input  wire [DATA_WIDTH+8-1:0] codeword_in,
+    output reg  [DATA_WIDTH+8-1:0] codeword_out,
+    output reg  [DATA_WIDTH-1:0]   data_out,
     output reg                     error_detected,
     output reg                     error_corrected,
     output reg                     valid_out
 );
 
-    // Internal signals
-    reg [CODEWORD_WIDTH-1:0] encoded_codeword;
-    reg [DATA_WIDTH-1:0] extracted_data;
-    reg no_error, single_error;
+    wire [7:0] redundancy;
     
-    // Encode Composite ECC (simplified redundancy)
-    always @(*) begin
-        if (DATA_WIDTH <= 8) begin
-            // Simple redundancy: data shifted left by 8 bits + original data
-            // This matches the Python implementation: (data << 8) | (data & 0xFF)
-            encoded_codeword = (data_in << 8) | (data_in & 8'hFF);
+    generate
+        if (DATA_WIDTH >= 8) begin
+            assign redundancy = data_in[7:0];
         end else begin
-            encoded_codeword = 0;
+            // Use safe constant to avoid negative replication count in syntax check
+            localparam PAD_LEN = (8 > DATA_WIDTH) ? (8 - DATA_WIDTH) : 1;
+            assign redundancy = {{PAD_LEN{1'b0}}, data_in};
         end
-    end
-    
-    // Decode Composite ECC (simplified redundancy)
-    always @(*) begin
-        if (DATA_WIDTH <= 8) begin
-            // Extract original data from MSB
-            // This matches the Python implementation: (codeword >> 8) & 0xFFFFFFFF
-            extracted_data = (codeword_in >> 8) & 8'hFF;
-            
-            // Check for errors by comparing MSB and LSB
-            // Note: Variables declared outside always block to avoid syntax error
-            if (((codeword_in >> 8) & 8'hFF) == (codeword_in & 8'hFF)) begin
-                no_error = 1;
-                single_error = 0;
-            end else begin
-                no_error = 0;
-                single_error = 1;  // Error detected and corrected (use MSB)
-            end
-        end else begin
-            extracted_data = 0;
-            no_error = 0;
-            single_error = 0;
-        end
-    end
+    endgenerate
 
-    // Encoder logic
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            codeword_out <= {CODEWORD_WIDTH{1'b0}};
+            codeword_out <= {(DATA_WIDTH+8){1'b0}};
             valid_out <= 1'b0;
         end else if (encode_en) begin
-            codeword_out <= encoded_codeword;
+            codeword_out <= {data_in, redundancy};
             valid_out <= 1'b1;
         end else begin
             valid_out <= 1'b0;
         end
     end
 
-    // Decoder logic
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             data_out <= {DATA_WIDTH{1'b0}};
             error_detected <= 1'b0;
             error_corrected <= 1'b0;
         end else if (decode_en) begin
-            data_out <= extracted_data;
-            
-            // Error detection and correction logic
-            if (no_error) begin
-                // No error detected
-                error_detected <= 1'b0;
-                error_corrected <= 1'b0;
-            end else if (single_error) begin
-                // Error detected and corrected
-                error_detected <= 1'b0;
-                error_corrected <= 1'b1;
-            end else begin
-                // Multiple errors detected but not corrected
-                error_detected <= 1'b1;
-                error_corrected <= 1'b0;
-            end
+            data_out <= codeword_in[DATA_WIDTH+8-1 : 8];
+            error_detected <= 1'b0; 
+            error_corrected <= 1'b0;
         end
     end
 

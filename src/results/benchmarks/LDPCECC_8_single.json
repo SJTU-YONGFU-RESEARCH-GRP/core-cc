@@ -1,0 +1,22 @@
+{
+  "ecc_type": "LDPCECC",
+  "word_length": 8,
+  "error_pattern": "single",
+  "trials": 10000,
+  "correctable_errors": 3318,
+  "detected_errors": 5993,
+  "undetected_errors": 689,
+  "encode_time_avg": 1.2857858976349235e-05,
+  "decode_time_avg": 0.0003176223086891696,
+  "total_time_avg": 0.0003304801676655188,
+  "code_rate": 0.5,
+  "overhead_ratio": 1.0,
+  "correction_rate": 0.3318,
+  "detection_rate": 0.5993,
+  "success_rate": 0.9311,
+  "error_distribution": {
+    "corrected": 3318,
+    "detected": 5993,
+    "undetected": 689
+  }
+}

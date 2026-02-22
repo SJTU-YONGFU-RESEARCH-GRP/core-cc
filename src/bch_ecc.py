@@ -40,8 +40,12 @@ class BCHECC(ECCBase):
                         n, k, t = 15, 7, 2   # BCH(15,7,2)
                     elif data_length <= 16:
                         n, k, t = 31, 16, 3  # BCH(31,16,3)
-                    else:
+                    elif data_length <= 32:
                         n, k, t = 63, 32, 6  # BCH(63,32,6)
+                    elif data_length <= 64:
+                        n, k, t = 127, 64, 9 # BCH(127,64,9)
+                    else:
+                        n, k, t = 255, 128, 15 # BCH(255,128,15)
                 else:
                     # Default to BCH(15,7,2) if no parameters provided
                     n, k, t = 15, 7, 2
@@ -51,6 +55,10 @@ class BCHECC(ECCBase):
                 self.config = BCHConfig(n=n, k=k, t=t)
         
         # Initialize bchlib with the configuration
+        # Expose n and k for report generator
+        self.n = self.config.n
+        self.k = self.config.k
+        
         # bchlib.BCH expects (prim_poly, t) where prim_poly is the primitive polynomial
         # For common BCH codes, we'll use standard primitive polynomials
         try:
@@ -66,6 +74,12 @@ class BCHECC(ECCBase):
             elif self.config.n == 63 and self.config.k == 32 and self.config.t == 6:
                 # BCH(63,32,6) - primitive polynomial x^6 + x + 1
                 self.bch = bchlib.BCH(0b1000011, self.config.t)
+            elif self.config.n == 127 and self.config.k == 64 and self.config.t == 9:
+                # BCH(127,64,9) - primitive polynomial x^7 + x^3 + 1 (137)
+                self.bch = bchlib.BCH(0b10001001, self.config.t)
+            elif self.config.n == 255 and self.config.k == 128 and self.config.t == 15:
+                # BCH(255,128,15) - primitive polynomial x^8 + x^4 + x^3 + x^2 + 1 (285)
+                self.bch = bchlib.BCH(0b100011101, self.config.t)
             else:
                 # For other parameters, try to use a reasonable primitive polynomial
                 # This is a fallback and may not work for all parameter combinations

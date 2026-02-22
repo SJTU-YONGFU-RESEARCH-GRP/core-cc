@@ -20,6 +20,9 @@ class SystemECC(ECCBase):
         # Import Hamming SECDED for the base implementation
         from hamming_secded_ecc import HammingSECDEDECC
         self.hamming = HammingSECDEDECC(data_length=self.word_length)
+        
+        self.k = self.word_length
+        self.n = self.hamming.n + 1 # Hamming code + 1 system parity bit
     
     def encode(self, data: int) -> int:
         """

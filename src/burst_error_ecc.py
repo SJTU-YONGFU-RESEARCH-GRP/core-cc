@@ -35,12 +35,16 @@ class BurstErrorECC(ECCBase):
             self.n = 32
             self.burst_length = 4
         else:
-            self.k = 32
-            self.n = 64
+            self.k = self.word_length
+            self.n = 2 * self.word_length
+            # Logarithmic scaling for burst length? Or fixed?
+            # Verilog uses: (DATA_WIDTH <= 16) ? 4 : 5
+            # Let's match Verilog logic for >16
             self.burst_length = 5
         
         # Define data and parity positions
         self.data_positions = list(range(self.k))
+        self.data_positions_set = set(self.data_positions)
         self.parity_positions = list(range(self.k, self.n))
         
     def _extract_data(self, codeword: int) -> int:
@@ -127,30 +131,59 @@ class BurstErrorECC(ECCBase):
             return self._extract_data(codeword), 'corrected'
         else:
             # Try to correct burst errors
+            # Error detected. Optimized burst error correction.
+            # Complexity: O(N * BurstLength) instead of O(N * BurstLength * M * K)
+            # The previous approach recalculated the entire syndrome for every test burst.
+            # Here we identify which syndrome bits are affected by a burst at each position.
+            
+            # Precompute syndrome mask for a single bit at each position
+            # bit_syndrome_map[k] = syndrome caused by a bit flip at index k
+            bit_syndrome_map = {}
+            for k in range(self.n):
+                s = 0
+                for i, pos in enumerate(self.parity_positions):
+                    # Check if bit k affects parity bit pos
+                    # Condition: (k is data bit AND (k+pos)%BL==0) OR (k is parity bit pos)
+                    affects = False
+                    if k in self.data_positions_set:
+                        if (k + pos) % self.burst_length == 0:
+                            affects = True
+                    elif k == pos:
+                        affects = True
+                    
+                    if affects:
+                        s |= (1 << i)
+                bit_syndrome_map[k] = s
+            
+            # Try to correct burst errors using the map
+            matches = []
             for burst_start in range(self.n - self.burst_length + 1):
-                # Try flipping a burst of bits
+                current_burst_syndrome = 0
+                for i in range(self.burst_length):
+                    if burst_start + i < self.n:
+                        current_burst_syndrome ^= bit_syndrome_map[burst_start + i]
+                
+                if current_burst_syndrome == syndrome:
+                    matches.append(burst_start)
+                    # If we find more than 1 match, we have ambiguity.
+                    # Optimization: We can stop early if we don't care about FINDING all, just detecting ambiguity.
+                    # But to be safe, let's just find them.
+            
+            if len(matches) == 1:
+                # Unique correction found
+                burst_start = matches[0]
                 test_codeword = codeword
                 for i in range(self.burst_length):
                     if burst_start + i < self.n:
                         test_codeword ^= (1 << (burst_start + i))
-                
-                # Check if this fixes the syndrome
-                test_syndrome = 0
-                for i, pos in enumerate(self.parity_positions):
-                    expected_parity = 0
-                    for j in self.data_positions:
-                        if ((test_codeword >> j) & 1):
-                            if (j + pos) % self.burst_length == 0:
-                                expected_parity ^= 1
-                    
-                    actual_parity = (test_codeword >> pos) & 1
-                    if expected_parity != actual_parity:
-                        test_syndrome |= (1 << i)
-                
-                if test_syndrome == 0:
-                    # Burst error corrected
-                    return self._extract_data(test_codeword), 'corrected'
-            
+                return self._extract_data(test_codeword), 'corrected'
+            elif len(matches) > 1:
+                # Ambiguous error location (aliasing). Determine as detected but uncorrectable.
+                return self._extract_data(codeword), 'detected'
+
+            # Error detected but not corrected
+            return self._extract_data(codeword), 'detected'
+
             # Error detected but not corrected
             return self._extract_data(codeword), 'detected'
     

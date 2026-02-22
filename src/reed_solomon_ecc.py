@@ -62,6 +62,10 @@ class ReedSolomonECC(ECCBase):
             else:
                 self.config = RSConfig(n=n, k=k)
         
+        # Set attributes for report generator
+        self.n = self.config.n
+        self.k = self.config.k
+        
         try:
             import reedsolo
             self.rs = reedsolo.RSCodec(self.config.n - self.config.k)

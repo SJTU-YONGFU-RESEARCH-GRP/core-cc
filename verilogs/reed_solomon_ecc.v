@@ -1,71 +1,135 @@
-// Reed-Solomon ECC Module - Complete implementation with encoder and decoder
-// Matches Python ReedSolomonECC implementation and testbench
-/* verilator lint_off WIDTHTRUNC */
-/* verilator lint_off WIDTHEXPAND */
+
+// Reed-Solomon ECC Wrapper - Instantiates Generated Real Hardware Modules
+// Supports DATA_WIDTH 4, 8, 16, 32, 64, 128
+// GF(2^8), T=2 (4 parity bytes)
+
 module reed_solomon_ecc #(
-    parameter DATA_WIDTH = 8,
-    parameter REDUNDANCY_BITS = 8
+    parameter DATA_WIDTH = 8
 ) (
     input  wire                    clk,
     input  wire                    rst_n,
     input  wire                    encode_en,
     input  wire                    decode_en,
-    input  wire [DATA_WIDTH-1:0]  data_in,
-    input  wire [DATA_WIDTH+REDUNDANCY_BITS-1:0] codeword_in,
-    output reg  [DATA_WIDTH+REDUNDANCY_BITS-1:0] codeword_out,
-    output reg  [DATA_WIDTH-1:0]  data_out,
-    output reg                     error_detected,
-    output reg                     error_corrected,
-    output reg                     valid_out
+    input  wire [DATA_WIDTH-1:0]   data_in,
+    // Codeword Width = DATA_WIDTH (in bytes, rounded up) * 8 + 32 bits (4 bytes parity)
+    // The testbench provides a fixed large width, we map correctly.
+    // Generated modules expect specific widths.
+    // w4 -> n=5 bytes. (1 data + 4 parity) -> 40 bits.
+    // w8 -> n=5 bytes. (1 data + 4 parity) -> 40 bits.
+    // w16 -> n=6 bytes. (2 data + 4 parity) -> 48 bits.
+    // w32 -> n=8 bytes. (4 data + 4 parity) -> 64 bits.
+    // w64 -> n=12 bytes. (8 data + 4 parity) -> 96 bits.
+    // w128 -> n=20 bytes. (16 data + 4 parity) -> 160 bits.
+    // The testbench defines `CODEWORD_WIDTH` based on simplified logic?
+    // Let's check testbench assumption.
+    // Current wrapper had: input [159:0] codeword_in. 
+    // This covers the max case.
+    input  wire [159:0]            codeword_in,
+    output wire [159:0]            codeword_out,
+    output wire [DATA_WIDTH-1:0]   data_out,
+    output wire                    error_detected,
+    output wire                    error_corrected,
+    output wire                    valid_out
 );
 
-    // Local parameters
-    localparam CODEWORD_WIDTH = DATA_WIDTH + REDUNDANCY_BITS;
-    
-    // Internal signals
-    wire [CODEWORD_WIDTH-1:0] encoded_codeword;
-    wire [DATA_WIDTH-1:0] decoded_data;
-    
-    // Simplified Reed-Solomon encoding (matches testbench for small data)
-    // For small data sizes: (data << 8) | (data & 0xFF)
-    wire [7:0] redundancy_data;
-    assign redundancy_data = data_in[7:0]; // Lower 8 bits of data as redundancy
-    assign encoded_codeword = {redundancy_data, data_in}; // This is equivalent to (data << 8) | (data & 0xFF)
-    
-    // Simplified Reed-Solomon decoding (matches testbench for small data)
-    // Extract data by shifting right by 8 bits and masking
-    assign decoded_data = (codeword_in >> 8) & ((1 << DATA_WIDTH) - 1);
-    
-    // Simplified error detection (no error detection in simplified version)
-    wire error_found;
-    assign error_found = 1'b0; // No error detection in simplified version
-    
-    // Encoder logic
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            codeword_out <= {CODEWORD_WIDTH{1'b0}};
-            valid_out <= 1'b0;
-        end else if (encode_en) begin
-            codeword_out <= encoded_codeword;
-            valid_out <= 1'b1;
-        end else begin
-            valid_out <= 1'b0;
+    // We need to map the 160-bit ports to the specific widths of the generated modules.
+    // The generated modules output the exact width.
+    // We pad outputs to 160.
+    // We slice inputs.
+
+    generate
+        if (DATA_WIDTH == 4) begin : w4
+            wire [39:0] cw_out_w4;
+            reed_solomon_ecc_w4 u_rs (
+                .clk(clk), .rst_n(rst_n),
+                .encode_en(encode_en), .decode_en(decode_en),
+                .data_in(data_in),
+                .codeword_in(codeword_in[39:0]),
+                .codeword_out(cw_out_w4),
+                .data_out(data_out),
+                .error_detected(error_detected),
+                .error_corrected(error_corrected),
+                .valid_out(valid_out)
+            );
+            assign codeword_out = {120'b0, cw_out_w4};
+        end else if (DATA_WIDTH == 8) begin : w8
+            wire [39:0] cw_out_w8;
+            reed_solomon_ecc_w8 u_rs (
+                .clk(clk), .rst_n(rst_n),
+                .encode_en(encode_en), .decode_en(decode_en),
+                .data_in(data_in),
+                .codeword_in(codeword_in[39:0]),
+                .codeword_out(cw_out_w8),
+                .data_out(data_out),
+                .error_detected(error_detected),
+                .error_corrected(error_corrected),
+                .valid_out(valid_out)
+            );
+             assign codeword_out = {120'b0, cw_out_w8};
+        end else if (DATA_WIDTH == 16) begin : w16
+            wire [47:0] cw_out_w16;
+            reed_solomon_ecc_w16 u_rs (
+                .clk(clk), .rst_n(rst_n),
+                .encode_en(encode_en), .decode_en(decode_en),
+                .data_in(data_in),
+                .codeword_in(codeword_in[47:0]),
+                .codeword_out(cw_out_w16),
+                .data_out(data_out),
+                .error_detected(error_detected),
+                .error_corrected(error_corrected),
+                .valid_out(valid_out)
+            );
+             assign codeword_out = {112'b0, cw_out_w16};
+        end else if (DATA_WIDTH == 32) begin : w32
+            wire [63:0] cw_out_w32;
+            reed_solomon_ecc_w32 u_rs (
+                .clk(clk), .rst_n(rst_n),
+                .encode_en(encode_en), .decode_en(decode_en),
+                .data_in(data_in),
+                .codeword_in(codeword_in[63:0]),
+                .codeword_out(cw_out_w32),
+                .data_out(data_out),
+                .error_detected(error_detected),
+                .error_corrected(error_corrected),
+                .valid_out(valid_out)
+            );
+             assign codeword_out = {96'b0, cw_out_w32};
+        end else if (DATA_WIDTH == 64) begin : w64
+            wire [95:0] cw_out_w64;
+            reed_solomon_ecc_w64 u_rs (
+                .clk(clk), .rst_n(rst_n),
+                .encode_en(encode_en), .decode_en(decode_en),
+                .data_in(data_in),
+                .codeword_in(codeword_in[95:0]),
+                .codeword_out(cw_out_w64),
+                .data_out(data_out),
+                .error_detected(error_detected),
+                .error_corrected(error_corrected),
+                .valid_out(valid_out)
+            );
+             assign codeword_out = {64'b0, cw_out_w64};
+        end else if (DATA_WIDTH == 128) begin : w128
+            wire [159:0] cw_out_w128;
+            reed_solomon_ecc_w128 u_rs (
+                .clk(clk), .rst_n(rst_n),
+                .encode_en(encode_en), .decode_en(decode_en),
+                .data_in(data_in),
+                .codeword_in(codeword_in[159:0]),
+                .codeword_out(cw_out_w128),
+                .data_out(data_out),
+                .error_detected(error_detected),
+                .error_corrected(error_corrected),
+                .valid_out(valid_out)
+            );
+             assign codeword_out = cw_out_w128;
+             
+        end else begin : fallback
+            assign codeword_out = 0;
+            assign data_out = 0;
+            assign error_detected = 0;
+            assign error_corrected = 0;
+            assign valid_out = 0;
         end
-    end
-    
-    // Decoder logic
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            data_out <= {DATA_WIDTH{1'b0}};
-            error_detected <= 1'b0;
-            error_corrected <= 1'b0;
-        end else if (decode_en) begin
-            data_out <= decoded_data;
-            error_detected <= error_found;
-            error_corrected <= 1'b0; // No correction in simplified version
-        end
-    end
+    endgenerate
 
 endmodule
-/* verilator lint_on WIDTHTRUNC */
-/* verilator lint_on WIDTHEXPAND */ 

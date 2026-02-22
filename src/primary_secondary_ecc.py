@@ -30,8 +30,8 @@ class PrimarySecondaryECC(ECCBase):
             self.k = 16
             self.n = 32
         else:
-            self.k = 32
-            self.n = 64
+            self.k = self.word_length
+            self.n = 2 * self.word_length
         
         # Define data and parity positions
         self.data_positions = list(range(self.k))
@@ -120,29 +120,35 @@ class PrimarySecondaryECC(ECCBase):
             # No error detected
             return self._extract_data(codeword), 'corrected'
         else:
-            # Try to correct single bit errors
-            for bit_pos in range(self.n):
-                # Try flipping this bit
-                test_codeword = codeword ^ (1 << bit_pos)
-                
-                # Check if this fixes the syndrome
-                test_syndrome = 0
-                for i, pos in enumerate(self.parity_positions):
-                    expected_parity = 0
-                    for j in self.data_positions:
-                        if ((test_codeword >> j) & 1):
-                            if (j + pos) % 2 == 0:
-                                expected_parity ^= 1
-                    
-                    actual_parity = (test_codeword >> pos) & 1
-                    if expected_parity != actual_parity:
-                        test_syndrome |= (1 << i)
-                
-                if test_syndrome == 0:
-                    # Error corrected
-                    return self._extract_data(test_codeword), 'corrected'
+            # Error detected. Use efficient syndrome matching to find single bit error.
+            # Complexity: O(N * M) instead of O(N * M * K)
             
-            # Error detected but not corrected
+            # Check if error is in a parity bit
+            for i, pos in enumerate(self.parity_positions):
+                if syndrome == (1 << i):
+                    # Error is in parity bit 'pos'
+                    return self._extract_data(codeword ^ (1 << pos)), 'corrected'
+            
+            # Check if error is in a data bit
+            matches = []
+            for j in self.data_positions:
+                # Calculate syndrome signature for this data bit
+                bit_syndrome = 0
+                for i, pos in enumerate(self.parity_positions):
+                    if (j + pos) % 2 == 0:
+                        bit_syndrome |= (1 << i)
+                
+                if bit_syndrome == syndrome:
+                    matches.append(j)
+                    # Optimization: We can stop if len > 1, but let's complete for clarity
+            
+            if len(matches) == 1:
+                j = matches[0]
+                return self._extract_data(codeword ^ (1 << j)), 'corrected'
+            elif len(matches) > 1:
+                return self._extract_data(codeword), 'detected'
+
+            # Error detected but not corrected (e.g. double bit error)
             return self._extract_data(codeword), 'detected'
     
     def inject_error(self, codeword: int, bit_idx: int) -> int:

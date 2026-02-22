@@ -1,0 +1,22 @@
+{
+  "ecc_type": "BCHECC",
+  "word_length": 8,
+  "error_pattern": "random",
+  "trials": 10000,
+  "correctable_errors": 9963,
+  "detected_errors": 37,
+  "undetected_errors": 0,
+  "encode_time_avg": 4.028604179620743e-06,
+  "decode_time_avg": 2.3103158152662216e-05,
+  "total_time_avg": 2.713176233228296e-05,
+  "code_rate": 0.5333333333333333,
+  "overhead_ratio": 0.875,
+  "correction_rate": 0.9963,
+  "detection_rate": 0.0037,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 9963,
+    "detected": 37,
+    "undetected": 0
+  }
+}

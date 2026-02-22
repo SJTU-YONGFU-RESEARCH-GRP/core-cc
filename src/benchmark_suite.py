@@ -279,21 +279,11 @@ class ECCBenchmarkSuite:
         elif ecc_type == HammingSECDEDECC:
             return HammingSECDEDECC(word_length=word_length)
         elif ecc_type == BCHECC:
-            # BCH needs specific parameters based on word length
-            if word_length <= 4:
-                return BCHECC(n=7, k=4, t=1)  # BCH(7,4,1)
-            elif word_length <= 8:
-                return BCHECC(n=15, k=7, t=2)  # BCH(15,7,2)
-            else:
-                return BCHECC(n=31, k=16, t=3)  # BCH(31,16,3)
+            # Let BCHECC determine parameters based on data_length
+            return BCHECC(data_length=word_length)
         elif ecc_type == ReedSolomonECC:
-            # Reed-Solomon parameters
-            if word_length <= 4:
-                return ReedSolomonECC(n=7, k=4)
-            elif word_length <= 8:
-                return ReedSolomonECC(n=15, k=8)
-            else:
-                return ReedSolomonECC(n=31, k=16)
+            # Let ReedSolomonECC determine parameters based on data_length
+            return ReedSolomonECC(data_length=word_length)
         elif ecc_type == LDPCECC:
             # LDPC parameters - only n is needed, k is determined by the generator matrix
             return LDPCECC(n=word_length * 2)
@@ -837,8 +827,8 @@ class ECCBenchmarkSuite:
             # CRC needs polynomial and data_length
             ecc = ecc_type(polynomial=0x11, data_length=word_length)
         elif ecc_type_name == 'GolayECC': 
-            # Golay uses default constructor
-            ecc = ecc_type()
+            # Golay needs data_length parameter
+            ecc = ecc_type(data_length=word_length)
         elif ecc_type_name == 'ParityECC':
             # Parity needs word_length
             ecc = ecc_type(word_length=word_length)
@@ -1049,26 +1039,34 @@ class ECCBenchmarkSuite:
             # Determine encoded size more accurately than bit_length()
             encoded_size = word_length # Default fallback
             
-            # Try to infer from config
-            if hasattr(ecc, 'config'):
-                if hasattr(ecc.config, 'n') and hasattr(ecc.config, 'k'):
-                    # Check if n/k are in bits or bytes
-                    # If k matches word_length, it's bits
-                    if ecc.config.k == word_length:
-                        encoded_size = ecc.config.n
-                    # If k*8 matches word_length, it's bytes
-                    elif ecc.config.k * 8 == word_length:
-                        encoded_size = ecc.config.n * 8
-                    # If k is close to word_length (e.g. padded), assume bits
-                    elif abs(ecc.config.k - word_length) < 8:
-                        encoded_size = ecc.config.n
-                    # If k*8 is close to word_length, assume bytes
-                    elif abs(ecc.config.k * 8 - word_length) < 8:
-                        encoded_size = ecc.config.n * 8
-                    else:
-                        # Fallback: calculate rate and apply to word_length
-                        rate = ecc.config.k / ecc.config.n
-                        encoded_size = int(word_length / rate)
+            # Try to infer from config or direct attributes
+            n = None
+            k = None
+            if hasattr(ecc, 'config') and hasattr(ecc.config, 'n') and hasattr(ecc.config, 'k'):
+                n = ecc.config.n
+                k = ecc.config.k
+            elif hasattr(ecc, 'n') and hasattr(ecc, 'k'):
+                n = ecc.n
+                k = ecc.k
+
+            if n is not None and k is not None:
+                # Check if n/k are in bits or bytes
+                # If k matches word_length, it's bits
+                if k == word_length:
+                    encoded_size = n
+                # If k*8 matches word_length, it's bytes
+                elif k * 8 == word_length:
+                    encoded_size = n * 8
+                # If k is close to word_length (e.g. padded), assume bits
+                elif abs(k - word_length) < 8:
+                    encoded_size = n
+                # If k*8 is close to word_length, assume bytes
+                elif abs(k * 8 - word_length) < 8:
+                    encoded_size = n * 8
+                else:
+                    # Fallback: calculate rate and apply to word_length
+                    rate = k / n
+                    encoded_size = int(word_length / rate)
             
             # Special handling for ConvolutionalECC
             elif 'Convolutional' in ecc_type_name:
@@ -1566,7 +1564,7 @@ def create_default_config() -> BenchmarkConfig:
             SystemECC,
             ThreeDMemoryECC
         ],
-        word_lengths=[4, 8, 16, 32],
+        word_lengths=[4, 8, 16, 32, 64, 128],
         error_patterns=["single", "double", "burst", "random"],
         trials_per_config=10000,
         burst_length=3,

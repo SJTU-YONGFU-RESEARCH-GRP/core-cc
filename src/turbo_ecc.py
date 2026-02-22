@@ -21,6 +21,13 @@ class SimpleTurboCode:
         self.encoder1 = self._create_rsc_encoder()
         self.encoder2 = self._create_rsc_encoder()
         
+        # Calculate N and K
+        self.k = self.data_length
+        # Rate 1/3: Systematic + Parity1 + Parity2
+        # Plus 4 tail bits for termination (2 encoders * 2 bits state) -> approx
+        # For simple implementation without termination:
+        self.n = 3 * self.k
+        
     def _create_rsc_encoder(self) -> List[int]:
         """Create a simple RSC encoder state."""
         return [0, 0]  # 2-bit state
@@ -104,7 +111,7 @@ class SimpleTurboCode:
     
     def decode(self, codeword_bits: List[int]) -> Tuple[List[int], str]:
         """
-        Simplified Turbo decoding (majority voting for systematic bits).
+        Simplified Turbo decoding with error detection.
         
         Args:
             codeword_bits: Received codeword bits
@@ -112,15 +119,24 @@ class SimpleTurboCode:
         Returns:
             Tuple of (decoded_bits, error_type)
         """
-        if len(codeword_bits) < self.data_length:
+        expected_len = 3 * self.data_length
+        if len(codeword_bits) < expected_len:
             return [0] * self.data_length, 'detected'
         
-        # Extract systematic bits (first data_length bits)
+        # Extract systematic and parity bits
         systematic_bits = codeword_bits[:self.data_length]
+        received_parity1 = codeword_bits[self.data_length:2*self.data_length]
+        received_parity2 = codeword_bits[2*self.data_length:3*self.data_length]
         
-        # For this simplified version, just return systematic bits
-        # In a real Turbo decoder, this would involve iterative decoding
-        # between the two constituent decoders
+        # Re-encode to check for errors
+        calc_parity1 = self._rsc_encode(systematic_bits, [0, 0])
+        
+        interleaved_data = self._interleave(systematic_bits)
+        calc_parity2 = self._rsc_encode(interleaved_data, [0, 0])
+        
+        # If parity doesn't match, error is detected
+        if calc_parity1 != received_parity1 or calc_parity2 != received_parity2:
+            return systematic_bits, 'detected'
         
         return systematic_bits, 'corrected'
 
@@ -137,6 +153,8 @@ class TurboECC(ECCBase):
         """
         self.data_length = data_length
         self.turbo = SimpleTurboCode(data_length)
+        self.n = self.turbo.n
+        self.k = self.turbo.k
         
     def encode(self, data: int) -> int:
         """

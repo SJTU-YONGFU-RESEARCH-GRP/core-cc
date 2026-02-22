@@ -76,7 +76,11 @@ class CRCECC(ECCBase):
         self.polynomial = polynomial
         self.crc = CRC8(poly=polynomial)
         self.crc_bits = 8  # CRC-8 uses 8 bits
-        self.data_length = data_length
+        self.data_length = data_length if data_length is not None else 8
+        
+        # Expose N and K
+        self.k = self.data_length
+        self.n = self.data_length + self.crc_bits
     
     def encode(self, data: int) -> int:
         """

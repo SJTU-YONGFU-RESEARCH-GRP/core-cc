@@ -31,9 +31,15 @@ class NonBinaryLDPCECC(ECCBase):
         elif self.word_length <= 16:
             self.k = 16
             self.n = 32
-        else:
+        elif self.word_length <= 32:
             self.k = 32
             self.n = 64
+        elif self.word_length <= 64:
+            self.k = 64
+            self.n = 128
+        else:
+            self.k = 128
+            self.n = 256
         
         # Define data and parity positions
         self.data_positions = list(range(self.k))
@@ -122,27 +128,52 @@ class NonBinaryLDPCECC(ECCBase):
             # No error detected
             return self._extract_data(codeword), 'corrected'
         else:
-            # Try to correct single bit errors
+            # Error detected. Use precomputed parity masks to find the single bit error.
+            # Calculate the "syndrome mask" for each bit position on the fly or precompute it.
+            # Since we didn't precompute in __init__, we'll do an efficient search here.
+            # But actually, calculating the 'effect' of each bit on parity is fast.
+            
+            # Optimization: The syndrome is the set of unsatisfied parity checks.
+            # We look for a bit 'b' that is involved in EXACTLY those parity checks.
+            # i.e., column 'b' of H matches the syndrome.
+            
+            # Reconstruct the parity check matrix column for each bit.
             for bit_pos in range(self.n):
-                # Try flipping this bit
-                test_codeword = codeword ^ (1 << bit_pos)
+                # Calculate what the syndrome would be if ONLY this bit was 1 (and all others 0)
+                # This is equivalent to the column of H corresponding to bit_pos.
                 
-                # Check if this fixes the syndrome
-                test_syndrome = 0
-                for i, pos in enumerate(self.parity_positions):
-                    expected_parity = 0
-                    for j in self.data_positions:
-                        if ((test_codeword >> j) & 1):
-                            if (j + pos) % 3 == 0:
-                                expected_parity ^= 1
+                bit_syndrome = 0
+                
+                # Check which parity bits are affected by 'bit_pos'
+                # If bit_pos is a data bit:
+                if bit_pos < self.k:
+                    # It affects parity bit 'pos' if (bit_pos + pos) % 3 == 0
+                    for i, pos in enumerate(self.parity_positions):
+                         if (bit_pos + pos) % 3 == 0:
+                             bit_syndrome |= (1 << i)
+                             
+                # If bit_pos is a parity bit (at self.parity_positions[index]):
+                else:
+                    # A parity bit 'p' only affects its own check? 
+                    # In _calculate_parity, parity bits are just appended.
+                    # In decode syndrome calc: 
+                    # actual_parity = (codeword >> pos) & 1
+                    # expected_parity depends on data.
+                    # syndrome bit i is (expected ^ actual).
+                    # If we flip parity bit 'pos', expected doesn't change, actual flips.
+                    # So syndrome bit i flips.
                     
-                    actual_parity = (test_codeword >> pos) & 1
-                    if expected_parity != actual_parity:
-                        test_syndrome |= (1 << i)
+                    # Find which parity index matches this bit_pos
+                    try:
+                        p_index = self.parity_positions.index(bit_pos)
+                        bit_syndrome = (1 << p_index)
+                    except ValueError:
+                        continue # Should not happen
                 
-                if test_syndrome == 0:
-                    # Error corrected
-                    return self._extract_data(test_codeword), 'corrected'
+                # If flipping this bit produces the exact syndrome we observed,
+                # then this bit is the error.
+                if bit_syndrome == syndrome:
+                    return self._extract_data(codeword ^ (1 << bit_pos)), 'corrected'
             
             # Error detected but not corrected
             return self._extract_data(codeword), 'detected'

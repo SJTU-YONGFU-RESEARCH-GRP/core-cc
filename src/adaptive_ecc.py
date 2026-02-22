@@ -60,6 +60,14 @@ class AdaptiveECC(ECCBase):
         
         # Initialize the current ECC
         self._initialize_ecc()
+        
+        # Expose N and K (Dynamic, but useful for report)
+        if hasattr(self.current_ecc, 'n'):
+             self.n = self.current_ecc.n
+             self.k = self.current_ecc.k
+        else:
+             self.k = data_length
+             self.n = int(data_length / 0.5) # Estimate based on Hamming default
     
     def _initialize_ecc(self):
         """Initialize the current ECC type."""
@@ -72,10 +80,10 @@ class AdaptiveECC(ECCBase):
                 self.current_ecc = HammingSECDEDECC(data_length=self.data_length)
             elif self.current_ecc_type == 'BCHECC':
                 from bch_ecc import BCHECC
-                self.current_ecc = BCHECC(n=15, k=7, t=2)
+                self.current_ecc = BCHECC(data_length=self.data_length)
             elif self.current_ecc_type == 'ReedSolomonECC':
                 from reed_solomon_ecc import ReedSolomonECC
-                self.current_ecc = ReedSolomonECC(n=15, k=8)
+                self.current_ecc = ReedSolomonECC(data_length=self.data_length)
             else:
                 # Default to Hamming
                 from hamming_secded_ecc import HammingSECDEDECC

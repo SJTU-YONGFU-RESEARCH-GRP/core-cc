@@ -36,6 +36,16 @@ class ConcatenatedECC(ECCBase):
         
         self.inner_ecc = ParityECC(data_length=self.inner_word_length)
         self.outer_ecc = HammingSECDEDECC(data_length=5)  # ParityECC outputs 5 bits
+        
+        # Expose N and K
+        self.k = self.word_length
+        # Calculate N:
+        # 1. Split into (word_length / inner_word_length) chunks
+        # 2. Each chunk -> inner_ecc -> outer_ecc
+        # 3. N = num_chunks * outer_ecc.n
+        num_chunks = (self.word_length + self.inner_word_length - 1) // self.inner_word_length
+        outer_n = self.outer_ecc.n if hasattr(self.outer_ecc, 'n') else 13 # Default Hamming(5) -> 9? No, Parity(4)->5. Hamming(5)->9.
+        self.n = num_chunks * outer_n
 
     def _pack_data(self, data: int) -> List[int]:
         """Pack data into sub-words for concatenated encoding."""

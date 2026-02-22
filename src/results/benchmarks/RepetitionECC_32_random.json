@@ -1,0 +1,22 @@
+{
+  "ecc_type": "RepetitionECC",
+  "word_length": 32,
+  "error_pattern": "random",
+  "trials": 10000,
+  "correctable_errors": 9898,
+  "detected_errors": 0,
+  "undetected_errors": 102,
+  "encode_time_avg": 1.9938961230218412e-05,
+  "decode_time_avg": 2.289424384944141e-05,
+  "total_time_avg": 4.2833205079659826e-05,
+  "code_rate": 0.3333333333333333,
+  "overhead_ratio": 2.0,
+  "correction_rate": 0.9898,
+  "detection_rate": 0.0,
+  "success_rate": 0.9898,
+  "error_distribution": {
+    "corrected": 9898,
+    "detected": 0,
+    "undetected": 102
+  }
+}

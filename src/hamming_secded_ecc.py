@@ -49,6 +49,35 @@ class HammingSECDEDECC(ECCBase):
             for i in range(self.n):
                 if i not in self.parity_positions:
                     self.data_positions.append(i)
+        elif self.word_length <= 64:
+            # Hamming(71,64) - 64 data bits, 7 parity bits
+            self.n = 71
+            self.k = 64
+            self.parity_positions = [0, 1, 3, 7, 15, 31, 63]  # Parity bit positions
+            self.data_positions = []
+            for i in range(self.n):
+                if i not in self.parity_positions:
+                    self.data_positions.append(i)
+        elif self.word_length <= 128:
+            # Hamming(137,128) - 128 data bits, 9 parity bits (wait, 2^8=256 >= 128+8+1=137? No 256 >= 137. 137 bits total. 128 data + 9 parity? 
+            # 128 + 8 = 136. 136 bits need 8 parity bits (2^8=256 covers 136 positions).
+            # So 128 data bits + 8 parity bits = 136 bits.
+            # Positions: 1, 2, 4, 8, 16, 32, 64, 128.
+            # 0, 1, 3, 7, 15, 31, 63, 127.
+            # Wait, 128 data bits. 
+            # n = k + m. 2^m >= n + 1. 2^m >= k + m + 1.
+            # k=128. 
+            # m=7: 128 >= 128+7+1 = 136 (Fail)
+            # m=8: 256 >= 128+8+1 = 137 (Pass)
+            # So m=8. n = 128 + 8 = 136.
+            # Parity indices: 0, 1, 3, 7, 15, 31, 63, 127.
+            self.n = 136
+            self.k = 128
+            self.parity_positions = [0, 1, 3, 7, 15, 31, 63, 127]
+            self.data_positions = []
+            for i in range(self.n):
+                if i not in self.parity_positions:
+                    self.data_positions.append(i)
         else:
             raise ValueError(f"Word length {self.word_length} not supported")
     

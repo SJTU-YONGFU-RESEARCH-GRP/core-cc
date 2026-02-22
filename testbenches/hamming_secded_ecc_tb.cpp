@@ -3,282 +3,334 @@
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
+#include <time.h>
 
 // Verilator generated header
 #include "Vhamming_secded_ecc.h"
 #include "verilated.h"
+#include "ecc_test_utils.h"
 
-// Python-like Hamming SECDED calculation functions
+// Configuration for Hamming SECDED codes
 typedef struct {
     int n;  // Codeword length
     int k;  // Data length
     int parity_bits;
-    int* parity_positions;
-    int* data_positions;
+    int parity_positions[8];  // Max 8 parity bits for 128-bit data
+    int data_positions[128];  // Max 128 data positions
 } HammingConfig;
 
-HammingConfig* create_hamming_config(int word_length) {
-    HammingConfig* config = (HammingConfig*)malloc(sizeof(HammingConfig));
+// Auto-detect DATA_WIDTH from the DUT
+#ifndef DATA_WIDTH
+#define DATA_WIDTH 8
+#endif
+
+// Helper macros for wide port access
+#if DATA_WIDTH > 64
+    #define SET_DATA_IN(dut, val) \
+        do { \
+            for(int w=0; w<MAX_WORDS && w*32 < DATA_WIDTH; w++) \
+                (dut)->data_in[w] = (val).words[w]; \
+        } while(0)
+        
+    #define GET_DATA_OUT(dut, val) \
+        do { \
+            (val).clear(); \
+            for(int w=0; w<MAX_WORDS && w*32 < DATA_WIDTH; w++) \
+                (val).words[w] = (dut)->data_out[w]; \
+        } while(0)
+
+    // Codeword is wider than data
+    // Use sizeof to safely determine number of words
+    #define SET_CODEWORD_IN(dut, val) \
+        do { \
+            int nwords = sizeof((dut)->codeword_in) / sizeof(uint32_t); \
+            for(int w=0; w<nwords && w<MAX_WORDS; w++) \
+                (dut)->codeword_in[w] = (val).words[w]; \
+        } while(0)
+
+    #define GET_CODEWORD_OUT(dut, val) \
+        do { \
+            (val).clear(); \
+            int nwords = sizeof((dut)->codeword_out) / sizeof(uint32_t); \
+            for(int w=0; w<nwords && w<MAX_WORDS; w++) \
+                (val).words[w] = (dut)->codeword_out[w]; \
+        } while(0)
+
+#else
+    // Scalar ports (QData = uint64_t or IData = uint32_t)
+    #define SET_DATA_IN(dut, val) (dut)->data_in = to_u64(val)
+    #define GET_DATA_OUT(dut, val) (val) = from_u64((dut)->data_out)
     
+    // Codeword might be > 64 if DATA_WIDTH > 57 (approx)
+    // For DATA_WIDTH=64, N=71. Verilator makes this WData (array).
+    // So distinct check for codeword width may be needed.
+    // Let's assume >64 implies WData for codeword too.
+    
+    #if DATA_WIDTH > 57
+        #define SET_CODEWORD_IN(dut, val) \
+            do { \
+                for(int w=0; w<3; w++) (dut)->codeword_in[w] = (val).words[w]; \
+            } while(0)
+        #define GET_CODEWORD_OUT(dut, val) \
+             do { \
+                (val).clear(); \
+                for(int w=0; w<3; w++) (val).words[w] = (dut)->codeword_out[w]; \
+            } while(0)
+    #else
+        #define SET_CODEWORD_IN(dut, val) (dut)->codeword_in = to_u64(val)
+        #define GET_CODEWORD_OUT(dut, val) (val) = from_u64((dut)->codeword_out)
+    #endif
+
+#endif
+
+void init_hamming_config(HammingConfig* config, int word_length) {
     if (word_length <= 4) {
-        config->n = 7;
-        config->k = 4;
-        config->parity_bits = 3;
-        config->parity_positions = (int*)malloc(3 * sizeof(int));
-        config->parity_positions[0] = 0;
-        config->parity_positions[1] = 1;
-        config->parity_positions[2] = 3;
-        config->data_positions = (int*)malloc(4 * sizeof(int));
-        config->data_positions[0] = 2;
-        config->data_positions[1] = 4;
-        config->data_positions[2] = 5;
-        config->data_positions[3] = 6;
+        config->n = 7;  config->k = 4;  config->parity_bits = 3;
+        config->parity_positions[0]=0; config->parity_positions[1]=1; config->parity_positions[2]=3;
     } else if (word_length <= 8) {
-        config->n = 12;
-        config->k = 8;
-        config->parity_bits = 4;
-        config->parity_positions = (int*)malloc(4 * sizeof(int));
-        config->parity_positions[0] = 0;
-        config->parity_positions[1] = 1;
-        config->parity_positions[2] = 3;
-        config->parity_positions[3] = 7;
-        config->data_positions = (int*)malloc(8 * sizeof(int));
-        config->data_positions[0] = 2;
-        config->data_positions[1] = 4;
-        config->data_positions[2] = 5;
-        config->data_positions[3] = 6;
-        config->data_positions[4] = 8;
-        config->data_positions[5] = 9;
-        config->data_positions[6] = 10;
-        config->data_positions[7] = 11;
-    } else {
-        // Default to 8-bit configuration
-        config->n = 12;
-        config->k = 8;
-        config->parity_bits = 4;
-        config->parity_positions = (int*)malloc(4 * sizeof(int));
-        config->parity_positions[0] = 0;
-        config->parity_positions[1] = 1;
-        config->parity_positions[2] = 3;
-        config->parity_positions[3] = 7;
-        config->data_positions = (int*)malloc(8 * sizeof(int));
-        config->data_positions[0] = 2;
-        config->data_positions[1] = 4;
-        config->data_positions[2] = 5;
-        config->data_positions[3] = 6;
-        config->data_positions[4] = 8;
-        config->data_positions[5] = 9;
-        config->data_positions[6] = 10;
-        config->data_positions[7] = 11;
+        config->n = 12;  config->k = 8;  config->parity_bits = 4;
+        static const int pp[] = {0, 1, 3, 7};
+        memcpy(config->parity_positions, pp, 4*sizeof(int));
+    } else if (word_length <= 16) {
+        config->n = 21;  config->k = 16;  config->parity_bits = 5;
+        static const int pp[] = {0, 1, 3, 7, 15};
+        memcpy(config->parity_positions, pp, 5*sizeof(int));
+    } else if (word_length <= 32) {
+        config->n = 38;  config->k = 32;  config->parity_bits = 6;
+        static const int pp[] = {0, 1, 3, 7, 15, 31};
+        memcpy(config->parity_positions, pp, 6*sizeof(int));
+    } else if (word_length <= 64) {
+        config->n = 71;  config->k = 64;  config->parity_bits = 7;
+        static const int pp[] = {0, 1, 3, 7, 15, 31, 63};
+        memcpy(config->parity_positions, pp, 7*sizeof(int));
+    } else { // 128
+        config->n = 137; config->k = 128; config->parity_bits = 9; // Not 8? log2(128+p+1). 128+8=136. 136 is not power of 2. Next is 256.
+        // Wait. N = 2^r - 1.
+        // For K=128.
+        // 128 + r <= 2^r - 1.
+        // r=8 -> 128+8 = 136 <= 255. Yes.
+        // So Parity bits = 8? 
+        // 0,1,3,7,15,31,63,127.
+        // Code positions: 1, 2, 4, 8, 16, 32, 64, 128.
+        // N = 128 + 8 = 136?
+        // Wait, Extended Hamming usually adds one more.
+        // Hamming(N,K).
+        // If K=128.
+        // bits: 1..M.
+        // Parity at 1,2,4...
+        // Last parity at 128.
+        // So total length is at least 128 + parity bits.
+        // If we have parity at 128, that covers position 128.
+        // Data bits start filling empty slots.
+        // Let's trust the calc:
+        // P0 (1), P1 (2), P2 (4), P3 (8), P4 (16), P5 (32), P6 (64), P7 (128).
+        // 8 parity bits.
+        // Max index covered is 255.
+        // We use slots 1..K+r.
+        // Total bits = 128 + 8 = 136.
+        // Wait, standard Hamming is (2^r-1, 2^r-1-r).
+        // (255, 247).
+        // We shorten it to (136, 128).
+        // Yes.
+        // But what about parameter logic? 
+        // Python code says: r = 0; while (1<<r) < (n + r + 1): r += 1
+        // For k=128:
+        // r=7, 128 < 128+7+1 (136). Fail.
+        // r=8, 256 >= 128+8+1 = 137. Pass.
+        // So r=8.
+        config->parity_bits = 8;
+        config->n = config->k + config->parity_bits;
+        static const int pp[] = {0, 1, 3, 7, 15, 31, 63, 127};
+        memcpy(config->parity_positions, pp, 8*sizeof(int));
     }
-    
-    return config;
+
+    // Calculate data positions
+    int idx = 0;
+    for (int i = 0; i < config->n; i++) {
+        int is_parity = 0;
+        for (int p = 0; p < config->parity_bits; p++) {
+            if (i == config->parity_positions[p]) { is_parity = 1; break; }
+        }
+        if (!is_parity) {
+            config->data_positions[idx++] = i;
+        }
+    }
 }
 
-void free_hamming_config(HammingConfig* config) {
-    free(config->parity_positions);
-    free(config->data_positions);
-    free(config);
-}
-
-uint32_t extract_data_from_codeword(uint32_t codeword, HammingConfig* config) {
-    uint32_t data = 0;
+BitArray extract_data(const BitArray& codeword, HammingConfig* config) {
+    BitArray data;
     for (int i = 0; i < config->k; i++) {
-        int bit = (codeword >> config->data_positions[i]) & 1;
-        data |= (bit << i);
+        data.set_bit(i, codeword.get_bit(config->data_positions[i]));
     }
     return data;
 }
 
-uint32_t insert_data_into_codeword(uint32_t data, HammingConfig* config) {
-    uint32_t codeword = 0;
+BitArray insert_data(const BitArray& data_val, HammingConfig* config) {
+    BitArray codeword;
     for (int i = 0; i < config->k; i++) {
-        int bit = (data >> i) & 1;
-        codeword |= (bit << config->data_positions[i]);
+        codeword.set_bit(config->data_positions[i], data_val.get_bit(i));
     }
     return codeword;
 }
 
-uint32_t calculate_parity_bits(uint32_t codeword, HammingConfig* config) {
-    uint32_t parity = 0;
+BitArray calculate_parity(const BitArray& codeword, HammingConfig* config) {
+    BitArray parity;
     for (int i = 0; i < config->parity_bits; i++) {
         int p = 0;
         for (int j = 0; j < config->n; j++) {
-            if (j != config->parity_positions[i] && ((codeword >> j) & 1)) {
+            // Check if bit j participates in parity i
+            // Logic: (j+1) has bit i set
+            if (j != config->parity_positions[i] && codeword.get_bit(j)) {
                 if ((j + 1) & (1 << i)) {
                     p ^= 1;
                 }
             }
         }
-        parity |= (p << config->parity_positions[i]);
+        parity.set_bit(config->parity_positions[i], p);
     }
     return parity;
 }
 
-uint32_t encode_hamming(uint32_t data, HammingConfig* config) {
-    uint32_t codeword = insert_data_into_codeword(data, config);
-    uint32_t parity = calculate_parity_bits(codeword, config);
-    return codeword | parity;
+BitArray encode_hamming(const BitArray& data_val, HammingConfig* config) {
+    BitArray codeword = insert_data(data_val, config);
+    BitArray parity = calculate_parity(codeword, config);
+    
+    // Merge parity
+    for(int i=0; i<config->parity_bits; i++) {
+        int pos = config->parity_positions[i];
+        codeword.set_bit(pos, parity.get_bit(pos));
+    }
+    return codeword;
 }
 
-uint32_t calculate_syndrome(uint32_t codeword, HammingConfig* config) {
+uint32_t calculate_syndrome(const BitArray& codeword, HammingConfig* config) {
     uint32_t syndrome = 0;
     for (int i = 0; i < config->parity_bits; i++) {
-        int expected_parity = 0;
+        int expected = 0;
         for (int j = 0; j < config->n; j++) {
-            if (j != config->parity_positions[i] && ((codeword >> j) & 1)) {
+            if (j != config->parity_positions[i] && codeword.get_bit(j)) {
                 if ((j + 1) & (1 << i)) {
-                    expected_parity ^= 1;
+                    expected ^= 1;
                 }
             }
         }
-        int actual_parity = (codeword >> config->parity_positions[i]) & 1;
-        if (expected_parity != actual_parity) {
+        int actual = codeword.get_bit(config->parity_positions[i]);
+        if (expected != actual) {
             syndrome |= (1 << i);
         }
     }
     return syndrome;
 }
 
-uint32_t decode_hamming(uint32_t codeword, HammingConfig* config, int* error_type) {
+BitArray decode_hamming(const BitArray& codeword, HammingConfig* config, int* error_type) {
     uint32_t syndrome = calculate_syndrome(codeword, config);
     
     if (syndrome == 0) {
         *error_type = 0; // No error
-        return extract_data_from_codeword(codeword, config);
-    } else if (syndrome <= config->n) {
-        // Single bit error - correct it
-        uint32_t corrected_codeword = codeword ^ (1 << (syndrome - 1));
+        return extract_data(codeword, config);
+    } else if ((int)syndrome <= config->n) {
+        // Single bit error
+        BitArray corrected = codeword;
+        int bit_idx = syndrome - 1;
+        corrected.set_bit(bit_idx, !corrected.get_bit(bit_idx));
+        
         *error_type = 1; // Corrected
-        return extract_data_from_codeword(corrected_codeword, config);
+        return extract_data(corrected, config);
     } else {
-        // Double bit error - detected but not corrected
         *error_type = 2; // Detected
-        return extract_data_from_codeword(codeword, config);
+        return extract_data(codeword, config);
     }
 }
 
-// Test function
 void test_hamming_secded_ecc() {
     Vhamming_secded_ecc* dut = new Vhamming_secded_ecc();
     
-    printf("=== Hamming SECDED ECC Test ===\n");
+    int data_width = DATA_WIDTH;
     
-    // Test cases
-    uint32_t test_cases[] = {0x00, 0x55, 0xAA, 0xFF, 0x12, 0x34, 0x56, 0x78};
-    int num_tests = sizeof(test_cases) / sizeof(test_cases[0]);
-    int data_width = 8;
+    printf("=== Hamming SECDED ECC Test (DATA_WIDTH=%d) ===\n", data_width);
+    
+    HammingConfig config;
+    init_hamming_config(&config, data_width);
+    
+    // Generate random test cases
+    const int NUM_TESTS = 20;
+    srand(12345);
+    
     int pass_count = 0;
     int fail_count = 0;
     
-    HammingConfig* config = create_hamming_config(data_width);
-    
-    for (int i = 0; i < num_tests; i++) {
-        uint32_t test_data = test_cases[i];
+    for (int i = 0; i < NUM_TESTS; i++) {
+        BitArray test_data;
+        // Fill random data
+        for(int w=0; w<MAX_WORDS; w++) test_data.words[w] = rand() | (rand()<<16);
+        // Mask unused bits
+        for(int b=data_width; b<MAX_WORDS*32; b++) test_data.set_bit(b, 0);
         
-        // Calculate expected results (Python-like)
-        uint32_t expected_codeword = encode_hamming(test_data, config);
-        int expected_error_type;
-        uint32_t expected_decoded_data = decode_hamming(expected_codeword, config, &expected_error_type);
+        BitArray expected_codeword = encode_hamming(test_data, &config);
         
-        // Reset DUT
-        dut->rst_n = 0;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
-        dut->rst_n = 1;
+        // Reset
+        dut->rst_n = 0; dut->eval();
+        dut->rst_n = 1; dut->eval();
         
-        // Test encoding
-        dut->encode_en = 1;
-        dut->decode_en = 0;
-        dut->data_in = test_data;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        // Encode
+        dut->encode_en = 1; dut->decode_en = 0;
+        SET_DATA_IN(dut, test_data);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        // Check encoding result
-        if (dut->codeword_out == expected_codeword) {
-            printf("ENCODE TEST %d: PASS (data=0x%02X, codeword=0x%03X)\n", 
-                   i, test_data, dut->codeword_out);
+        BitArray dut_codeword;
+        GET_CODEWORD_OUT(dut, dut_codeword);
+        
+        if (dut_codeword == expected_codeword) {
             pass_count++;
         } else {
-            printf("ENCODE TEST %d: FAIL (data=0x%02X, expected=0x%03X, got=0x%03X)\n", 
-                   i, test_data, expected_codeword, dut->codeword_out);
+            printf("ENCODE FAIL Test %d\n", i);
             fail_count++;
         }
         
-        // Test decoding (no error)
-        dut->encode_en = 0;
-        dut->decode_en = 1;
-        dut->codeword_in = expected_codeword;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        // Decode
+        dut->encode_en = 0; dut->decode_en = 1;
+        SET_CODEWORD_IN(dut, expected_codeword);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        // Check decoding result
-        int expected_error_detected = (expected_error_type != 0);
-        int expected_error_corrected = (expected_error_type == 1);
+        BitArray dut_data;
+        GET_DATA_OUT(dut, dut_data);
         
-        if (dut->data_out == expected_decoded_data && 
-            dut->error_detected == expected_error_detected &&
-            dut->error_corrected == expected_error_corrected) {
-            printf("DECODE TEST %d: PASS (codeword=0x%03X, data=0x%02X, error_detected=%d, error_corrected=%d)\n", 
-                   i, expected_codeword, dut->data_out, dut->error_detected, dut->error_corrected);
+        if (dut_data == test_data && !dut->error_detected) {
             pass_count++;
         } else {
-            printf("DECODE TEST %d: FAIL (codeword=0x%03X, expected_data=0x%02X, got_data=0x%02X, expected_error_detected=%d, got_error_detected=%d, expected_error_corrected=%d, got_error_corrected=%d)\n", 
-                   i, expected_codeword, expected_decoded_data, dut->data_out, expected_error_detected, dut->error_detected, expected_error_corrected, dut->error_corrected);
+            printf("DECODE FAIL Test %d\n", i);
             fail_count++;
         }
         
-        // Test single bit error correction
-        uint32_t corrupted_codeword = expected_codeword ^ 1; // Flip LSB
-        int expected_error_type_corrupted;
-        uint32_t expected_decoded_data_corrupted = decode_hamming(corrupted_codeword, config, &expected_error_type_corrupted);
+        // Single Error
+        BitArray corrupted = expected_codeword;
+        int err_pos = rand() % config.n;
+        corrupted.set_bit(err_pos, !corrupted.get_bit(err_pos));
         
-        dut->codeword_in = corrupted_codeword;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        SET_CODEWORD_IN(dut, corrupted);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        int expected_error_detected_corrupted = (expected_error_type_corrupted != 0);
-        int expected_error_corrected_corrupted = (expected_error_type_corrupted == 1);
+        GET_DATA_OUT(dut, dut_data);
         
-        if (dut->error_detected == expected_error_detected_corrupted &&
-            dut->error_corrected == expected_error_corrected_corrupted) {
-            printf("SINGLE ERROR CORRECTION TEST %d: PASS (corrupted_codeword=0x%03X, error_detected=%d, error_corrected=%d)\n", 
-                   i, corrupted_codeword, dut->error_detected, dut->error_corrected);
+        if (dut_data == test_data && dut->error_corrected) {
             pass_count++;
         } else {
-            printf("SINGLE ERROR CORRECTION TEST %d: FAIL (corrupted_codeword=0x%03X, expected_error_detected=%d, got_error_detected=%d, expected_error_corrected=%d, got_error_corrected=%d)\n", 
-                   i, corrupted_codeword, expected_error_detected_corrupted, dut->error_detected, expected_error_corrected_corrupted, dut->error_corrected);
+            printf("CORRECT FAIL Test %d\n", i);
             fail_count++;
         }
-        
-        printf("\n");
     }
     
-    // Summary
-    printf("=== Test Summary ===\n");
-    printf("Total tests: %d\n", num_tests * 3); // encode, decode, error correction
-    printf("Passed: %d\n", pass_count);
-    printf("Failed: %d\n", fail_count);
+    printf("Passed: %d, Failed: %d\n", pass_count, fail_count);
+    if (fail_count == 0) printf("RESULT: PASS\n");
+    else printf("RESULT: FAIL\n");
     
-    if (fail_count == 0) {
-        printf("RESULT: PASS\n");
-    } else {
-        printf("RESULT: FAIL\n");
-    }
-    
-    free_hamming_config(config);
     delete dut;
 }
 
 int main() {
     test_hamming_secded_ecc();
     return 0;
-} 
+}

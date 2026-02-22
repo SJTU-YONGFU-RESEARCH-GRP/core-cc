@@ -19,6 +19,9 @@ class ParityECC(ECCBase):
             self.word_length = data_length
         else:
             self.word_length = word_length
+            
+        self.k = self.word_length
+        self.n = self.word_length + 1
     
     def encode(self, data: int) -> int:
         """

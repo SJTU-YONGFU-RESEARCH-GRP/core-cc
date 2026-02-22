@@ -1,0 +1,22 @@
+{
+  "ecc_type": "GolayECC",
+  "word_length": 8,
+  "error_pattern": "random",
+  "trials": 10000,
+  "correctable_errors": 9999,
+  "detected_errors": 0,
+  "undetected_errors": 1,
+  "encode_time_avg": 1.9778159679844974e-06,
+  "decode_time_avg": 1.9854710437357425e-06,
+  "total_time_avg": 3.96328701172024e-06,
+  "code_rate": 0.34782608695652173,
+  "overhead_ratio": 1.875,
+  "correction_rate": 0.9999,
+  "detection_rate": 0.0,
+  "success_rate": 0.9999,
+  "error_distribution": {
+    "corrected": 9999,
+    "detected": 0,
+    "undetected": 1
+  }
+}

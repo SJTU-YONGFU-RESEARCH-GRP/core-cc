@@ -1,97 +1,63 @@
 {
   "yosys_available": true,
   "verilator_available": true,
-  "overall_status": "COMPLETE",
+  "overall_status": "SYNTHESIS_ONLY",
+  "execution_time": null,
+  "average_runtime_per_module": null,
   "synthesis_results": {
     "fire_code_ecc": {
       "module_name": "fire_code_ecc",
       "verilog_file": "verilogs/fire_code_ecc.v",
-      "synthesis_available": true,
+      "synthesis_available": false,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": null
+      "error_message": "ERROR: Module `\\fire_code_ecc_w64' referenced in module `\\fire_code_ecc' in cell `\\genblk1.genblk1.genblk1.genblk1.gen_w64.u_core' is not part of the design.\n"
     },
     "bch_ecc": {
       "module_name": "bch_ecc",
       "verilog_file": "verilogs/bch_ecc.v",
-      "synthesis_available": true,
+      "synthesis_available": false,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": null
-    },
-    "simple_encoder": {
-      "module_name": "simple_encoder",
-      "verilog_file": "verilogs/simple_encoder.v",
-      "synthesis_available": true,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": null
+      "error_message": "ERROR: Module `\\bch_ecc_w64' referenced in module `\\bch_ecc' in cell `\\genblk1.genblk1.genblk1.genblk1.w64.u_bch' is not part of the design.\n"
     },
     "extended_hamming_ecc": {
       "module_name": "extended_hamming_ecc",
       "verilog_file": "verilogs/extended_hamming_ecc.v",
-      "synthesis_available": false,
+      "synthesis_available": true,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/extended_hamming_ecc.v:26: ERROR: syntax error, unexpected TOK_ID, expecting ',' or ';' or '='\n"
+      "error_message": null
     },
     "burst_error_ecc": {
       "module_name": "burst_error_ecc",
       "verilog_file": "verilogs/burst_error_ecc.v",
-      "synthesis_available": false,
+      "synthesis_available": true,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/burst_error_ecc.v:118: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "non_binary_ldpc_ecc": {
       "module_name": "non_binary_ldpc_ecc",
       "verilog_file": "verilogs/non_binary_ldpc_ecc.v",
-      "synthesis_available": false,
+      "synthesis_available": true,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/non_binary_ldpc_ecc.v:150: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "ldpc_ecc": {
       "module_name": "ldpc_ecc",
       "verilog_file": "verilogs/ldpc_ecc.v",
-      "synthesis_available": true,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": null
-    },
-    "bch74_ecc": {
-      "module_name": "bch74_ecc",
-      "verilog_file": "verilogs/bch74_ecc.v",
       "synthesis_available": false,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: ERROR: Module `bch74_ecc' not found!\n"
-    },
-    "general_bch_ecc": {
-      "module_name": "general_bch_ecc",
-      "verilog_file": "verilogs/general_bch_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": "Synthesis failed: ERROR: Module `general_bch_ecc' not found!\n"
-    },
-    "parity_decoder": {
-      "module_name": "parity_decoder",
-      "verilog_file": "verilogs/parity_decoder.v",
-      "synthesis_available": true,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": null
+      "error_message": "ERROR: Module `\\ldpc_ecc_w64' referenced in module `\\ldpc_ecc' in cell `\\genblk1.genblk1.genblk1.genblk1.w64.inst' is not part of the design.\n"
     },
     "concatenated_ecc": {
       "module_name": "concatenated_ecc",
@@ -100,16 +66,7 @@
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/concatenated_ecc.v:160: ERROR: For loop inline variable declaration is only supported in SystemVerilog mode!\n"
-    },
-    "bch63326_ecc": {
-      "module_name": "bch63326_ecc",
-      "verilog_file": "verilogs/bch63326_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": "Synthesis failed: ERROR: Module `bch63326_ecc' not found!\n"
+      "error_message": "ERROR: Module `\\hamming_secded_ecc' referenced in module `\\concatenated_ecc' in cell `\\gen_out[0].u_outer_stage' is not part of the design.\n"
     },
     "turbo_ecc": {
       "module_name": "turbo_ecc",
@@ -118,61 +75,52 @@
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/turbo_ecc.v:62: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": "ERROR: Module `\\turbo_ecc_w64' referenced in module `\\turbo_ecc' in cell `\\genblk1.genblk1.genblk1.genblk1.w64.u_turbo' is not part of the design.\n"
     },
     "three_d_memory_ecc": {
       "module_name": "three_d_memory_ecc",
       "verilog_file": "verilogs/three_d_memory_ecc.v",
-      "synthesis_available": false,
+      "synthesis_available": true,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/three_d_memory_ecc.v:141: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "primary_secondary_ecc": {
       "module_name": "primary_secondary_ecc",
       "verilog_file": "verilogs/primary_secondary_ecc.v",
-      "synthesis_available": false,
+      "synthesis_available": true,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/primary_secondary_ecc.v:132: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": null
     },
     "cyclic_ecc": {
       "module_name": "cyclic_ecc",
       "verilog_file": "verilogs/cyclic_ecc.v",
-      "synthesis_available": true,
+      "synthesis_available": false,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": null
+      "error_message": "ERROR: Module `\\cyclic_ecc_w64' referenced in module `\\cyclic_ecc' in cell `\\genblk1.genblk1.genblk1.genblk1.gen_w64.u_core' is not part of the design.\n"
     },
     "spatially_coupled_ldpc_ecc": {
       "module_name": "spatially_coupled_ldpc_ecc",
       "verilog_file": "verilogs/spatially_coupled_ldpc_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/spatially_coupled_ldpc_ecc.v:140: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
-    },
-    "bch31163_ecc": {
-      "module_name": "bch31163_ecc",
-      "verilog_file": "verilogs/bch31163_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": "Synthesis failed: ERROR: Module `bch31163_ecc' not found!\n"
-    },
-    "golay_ecc": {
-      "module_name": "golay_ecc",
-      "verilog_file": "verilogs/golay_ecc.v",
       "synthesis_available": true,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
+    },
+    "golay_ecc": {
+      "module_name": "golay_ecc",
+      "verilog_file": "verilogs/golay_ecc.v",
+      "synthesis_available": false,
+      "area_cells": null,
+      "timing_info": null,
+      "power_estimate": null,
+      "error_message": "ERROR: Module `\\golay_ecc_w64' referenced in module `\\golay_ecc' in cell `\\genblk1.genblk1.genblk1.genblk1.gen_w64.u_core' is not part of the design.\n"
     },
     "convolutional_ecc": {
       "module_name": "convolutional_ecc",
@@ -183,50 +131,23 @@
       "power_estimate": null,
       "error_message": null
     },
-    "hamming_encoder": {
-      "module_name": "hamming_encoder",
-      "verilog_file": "verilogs/hamming_encoder.v",
-      "synthesis_available": true,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": null
-    },
     "polar_ecc": {
       "module_name": "polar_ecc",
       "verilog_file": "verilogs/polar_ecc.v",
-      "synthesis_available": true,
+      "synthesis_available": false,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": null
-    },
-    "constant_encoder": {
-      "module_name": "constant_encoder",
-      "verilog_file": "verilogs/constant_encoder.v",
-      "synthesis_available": true,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": null
+      "error_message": "ERROR: Module `\\polar_ecc_w64' referenced in module `\\polar_ecc' in cell `\\genblk1.genblk1.genblk1.genblk1.w64.u_polar' is not part of the design.\n"
     },
     "hamming_secded_ecc": {
       "module_name": "hamming_secded_ecc",
       "verilog_file": "verilogs/hamming_secded_ecc.v",
-      "synthesis_available": false,
+      "synthesis_available": true,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/hamming_secded_ecc.v:31: ERROR: syntax error, unexpected TOK_ID, expecting ',' or ';' or '='\n"
-    },
-    "rs15_11_ecc": {
-      "module_name": "rs15_11_ecc",
-      "verilog_file": "verilogs/rs15_11_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": "Synthesis failed: ERROR: Module `rs15_11_ecc' not found!\n"
+      "error_message": null
     },
     "raptor_code_ecc": {
       "module_name": "raptor_code_ecc",
@@ -244,38 +165,11 @@
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/product_code_ecc.v:64: ERROR: input/output/inout ports cannot have unpacked dimensions.\n"
+      "error_message": "ERROR: Module `\\hamming_secded_ecc' referenced in module `\\product_code_ecc' in cell `\\gen_blocks[0].u_row_ecc' is not part of the design.\n"
     },
     "composite_ecc": {
       "module_name": "composite_ecc",
       "verilog_file": "verilogs/composite_ecc.v",
-      "synthesis_available": true,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": null
-    },
-    "hamming_decoder": {
-      "module_name": "hamming_decoder",
-      "verilog_file": "verilogs/hamming_decoder.v",
-      "synthesis_available": true,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": null
-    },
-    "parity_encoder": {
-      "module_name": "parity_encoder",
-      "verilog_file": "verilogs/parity_encoder.v",
-      "synthesis_available": true,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": null
-    },
-    "test_encoder": {
-      "module_name": "test_encoder",
-      "verilog_file": "verilogs/test_encoder.v",
       "synthesis_available": true,
       "area_cells": null,
       "timing_info": null,
@@ -289,16 +183,16 @@
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/adaptive_ecc.v:109: ERROR: Local declaration in unnamed block is only supported in SystemVerilog mode!\n"
+      "error_message": "ERROR: Module `\\hamming_secded_ecc' referenced in module `\\adaptive_ecc' in cell `\\hamming_inst' is not part of the design.\n"
     },
     "reed_solomon_ecc": {
       "module_name": "reed_solomon_ecc",
       "verilog_file": "verilogs/reed_solomon_ecc.v",
-      "synthesis_available": true,
+      "synthesis_available": false,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": null
+      "error_message": "ERROR: Module `\\reed_solomon_ecc_w64' referenced in module `\\reed_solomon_ecc' in cell `\\genblk1.genblk1.genblk1.genblk1.w64.u_rs' is not part of the design.\n"
     },
     "reed_muller_ecc": {
       "module_name": "reed_muller_ecc",
@@ -307,7 +201,7 @@
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/reed_muller_ecc.v:31: ERROR: syntax error, unexpected TOK_ID, expecting ',' or ';' or '='\n"
+      "error_message": "ERROR: Module `\\reed_muller_ecc_w64' referenced in module `\\reed_muller_ecc' in cell `\\genblk1.genblk1.genblk1.genblk1.gen_w64.u_core' is not part of the design.\n"
     },
     "parity_ecc": {
       "module_name": "parity_ecc",
@@ -321,20 +215,11 @@
     "repetition_ecc": {
       "module_name": "repetition_ecc",
       "verilog_file": "verilogs/repetition_ecc.v",
-      "synthesis_available": false,
+      "synthesis_available": true,
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/repetition_ecc.v:55: ERROR: syntax error, unexpected TOK_ID, expecting '='\n"
-    },
-    "bch1572_ecc": {
-      "module_name": "bch1572_ecc",
-      "verilog_file": "verilogs/bch1572_ecc.v",
-      "synthesis_available": false,
-      "area_cells": null,
-      "timing_info": null,
-      "power_estimate": null,
-      "error_message": "Synthesis failed: ERROR: Module `bch1572_ecc' not found!\n"
+      "error_message": null
     },
     "system_ecc": {
       "module_name": "system_ecc",
@@ -343,7 +228,7 @@
       "area_cells": null,
       "timing_info": null,
       "power_estimate": null,
-      "error_message": "Synthesis failed: verilogs/system_ecc.v:27: ERROR: syntax error, unexpected TOK_ID, expecting ',' or ';' or '='\n"
+      "error_message": "ERROR: Module `\\hamming_secded_ecc' referenced in module `\\system_ecc' in cell `\\hamming_inst' is not part of the design.\n"
     },
     "crc_ecc": {
       "module_name": "crc_ecc",
@@ -355,240 +240,215 @@
       "error_message": null
     }
   },
-  "testbench_results": {
-    "cyclic_ecc_tb": {
-      "testbench_name": "cyclic_ecc_tb",
-      "testbench_file": "testbenches/cyclic_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+  "testbench_results": {},
+  "synthesis_multi_width": {
+    "fire_code_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "repetition_ecc_tb": {
-      "testbench_name": "repetition_ecc_tb",
-      "testbench_file": "testbenches/repetition_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "bch_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "spatially_coupled_ldpc_ecc_tb": {
-      "testbench_name": "spatially_coupled_ldpc_ecc_tb",
-      "testbench_file": "testbenches/spatially_coupled_ldpc_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "extended_hamming_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "convolutional_ecc_tb": {
-      "testbench_name": "convolutional_ecc_tb",
-      "testbench_file": "testbenches/convolutional_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "burst_error_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "polar_ecc_tb": {
-      "testbench_name": "polar_ecc_tb",
-      "testbench_file": "testbenches/polar_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "non_binary_ldpc_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "three_d_memory_ecc_tb": {
-      "testbench_name": "three_d_memory_ecc_tb",
-      "testbench_file": "testbenches/three_d_memory_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "ldpc_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "concatenated_ecc_tb": {
-      "testbench_name": "concatenated_ecc_tb",
-      "testbench_file": "testbenches/concatenated_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "concatenated_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "reed_solomon_ecc_tb": {
-      "testbench_name": "reed_solomon_ecc_tb",
-      "testbench_file": "testbenches/reed_solomon_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "turbo_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "composite_ecc_tb": {
-      "testbench_name": "composite_ecc_tb",
-      "testbench_file": "testbenches/composite_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "three_d_memory_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "crc_ecc_tb": {
-      "testbench_name": "crc_ecc_tb",
-      "testbench_file": "testbenches/crc_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "primary_secondary_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "raptor_code_ecc_tb": {
-      "testbench_name": "raptor_code_ecc_tb",
-      "testbench_file": "testbenches/raptor_code_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "cyclic_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "non_binary_ldpc_ecc_tb": {
-      "testbench_name": "non_binary_ldpc_ecc_tb",
-      "testbench_file": "testbenches/non_binary_ldpc_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "spatially_coupled_ldpc_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "reed_muller_ecc_tb": {
-      "testbench_name": "reed_muller_ecc_tb",
-      "testbench_file": "testbenches/reed_muller_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "golay_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "extended_hamming_ecc_tb": {
-      "testbench_name": "extended_hamming_ecc_tb",
-      "testbench_file": "testbenches/extended_hamming_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "convolutional_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "parity_ecc_tb": {
-      "testbench_name": "parity_ecc_tb",
-      "testbench_file": "testbenches/parity_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "polar_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "burst_error_ecc_tb": {
-      "testbench_name": "burst_error_ecc_tb",
-      "testbench_file": "testbenches/burst_error_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "hamming_secded_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "system_ecc_tb": {
-      "testbench_name": "system_ecc_tb",
-      "testbench_file": "testbenches/system_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "raptor_code_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "primary_secondary_ecc_tb": {
-      "testbench_name": "primary_secondary_ecc_tb",
-      "testbench_file": "testbenches/primary_secondary_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "product_code_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "turbo_ecc_tb": {
-      "testbench_name": "turbo_ecc_tb",
-      "testbench_file": "testbenches/turbo_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "composite_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "product_code_ecc_tb": {
-      "testbench_name": "product_code_ecc_tb",
-      "testbench_file": "testbenches/product_code_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "adaptive_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "adaptive_ecc_tb": {
-      "testbench_name": "adaptive_ecc_tb",
-      "testbench_file": "testbenches/adaptive_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "reed_solomon_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "golay_ecc_tb": {
-      "testbench_name": "golay_ecc_tb",
-      "testbench_file": "testbenches/golay_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "reed_muller_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "bch_ecc_tb": {
-      "testbench_name": "bch_ecc_tb",
-      "testbench_file": "testbenches/bch_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "parity_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "ldpc_ecc_tb": {
-      "testbench_name": "ldpc_ecc_tb",
-      "testbench_file": "testbenches/ldpc_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "repetition_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "hamming_secded_ecc_tb": {
-      "testbench_name": "hamming_secded_ecc_tb",
-      "testbench_file": "testbenches/hamming_secded_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "system_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     },
-    "fire_code_ecc_tb": {
-      "testbench_name": "fire_code_ecc_tb",
-      "testbench_file": "testbenches/fire_code_ecc_tb.c",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "NOT_RUN",
-      "test_cases": null,
-      "error_message": "Simulation not run"
+    "crc_ecc": {
+      "4": null,
+      "8": null,
+      "16": null,
+      "32": null,
+      "64": null,
+      "128": null
     }
   }
 }

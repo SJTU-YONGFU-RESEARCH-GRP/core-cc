@@ -36,6 +36,12 @@ class ProductCodeECC(ECCBase):
         
         self.row_ecc = HammingSECDEDECC(data_length=self.sub_word_length)
         self.col_ecc = ParityECC(data_length=self.sub_word_length)
+        
+        # Product code: n = n_row * n_col, k = k_row * k_col
+        # row_ecc is Hamming: n_row = k_row + parity + 1
+        # col_ecc is Parity: n_col = k_col + 1
+        self.k = self.row_ecc.k * self.col_ecc.k
+        self.n = self.row_ecc.n * self.col_ecc.n
 
     def _pack_data(self, data: int) -> List[int]:
         """Pack data into sub-words for product code encoding."""

@@ -3,220 +3,173 @@
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
+#include <time.h>
 
 // Verilator generated header
 #include "Vrepetition_ecc.h"
 #include "verilated.h"
+#include "ecc_test_utils.h"
 
-// Python-like Repetition ECC calculation functions
-typedef struct {
-    int repetition_factor;
-    int data_length;
-} RepetitionConfig;
+// Auto-detect DATA_WIDTH from the DUT
+#ifndef DATA_WIDTH
+#define DATA_WIDTH 8
+#endif
 
-RepetitionConfig* create_repetition_config(int data_length, int repetition_factor) {
-    RepetitionConfig* config = (RepetitionConfig*)malloc(sizeof(RepetitionConfig));
-    config->repetition_factor = repetition_factor;
-    config->data_length = data_length;
-    return config;
-}
+// Repetition Factor default to 3 if not specified (Verilog default)
+#ifndef REPETITION_FACTOR
+#define REPETITION_FACTOR 3
+#endif
 
-void free_repetition_config(RepetitionConfig* config) {
-    free(config);
-}
-
-// Convert integer to bit array
-void int_to_bits(uint32_t data, int* bits, int length) {
-    for (int i = 0; i < length; i++) {
-        bits[i] = (data >> i) & 1;
-    }
-}
-
-// Convert bit array to integer
-uint32_t bits_to_int(int* bits, int length) {
-    uint32_t result = 0;
-    for (int i = 0; i < length; i++) {
-        result |= (bits[i] << i);
-    }
-    return result;
-}
-
-// Python-like repetition encoding
-uint32_t encode_repetition(uint32_t data, RepetitionConfig* config) {
-    int data_bits[32];
-    int codeword_bits[256]; // Max size for safety
-    int codeword_length = config->data_length * config->repetition_factor;
+// Helper macros for wide port access
+#if DATA_WIDTH > 64
+    #define SET_DATA_IN(dut, val) SET_WIDE_PORT(dut, data_in, val, DATA_WIDTH)
     
-    // Convert data to bit array
-    int_to_bits(data, data_bits, config->data_length);
+    #define GET_DATA_OUT(dut, val) GET_WIDE_PORT(dut, data_out, val, DATA_WIDTH)
+        
+    // Codeword is DATA*Factor. 128*3 = 384. Definitely wide.
+    #define SET_CODEWORD_IN(dut, val) SET_WIDE_PORT(dut, codeword_in, val, DATA_WIDTH*REPETITION_FACTOR)
+
+    #define GET_CODEWORD_OUT(dut, val) GET_WIDE_PORT(dut, codeword_out, val, DATA_WIDTH*REPETITION_FACTOR)
+#else
+    #define SET_DATA_IN(dut, val) (dut)->data_in = to_u64(val)
+    #define GET_DATA_OUT(dut, val) (val) = from_u64((dut)->data_out)
     
-    // Encode with repetition (each bit repeated n times)
-    int codeword_idx = 0;
-    for (int i = 0; i < config->data_length; i++) {
-        for (int j = 0; j < config->repetition_factor; j++) {
-            codeword_bits[codeword_idx++] = data_bits[i];
+    // Check codeword width for simple scalar vs wide
+    #if (DATA_WIDTH * REPETITION_FACTOR) > 64
+        #define SET_CODEWORD_IN(dut, val) SET_WIDE_PORT(dut, codeword_in, val, DATA_WIDTH*REPETITION_FACTOR)
+        #define GET_CODEWORD_OUT(dut, val) GET_WIDE_PORT(dut, codeword_out, val, DATA_WIDTH*REPETITION_FACTOR)
+    #else
+        #define SET_CODEWORD_IN(dut, val) (dut)->codeword_in = to_u64(val)
+        #define GET_CODEWORD_OUT(dut, val) (val) = from_u64((dut)->codeword_out)
+    #endif
+#endif
+
+// Python-like repetition logic
+BitArray encode_repetition(const BitArray& data, int data_width, int rep_factor) {
+    BitArray codeword;
+    for(int i=0; i<data_width; i++) {
+        int bit = data.get_bit(i);
+        for(int j=0; j<rep_factor; j++) {
+            codeword.set_bit(i*rep_factor + j, bit);
         }
     }
-    
-    // Convert back to integer
-    return bits_to_int(codeword_bits, codeword_length);
+    return codeword;
 }
 
-// Python-like repetition decoding with majority voting
-uint32_t decode_repetition(uint32_t codeword, RepetitionConfig* config, int* error_type) {
-    int codeword_bits[256]; // Max size for safety
-    int decoded_bits[32];
-    int codeword_length = config->data_length * config->repetition_factor;
+BitArray decode_repetition(const BitArray& codeword, int data_width, int rep_factor, int* error_type) {
+    BitArray data;
+    int error_corrected = 0;
     
-    // Convert codeword to bit array
-    int_to_bits(codeword, codeword_bits, codeword_length);
-    
-    // Decode using majority voting
-    for (int i = 0; i < config->data_length; i++) {
+    for(int i=0; i<data_width; i++) {
         int ones = 0;
-        for (int j = 0; j < config->repetition_factor; j++) {
-            ones += codeword_bits[i * config->repetition_factor + j];
+        for(int j=0; j<rep_factor; j++) {
+            if (codeword.get_bit(i*rep_factor + j)) ones++;
         }
+        
         // Majority vote
-        decoded_bits[i] = (ones > config->repetition_factor / 2) ? 1 : 0;
+        int decoded_bit = (ones > rep_factor/2) ? 1 : 0;
+        data.set_bit(i, decoded_bit);
+        
+        // Check correction
+        if (decoded_bit == 1 && ones != rep_factor) error_corrected = 1;
+        if (decoded_bit == 0 && ones != 0) error_corrected = 1;
     }
     
-    // Convert back to integer
-    uint32_t decoded_data = bits_to_int(decoded_bits, config->data_length);
-    
-    // Check if decoding was successful (simplified error detection)
-    uint32_t re_encoded = encode_repetition(decoded_data, config);
+    // Re-verify against assumption
+    // Simple logic: if input != encoded(output), then corrected (or detected)
+    BitArray re_encoded = encode_repetition(data, data_width, rep_factor);
     if (re_encoded != codeword) {
         *error_type = 1; // corrected
     } else {
-        *error_type = 0; // No error detected
+        *error_type = 0;
     }
     
-    return decoded_data;
+    return data;
 }
 
-// Test function
 void test_repetition_ecc() {
     Vrepetition_ecc* dut = new Vrepetition_ecc();
     
-    printf("=== Repetition ECC Test ===\n");
+    int data_width = DATA_WIDTH;
+    int rep_factor = REPETITION_FACTOR;
     
-    // Test cases
-    uint32_t test_cases[] = {0x00, 0x55, 0xAA, 0xFF, 0x12, 0x34, 0x56, 0x78};
-    int num_tests = sizeof(test_cases) / sizeof(test_cases[0]);
-    int data_width = 8;
-    int repetition_factor = 3;
+    printf("=== Repetition ECC Test (DATA_WIDTH=%d, FACTOR=%d) ===\n", data_width, rep_factor);
+    
+    const int NUM_TESTS = 20;
+    srand(12345);
     int pass_count = 0;
     int fail_count = 0;
     
-    RepetitionConfig* config = create_repetition_config(data_width, repetition_factor);
-    
-    for (int i = 0; i < num_tests; i++) {
-        uint32_t test_data = test_cases[i];
+    for (int i = 0; i < NUM_TESTS; i++) {
+        BitArray test_data;
+        for(int w=0; w<MAX_WORDS; w++) test_data.words[w] = rand() | (rand()<<16);
+        for(int b=data_width; b<MAX_WORDS*32; b++) test_data.set_bit(b, 0);
         
-        // Calculate expected results (Python-like)
-        uint32_t expected_codeword = encode_repetition(test_data, config);
-        int expected_error_type;
-        uint32_t expected_decoded_data = decode_repetition(expected_codeword, config, &expected_error_type);
+        BitArray expected_codeword = encode_repetition(test_data, data_width, rep_factor);
         
-        // Reset DUT
-        dut->rst_n = 0;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
-        dut->rst_n = 1;
+        // Reset
+        dut->rst_n = 0; dut->eval();
+        dut->rst_n = 1; dut->eval();
         
-        // Test encoding
-        dut->encode_en = 1;
-        dut->decode_en = 0;
-        dut->data_in = test_data;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        // Encode
+        dut->encode_en = 1; dut->decode_en = 0;
+        SET_DATA_IN(dut, test_data);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        // Check encoding result
-        if (dut->codeword_out == expected_codeword) {
-            printf("ENCODE TEST %d: PASS (data=0x%02X, codeword=0x%06X)\n", 
-                   i, test_data, dut->codeword_out);
+        BitArray dut_cw;
+        GET_CODEWORD_OUT(dut, dut_cw);
+        
+        if (dut_cw == expected_codeword) {
             pass_count++;
         } else {
-            printf("ENCODE TEST %d: FAIL (data=0x%02X, expected=0x%06X, got=0x%06X)\n", 
-                   i, test_data, expected_codeword, dut->codeword_out);
+            printf("ENCODE FAIL Test %d\n", i);
             fail_count++;
         }
         
-        // Test decoding (no error)
-        dut->encode_en = 0;
-        dut->decode_en = 1;
-        dut->codeword_in = expected_codeword;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        // Decode
+        dut->encode_en = 0; dut->decode_en = 1;
+        SET_CODEWORD_IN(dut, expected_codeword);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        // Check decoding result
-        int expected_error_detected = (expected_error_type != 0);
-        int expected_error_corrected = (expected_error_type == 1);
+        BitArray dut_out;
+        GET_DATA_OUT(dut, dut_out);
         
-        if (dut->data_out == expected_decoded_data && 
-            dut->error_detected == expected_error_detected &&
-            dut->error_corrected == expected_error_corrected) {
-            printf("DECODE TEST %d: PASS (codeword=0x%06X, data=0x%02X, error_detected=%d, error_corrected=%d)\n", 
-                   i, expected_codeword, dut->data_out, dut->error_detected, dut->error_corrected);
+        if (dut_out == test_data && !dut->error_detected) {
             pass_count++;
         } else {
-            printf("DECODE TEST %d: FAIL (codeword=0x%06X, expected_data=0x%02X, got_data=0x%02X, expected_error_detected=%d, got_error_detected=%d, expected_error_corrected=%d, got_error_corrected=%d)\n", 
-                   i, expected_codeword, expected_decoded_data, dut->data_out, expected_error_detected, dut->error_detected, expected_error_corrected, dut->error_corrected);
+            printf("DECODE FAIL Test %d\n", i);
             fail_count++;
         }
         
-        // Test error injection and correction
-        uint32_t corrupted_codeword = expected_codeword ^ 1; // Flip LSB
-        int expected_error_type_corrupted;
-        uint32_t expected_decoded_data_corrupted = decode_repetition(corrupted_codeword, config, &expected_error_type_corrupted);
+        // Error Correction (Flip 1 bit in first block)
+        BitArray corrupted = expected_codeword;
+        corrupted.set_bit(0, !corrupted.get_bit(0)); // Flip bit 0
         
-        dut->codeword_in = corrupted_codeword;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        SET_CODEWORD_IN(dut, corrupted);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        int expected_error_detected_corrupted = (expected_error_type_corrupted == 2);
-        int expected_error_corrected_corrupted = (expected_error_type_corrupted == 1);
+        GET_DATA_OUT(dut, dut_out);
         
-        if (dut->error_detected == expected_error_detected_corrupted &&
-            dut->error_corrected == expected_error_corrected_corrupted) {
-            printf("ERROR CORRECTION TEST %d: PASS (corrupted_codeword=0x%06X, error_detected=%d, error_corrected=%d)\n", 
-                   i, corrupted_codeword, dut->error_detected, dut->error_corrected);
+        // Error should be corrected (majority 2vs1)
+        if (dut_out == test_data && dut->error_corrected) {
             pass_count++;
         } else {
-            printf("ERROR CORRECTION TEST %d: FAIL (corrupted_codeword=0x%06X, expected_error_detected=%d, got_error_detected=%d, expected_error_corrected=%d, got_error_corrected=%d)\n", 
-                   i, corrupted_codeword, expected_error_detected_corrupted, dut->error_detected, expected_error_corrected_corrupted, dut->error_corrected);
+            printf("CORRECTION FAIL Test %d\n", i);
             fail_count++;
         }
-        
-        printf("\n");
     }
     
-    // Summary
-    printf("=== Test Summary ===\n");
-    printf("Total tests: %d\n", num_tests * 3); // encode, decode, error correction
-    printf("Passed: %d\n", pass_count);
-    printf("Failed: %d\n", fail_count);
+    printf("Passed: %d, Failed: %d\n", pass_count, fail_count);
+    if (fail_count == 0) printf("RESULT: PASS\n");
+    else printf("RESULT: FAIL\n");
     
-    if (fail_count == 0) {
-        printf("RESULT: PASS\n");
-    } else {
-        printf("RESULT: FAIL\n");
-    }
-    
-    free_repetition_config(config);
     delete dut;
 }
 
 int main() {
     test_repetition_ecc();
     return 0;
-} 
+}

@@ -1,0 +1,22 @@
+{
+  "ecc_type": "CRCECC",
+  "word_length": 128,
+  "error_pattern": "burst",
+  "trials": 10000,
+  "correctable_errors": 0,
+  "detected_errors": 145,
+  "undetected_errors": 9855,
+  "encode_time_avg": 0.00014115629578009248,
+  "decode_time_avg": 0.00014066272012423724,
+  "total_time_avg": 0.0002818190159043297,
+  "code_rate": 0.9411764705882353,
+  "overhead_ratio": 0.0625,
+  "correction_rate": 0.0,
+  "detection_rate": 0.0145,
+  "success_rate": 0.0145,
+  "error_distribution": {
+    "corrected": 0,
+    "detected": 145,
+    "undetected": 9855
+  }
+}

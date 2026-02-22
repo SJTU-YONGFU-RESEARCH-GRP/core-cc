@@ -111,7 +111,7 @@ class GolayECC(ECCBase):
     
     def __init__(self, data_length: int = None):
         if data_length is not None:
-             self.num_blocks = data_length
+             self.num_blocks = (data_length + 7) // 8
         else:
              self.num_blocks = 1
              

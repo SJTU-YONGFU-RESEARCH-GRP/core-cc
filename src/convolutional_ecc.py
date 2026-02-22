@@ -108,6 +108,11 @@ class ConvolutionalECC(ECCBase):
         """
         self.data_length = data_length
         self.conv = ConvolutionalCode()
+        
+        # Expose N and K
+        self.k = data_length
+        # Rate 1/2, plus 2 tail bits flushed -> 2 * (K + 2) output bits
+        self.n = 2 * (data_length + 2)
     
     def encode(self, data: int) -> int:
         """

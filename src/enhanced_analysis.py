@@ -256,12 +256,12 @@ class ECCAnalyzer:
         
         return scenarios
     
-    def analyze_word_length_trends(self) -> Dict[str, Dict[int, float]]:
+    def analyze_word_length_trends(self) -> Dict[str, Dict[int, Dict[str, float]]]:
         """
         Analyze how ECC performance varies with word length.
         
         Returns:
-            Dictionary mapping ECC type to word length trends
+            Dictionary mapping ECC type to word length trends (success_rate and latency)
         """
         trends = {}
         
@@ -272,7 +272,11 @@ class ECCAnalyzer:
             for word_length in sorted(ecc_data['word_length'].unique()):
                 length_data = ecc_data[ecc_data['word_length'] == word_length]
                 avg_success_rate = length_data['success_rate'].mean()
-                word_length_trends[word_length] = avg_success_rate
+                avg_latency = length_data['total_time_avg'].mean() * 1000 # convert to ms
+                word_length_trends[word_length] = {
+                    'success_rate': avg_success_rate,
+                    'latency': avg_latency
+                }
             
             trends[ecc_type] = word_length_trends
         
@@ -382,6 +386,11 @@ class ECCAnalyzer:
         avg_success_rates = self.df.groupby('ecc_type')['success_rate'].mean()
         best_success = avg_success_rates.max()
         worst_success = avg_success_rates.min()
+        
+        # Scale to percentage if represented as fraction (<= 1.0)
+        if best_success <= 1.0:
+            best_success *= 100
+            worst_success *= 100
         
         recommendations.append(f"**Performance Range:** Success rates range from {worst_success:.1f}% to {best_success:.1f}% across all ECC types.")
         
@@ -553,34 +562,106 @@ class ECCAnalyzer:
         
         plt.close()
         
-        # 2. Word Length Trends
-        fig, axes = plt.subplots(2, 2, figsize=(16, 12))
-        axes = axes.flatten()
+        # 2. Word Length Trends (Unified 1x2 Plot)
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8))
         
         word_length_trends = self.analyze_word_length_trends()
-        # Sort by best average performance to show top performers
-        sorted_trends = sorted(word_length_trends.items(), 
-                             key=lambda x: sum(x[1].values())/len(x[1]), 
-                             reverse=True)
         
-        for i, (ecc_type, trends) in enumerate(sorted_trends):
-            if i < 4:  # Limit to top 4 plots
-                word_lengths = list(trends.keys())
-                success_rates = list(trends.values())
-                # Convert to percentage if needed
-                if max(success_rates) <= 1.0:
-                    success_rates = [s * 100 for s in success_rates]
-                    
-                axes[i].plot(word_lengths, success_rates, marker='o', linewidth=2.5, markersize=8, color='#4c72b0')
-                axes[i].set_title(f'{ecc_type}', fontsize=14, fontweight='bold', fontfamily='serif')
-                axes[i].set_xlabel('Word Length (bits)', fontsize=12, fontweight='bold', fontfamily='serif')
-                axes[i].set_ylabel('Success Rate (%)', fontsize=12, fontweight='bold', fontfamily='serif')
-                axes[i].set_ylim(0, 105)
-                axes[i].tick_params(axis='both', labelsize=10)
-                for label in axes[i].get_xticklabels() + axes[i].get_yticklabels():
-                    label.set_fontweight('bold')
-                axes[i].grid(True, alpha=0.3, linestyle='--', color='gray')
+        # Get top 5 performers for highlighting
+        rankings = self.analyze_performance_rankings()
+        top_5_ecc = sorted(rankings, key=rankings.get)[:5]
         
+        # Define visually distinct colors and markers for the top 5
+        cmap = plt.get_cmap('tab10')
+        top_colors = [cmap(i) for i in range(5)]
+        markers = ['o', 's', '^', 'D', 'v']
+        
+        # Plot each ECC
+        for ecc_type, trends in word_length_trends.items():
+            word_lengths = list(trends.keys())
+            success_rates = [t['success_rate'] for t in trends.values()]
+            latencies = [t['latency'] for t in trends.values()]
+            
+            # Convert success rates to percentage if needed
+            if max(success_rates) <= 1.0:
+                success_rates = [s * 100 for s in success_rates]
+                
+            is_top = ecc_type in top_5_ecc
+            
+            if is_top:
+                idx = top_5_ecc.index(ecc_type)
+                color = top_colors[idx]
+                marker = markers[idx]
+                linewidth = 2.5
+                alpha = 0.95
+                zorder = 10
+                label = ecc_type
+            else:
+                color = 'gray'
+                marker = None
+                linewidth = 1.2
+                alpha = 0.35
+                zorder = 1
+                label = ecc_type if ecc_type not in [l.get_label() for l in ax1.lines] else None # Avoid duplicate legend entries for background lines
+                
+            ax1.plot(word_lengths, success_rates, marker=marker, linewidth=linewidth, markersize=8, color=color, alpha=alpha, zorder=zorder, label=label)
+            ax2.plot(word_lengths, latencies, marker=marker, linewidth=linewidth, markersize=8, color=color, alpha=alpha, zorder=zorder, label=label)
+
+        # Style Subplot 1 (Success Rate)
+        ax1.set_title('Success Rate vs Word Length', fontsize=16, fontweight='bold', fontfamily='serif')
+        ax1.set_xlabel('Word Length (bits)', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax1.set_ylabel('Success Rate (%)', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax1.set_ylim(0, 105)
+        ax1.set_xscale('log', base=2)
+        ax1.set_xticks(word_lengths)
+        ax1.set_xticklabels(word_lengths)
+        ax1.grid(True, alpha=0.3, linestyle='--', color='gray')
+        for label in ax1.get_xticklabels() + ax1.get_yticklabels():
+            label.set_fontweight('bold')
+            
+        # Style Subplot 2 (Latency)
+        ax2.set_title('Encoding/Decoding Latency vs Word Length', fontsize=16, fontweight='bold', fontfamily='serif')
+        ax2.set_xlabel('Word Length (bits)', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax2.set_ylabel('Total Latency (ms)', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax2.set_yscale('log')
+        ax2.set_xscale('log', base=2)
+        ax2.set_xticks(word_lengths)
+        ax2.set_xticklabels(word_lengths)
+        ax2.grid(True, which="both", alpha=0.3, linestyle='--', color='gray')
+        for label in ax2.get_xticklabels() + ax2.get_yticklabels():
+            label.set_fontweight('bold')
+
+        # Add a unified legend to the right of the plot
+        handles, labels = ax1.get_legend_handles_labels()
+        # Separate top performers and others in the legend
+        top_handles_labels = [(h, l) for h, l in zip(handles, labels) if l in top_5_ecc]
+        other_handles_labels = [(h, l) for h, l in zip(handles, labels) if l not in top_5_ecc and l is not None]
+        
+        # Sort top performers to match the top_5_ecc order
+        top_handles_labels.sort(key=lambda x: top_5_ecc.index(x[1]))
+        
+        # Create the legend
+        all_handles = [h for h, l in top_handles_labels] + [h for h, l in other_handles_labels]
+        all_labels = [l for h, l in top_handles_labels] + ['Other ECC Types' if i == 0 else "" for i, (h, l) in enumerate(other_handles_labels)]
+        
+        # Filter out empty labels to keep legend clean
+        filtered_handles = []
+        filtered_labels = []
+        seen_other = False
+        for h, l in zip(all_handles, all_labels):
+            if l != "":
+                if l == 'Other ECC Types':
+                    if not seen_other:
+                        filtered_handles.append(h)
+                        filtered_labels.append(l)
+                        seen_other = True
+                else:
+                    filtered_handles.append(h)
+                    filtered_labels.append(l)
+
+        fig.legend(filtered_handles, filtered_labels, loc='center left', bbox_to_anchor=(0.95, 0.5), fontsize=10, title="ECC Types", title_fontsize=12)
+
+        plt.suptitle('ECC Word Length Scaling Trends (Highlighting Top 5 Performers)', fontsize=20, fontweight='bold', fontfamily='serif', y=1.05)
         plt.tight_layout()
         
         # Save as PNG
@@ -826,7 +907,7 @@ class ECCVerifier:
             'TurboECC': TurboECC,
             'ConvolutionalECC': ConvolutionalECC
         }
-        self.word_lengths = [4, 8, 16, 32]
+        self.word_lengths = [4, 8, 16, 32, 64, 128]
         self.test_trials = 1000
         self.cache_file = "results/verification_cache.json"
         self.cache = self._load_cache()

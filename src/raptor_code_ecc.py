@@ -32,8 +32,8 @@ class RaptorCodeECC(ECCBase):
             self.k = 16
             self.n = 32
         else:
-            self.k = 32
-            self.n = 64
+            self.k = self.word_length
+            self.n = 2 * self.word_length
         
         # Generate deterministic encoding matrix
         self.G = self._generate_encoding_matrix()
@@ -107,19 +107,18 @@ class RaptorCodeECC(ECCBase):
         return decoded_data, error_type
 
     def _matrix_decode(self, received_bits: List[int]) -> Tuple[List[int], str]:
-        """Simple matrix-based decoding."""
-        # For systematic codes, extract the first k bits as data
-        # This assumes the code is systematic (data bits are in the first k positions)
-        decoded_bits = received_bits[:self.k]
+        """Simple matrix-based decoding with error detection."""
+        # Extract the systematic part
+        data_bits = received_bits[:self.k]
         
-        # For non-systematic codes, we need to extract data from the full codeword
-        # Since our encoding matrix might not be systematic, let's try a different approach
-        if len(received_bits) >= self.n:
-            # Try to extract data from the systematic part if available
-            systematic_bits = received_bits[:self.k]
-            return systematic_bits, 'corrected'
-        else:
-            return decoded_bits, 'corrected'
+        # Re-encode to check for errors
+        expected_bits = np.dot(self.G, data_bits) % 2
+        
+        # Compare with received bits
+        if not np.array_equal(expected_bits, received_bits):
+            return data_bits, 'detected'
+            
+        return data_bits, 'corrected'
 
     def inject_error(self, codeword: int, bit_idx: int) -> int:
         """

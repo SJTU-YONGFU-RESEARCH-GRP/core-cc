@@ -23,10 +23,8 @@ results/*
 !results/ecc_analysis_report.md
 !results/*.png
 !results/*.pdf
-!results/hardware_verification_results.json
-!results/benchmark_results.csv
-!results/benchmark_summary.json
-!results/hardware_verification.json
+!results/*.json
+!results/*.csv
 
 # Temporary & System
 .gemini/
@@ -34,4 +32,5 @@ results/*
 !results/run.log
 reports/
 
-
+# Test Scripts
+tests/

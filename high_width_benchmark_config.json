@@ -1,0 +1,22 @@
+{
+  "ecc_types": [
+    "HammingSECDEDECC",
+    "BCHECC",
+    "ReedSolomonECC",
+    "LDPCECC",
+    "PolarECC",
+    "ExtendedHammingECC"
+  ],
+  "word_lengths": [
+    64,
+    128
+  ],
+  "error_patterns": [
+    "single",
+    "random"
+  ],
+  "trials_per_config": 5,
+  "max_workers": 4,
+  "measure_timing": true,
+  "random_error_prob": 0.01
+}

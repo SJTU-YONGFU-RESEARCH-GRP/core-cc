@@ -30,8 +30,9 @@ class ThreeDMemoryECC(ECCBase):
             self.layers = 8
             self.bits_per_layer = 4
         else:
-            self.layers = layers
-            self.bits_per_layer = bits_per_layer
+            # Scale for larger widths, keeping LAYERS=4 to match hardware implementation
+            self.layers = 4
+            self.bits_per_layer = self.data_length // 4
         
         # Calculate 3D memory parameters
         self.total_bits = self.layers * self.bits_per_layer

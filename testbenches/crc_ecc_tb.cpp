@@ -3,10 +3,41 @@
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
+#include <time.h>
 
 // Verilator generated header
 #include "Vcrc_ecc.h"
 #include "verilated.h"
+#include "ecc_test_utils.h"
+
+// Auto-detect DATA_WIDTH from the DUT
+#ifndef DATA_WIDTH
+#define DATA_WIDTH 8
+#endif
+
+// Helper macros for wide port access
+#if DATA_WIDTH > 64
+    #define SET_DATA_IN(dut, val) SET_WIDE_PORT(dut, data_in, val, DATA_WIDTH)
+    
+    #define GET_DATA_OUT(dut, val) GET_WIDE_PORT(dut, data_out, val, DATA_WIDTH)
+        
+    // CRC usually adds nearly constant overhead (e.g. 8 bits).
+    #define SET_CODEWORD_IN(dut, val) SET_WIDE_PORT(dut, codeword_in, val, DATA_WIDTH+8)
+
+    #define GET_CODEWORD_OUT(dut, val) GET_WIDE_PORT(dut, codeword_out, val, DATA_WIDTH+8)
+#else
+    #define SET_DATA_IN(dut, val) (dut)->data_in = to_u64(val)
+    #define GET_DATA_OUT(dut, val) (val) = from_u64((dut)->data_out)
+    
+    // Check codeword width. CRC-8 adds 8 bits.
+    #if (DATA_WIDTH + 8) > 64
+        #define SET_CODEWORD_IN(dut, val) SET_WIDE_PORT(dut, codeword_in, val, DATA_WIDTH+8)
+        #define GET_CODEWORD_OUT(dut, val) GET_WIDE_PORT(dut, codeword_out, val, DATA_WIDTH+8)
+    #else
+        #define SET_CODEWORD_IN(dut, val) (dut)->codeword_in = to_u64(val)
+        #define GET_CODEWORD_OUT(dut, val) (val) = from_u64((dut)->codeword_out)
+    #endif
+#endif
 
 // Python-like CRC ECC calculation functions
 typedef struct {
@@ -27,248 +58,143 @@ void free_crc_config(CRCConfig* config) {
     free(config);
 }
 
-// Convert integer to bit array
-void int_to_bits(uint32_t data, int* bits, int length) {
-    for (int i = 0; i < length; i++) {
-        bits[i] = (data >> i) & 1;
-    }
-}
-
-// Convert bit array to integer
-uint32_t bits_to_int(int* bits, int length) {
-    uint32_t result = 0;
-    for (int i = 0; i < length; i++) {
-        result |= (bits[i] << i);
-    }
-    return result;
-}
-
-// Python-like CRC computation
-uint32_t compute_crc(int* data_bits, int data_length, CRCConfig* config) {
-    uint32_t crc = 0x00; // Initial value
+// Compute CRC using BitArray
+// Matches Python:
+// crc = 0; for d in data_bits: crc ^= (d << 7); for _ in range(8): if crc & 0x80: crc = (crc<<1)^poly else: crc << 1
+uint8_t compute_crc(const BitArray& data, CRCConfig* config) {
+    uint8_t crc = 0x00;
     
-    for (int i = 0; i < data_length; i++) {
-        crc ^= (data_bits[i] << 7);
+    for (int i = 0; i < config->data_length; i++) {
+        int bit = data.get_bit(i);
+        crc ^= (bit << 7);
         for (int j = 0; j < 8; j++) {
             if (crc & 0x80) {
-                crc = ((crc << 1) ^ config->polynomial) & 0xFF;
+                crc = ((crc << 1) ^ config->polynomial);
             } else {
-                crc = (crc << 1) & 0xFF;
+                crc = (crc << 1);
             }
         }
     }
-    
     return crc;
 }
 
-// Python-like CRC encoding
-uint32_t encode_crc(uint32_t data, CRCConfig* config) {
-    int data_bits[32];
-    int crc_bits[8];
-    int codeword_bits[40]; // data_length + crc_bits
+BitArray encode_crc(const BitArray& data, CRCConfig* config) {
+    uint8_t crc = compute_crc(data, config);
+    BitArray codeword;
     
-    // Convert data to bit array
-    int_to_bits(data, data_bits, config->data_length);
-    
-    // Compute CRC
-    uint32_t crc = compute_crc(data_bits, config->data_length, config);
-    
-    // Convert CRC to bit array (LSB first)
-    int_to_bits(crc, crc_bits, config->crc_bits);
-    
-    // Combine data and CRC
-    int codeword_idx = 0;
-    for (int i = 0; i < config->data_length; i++) {
-        codeword_bits[codeword_idx++] = data_bits[i];
+    // Data first
+    for(int i=0; i<config->data_length; i++) {
+        codeword.set_bit(i, data.get_bit(i));
     }
-    for (int i = 0; i < config->crc_bits; i++) {
-        codeword_bits[codeword_idx++] = crc_bits[i];
+    // CRC appended (LSB of CRC at data_length?)
+    // Python: codeword = data + crc
+    // In Python list: [d0, d1, ... dn, c0, c1... c7]
+    for(int i=0; i<config->crc_bits; i++) {
+        codeword.set_bit(config->data_length + i, (crc >> i) & 1);
     }
-    
-    // Convert back to integer
-    return bits_to_int(codeword_bits, config->data_length + config->crc_bits);
+    return codeword;
 }
 
-// Python-like CRC checking
-int check_crc(int* codeword_bits, int codeword_length, CRCConfig* config) {
-    if (codeword_length < config->crc_bits) {
-        return 0; // Invalid codeword
+BitArray decode_crc(const BitArray& codeword, CRCConfig* config, int* error_type) {
+    // Extract data
+    BitArray data;
+    for(int i=0; i<config->data_length; i++) {
+        data.set_bit(i, codeword.get_bit(i));
     }
     
-    int data_length = codeword_length - config->crc_bits;
-    int data_bits[32];
-    int crc_bits[8];
-    
-    // Extract data bits
-    for (int i = 0; i < data_length; i++) {
-        data_bits[i] = codeword_bits[i];
+    // Extract CRC
+    uint8_t received_crc = 0;
+    for(int i=0; i<config->crc_bits; i++) {
+        if (codeword.get_bit(config->data_length + i)) received_crc |= (1<<i);
     }
     
-    // Extract CRC bits
-    for (int i = 0; i < config->crc_bits; i++) {
-        crc_bits[i] = codeword_bits[data_length + i];
-    }
+    // Recompute
+    uint8_t computed_crc = compute_crc(data, config);
     
-    // Compute expected CRC
-    uint32_t expected_crc = compute_crc(data_bits, data_length, config);
-    
-    // Convert expected CRC to bits
-    int expected_crc_bits[8];
-    int_to_bits(expected_crc, expected_crc_bits, config->crc_bits);
-    
-    // Compare CRC bits
-    for (int i = 0; i < config->crc_bits; i++) {
-        if (crc_bits[i] != expected_crc_bits[i]) {
-            return 0; // CRC mismatch
-        }
-    }
-    
-    return 1; // CRC valid
-}
-
-// Python-like CRC decoding
-uint32_t decode_crc(uint32_t codeword, CRCConfig* config, int* error_type) {
-    int codeword_length = config->data_length + config->crc_bits;
-    int codeword_bits[40];
-    
-    // Convert codeword to bit array
-    int_to_bits(codeword, codeword_bits, codeword_length);
-    
-    // Check CRC validity
-    if (check_crc(codeword_bits, codeword_length, config)) {
-        // Extract data bits (all except last 8 CRC bits)
-        int data_bits[32];
-        for (int i = 0; i < config->data_length; i++) {
-            data_bits[i] = codeword_bits[i];
-        }
-        
-        // Convert back to integer
-        uint32_t decoded_data = bits_to_int(data_bits, config->data_length);
-        *error_type = 0; // No error
-        return decoded_data;
+    if (computed_crc != received_crc) {
+        *error_type = 1; // Detected
     } else {
-        // CRC check failed - error detected
-        *error_type = 1; // Error detected
-        return codeword; // Return original codeword as data
+        *error_type = 0;
     }
+    
+    return data; // CRC does not correct
 }
 
-// Test function
 void test_crc_ecc() {
     Vcrc_ecc* dut = new Vcrc_ecc();
     
-    printf("=== CRC ECC Test ===\n");
+    int data_width = DATA_WIDTH;
+    printf("=== CRC ECC Test (DATA_WIDTH=%d) ===\n", data_width);
     
-    // Test cases
-    uint32_t test_cases[] = {0x00, 0x55, 0xAA, 0xFF, 0x12, 0x34, 0x56, 0x78};
-    int num_tests = sizeof(test_cases) / sizeof(test_cases[0]);
-    int data_width = 8;
-    int polynomial = 0x07; // CRC-8 polynomial
+    CRCConfig* config = create_crc_config(data_width, 0x07); // CRC-8
+    
+    const int NUM_TESTS = 20;
+    srand(12345);
     int pass_count = 0;
     int fail_count = 0;
     
-    CRCConfig* config = create_crc_config(data_width, polynomial);
-    
-    for (int i = 0; i < num_tests; i++) {
-        uint32_t test_data = test_cases[i];
+    for (int i = 0; i < NUM_TESTS; i++) {
+        BitArray test_data;
+        for(int w=0; w<MAX_WORDS; w++) test_data.words[w] = rand() | (rand()<<16);
+        for(int b=data_width; b<MAX_WORDS*32; b++) test_data.set_bit(b, 0);
         
-        // Calculate expected results (Python-like)
-        uint32_t expected_codeword = encode_crc(test_data, config);
-        int expected_error_type;
-        uint32_t expected_decoded_data = decode_crc(expected_codeword, config, &expected_error_type);
+        BitArray expected_codeword = encode_crc(test_data, config);
         
-        // Reset DUT
-        dut->rst_n = 0;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
-        dut->rst_n = 1;
+        // Reset
+        dut->rst_n = 0; dut->eval();
+        dut->rst_n = 1; dut->eval();
         
-        // Test encoding
-        dut->encode_en = 1;
-        dut->decode_en = 0;
-        dut->data_in = test_data;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        // Encode
+        dut->encode_en = 1; dut->decode_en = 0;
+        SET_DATA_IN(dut, test_data);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        // Check encoding result
-        if (dut->codeword_out == expected_codeword) {
-            printf("ENCODE TEST %d: PASS (data=0x%02X, codeword=0x%04X)\n", 
-                   i, test_data, dut->codeword_out);
+        BitArray dut_cw;
+        GET_CODEWORD_OUT(dut, dut_cw);
+        
+        if (dut_cw == expected_codeword) {
             pass_count++;
         } else {
-            printf("ENCODE TEST %d: FAIL (data=0x%02X, expected=0x%04X, got=0x%04X)\n", 
-                   i, test_data, expected_codeword, dut->codeword_out);
+            printf("ENCODE FAIL Test %d\n", i);
             fail_count++;
         }
         
-        // Test decoding (no error)
-        dut->encode_en = 0;
-        dut->decode_en = 1;
-        dut->codeword_in = expected_codeword;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        // Decode
+        dut->encode_en = 0; dut->decode_en = 1;
+        SET_CODEWORD_IN(dut, expected_codeword);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        // Check decoding result
-        int expected_error_detected = (expected_error_type != 0);
-        int expected_error_corrected = (expected_error_type == 1);
+        BitArray dut_out;
+        GET_DATA_OUT(dut, dut_out);
         
-        if (dut->data_out == expected_decoded_data && 
-            dut->error_detected == expected_error_detected &&
-            dut->error_corrected == expected_error_corrected) {
-            printf("DECODE TEST %d: PASS (codeword=0x%04X, data=0x%02X, error_detected=%d, error_corrected=%d)\n", 
-                   i, expected_codeword, dut->data_out, dut->error_detected, dut->error_corrected);
+        if (dut_out == test_data && !dut->error_detected) {
             pass_count++;
         } else {
-            printf("DECODE TEST %d: FAIL (codeword=0x%04X, expected_data=0x%02X, got_data=0x%02X, expected_error_detected=%d, got_error_detected=%d, expected_error_corrected=%d, got_error_corrected=%d)\n", 
-                   i, expected_codeword, expected_decoded_data, dut->data_out, expected_error_detected, dut->error_detected, expected_error_corrected, dut->error_corrected);
+            printf("DECODE FAIL Test %d\n", i);
             fail_count++;
         }
         
-        // Test error injection
-        uint32_t corrupted_codeword = expected_codeword ^ 1; // Flip LSB
-        int expected_error_type_corrupted;
-        uint32_t expected_decoded_data_corrupted = decode_crc(corrupted_codeword, config, &expected_error_type_corrupted);
+        // Error Detection
+        BitArray corrupted = expected_codeword;
+        corrupted.set_bit(0, !corrupted.get_bit(0)); // Flip bit 0
         
-        dut->codeword_in = corrupted_codeword;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        SET_CODEWORD_IN(dut, corrupted);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        int expected_error_detected_corrupted = (expected_error_type_corrupted != 0);
-        int expected_error_corrected_corrupted = (expected_error_type_corrupted == 1);
-        
-        if (dut->error_detected == expected_error_detected_corrupted &&
-            dut->error_corrected == expected_error_corrected_corrupted) {
-            printf("ERROR DETECTION TEST %d: PASS (corrupted_codeword=0x%04X, error_detected=%d, error_corrected=%d)\n", 
-                   i, corrupted_codeword, dut->error_detected, dut->error_corrected);
+        if (dut->error_detected) {
             pass_count++;
         } else {
-            printf("ERROR DETECTION TEST %d: FAIL (corrupted_codeword=0x%04X, expected_error_detected=%d, got_error_detected=%d, expected_error_corrected=%d, got_error_corrected=%d)\n", 
-                   i, corrupted_codeword, expected_error_detected_corrupted, dut->error_detected, expected_error_corrected_corrupted, dut->error_corrected);
+            printf("ERROR DETECTION FAIL Test %d\n", i);
             fail_count++;
         }
-        
-        printf("\n");
     }
     
-    // Summary
-    printf("=== Test Summary ===\n");
-    printf("Total tests: %d\n", num_tests * 3); // encode, decode, error detection
-    printf("Passed: %d\n", pass_count);
-    printf("Failed: %d\n", fail_count);
-    
-    if (fail_count == 0) {
-        printf("RESULT: PASS\n");
-    } else {
-        printf("RESULT: FAIL\n");
-    }
+    printf("Passed: %d, Failed: %d\n", pass_count, fail_count);
+    if (fail_count == 0) printf("RESULT: PASS\n");
+    else printf("RESULT: FAIL\n");
     
     free_crc_config(config);
     delete dut;
@@ -277,4 +203,4 @@ void test_crc_ecc() {
 int main() {
     test_crc_ecc();
     return 0;
-} 
+}

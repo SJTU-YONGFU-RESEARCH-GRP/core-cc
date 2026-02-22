@@ -1,0 +1,22 @@
+{
+  "ecc_type": "TurboECC",
+  "word_length": 8,
+  "error_pattern": "random",
+  "trials": 10000,
+  "correctable_errors": 0,
+  "detected_errors": 10000,
+  "undetected_errors": 0,
+  "encode_time_avg": 1.430089280474931e-05,
+  "decode_time_avg": 1.4543000818230211e-05,
+  "total_time_avg": 2.8843893622979523e-05,
+  "code_rate": 0.3333333333333333,
+  "overhead_ratio": 2.0,
+  "correction_rate": 0.0,
+  "detection_rate": 1.0,
+  "success_rate": 1.0,
+  "error_distribution": {
+    "corrected": 0,
+    "detected": 10000,
+    "undetected": 0
+  }
+}

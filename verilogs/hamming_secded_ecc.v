@@ -1,190 +1,213 @@
-// Hamming SECDED ECC Module - Complete implementation with encoder and decoder
+// Hamming SECDED ECC Module - Fully parameterized for DATA_WIDTH up to 128
 // Matches Python HammingSECDEDECC implementation exactly
 /* verilator lint_off WIDTHTRUNC */
 /* verilator lint_off WIDTHEXPAND */
+/* verilator lint_off CMPCONST */
 module hamming_secded_ecc #(
-    parameter DATA_WIDTH = 8
+    parameter DATA_WIDTH = 8,
+    // Derive default CODEWORD_WIDTH based on DATA_WIDTH
+    // 4->7, 8->12, 16->21, 32->38, 64->71, 128->136
+    // 2->5 (3 parity), 3->6 (3 parity), 4->7 (3 parity), 8->12, 16->21...
+    parameter CODEWORD_WIDTH = (DATA_WIDTH <= 2) ? 5 :
+                               (DATA_WIDTH <= 4) ? 7 : 
+                               (DATA_WIDTH <= 8) ? 12 : 
+                               (DATA_WIDTH <= 16) ? 21 : 
+                               (DATA_WIDTH <= 32) ? 38 : 
+                               (DATA_WIDTH <= 64) ? 71 : 136
 ) (
     input  wire                    clk,
     input  wire                    rst_n,
     input  wire                    encode_en,
     input  wire                    decode_en,
-    input  wire [DATA_WIDTH-1:0]  data_in,
-    input  wire [31:0]            codeword_in,  // Variable length based on DATA_WIDTH
-    output reg  [31:0]            codeword_out, // Variable length based on DATA_WIDTH
-    output reg  [DATA_WIDTH-1:0]  data_out,
+    input  wire [DATA_WIDTH-1:0]   data_in,
+    input  wire [CODEWORD_WIDTH-1:0] codeword_in,
+    output reg  [CODEWORD_WIDTH-1:0] codeword_out,
+    output reg  [DATA_WIDTH-1:0]   data_out,
     output reg                     error_detected,
     output reg                     error_corrected,
     output reg                     valid_out
 );
 
-    // Configuration based on DATA_WIDTH (matching Python implementation exactly)
-    localparam [31:0] N = (DATA_WIDTH <= 4) ? 7 : 
-                          (DATA_WIDTH <= 8) ? 12 : 
-                          (DATA_WIDTH <= 16) ? 21 : 
-                          (DATA_WIDTH <= 32) ? 38 : 38;
-    
+    // Configuration based on parameters
+    localparam [31:0] N = CODEWORD_WIDTH;
     localparam [31:0] K = DATA_WIDTH;
     localparam [31:0] PARITY_BITS = N - K;
     
-    // Function to calculate parity bits (matching Python implementation exactly)
-    function [PARITY_BITS-1:0] calculate_parity;
-        input [K-1:0] data;
-        integer i;
-        reg [PARITY_BITS-1:0] parity;
-        reg [N-1:0] temp_codeword;
+    // ---------------------------------------------------------------
+    // Helper: is_parity_position
+    // Parity positions are at (2^i - 1): 0, 1, 3, 7, 15, 31
+    // ---------------------------------------------------------------
+    function automatic is_parity_pos;
+        input integer pos;
+        integer check;
         begin
-            temp_codeword = 0;
-            if (DATA_WIDTH <= 8) begin
-                // Hardcoded data positions for DATA_WIDTH=8
-                temp_codeword[2] = data[0];
-                temp_codeword[4] = data[1];
-                temp_codeword[5] = data[2];
-                temp_codeword[6] = data[3];
-                temp_codeword[8] = data[4];
-                temp_codeword[9] = data[5];
-                temp_codeword[10] = data[6];
-                temp_codeword[11] = data[7];
-            end
-            
-            parity = 0;
-            // Hardcoded parity calculation for DATA_WIDTH=8 (Hamming(12,8))
-            // P1 (pos 0): checks 0, 2, 4, 6, 8, 10
-            parity[0] = temp_codeword[2] ^ temp_codeword[4] ^ temp_codeword[6] ^ temp_codeword[8] ^ temp_codeword[10];
-            
-            // P2 (pos 1): checks 1, 2, 5, 6, 9, 10
-            parity[1] = temp_codeword[2] ^ temp_codeword[5] ^ temp_codeword[6] ^ temp_codeword[9] ^ temp_codeword[10];
-            
-            // P4 (pos 3): checks 3, 4, 5, 6, 11
-            parity[2] = temp_codeword[4] ^ temp_codeword[5] ^ temp_codeword[6] ^ temp_codeword[11];
-            
-            // P8 (pos 7): checks 7, 8, 9, 10, 11
-            parity[3] = temp_codeword[8] ^ temp_codeword[9] ^ temp_codeword[10] ^ temp_codeword[11];
-            
-            calculate_parity = parity;
-        end
-    endfunction
-
-    // Function to extract data from codeword (matching Python _extract_data exactly)
-    function [K-1:0] extract_data;
-        input [N-1:0] codeword;
-        reg [K-1:0] data;
-        begin
-            data = 0;
-            if (DATA_WIDTH <= 8) begin
-                data[0] = codeword[2];
-                data[1] = codeword[4];
-                data[2] = codeword[5];
-                data[3] = codeword[6];
-                data[4] = codeword[8];
-                data[5] = codeword[9];
-                data[6] = codeword[10];
-                data[7] = codeword[11];
-            end
-            extract_data = data;
-        end
-    endfunction
-
-    // Function to calculate syndrome (matching Python decode logic exactly)
-    function [PARITY_BITS-1:0] calculate_syndrome;
-        input [N-1:0] codeword;
-        reg [PARITY_BITS-1:0] syndrome;
-        reg [PARITY_BITS-1:0] expected_parity;
-        reg [PARITY_BITS-1:0] actual_parity;
-        begin
-            // Extract actual parity bits
-            actual_parity[0] = codeword[0];
-            actual_parity[1] = codeword[1];
-            actual_parity[2] = codeword[3];
-            actual_parity[3] = codeword[7];
-            
-            // Calculate expected parity
-            // P1
-            expected_parity[0] = codeword[2] ^ codeword[4] ^ codeword[6] ^ codeword[8] ^ codeword[10];
-            // P2
-            expected_parity[1] = codeword[2] ^ codeword[5] ^ codeword[6] ^ codeword[9] ^ codeword[10];
-            // P4
-            expected_parity[2] = codeword[4] ^ codeword[5] ^ codeword[6] ^ codeword[11];
-            // P8
-            expected_parity[3] = codeword[8] ^ codeword[9] ^ codeword[10] ^ codeword[11];
-            
-            syndrome = expected_parity ^ actual_parity;
-            calculate_syndrome = syndrome;
+            check = pos + 1; // 1-indexed position
+            // Check if check is a power of 2
+            is_parity_pos = (check != 0) && ((check & (check - 1)) == 0);
         end
     endfunction
     
-    // Encode: create codeword with data and parity bits
-    wire [PARITY_BITS-1:0] parity_bits;
+    // ---------------------------------------------------------------
+    // Helper: get_data_index
+    // Given a codeword position, return which data bit index it is
+    // Returns -1 if it's a parity position
+    // ---------------------------------------------------------------
+    function automatic integer get_data_index;
+        input integer pos;
+        integer idx, j;
+        begin
+            idx = 0;
+            get_data_index = -1;
+            for (j = 0; j < N; j = j + 1) begin
+                if (!is_parity_pos(j)) begin
+                    if (j == pos) begin
+                        get_data_index = idx;
+                    end
+                    idx = idx + 1;
+                end
+            end
+        end
+    endfunction
+    
+    // ---------------------------------------------------------------
+    // Helper: get_data_position
+    // Given a data index (0..K-1), return the codeword position
+    // ---------------------------------------------------------------
+    function automatic integer get_data_pos;
+        input integer data_idx;
+        integer idx, j;
+        begin
+            idx = 0;
+            get_data_pos = 0;
+            for (j = 0; j < N; j = j + 1) begin
+                if (!is_parity_pos(j)) begin
+                    if (idx == data_idx) begin
+                        get_data_pos = j;
+                    end
+                    idx = idx + 1;
+                end
+            end
+        end
+    endfunction
+    
+    // ---------------------------------------------------------------
+    // Encode: Insert data bits and calculate parity
+    // Matches Python _insert_data() + _calculate_parity()
+    // ---------------------------------------------------------------
     reg [N-1:0] encoded_codeword;
-    wire [PARITY_BITS-1:0] syndrome;
-    wire single_error;
-    wire double_error;
-    wire [DATA_WIDTH-1:0] extracted_data;
-    
-    assign parity_bits = calculate_parity(data_in);
-    
-    // Build encoded codeword (matching Python encode exactly)
-    always @(*) begin
-        encoded_codeword = 0;
+    always @(*) begin : encode_block
+        integer i, j;
+        reg [N-1:0] cw;
+        reg parity_bit;
         
-        // Insert data bits (matching Python data_positions)
-        if (DATA_WIDTH <= 4) begin
-            encoded_codeword[2] = data_in[0];
-            encoded_codeword[4] = data_in[1];
-            encoded_codeword[5] = data_in[2];
-            encoded_codeword[6] = data_in[3];
-        end else if (DATA_WIDTH <= 8) begin
-            encoded_codeword[2] = data_in[0];
-            encoded_codeword[4] = data_in[1];
-            encoded_codeword[5] = data_in[2];
-            encoded_codeword[6] = data_in[3];
-            encoded_codeword[8] = data_in[4];
-            encoded_codeword[9] = data_in[5];
-            encoded_codeword[10] = data_in[6];
-            encoded_codeword[11] = data_in[7];
+        cw = 0;
+        
+        // Insert data bits into non-parity positions
+        for (i = 0; i < K; i = i + 1) begin
+            cw[get_data_pos(i)] = data_in[i];
         end
         
-        // Insert parity bits (matching Python parity_positions)
-        if (DATA_WIDTH <= 4) begin
-            encoded_codeword[0] = parity_bits[0];
-            encoded_codeword[1] = parity_bits[1];
-            encoded_codeword[3] = parity_bits[2];
-        end else if (DATA_WIDTH <= 8) begin
-            encoded_codeword[0] = parity_bits[0];
-            encoded_codeword[1] = parity_bits[1];
-            encoded_codeword[3] = parity_bits[2];
-            encoded_codeword[7] = parity_bits[3];
+        // Calculate parity bits
+        for (i = 0; i < PARITY_BITS; i = i + 1) begin
+            parity_bit = 0;
+            for (j = 0; j < N; j = j + 1) begin
+                // Check if position j is covered by parity bit i
+                // (j+1) has bit i set
+                if (!is_parity_pos(j) || (j != ((1 << i) - 1))) begin
+                    if (((j + 1) & (1 << i)) != 0) begin
+                        parity_bit = parity_bit ^ cw[j];
+                    end
+                end
+            end
+            cw[(1 << i) - 1] = parity_bit;
         end
+        
+        encoded_codeword = cw;
     end
     
-    // Calculate syndrome for decoding
-    assign syndrome = calculate_syndrome(codeword_in);
+    // ---------------------------------------------------------------
+    // Decode: Calculate syndrome + error correction
+    // Matches Python decode() exactly
+    // ---------------------------------------------------------------
+    reg [PARITY_BITS-1:0] syndrome;
+    reg [DATA_WIDTH-1:0] extracted_data;
+    reg [N-1:0] corrected_codeword;
+    reg syndrome_nonzero;
+    reg syndrome_in_range;
     
-    // Error detection and correction logic (matching Python decode exactly)
-    wire syndrome_nonzero = (syndrome != 0);
-    wire syndrome_in_range = (syndrome > 0) && (syndrome <= N);
-    assign single_error = syndrome_in_range;
-    assign double_error = syndrome_nonzero && !syndrome_in_range;
-
-    // Correct single bit errors (matching Python decode logic)
-    wire [N-1:0] corrected_codeword;
-    assign corrected_codeword = (syndrome_in_range) ? 
-                               (codeword_in ^ (1 << (syndrome - 1))) : 
-                               codeword_in;
-
-    // Extract data from corrected codeword
-    assign extracted_data = extract_data(corrected_codeword);
+    always @(*) begin : decode_block
+        integer i, j;
+        reg expected_parity;
+        reg actual_parity;
+        reg [N-1:0] cw_in;
+        
+        cw_in = codeword_in;
+        
+        // Calculate syndrome
+        syndrome = 0;
+        for (i = 0; i < PARITY_BITS; i = i + 1) begin
+            expected_parity = 0;
+            for (j = 0; j < N; j = j + 1) begin
+                if (j != ((1 << i) - 1)) begin
+                    if (((j + 1) & (1 << i)) != 0) begin
+                        expected_parity = expected_parity ^ cw_in[j];
+                    end
+                end
+            end
+            actual_parity = cw_in[(1 << i) - 1];
+            if (expected_parity != actual_parity) begin
+                syndrome[i] = 1'b1;
+            end else begin
+                syndrome[i] = 1'b0;
+            end
+        end
+        
+        // Error detection and correction
+        syndrome_nonzero = (syndrome != 0);
+        syndrome_in_range = (syndrome > 0) && (syndrome <= N);
+        
+        // Correct single bit error
+        if (syndrome_in_range) begin
+            corrected_codeword = cw_in ^ ({{(N-1){1'b0}}, 1'b1} << (syndrome - 1));
+        end else begin
+            corrected_codeword = cw_in;
+        end
+        
+        // Extract data
+        for (i = 0; i < K; i = i + 1) begin
+            extracted_data[i] = corrected_codeword[get_data_pos(i)];
+        end
+    end
 
     // Encoder logic
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            codeword_out <= 32'b0;
-            valid_out <= 1'b0;
+            codeword_out <= {CODEWORD_WIDTH{1'b0}};
+            // valid_out handled by separate block
         end else if (encode_en) begin
             codeword_out <= encoded_codeword;
-            valid_out <= 1'b1;
-        end else begin
+        end
+    end
+
+    // Decoder logic
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            data_out <= {DATA_WIDTH{1'b0}};
+            error_detected <= 1'b0;
+            error_corrected <= 1'b0;
+        end else if (decode_en) begin
+            data_out <= extracted_data;
+            error_detected <= syndrome_nonzero;
+            error_corrected <= syndrome_in_range;
+        end
+    end
+
+    // Valid Signal Logic
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
             valid_out <= 1'b0;
+        end else begin
+            valid_out <= (encode_en || decode_en);
         end
     end
 
@@ -203,4 +226,4 @@ module hamming_secded_ecc #(
 
 endmodule
 /* verilator lint_on WIDTHTRUNC */
-/* verilator lint_on WIDTHEXPAND */ 
+/* verilator lint_on WIDTHEXPAND */

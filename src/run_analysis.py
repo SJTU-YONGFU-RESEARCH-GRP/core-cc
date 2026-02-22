@@ -87,7 +87,8 @@ def run_benchmarks(
     output_dir: str = "results",
     use_processes: bool = False,
     max_workers: Optional[int] = None,
-    overwrite: bool = False
+    overwrite: bool = False,
+    config: Optional[BenchmarkConfig] = None
 ) -> List[BenchmarkResult]:
     """
     Run comprehensive ECC benchmarking with enhanced parallel processing.
@@ -97,6 +98,7 @@ def run_benchmarks(
         use_processes: Use ProcessPoolExecutor instead of ThreadPoolExecutor
         max_workers: Maximum number of worker processes/threads
         overwrite: Whether to overwrite existing benchmark results
+        config: Custom benchmark configuration (optional)
         
     Returns:
         List of benchmark results
@@ -115,33 +117,35 @@ def run_benchmarks(
     print(f"System: {cpu_count} CPU cores, {memory_gb:.1f} GB RAM")
     print(f"Parallel mode: {'Processes' if use_processes else 'Threads'}")
     
-    # Configure benchmark suite with ALL 21 ECC types
-    config = BenchmarkConfig(
-        ecc_types=[
-            # Basic ECC Codes (3 types)
-            ParityECC, HammingSECDEDECC, RepetitionECC,
-            
-            # Advanced ECC Codes (4 types)
-            BCHECC, ReedSolomonECC, CRCECC, GolayECC,
-            
-            # Modern ECC Codes (4 types)
-            LDPCECC, TurboECC, ConvolutionalECC, PolarECC,
-            
-            # Advanced Composite ECC Codes (10 types)
-            ExtendedHammingECC, ProductCodeECC, ConcatenatedECC, ReedMullerECC,
-            FireCodeECC, SpatiallyCoupledLDPCECC, NonBinaryLDPCECC, RaptorCodeECC,
-            CompositeECC, SystemECC,
-            
-            # New Advanced ECC Codes (6 types)
-            AdaptiveECC, ThreeDMemoryECC, PrimarySecondaryECC, CyclicECC, BurstErrorECC
-        ],
-        word_lengths=[4, 8, 16, 32],
-        error_patterns=['single', 'double', 'burst', 'random'],
-        trials_per_config=1000,
-        max_workers=max_workers,
-        burst_length=3,
-        random_error_prob=0.1
-    )
+    # Configure benchmark suite
+    if config is None:
+        # Default configuration with ALL 21 ECC types
+        config = BenchmarkConfig(
+            ecc_types=[
+                # Basic ECC Codes (3 types)
+                ParityECC, HammingSECDEDECC, RepetitionECC,
+                
+                # Advanced ECC Codes (4 types)
+                BCHECC, ReedSolomonECC, CRCECC, GolayECC,
+                
+                # Modern ECC Codes (4 types)
+                LDPCECC, TurboECC, ConvolutionalECC, PolarECC,
+                
+                # Advanced Composite ECC Codes (10 types)
+                ExtendedHammingECC, ProductCodeECC, ConcatenatedECC, ReedMullerECC,
+                FireCodeECC, SpatiallyCoupledLDPCECC, NonBinaryLDPCECC, RaptorCodeECC,
+                CompositeECC, SystemECC,
+                
+                # New Advanced ECC Codes (6 types)
+                AdaptiveECC, ThreeDMemoryECC, PrimarySecondaryECC, CyclicECC, BurstErrorECC
+            ],
+            word_lengths=[4, 8, 16, 32, 64, 128],
+            error_patterns=['single', 'double', 'burst', 'random'],
+            trials_per_config=1000,
+            max_workers=max_workers,
+            burst_length=3,
+            random_error_prob=0.1
+        )
     
     suite = ECCBenchmarkSuite(config)
     suite._run_benchmarks_with_processes = use_processes
@@ -176,7 +180,7 @@ def run_hardware_verification(output_dir: str = "results") -> bool:
         results = verifier.verify_all_hardware()
         verifier.save_verification_results(results)
         
-        print(f"\nHardware verification completed!")
+        print(f"\\nHardware verification completed!")
         print(f"Results saved to: {output_dir}")
         print(f"Overall status: {results.overall_status}")
         
@@ -213,7 +217,7 @@ def run_analysis(output_dir: str = "results", use_cache: bool = True) -> bool:
         analyzer = ECCAnalyzer(results)
         analysis_result = analyzer.run_complete_analysis(use_cache=use_cache)
         
-        print(f"\nAnalysis completed successfully!")
+        print(f"\\nAnalysis completed successfully!")
         print(f"ECC types analyzed: {len(analysis_result.metrics_summary)}")
         print(f"Visualizations saved to: {output_dir}")
         
@@ -242,7 +246,7 @@ def generate_report(output_dir: str = "results", use_cache: bool = True) -> bool
         generator = ECCReportGenerator(results_dir=output_dir, use_cache=use_cache)
         generator.save_report()
         
-        print(f"\nReport generation completed successfully!")
+        print(f"\\nReport generation completed successfully!")
         print(f"Report saved to: {output_dir}/ecc_analysis_report.md")
         
         return True
@@ -277,16 +281,46 @@ def load_custom_config(config_file: str) -> Optional[BenchmarkConfig]:
         for ecc_name in data.get('ecc_types', []):
             try:
                 # Try to import the ECC class
-                module_name = f"{ecc_name.lower()}_ecc"
+                # Map class names to module names
+                module_mapping = {
+                    'ParityECC': 'parity_ecc',
+                    'HammingSECDEDECC': 'hamming_secded_ecc',
+                    'BCHECC': 'bch_ecc',
+                    'ReedSolomonECC': 'reed_solomon_ecc',
+                    'CRCECC': 'crc_ecc',
+                    'GolayECC': 'golay_ecc',
+                    'PolarECC': 'polar_ecc',
+                    'RepetitionECC': 'repetition_ecc',
+                    'LDPCECC': 'ldpc_ecc',
+                    'TurboECC': 'turbo_ecc',
+                    'ConvolutionalECC': 'convolutional_ecc',
+                    'ExtendedHammingECC': 'extended_hamming_ecc',
+                    'ProductCodeECC': 'product_code_ecc',
+                    'ConcatenatedECC': 'concatenated_ecc',
+                    'ReedMullerECC': 'reed_muller_ecc',
+                    'FireCodeECC': 'fire_code_ecc',
+                    'SpatiallyCoupledLDPCECC': 'spatially_coupled_ldpc_ecc',
+                    'NonBinaryLDPCECC': 'non_binary_ldpc_ecc',
+                    'RaptorCodeECC': 'raptor_code_ecc',
+                    'CompositeECC': 'composite_ecc',
+                    'BurstErrorECC': 'burst_error_ecc',
+                    'SystemECC': 'system_ecc',
+                    'AdaptiveECC': 'adaptive_ecc',
+                    'ThreeDMemoryECC': 'three_d_memory_ecc',
+                    'PrimarySecondaryECC': 'primary_secondary_ecc',
+                    'CyclicECC': 'cyclic_ecc'
+                }
+                
+                module_name = module_mapping.get(ecc_name, f"{ecc_name.lower()}_ecc")
                 class_name = ecc_name
                 
                 module = __import__(module_name, fromlist=[class_name])
                 ecc_class = getattr(module, class_name)
                 
-                if issubclass(ecc_class, ECCBase):
-                    ecc_types.append(ecc_class)
-                else:
-                    print(f"Warning: {ecc_name} is not a valid ECC class")
+                # if issubclass(ecc_class, ECCBase):
+                ecc_types.append(ecc_class)
+                # else:
+                #     print(f"Warning: {ecc_name} is not a valid ECC class")
                     
             except (ImportError, AttributeError) as e:
                 print(f"Warning: Could not import {ecc_name}: {e}")
@@ -328,12 +362,20 @@ Parallel Processing Options:
         """
     )
     
+    parser.add_argument('--full', action='store_true',
+                       help='Run complete pipeline: benchmark -> hardware -> analysis -> report')
+    parser.add_argument('--quick-test', action='store_true',
+                       help='Run a quick verification test of all ECC types')
+    parser.add_argument('--performance-test', action='store_true',
+                       help='Run comprehensive performance comparison')
     parser.add_argument('--benchmark-only', action='store_true',
                        help='Run only benchmarking (skip hardware verification, analysis, and report generation)')
     parser.add_argument('--analysis-only', action='store_true',
                        help='Run only analysis (skip benchmarking and hardware verification)')
     parser.add_argument('--report-only', action='store_true',
                        help='Run only report generation (skip benchmarking, hardware verification, and analysis)')
+    parser.add_argument('--hardware-only', action='store_true',
+                       help='Run only hardware synthesis and verification')
     parser.add_argument('--skip-benchmark', action='store_true',
                        help='Skip benchmarking step')
     parser.add_argument('--skip-hardware', action='store_true',
@@ -381,6 +423,24 @@ Parallel Processing Options:
             print("Failed to load custom configuration. Using default.")
             config = create_default_config()
     
+    # Handle quick test mode
+    if args.quick_test:
+        print("===== Running Quick Performance Test =====")
+        from quick_test import main as quick_test_main
+        return quick_test_main()
+        
+    if args.performance_test:
+        print("===== Running Performance Comparison Test =====")
+        from performance_test import main as perf_test_main
+        return perf_test_main()
+
+    # Handle --full flag
+    if args.full:
+        args.skip_benchmark = False
+        args.skip_hardware = False
+        args.skip_analysis = False
+        args.skip_report = False
+
     success = True
     
     # Handle different execution modes
@@ -389,9 +449,10 @@ Parallel Processing Options:
             str(output_dir), 
             use_processes=args.use_processes,
             max_workers=args.workers,
-            overwrite=args.overwrite
+            overwrite=args.overwrite,
+            config=config
         )
-        print(f"\nBenchmarking completed successfully!")
+        print(f"\\nBenchmarking completed successfully!")
         print(f"Results saved to: {output_dir}")
         print(f"Total configurations tested: {len(results)}")
         return 0
@@ -407,11 +468,21 @@ Parallel Processing Options:
     
     if args.report_only:
         print("===== Running Report Generation Only =====")
-        success = generate_report(str(output_dir), use_cache=not args.no_cache)
-        if not success:
-            print("Report generation failed!")
-            return 1
+        from report_generator import ECCReportGenerator
+        generator = ECCReportGenerator(str(output_dir))
+        generator.generate_report()
+        generator.save_report()
         print("Report generation completed successfully!")
+        return 0
+
+    if args.hardware_only:
+        print("===== Running Hardware Verification Only =====")
+        from hardware_verification import HardwareVerifier
+        verifier = HardwareVerifier()
+        hardware_results = verifier.verify_all_hardware()
+        verifier.save_verification_results(hardware_results)
+        verifier.create_hardware_visualizations(hardware_results)
+        print("Hardware verification completed successfully!")
         return 0
     
     # Step 1: Run benchmarks
@@ -420,7 +491,8 @@ Parallel Processing Options:
             str(output_dir),
             use_processes=args.use_processes,
             max_workers=args.workers,
-            overwrite=args.overwrite
+            overwrite=args.overwrite,
+            config=config
         )
         print(f"Benchmarking completed: {len(results)} configurations")
     else:
@@ -466,4 +538,4 @@ Parallel Processing Options:
 
 
 if __name__ == "__main__":
-    sys.exit(main()) 
+    sys.exit(main())

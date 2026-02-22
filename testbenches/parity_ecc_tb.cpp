@@ -1,141 +1,155 @@
-#include <stdio.h>
+ #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
+#include <time.h>
 
 // Verilator generated header
 #include "Vparity_ecc.h"
 #include "verilated.h"
+#include "ecc_test_utils.h"
+
+// Auto-detect DATA_WIDTH from the DUT
+#ifndef DATA_WIDTH
+#define DATA_WIDTH 8
+#endif
+
+// Helper macros for wide port access
+#if DATA_WIDTH > 64
+    #define SET_DATA_IN(dut, val) SET_WIDE_PORT(dut, data_in, val, DATA_WIDTH)
+    
+    // Parity ECC: codeword is DATA_WIDTH + 1
+    #define SET_CODEWORD_IN(dut, val) SET_WIDE_PORT(dut, codeword_in, val, DATA_WIDTH+1)
+        
+    #define GET_CODEWORD_OUT(dut, val) GET_WIDE_PORT(dut, codeword_out, val, DATA_WIDTH+1)
+
+    #define GET_DATA_OUT(dut, val) GET_WIDE_PORT(dut, data_out, val, DATA_WIDTH)
+#else
+    #define SET_DATA_IN(dut, val) (dut)->data_in = to_u64(val)
+    #define GET_DATA_OUT(dut, val) (val) = from_u64((dut)->data_out)
+    
+    // Check codeword width for simple scalar vs wide
+    #if DATA_WIDTH >= 64
+        // 64+1 = 65 bits -> WData
+        #define SET_CODEWORD_IN(dut, val) SET_WIDE_PORT(dut, codeword_in, val, DATA_WIDTH+1)
+        #define GET_CODEWORD_OUT(dut, val) GET_WIDE_PORT(dut, codeword_out, val, DATA_WIDTH+1)
+    #else
+        #define SET_CODEWORD_IN(dut, val) (dut)->codeword_in = to_u64(val)
+        #define GET_CODEWORD_OUT(dut, val) (val) = from_u64((dut)->codeword_out)
+    #endif
+#endif
 
 // Python-like parity calculation functions
-uint32_t calculate_parity(uint32_t data, int data_width) {
-    uint32_t parity = 0;
+int calculate_parity(const BitArray& data, int data_width) {
+    int parity = 0;
     for (int i = 0; i < data_width; i++) {
-        parity ^= ((data >> i) & 1);
+        if (data.get_bit(i)) parity ^= 1;
     }
     return parity;
 }
 
-uint32_t encode_parity(uint32_t data, int data_width) {
-    uint32_t parity = calculate_parity(data, data_width);
-    return (data << 1) | parity;
+BitArray encode_parity(const BitArray& data, int data_width) {
+    int parity = calculate_parity(data, data_width);
+    BitArray codeword;
+    // Parity bit at position 0 (shared convention, check Verilog)
+    // Verilog: assign codeword_out = {data_in, expected_parity}; -> Parity at LSB (idx 0)
+    codeword.set_bit(0, parity);
+    for(int i=0; i<data_width; i++) {
+        codeword.set_bit(i+1, data.get_bit(i));
+    }
+    return codeword;
 }
 
-uint32_t decode_parity(uint32_t codeword, int data_width, int* error_detected) {
-    uint32_t data_bits = codeword >> 1;
-    uint32_t parity_bit = codeword & 1;
-    uint32_t expected_parity = calculate_parity(data_bits, data_width);
+BitArray decode_parity(const BitArray& codeword, int data_width, int* error_detected) {
+    BitArray data;
+    int parity_bit = codeword.get_bit(0);
+    for(int i=0; i<data_width; i++) {
+        data.set_bit(i, codeword.get_bit(i+1));
+    }
     
+    int expected_parity = calculate_parity(data, data_width);
     *error_detected = (parity_bit != expected_parity);
-    return data_bits;
+    return data;
 }
 
 // Test function
 void test_parity_ecc() {
     Vparity_ecc* dut = new Vparity_ecc();
     
-    printf("=== Parity ECC Test ===\n");
+    int data_width = DATA_WIDTH;
+    printf("=== Parity ECC Test (DATA_WIDTH=%d) ===\n", data_width);
     
-    // Test cases
-    uint32_t test_cases[] = {0x00, 0x55, 0xAA, 0xFF, 0x12, 0x34, 0x56, 0x78};
-    int num_tests = sizeof(test_cases) / sizeof(test_cases[0]);
-    int data_width = 8;
+    const int NUM_TESTS = 20;
+    srand(12345);
+    
     int pass_count = 0;
     int fail_count = 0;
     
-    for (int i = 0; i < num_tests; i++) {
-        uint32_t test_data = test_cases[i];
+    for (int i = 0; i < NUM_TESTS; i++) {
+        BitArray test_data;
+        for(int w=0; w<MAX_WORDS; w++) test_data.words[w] = rand() | (rand()<<16);
+        // Mask unused
+        for(int b=data_width; b<MAX_WORDS*32; b++) test_data.set_bit(b, 0);
         
-        // Calculate expected results (Python-like)
-        uint32_t expected_codeword = encode_parity(test_data, data_width);
-        int expected_error_detected;
-        uint32_t expected_decoded_data = decode_parity(expected_codeword, data_width, &expected_error_detected);
+        BitArray expected_codeword = encode_parity(test_data, data_width);
+        int expected_error_detected; // dummy for encode check
         
         // Reset DUT
-        dut->rst_n = 0;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
-        dut->rst_n = 1;
+        dut->rst_n = 0; dut->eval();
+        dut->rst_n = 1; dut->eval();
         
-        // Test encoding
-        dut->encode_en = 1;
-        dut->decode_en = 0;
-        dut->data_in = test_data;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        // Test Encode
+        dut->encode_en = 1; dut->decode_en = 0;
+        SET_DATA_IN(dut, test_data);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        // Check encoding result
-        if (dut->codeword_out == expected_codeword) {
-            printf("ENCODE TEST %d: PASS (data=0x%02X, codeword=0x%03X)\n", 
-                   i, test_data, dut->codeword_out);
+        BitArray dut_cw;
+        GET_CODEWORD_OUT(dut, dut_cw);
+        
+        if (dut_cw == expected_codeword) {
             pass_count++;
         } else {
-            printf("ENCODE TEST %d: FAIL (data=0x%02X, expected=0x%03X, got=0x%03X)\n", 
-                   i, test_data, expected_codeword, dut->codeword_out);
+            printf("ENCODE FAIL Test %d\n", i);
             fail_count++;
         }
         
-        // Test decoding (no error)
-        dut->encode_en = 0;
-        dut->decode_en = 1;
-        dut->codeword_in = expected_codeword;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        // Test Decode
+        dut->encode_en = 0; dut->decode_en = 1;
+        SET_CODEWORD_IN(dut, expected_codeword);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        // Check decoding result
-        if (dut->data_out == expected_decoded_data && dut->error_detected == expected_error_detected) {
-            printf("DECODE TEST %d: PASS (codeword=0x%03X, data=0x%02X, error=%d)\n", 
-                   i, expected_codeword, dut->data_out, dut->error_detected);
+        BitArray dut_out;
+        GET_DATA_OUT(dut, dut_out);
+        
+        if (dut_out == test_data && !dut->error_detected) {
             pass_count++;
         } else {
-            printf("DECODE TEST %d: FAIL (codeword=0x%03X, expected_data=0x%02X, got_data=0x%02X, expected_error=%d, got_error=%d)\n", 
-                   i, expected_codeword, expected_decoded_data, dut->data_out, expected_error_detected, dut->error_detected);
+            printf("DECODE FAIL Test %d\n", i);
             fail_count++;
         }
         
-        // Test error detection (inject error)
-        uint32_t corrupted_codeword = expected_codeword ^ 1; // Flip LSB
-        int expected_error_detected_corrupted;
-        uint32_t expected_decoded_data_corrupted = decode_parity(corrupted_codeword, data_width, &expected_error_detected_corrupted);
+        // Test Error
+        BitArray corrupted = expected_codeword;
+        corrupted.set_bit(0, !corrupted.get_bit(0)); // Flip parity bit (LSB)
         
-        dut->codeword_in = corrupted_codeword;
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        SET_CODEWORD_IN(dut, corrupted);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
         
-        // Check error detection
-        if (dut->error_detected == expected_error_detected_corrupted) {
-            printf("ERROR DETECTION TEST %d: PASS (corrupted_codeword=0x%03X, error_detected=%d)\n", 
-                   i, corrupted_codeword, dut->error_detected);
+        if (dut->error_detected) {
             pass_count++;
         } else {
-            printf("ERROR DETECTION TEST %d: FAIL (corrupted_codeword=0x%03X, expected_error=%d, got_error=%d)\n", 
-                   i, corrupted_codeword, expected_error_detected_corrupted, dut->error_detected);
+            printf("ERROR DETECTION FAIL Test %d\n", i);
             fail_count++;
         }
-        
-        printf("\n");
     }
     
-    // Summary
-    printf("=== Test Summary ===\n");
-    printf("Total tests: %d\n", num_tests * 3); // encode, decode, error detection
-    printf("Passed: %d\n", pass_count);
-    printf("Failed: %d\n", fail_count);
-    
-    if (fail_count == 0) {
-        printf("RESULT: PASS\n");
-    } else {
-        printf("RESULT: FAIL\n");
-    }
+    printf("Passed: %d, Failed: %d\n", pass_count, fail_count);
+    if (fail_count == 0) printf("RESULT: PASS\n");
+    else printf("RESULT: FAIL\n");
     
     delete dut;
 }
@@ -143,4 +157,4 @@ void test_parity_ecc() {
 int main() {
     test_parity_ecc();
     return 0;
-} 
+}

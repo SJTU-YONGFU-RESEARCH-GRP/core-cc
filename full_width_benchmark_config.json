@@ -1,0 +1,49 @@
+{
+    "ecc_types": [
+        "ParityECC",
+        "HammingSECDEDECC",
+        "RepetitionECC",
+        "BCHECC",
+        "ReedSolomonECC",
+        "CRCECC",
+        "GolayECC",
+        "LDPCECC",
+        "TurboECC",
+        "ConvolutionalECC",
+        "PolarECC",
+        "ExtendedHammingECC",
+        "ProductCodeECC",
+        "ConcatenatedECC",
+        "ReedMullerECC",
+        "FireCodeECC",
+        "SpatiallyCoupledLDPCECC",
+        "NonBinaryLDPCECC",
+        "RaptorCodeECC",
+        "CompositeECC",
+        "SystemECC",
+        "AdaptiveECC",
+        "ThreeDMemoryECC",
+        "PrimarySecondaryECC",
+        "CyclicECC",
+        "BurstErrorECC"
+    ],
+    "word_lengths": [
+        4,
+        8,
+        16,
+        32,
+        64,
+        128
+    ],
+    "error_patterns": [
+        "single",
+        "double",
+        "burst",
+        "random"
+    ],
+    "trials_per_config": 1000,
+    "burst_length": 3,
+    "random_error_prob": 0.01,
+    "measure_timing": true,
+    "max_workers": 16
+}

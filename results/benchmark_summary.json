@@ -1,262 +1,262 @@
 {
-  "AdaptiveECC": {
-    "avg_correction_rate": 0.67621875,
-    "avg_detection_rate": 0.0175875,
-    "avg_success_rate": 0.69380625,
-    "avg_code_rate": 0.6157188796894679,
-    "avg_overhead": 1.87890625,
-    "avg_encode_time": 0.00014123765011790965,
-    "avg_decode_time": 3.524836964934366e-05,
-    "configurations_tested": 16
-  },
-  "BurstErrorECC": {
-    "avg_correction_rate": 0.258675,
-    "avg_detection_rate": 0.68669375,
-    "avg_success_rate": 0.94536875,
-    "avg_code_rate": 0.5744527649769585,
-    "avg_overhead": 0.83203125,
-    "avg_encode_time": 3.3177864883964506e-05,
-    "avg_decode_time": 0.0016975016374540246,
-    "configurations_tested": 16
-  },
-  "CompositeECC": {
-    "avg_correction_rate": 0.50121875,
+  "GolayECC": {
+    "avg_correction_rate": 0.9997916666666666,
     "avg_detection_rate": 0.0,
-    "avg_success_rate": 0.50121875,
-    "avg_code_rate": 0.6081023004936048,
-    "avg_overhead": 0.802734375,
-    "avg_encode_time": 2.279479056596756e-07,
-    "avg_decode_time": 2.4665341043146327e-07,
-    "configurations_tested": 16
-  },
-  "CyclicECC": {
-    "avg_correction_rate": 0.552575,
-    "avg_detection_rate": 0.0,
-    "avg_success_rate": 0.552575,
-    "avg_code_rate": 0.5645001280081925,
-    "avg_overhead": 0.8203125,
-    "avg_encode_time": 1.0591105827279534e-05,
-    "avg_decode_time": 4.137053442718752e-07,
-    "configurations_tested": 16
-  },
-  "PrimarySecondaryECC": {
-    "avg_correction_rate": 0.3784375,
-    "avg_detection_rate": 0.2848375,
-    "avg_success_rate": 0.663275,
-    "avg_code_rate": 0.5776785714285714,
-    "avg_overhead": 0.8203125,
-    "avg_encode_time": 3.549830408537673e-05,
-    "avg_decode_time": 0.0009581328629331438,
-    "configurations_tested": 16
-  },
-  "SystemECC": {
-    "avg_correction_rate": 0.224775,
-    "avg_detection_rate": 0.603325,
-    "avg_success_rate": 0.8281,
-    "avg_code_rate": 0.740249474131053,
-    "avg_overhead": 0.3984375,
-    "avg_encode_time": 1.64886486287287e-05,
-    "avg_decode_time": 7.876164226036054e-06,
-    "configurations_tested": 16
-  },
-  "ThreeDMemoryECC": {
-    "avg_correction_rate": 0.541475,
-    "avg_detection_rate": 0.37016875,
-    "avg_success_rate": 0.91164375,
-    "avg_code_rate": 0.5914430014430014,
-    "avg_overhead": 0.953125,
-    "avg_encode_time": 1.3334095729260298e-05,
-    "avg_decode_time": 0.0003329947364655709,
-    "configurations_tested": 16
-  },
-  "SpatiallyCoupledLDPCECC": {
-    "avg_correction_rate": 0.3779375,
-    "avg_detection_rate": 0.28630625,
-    "avg_success_rate": 0.66424375,
-    "avg_code_rate": 0.6604166666666667,
-    "avg_overhead": 0.671875,
-    "avg_encode_time": 1.5298672395874746e-05,
-    "avg_decode_time": 0.0001478500357712619,
-    "configurations_tested": 16
-  },
-  "BCHECC": {
-    "avg_correction_rate": 0.2823,
-    "avg_detection_rate": 0.0,
-    "avg_success_rate": 0.2823,
-    "avg_code_rate": 0.5342549923195085,
-    "avg_overhead": 0.875,
-    "avg_encode_time": 1.562531921081245e-07,
-    "avg_decode_time": 2.193102947785519e-07,
-    "configurations_tested": 16
-  },
-  "HammingSECDEDECC": {
-    "avg_correction_rate": 0.52401875,
-    "avg_detection_rate": 0.045625,
-    "avg_success_rate": 0.56964375,
-    "avg_code_rate": 0.8145873503071646,
-    "avg_overhead": 0.267578125,
-    "avg_encode_time": 1.630040610616561e-05,
-    "avg_decode_time": 1.670526320231147e-05,
-    "configurations_tested": 16
-  },
-  "NonBinaryLDPCECC": {
-    "avg_correction_rate": 0.38906875,
-    "avg_detection_rate": 0.4532375,
-    "avg_success_rate": 0.84230625,
-    "avg_code_rate": 0.5734447004608295,
-    "avg_overhead": 0.8359375,
-    "avg_encode_time": 3.366415669734124e-05,
-    "avg_decode_time": 0.001290733101661317,
-    "configurations_tested": 16
-  },
-  "CRCECC": {
-    "avg_correction_rate": 0.236175,
-    "avg_detection_rate": 0.506425,
-    "avg_success_rate": 0.7426,
-    "avg_code_rate": 0.8023640354522708,
-    "avg_overhead": 0.33203125,
-    "avg_encode_time": 1.5973518362443428e-05,
-    "avg_decode_time": 1.562309245491633e-05,
-    "configurations_tested": 16
-  },
-  "FireCodeECC": {
-    "avg_correction_rate": 0.25540625,
-    "avg_detection_rate": 0.6274125,
-    "avg_success_rate": 0.88281875,
-    "avg_code_rate": 0.6488967378782219,
-    "avg_overhead": 0.580078125,
-    "avg_encode_time": 2.1151408567675388e-06,
-    "avg_decode_time": 9.394780760339927e-06,
-    "configurations_tested": 16
-  },
-  "ReedSolomonECC": {
-    "avg_correction_rate": 0.9292875,
-    "avg_detection_rate": 0.0707125,
-    "avg_success_rate": 1.0,
-    "avg_code_rate": 0.5342549923195085,
-    "avg_overhead": 0.875,
-    "avg_encode_time": 1.0355511667148677e-05,
-    "avg_decode_time": 0.00014477528058050665,
-    "configurations_tested": 16
+    "avg_success_rate": 0.9997916666666666,
+    "avg_code_rate": 0.5040362165298526,
+    "avg_overhead": 1.0377604166666667,
+    "avg_encode_time": 8.968439515835295e-06,
+    "avg_decode_time": 9.260505641577765e-06,
+    "configurations_tested": 24
   },
   "TurboECC": {
-    "avg_correction_rate": 0.56249375,
-    "avg_detection_rate": 0.0,
-    "avg_success_rate": 0.56249375,
-    "avg_code_rate": 0.3466973215774277,
-    "avg_overhead": 1.89453125,
-    "avg_encode_time": 2.1904367675597314e-05,
-    "avg_decode_time": 6.3319388864329085e-06,
-    "configurations_tested": 16
-  },
-  "ParityECC": {
-    "avg_correction_rate": 0.24845,
-    "avg_detection_rate": 0.526825,
-    "avg_success_rate": 0.775275,
-    "avg_code_rate": 0.9569147355912062,
-    "avg_overhead": 0.05078125,
-    "avg_encode_time": 2.389294977183454e-06,
-    "avg_decode_time": 2.3681003716774286e-06,
-    "configurations_tested": 16
-  },
-  "ConcatenatedECC": {
-    "avg_correction_rate": 0.68365625,
-    "avg_detection_rate": 0.2358,
-    "avg_success_rate": 0.91945625,
-    "avg_code_rate": 0.37010676646704294,
-    "avg_overhead": 1.94140625,
-    "avg_encode_time": 2.8896406368585303e-05,
-    "avg_decode_time": 3.1182597980659923e-05,
-    "configurations_tested": 16
-  },
-  "ConvolutionalECC": {
-    "avg_correction_rate": 0.6918625,
-    "avg_detection_rate": 0.0,
-    "avg_success_rate": 0.6918625,
-    "avg_code_rate": 0.41209150326797384,
-    "avg_overhead": 1.46875,
-    "avg_encode_time": 1.864269722427707e-05,
-    "avg_decode_time": 0.00025501749251852744,
-    "configurations_tested": 16
-  },
-  "ReedMullerECC": {
-    "avg_correction_rate": 0.3782625,
-    "avg_detection_rate": 0.28390624999999997,
-    "avg_success_rate": 0.66216875,
-    "avg_code_rate": 0.5952540962621607,
-    "avg_overhead": 0.806640625,
-    "avg_encode_time": 3.709455783973681e-05,
-    "avg_decode_time": 0.0009996295744043892,
-    "configurations_tested": 16
-  },
-  "ProductCodeECC": {
-    "avg_correction_rate": 0.45374375,
-    "avg_detection_rate": 0.414125,
-    "avg_success_rate": 0.86786875,
-    "avg_code_rate": 0.33475300750049675,
-    "avg_overhead": 2.482421875,
-    "avg_encode_time": 1.812243440799648e-05,
-    "avg_decode_time": 2.0653883696650154e-05,
-    "configurations_tested": 16
-  },
-  "RepetitionECC": {
-    "avg_correction_rate": 0.72870625,
-    "avg_detection_rate": 0.0,
-    "avg_success_rate": 0.72870625,
-    "avg_code_rate": 0.3571428571428571,
-    "avg_overhead": 1.8828125,
-    "avg_encode_time": 9.46144791378174e-06,
-    "avg_decode_time": 1.0564644167607184e-05,
-    "configurations_tested": 16
+    "avg_correction_rate": 0.16666666666666666,
+    "avg_detection_rate": 0.8333333333333334,
+    "avg_success_rate": 1.0,
+    "avg_code_rate": 0.3333333333333333,
+    "avg_overhead": 2.0,
+    "avg_encode_time": 4.596010629514543e-05,
+    "avg_decode_time": 4.995314696376833e-05,
+    "configurations_tested": 24
   },
   "RaptorCodeECC": {
-    "avg_correction_rate": 0.447625,
-    "avg_detection_rate": 0.0,
-    "avg_success_rate": 0.447625,
-    "avg_code_rate": 0.5963293650793651,
-    "avg_overhead": 0.802734375,
-    "avg_encode_time": 1.4478637008869555e-05,
-    "avg_decode_time": 4.71141984598944e-06,
-    "configurations_tested": 16
+    "avg_correction_rate": 0.16345833333333334,
+    "avg_detection_rate": 0.7859583333333333,
+    "avg_success_rate": 0.9494166666666667,
+    "avg_code_rate": 0.5,
+    "avg_overhead": 1.0,
+    "avg_encode_time": 4.6946420926057424e-05,
+    "avg_decode_time": 4.467903581098653e-05,
+    "configurations_tested": 24
   },
-  "GolayECC": {
-    "avg_correction_rate": 0.5010375,
-    "avg_detection_rate": 0.0,
-    "avg_success_rate": 0.5010375,
-    "avg_code_rate": 0.6442245319180303,
-    "avg_overhead": 1.04296875,
-    "avg_encode_time": 1.7870087685878388e-06,
-    "avg_decode_time": 1.8890293722506613e-06,
-    "configurations_tested": 16
+  "CompositeECC": {
+    "avg_correction_rate": 0.17570833333333333,
+    "avg_detection_rate": 0.48341666666666666,
+    "avg_success_rate": 0.659125,
+    "avg_code_rate": 0.6883442265795207,
+    "avg_overhead": 0.65625,
+    "avg_encode_time": 3.165000719794383e-07,
+    "avg_decode_time": 4.620012380958845e-07,
+    "configurations_tested": 24
   },
-  "PolarECC": {
-    "avg_correction_rate": 0.38321875,
+  "PrimarySecondaryECC": {
+    "avg_correction_rate": 0.163125,
+    "avg_detection_rate": 0.42212500000000003,
+    "avg_success_rate": 0.58525,
+    "avg_code_rate": 0.7322303294077488,
+    "avg_overhead": 0.5299479166666666,
+    "avg_encode_time": 6.29736474074889e-05,
+    "avg_decode_time": 0.0026558838907949395,
+    "configurations_tested": 24
+  },
+  "HammingSECDEDECC": {
+    "avg_correction_rate": 0.3567916666666667,
+    "avg_detection_rate": 0.09554166666666666,
+    "avg_success_rate": 0.45233333333333337,
+    "avg_code_rate": 0.815189447554711,
+    "avg_overhead": 0.2594401041666667,
+    "avg_encode_time": 5.759173787373584e-05,
+    "avg_decode_time": 5.873866952606477e-05,
+    "configurations_tested": 24
+  },
+  "AdaptiveECC": {
+    "avg_correction_rate": 0.48520833333333335,
+    "avg_detection_rate": 0.19154166666666667,
+    "avg_success_rate": 0.67675,
+    "avg_code_rate": 0.7197797522699216,
+    "avg_overhead": 0.6861979166666666,
+    "avg_encode_time": 4.289180174237117e-05,
+    "avg_decode_time": 5.4652241475802534e-05,
+    "configurations_tested": 24
+  },
+  "SpatiallyCoupledLDPCECC": {
+    "avg_correction_rate": 0.19283333333333333,
+    "avg_detection_rate": 0.4237916666666667,
+    "avg_success_rate": 0.616625,
+    "avg_code_rate": 0.5855583072277256,
+    "avg_overhead": 0.8248697916666666,
+    "avg_encode_time": 4.659234942422093e-05,
+    "avg_decode_time": 0.0017302651323892254,
+    "configurations_tested": 24
+  },
+  "BCHECC": {
+    "avg_correction_rate": 0.8170833333333334,
+    "avg_detection_rate": 0.18158333333333332,
+    "avg_success_rate": 0.9986666666666667,
+    "avg_code_rate": 0.5282130056323604,
+    "avg_overhead": 0.8958333333333334,
+    "avg_encode_time": 6.170733235194348e-06,
+    "avg_decode_time": 7.106154811723778e-05,
+    "configurations_tested": 24
+  },
+  "ThreeDMemoryECC": {
+    "avg_correction_rate": 0.26829166666666665,
+    "avg_detection_rate": 0.44816666666666666,
+    "avg_success_rate": 0.7164583333333333,
+    "avg_code_rate": 0.7167902467902468,
+    "avg_overhead": 0.703125,
+    "avg_encode_time": 1.2812164233764633e-05,
+    "avg_decode_time": 2.1506432531168685e-05,
+    "configurations_tested": 24
+  },
+  "NonBinaryLDPCECC": {
+    "avg_correction_rate": 0.20241666666666666,
+    "avg_detection_rate": 0.618375,
+    "avg_success_rate": 0.8207916666666667,
+    "avg_code_rate": 0.5258565412166616,
+    "avg_overhead": 0.9401041666666666,
+    "avg_encode_time": 0.00037774985306411206,
+    "avg_decode_time": 0.06921569921294576,
+    "configurations_tested": 24
+  },
+  "CRCECC": {
+    "avg_correction_rate": 0.062,
+    "avg_detection_rate": 0.626625,
+    "avg_success_rate": 0.688625,
+    "avg_code_rate": 0.8878456273210332,
+    "avg_overhead": 0.19563802083333334,
+    "avg_encode_time": 4.564435113570653e-05,
+    "avg_decode_time": 4.2609422923608994e-05,
+    "configurations_tested": 24
+  },
+  "FireCodeECC": {
+    "avg_correction_rate": 0.07066666666666667,
+    "avg_detection_rate": 0.8129583333333333,
+    "avg_success_rate": 0.883625,
+    "avg_code_rate": 0.7438943562230007,
+    "avg_overhead": 0.3912760416666667,
+    "avg_encode_time": 6.332372955512256e-06,
+    "avg_decode_time": 2.55626899258156e-05,
+    "configurations_tested": 24
+  },
+  "SystemECC": {
+    "avg_correction_rate": 0.05275,
+    "avg_detection_rate": 0.731,
+    "avg_success_rate": 0.78375,
+    "avg_code_rate": 0.7977286557503617,
+    "avg_overhead": 0.2991536458333333,
+    "avg_encode_time": 5.274509261653293e-05,
+    "avg_decode_time": 2.1088849573667783e-05,
+    "configurations_tested": 24
+  },
+  "ReedSolomonECC": {
+    "avg_correction_rate": 0.7142916666666667,
+    "avg_detection_rate": 0.28570833333333334,
+    "avg_success_rate": 1.0,
+    "avg_code_rate": 0.5282130056323604,
+    "avg_overhead": 0.8958333333333334,
+    "avg_encode_time": 1.1919649958144873e-05,
+    "avg_decode_time": 0.0001763791622846232,
+    "configurations_tested": 24
+  },
+  "ParityECC": {
+    "avg_correction_rate": 0.07933333333333334,
+    "avg_detection_rate": 0.6070416666666667,
+    "avg_success_rate": 0.686375,
+    "avg_code_rate": 0.9578724386521924,
+    "avg_overhead": 0.0498046875,
+    "avg_encode_time": 4.711224057246e-06,
+    "avg_decode_time": 4.647566660423763e-06,
+    "configurations_tested": 24
+  },
+  "ConcatenatedECC": {
+    "avg_correction_rate": 0.5255,
+    "avg_detection_rate": 0.3858333333333333,
+    "avg_success_rate": 0.9113333333333333,
+    "avg_code_rate": 0.3691866862484968,
+    "avg_overhead": 1.9368489583333333,
+    "avg_encode_time": 7.752186684228946e-05,
+    "avg_decode_time": 8.449811735287464e-05,
+    "configurations_tested": 24
+  },
+  "ConvolutionalECC": {
+    "avg_correction_rate": 0.6089583333333334,
     "avg_detection_rate": 0.0,
-    "avg_success_rate": 0.38321875,
-    "avg_code_rate": 0.7231331168831169,
-    "avg_overhead": 0.6796875,
-    "avg_encode_time": 1.4355159098340665e-05,
-    "avg_decode_time": 0.0029603084782487714,
-    "configurations_tested": 16
+    "avg_success_rate": 0.6089583333333334,
+    "avg_code_rate": 0.4375870317046788,
+    "avg_overhead": 1.328125,
+    "avg_encode_time": 4.4760320034887024e-05,
+    "avg_decode_time": 0.0006743965085479431,
+    "configurations_tested": 24
+  },
+  "ProductCodeECC": {
+    "avg_correction_rate": 0.2285,
+    "avg_detection_rate": 0.6588333333333334,
+    "avg_success_rate": 0.8873333333333333,
+    "avg_code_rate": 0.39456753850174575,
+    "avg_overhead": 2.0377604166666665,
+    "avg_encode_time": 4.469280926665912e-05,
+    "avg_decode_time": 4.863554431843416e-05,
+    "configurations_tested": 24
+  },
+  "CyclicECC": {
+    "avg_correction_rate": 0.3857083333333333,
+    "avg_detection_rate": 0.0,
+    "avg_success_rate": 0.3857083333333333,
+    "avg_code_rate": 0.5089394024003389,
+    "avg_overhead": 0.966796875,
+    "avg_encode_time": 2.8665110056560176e-05,
+    "avg_decode_time": 4.0640667430125177e-07,
+    "configurations_tested": 24
+  },
+  "BurstErrorECC": {
+    "avg_correction_rate": 0.07579166666666667,
+    "avg_detection_rate": 0.8773333333333333,
+    "avg_success_rate": 0.953125,
+    "avg_code_rate": 0.7140088878256514,
+    "avg_overhead": 0.5625,
+    "avg_encode_time": 6.096341892650041e-05,
+    "avg_decode_time": 0.004139999007447235,
+    "configurations_tested": 24
   },
   "ExtendedHammingECC": {
-    "avg_correction_rate": 0.52100625,
-    "avg_detection_rate": 0.23308125,
-    "avg_success_rate": 0.7540875,
-    "avg_code_rate": 0.7038862453336138,
-    "avg_overhead": 0.46875,
-    "avg_encode_time": 1.5609570025117137e-05,
-    "avg_decode_time": 1.6437466263596433e-05,
-    "configurations_tested": 16
+    "avg_correction_rate": 0.34883333333333333,
+    "avg_detection_rate": 0.35154166666666664,
+    "avg_success_rate": 0.700375,
+    "avg_code_rate": 0.7976761649154998,
+    "avg_overhead": 0.3177083333333333,
+    "avg_encode_time": 5.967087874887511e-05,
+    "avg_decode_time": 6.0839019924363433e-05,
+    "configurations_tested": 24
+  },
+  "ReedMullerECC": {
+    "avg_correction_rate": 0.162875,
+    "avg_detection_rate": 0.4197916666666667,
+    "avg_success_rate": 0.5826666666666667,
+    "avg_code_rate": 0.8154761904761905,
+    "avg_overhead": 0.3645833333333333,
+    "avg_encode_time": 6.474005788913928e-05,
+    "avg_decode_time": 0.002699491178621732,
+    "configurations_tested": 24
+  },
+  "RepetitionECC": {
+    "avg_correction_rate": 0.609625,
+    "avg_detection_rate": 0.0,
+    "avg_success_rate": 0.609625,
+    "avg_code_rate": 0.3743098769336643,
+    "avg_overhead": 1.7734375,
+    "avg_encode_time": 2.6786471658851953e-05,
+    "avg_decode_time": 3.0282266564123953e-05,
+    "configurations_tested": 24
+  },
+  "PolarECC": {
+    "avg_correction_rate": 0.31925,
+    "avg_detection_rate": 0.0,
+    "avg_success_rate": 0.31925,
+    "avg_code_rate": 0.7393791990566184,
+    "avg_overhead": 0.5885416666666666,
+    "avg_encode_time": 2.0186936744721607e-06,
+    "avg_decode_time": 0.00013136560630906994,
+    "configurations_tested": 24
   },
   "LDPCECC": {
-    "avg_correction_rate": 0.21038125,
-    "avg_detection_rate": 0.40823125,
-    "avg_success_rate": 0.6186125,
-    "avg_code_rate": 0.71875,
-    "avg_overhead": 0.9375,
-    "avg_encode_time": 1.3971107063116506e-05,
-    "avg_decode_time": 0.00021993772053247087,
-    "configurations_tested": 16
+    "avg_correction_rate": 0.08975,
+    "avg_detection_rate": 0.7513333333333333,
+    "avg_success_rate": 0.8410833333333333,
+    "avg_code_rate": 0.6022067611462159,
+    "avg_overhead": 0.76953125,
+    "avg_encode_time": 3.5163892728936234e-05,
+    "avg_decode_time": 0.0008363154462373738,
+    "configurations_tested": 24
   }
 }

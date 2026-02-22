@@ -1,0 +1,22 @@
+{
+  "ecc_type": "ParityECC",
+  "word_length": 32,
+  "error_pattern": "random",
+  "trials": 10000,
+  "correctable_errors": 7267,
+  "detected_errors": 2393,
+  "undetected_errors": 340,
+  "encode_time_avg": 3.335426654666662e-06,
+  "decode_time_avg": 3.3024533651769162e-06,
+  "total_time_avg": 6.637880019843578e-06,
+  "code_rate": 0.9696969696969697,
+  "overhead_ratio": 0.03125,
+  "correction_rate": 0.7267,
+  "detection_rate": 0.2393,
+  "success_rate": 0.966,
+  "error_distribution": {
+    "corrected": 7267,
+    "detected": 2393,
+    "undetected": 340
+  }
+}

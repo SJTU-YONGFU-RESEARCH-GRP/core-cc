@@ -1,0 +1,5774 @@
+{
+  "ParityECC_4": {
+    "ecc_type": "ParityECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 925,
+    "encode_time_avg": 1.073598861694336e-06,
+    "decode_time_avg": 7.898807525634766e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.104593276977539e-06,
+        "decode_time_avg": 8.320808410644532e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 925,
+        "success_rate": 0.925,
+        "encode_time_avg": 1.073598861694336e-06,
+        "decode_time_avg": 7.898807525634766e-07
+      }
+    },
+    "hash": "3ea1c308",
+    "timestamp": 1771354136.0593333
+  },
+  "ParityECC_8": {
+    "ecc_type": "ParityECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 994,
+    "encode_time_avg": 1.3628005981445313e-06,
+    "decode_time_avg": 9.806156158447267e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.35040283203125e-06,
+        "decode_time_avg": 9.140968322753906e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 994,
+        "success_rate": 0.994,
+        "encode_time_avg": 1.3628005981445313e-06,
+        "decode_time_avg": 9.806156158447267e-07
+      }
+    },
+    "hash": "3ea1c308",
+    "timestamp": 1771354136.1531904
+  },
+  "ParityECC_16": {
+    "ecc_type": "ParityECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.8281936645507813e-06,
+    "decode_time_avg": 1.3346672058105468e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.8606185913085938e-06,
+        "decode_time_avg": 1.3637542724609374e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.8281936645507813e-06,
+        "decode_time_avg": 1.3346672058105468e-06
+      }
+    },
+    "hash": "3ea1c308",
+    "timestamp": 1771354136.2011538
+  },
+  "ParityECC_32": {
+    "ecc_type": "ParityECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 3.1194686889648437e-06,
+    "decode_time_avg": 2.347707748413086e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.1039714813232422e-06,
+        "decode_time_avg": 2.3322105407714844e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.1194686889648437e-06,
+        "decode_time_avg": 2.347707748413086e-06
+      }
+    },
+    "hash": "3ea1c308",
+    "timestamp": 1771354136.258543
+  },
+  "ParityECC_64": {
+    "ecc_type": "ParityECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 5.7768821716308595e-06,
+    "decode_time_avg": 4.8997402191162106e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.7539939880371095e-06,
+        "decode_time_avg": 4.7953128814697265e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.7768821716308595e-06,
+        "decode_time_avg": 4.8997402191162106e-06
+      }
+    },
+    "hash": "3ea1c308",
+    "timestamp": 1771354136.3313463
+  },
+  "ParityECC_128": {
+    "ecc_type": "ParityECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.0642290115356445e-05,
+    "decode_time_avg": 9.557008743286133e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0789394378662109e-05,
+        "decode_time_avg": 9.578943252563476e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0642290115356445e-05,
+        "decode_time_avg": 9.557008743286133e-06
+      }
+    },
+    "hash": "3ea1c308",
+    "timestamp": 1771354136.4346802
+  },
+  "HammingSECDEDECC_4": {
+    "ecc_type": "HammingSECDEDECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 944,
+    "encode_time_avg": 3.6170482635498045e-06,
+    "decode_time_avg": 2.7263164520263673e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.6106109619140625e-06,
+        "decode_time_avg": 2.794027328491211e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 944,
+        "success_rate": 0.944,
+        "encode_time_avg": 3.6170482635498045e-06,
+        "decode_time_avg": 2.7263164520263673e-06
+      }
+    },
+    "hash": "b9b649f9",
+    "timestamp": 1771143288.6556664
+  },
+  "HammingSECDEDECC_8": {
+    "ecc_type": "HammingSECDEDECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 996,
+    "encode_time_avg": 6.0086250305175785e-06,
+    "decode_time_avg": 4.911184310913086e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.0062408447265625e-06,
+        "decode_time_avg": 4.9123764038085936e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 996,
+        "success_rate": 0.996,
+        "encode_time_avg": 6.0086250305175785e-06,
+        "decode_time_avg": 4.911184310913086e-06
+      }
+    },
+    "hash": "b9b649f9",
+    "timestamp": 1771143288.7240243
+  },
+  "HammingSECDEDECC_16": {
+    "ecc_type": "HammingSECDEDECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.0845661163330079e-05,
+    "decode_time_avg": 9.491205215454101e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0860681533813476e-05,
+        "decode_time_avg": 9.60087776184082e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0845661163330079e-05,
+        "decode_time_avg": 9.491205215454101e-06
+      }
+    },
+    "hash": "b9b649f9",
+    "timestamp": 1771143288.8227706
+  },
+  "HammingSECDEDECC_32": {
+    "ecc_type": "HammingSECDEDECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.3836851119995117e-05,
+    "decode_time_avg": 2.2453784942626952e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.370595932006836e-05,
+        "decode_time_avg": 2.243185043334961e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.3836851119995117e-05,
+        "decode_time_avg": 2.2453784942626952e-05
+      }
+    },
+    "hash": "b9b649f9",
+    "timestamp": 1771143289.0022042
+  },
+  "HammingSECDEDECC_64": {
+    "ecc_type": "HammingSECDEDECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 5.2431821823120115e-05,
+    "decode_time_avg": 5.130624771118164e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.29930591583252e-05,
+        "decode_time_avg": 5.1927566528320315e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.2431821823120115e-05,
+        "decode_time_avg": 5.130624771118164e-05
+      }
+    },
+    "hash": "b9b649f9",
+    "timestamp": 1771143289.3553083
+  },
+  "HammingSECDEDECC_128": {
+    "ecc_type": "HammingSECDEDECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.00011909103393554688,
+    "decode_time_avg": 0.0001171574592590332,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00011932539939880372,
+        "decode_time_avg": 0.00011759185791015625
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00011909103393554688,
+        "decode_time_avg": 0.0001171574592590332
+      }
+    },
+    "hash": "b9b649f9",
+    "timestamp": 1771143290.104394
+  },
+  "RepetitionECC_4": {
+    "ecc_type": "RepetitionECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 930,
+    "encode_time_avg": 3.0634403228759766e-06,
+    "decode_time_avg": 2.9480457305908204e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.9840469360351563e-06,
+        "decode_time_avg": 2.9163360595703123e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 930,
+        "success_rate": 0.93,
+        "encode_time_avg": 3.0634403228759766e-06,
+        "decode_time_avg": 2.9480457305908204e-06
+      }
+    },
+    "hash": "bf098d87",
+    "timestamp": 1771354136.5065846
+  },
+  "RepetitionECC_8": {
+    "ecc_type": "RepetitionECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 998,
+    "encode_time_avg": 4.643440246582031e-06,
+    "decode_time_avg": 4.6472549438476565e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.5096874237060545e-06,
+        "decode_time_avg": 4.475116729736328e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 998,
+        "success_rate": 0.998,
+        "encode_time_avg": 4.643440246582031e-06,
+        "decode_time_avg": 4.6472549438476565e-06
+      }
+    },
+    "hash": "bf098d87",
+    "timestamp": 1771354136.5743542
+  },
+  "RepetitionECC_16": {
+    "ecc_type": "RepetitionECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 7.669210433959961e-06,
+    "decode_time_avg": 7.982969284057616e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.5414180755615235e-06,
+        "decode_time_avg": 7.923603057861329e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.669210433959961e-06,
+        "decode_time_avg": 7.982969284057616e-06
+      }
+    },
+    "hash": "bf098d87",
+    "timestamp": 1771354136.6617768
+  },
+  "RepetitionECC_32": {
+    "ecc_type": "RepetitionECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.3918399810791016e-05,
+    "decode_time_avg": 1.4776706695556641e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3948917388916016e-05,
+        "decode_time_avg": 1.4883518218994141e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3918399810791016e-05,
+        "decode_time_avg": 1.4776706695556641e-05
+      }
+    },
+    "hash": "bf098d87",
+    "timestamp": 1771354136.7914288
+  },
+  "RepetitionECC_64": {
+    "ecc_type": "RepetitionECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.7679204940795898e-05,
+    "decode_time_avg": 2.9503345489501952e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.7649641036987306e-05,
+        "decode_time_avg": 2.9628992080688476e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.7679204940795898e-05,
+        "decode_time_avg": 2.9503345489501952e-05
+      }
+    },
+    "hash": "bf098d87",
+    "timestamp": 1771354137.0067337
+  },
+  "RepetitionECC_128": {
+    "ecc_type": "RepetitionECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 5.468440055847168e-05,
+    "decode_time_avg": 6.193327903747558e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.4670810699462893e-05,
+        "decode_time_avg": 6.185436248779296e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.468440055847168e-05,
+        "decode_time_avg": 6.193327903747558e-05
+      }
+    },
+    "hash": "bf098d87",
+    "timestamp": 1771354137.4015412
+  },
+  "BCHECC_4": {
+    "ecc_type": "BCHECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 929,
+    "encode_time_avg": 4.726886749267578e-06,
+    "decode_time_avg": 8.25953483581543e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.7006607055664065e-06,
+        "decode_time_avg": 8.419990539550782e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 929,
+        "success_rate": 0.929,
+        "encode_time_avg": 4.726886749267578e-06,
+        "decode_time_avg": 8.25953483581543e-06
+      }
+    },
+    "hash": "8be3b9ed",
+    "timestamp": 1771354137.5077012
+  },
+  "BCHECC_8": {
+    "ecc_type": "BCHECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 996,
+    "encode_time_avg": 4.9350261688232426e-06,
+    "decode_time_avg": 1.0622739791870117e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.101680755615234e-06,
+        "decode_time_avg": 1.1129856109619141e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 996,
+        "success_rate": 0.996,
+        "encode_time_avg": 4.9350261688232426e-06,
+        "decode_time_avg": 1.0622739791870117e-05
+      }
+    },
+    "hash": "8be3b9ed",
+    "timestamp": 1771354137.6277761
+  },
+  "BCHECC_16": {
+    "ecc_type": "BCHECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 6.310939788818359e-06,
+    "decode_time_avg": 1.6058683395385743e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.082534790039063e-06,
+        "decode_time_avg": 1.563715934753418e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.310939788818359e-06,
+        "decode_time_avg": 1.6058683395385743e-05
+      }
+    },
+    "hash": "8be3b9ed",
+    "timestamp": 1771354137.7721262
+  },
+  "BCHECC_32": {
+    "ecc_type": "BCHECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.0293960571289063e-05,
+    "decode_time_avg": 3.942251205444336e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0503530502319336e-05,
+        "decode_time_avg": 4.025650024414063e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0293960571289063e-05,
+        "decode_time_avg": 3.942251205444336e-05
+      }
+    },
+    "hash": "8be3b9ed",
+    "timestamp": 1771354138.0370598
+  },
+  "BCHECC_64": {
+    "ecc_type": "BCHECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.5510311126708985e-05,
+    "decode_time_avg": 0.00010678815841674804,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.1482229232788085e-05,
+        "decode_time_avg": 9.123921394348145e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.5510311126708985e-05,
+        "decode_time_avg": 0.00010678815841674804
+      }
+    },
+    "hash": "8be3b9ed",
+    "timestamp": 1771354138.5867171
+  },
+  "BCHECC_128": {
+    "ecc_type": "BCHECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 5.3054571151733395e-05,
+    "decode_time_avg": 0.00023259997367858887,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.127238273620606e-05,
+        "decode_time_avg": 0.00027136993408203127
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.3054571151733395e-05,
+        "decode_time_avg": 0.00023259997367858887
+      }
+    },
+    "hash": "8be3b9ed",
+    "timestamp": 1771354139.8368573
+  },
+  "ReedSolomonECC_4": {
+    "ecc_type": "ReedSolomonECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 932,
+    "encode_time_avg": 5.652189254760742e-06,
+    "decode_time_avg": 8.357763290405273e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.629539489746093e-06,
+        "decode_time_avg": 8.50677490234375e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 932,
+        "success_rate": 0.932,
+        "encode_time_avg": 5.652189254760742e-06,
+        "decode_time_avg": 8.357763290405273e-06
+      }
+    },
+    "hash": "0db00e64",
+    "timestamp": 1771354140.8022184
+  },
+  "ReedSolomonECC_8": {
+    "ecc_type": "ReedSolomonECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 996,
+    "encode_time_avg": 5.49173355102539e-06,
+    "decode_time_avg": 8.229732513427735e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.45954704284668e-06,
+        "decode_time_avg": 8.297443389892578e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 996,
+        "success_rate": 0.996,
+        "encode_time_avg": 5.49173355102539e-06,
+        "decode_time_avg": 8.229732513427735e-06
+      }
+    },
+    "hash": "0db00e64",
+    "timestamp": 1771354140.910138
+  },
+  "ReedSolomonECC_16": {
+    "ecc_type": "ReedSolomonECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 6.3021183013916015e-06,
+    "decode_time_avg": 8.872509002685547e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.0956478118896485e-06,
+        "decode_time_avg": 8.643388748168945e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.3021183013916015e-06,
+        "decode_time_avg": 8.872509002685547e-06
+      }
+    },
+    "hash": "0db00e64",
+    "timestamp": 1771354141.0231829
+  },
+  "ReedSolomonECC_32": {
+    "ecc_type": "ReedSolomonECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 7.4005126953125e-06,
+    "decode_time_avg": 9.945392608642578e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.450342178344726e-06,
+        "decode_time_avg": 1.0063409805297852e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.4005126953125e-06,
+        "decode_time_avg": 9.945392608642578e-06
+      }
+    },
+    "hash": "0db00e64",
+    "timestamp": 1771354141.1467178
+  },
+  "ReedSolomonECC_64": {
+    "ecc_type": "ReedSolomonECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 9.72461700439453e-06,
+    "decode_time_avg": 1.2156486511230469e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.738683700561524e-06,
+        "decode_time_avg": 1.2214422225952149e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.72461700439453e-06,
+        "decode_time_avg": 1.2156486511230469e-05
+      }
+    },
+    "hash": "0db00e64",
+    "timestamp": 1771354141.2885242
+  },
+  "ReedSolomonECC_128": {
+    "ecc_type": "ReedSolomonECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.4617919921875e-05,
+    "decode_time_avg": 1.7153501510620118e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.4637231826782227e-05,
+        "decode_time_avg": 1.727175712585449e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.4617919921875e-05,
+        "decode_time_avg": 1.7153501510620118e-05
+      }
+    },
+    "hash": "0db00e64",
+    "timestamp": 1771354141.4680974
+  },
+  "CRCECC_4": {
+    "ecc_type": "CRCECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 936,
+    "encode_time_avg": 5.446910858154297e-06,
+    "decode_time_avg": 4.499673843383789e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.5091381072998045e-06,
+        "decode_time_avg": 4.501104354858399e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 936,
+        "success_rate": 0.936,
+        "encode_time_avg": 5.446910858154297e-06,
+        "decode_time_avg": 4.499673843383789e-06
+      }
+    },
+    "hash": "4df3827e",
+    "timestamp": 1771354141.5393717
+  },
+  "CRCECC_8": {
+    "ecc_type": "CRCECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 997,
+    "encode_time_avg": 7.916927337646485e-06,
+    "decode_time_avg": 6.712198257446289e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.958889007568359e-06,
+        "decode_time_avg": 6.745576858520508e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 997,
+        "success_rate": 0.997,
+        "encode_time_avg": 7.916927337646485e-06,
+        "decode_time_avg": 6.712198257446289e-06
+      }
+    },
+    "hash": "4df3827e",
+    "timestamp": 1771354141.6233046
+  },
+  "CRCECC_16": {
+    "ecc_type": "CRCECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.2647390365600585e-05,
+    "decode_time_avg": 1.1370658874511719e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.2775659561157227e-05,
+        "decode_time_avg": 1.1315345764160156e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.2647390365600585e-05,
+        "decode_time_avg": 1.1370658874511719e-05
+      }
+    },
+    "hash": "4df3827e",
+    "timestamp": 1771354141.7363195
+  },
+  "CRCECC_32": {
+    "ecc_type": "CRCECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.2535085678100587e-05,
+    "decode_time_avg": 2.128267288208008e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.253556251525879e-05,
+        "decode_time_avg": 2.119112014770508e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.2535085678100587e-05,
+        "decode_time_avg": 2.128267288208008e-05
+      }
+    },
+    "hash": "4df3827e",
+    "timestamp": 1771354141.9091928
+  },
+  "CRCECC_64": {
+    "ecc_type": "CRCECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 4.219484329223633e-05,
+    "decode_time_avg": 4.099106788635254e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.217529296875e-05,
+        "decode_time_avg": 4.107570648193359e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.219484329223633e-05,
+        "decode_time_avg": 4.099106788635254e-05
+      }
+    },
+    "hash": "4df3827e",
+    "timestamp": 1771354142.199142
+  },
+  "CRCECC_128": {
+    "ecc_type": "CRCECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 8.216142654418946e-05,
+    "decode_time_avg": 8.109903335571289e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.240032196044922e-05,
+        "decode_time_avg": 8.21995735168457e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.216142654418946e-05,
+        "decode_time_avg": 8.109903335571289e-05
+      }
+    },
+    "hash": "4df3827e",
+    "timestamp": 1771354142.729759
+  },
+  "GolayECC_4": {
+    "ecc_type": "GolayECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 940,
+    "encode_time_avg": 1.8928050994873047e-06,
+    "decode_time_avg": 1.577615737915039e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.8987655639648438e-06,
+        "decode_time_avg": 1.572847366333008e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 940,
+        "success_rate": 0.94,
+        "encode_time_avg": 1.8928050994873047e-06,
+        "decode_time_avg": 1.577615737915039e-06
+      }
+    },
+    "hash": "099e60ca",
+    "timestamp": 1771143295.4709318
+  },
+  "GolayECC_8": {
+    "ecc_type": "GolayECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 993,
+    "encode_time_avg": 2.1293163299560545e-06,
+    "decode_time_avg": 1.7139911651611328e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.1347999572753908e-06,
+        "decode_time_avg": 1.7261505126953126e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 993,
+        "success_rate": 0.993,
+        "encode_time_avg": 2.1293163299560545e-06,
+        "decode_time_avg": 1.7139911651611328e-06
+      }
+    },
+    "hash": "099e60ca",
+    "timestamp": 1771143295.5199964
+  },
+  "GolayECC_16": {
+    "ecc_type": "GolayECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 3.4201145172119142e-06,
+    "decode_time_avg": 2.9213428497314453e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.382444381713867e-06,
+        "decode_time_avg": 2.870798110961914e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.4201145172119142e-06,
+        "decode_time_avg": 2.9213428497314453e-06
+      }
+    },
+    "hash": "099e60ca",
+    "timestamp": 1771143295.5765264
+  },
+  "GolayECC_32": {
+    "ecc_type": "GolayECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 5.798816680908203e-06,
+    "decode_time_avg": 4.934072494506836e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.8276653289794925e-06,
+        "decode_time_avg": 5.0194263458251955e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.798816680908203e-06,
+        "decode_time_avg": 4.934072494506836e-06
+      }
+    },
+    "hash": "099e60ca",
+    "timestamp": 1771143295.6490948
+  },
+  "GolayECC_64": {
+    "ecc_type": "GolayECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.0066032409667968e-05,
+    "decode_time_avg": 9.105920791625976e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0014057159423829e-05,
+        "decode_time_avg": 9.024143218994141e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0066032409667968e-05,
+        "decode_time_avg": 9.105920791625976e-06
+      }
+    },
+    "hash": "099e60ca",
+    "timestamp": 1771143295.7475858
+  },
+  "GolayECC_128": {
+    "ecc_type": "GolayECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.8347740173339844e-05,
+    "decode_time_avg": 1.7134904861450195e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.845550537109375e-05,
+        "decode_time_avg": 1.72576904296875e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.8347740173339844e-05,
+        "decode_time_avg": 1.7134904861450195e-05
+      }
+    },
+    "hash": "099e60ca",
+    "timestamp": 1771143295.8965611
+  },
+  "LDPCECC_4": {
+    "ecc_type": "LDPCECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 947,
+    "encode_time_avg": 8.437395095825196e-06,
+    "decode_time_avg": 1.1005163192749023e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.1625051498413086e-05,
+        "decode_time_avg": 1.0925769805908203e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 947,
+        "success_rate": 0.947,
+        "encode_time_avg": 8.437395095825196e-06,
+        "decode_time_avg": 1.1005163192749023e-05
+      }
+    },
+    "hash": "b818f80a",
+    "timestamp": 1771354142.963981
+  },
+  "LDPCECC_8": {
+    "ecc_type": "LDPCECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 995,
+    "encode_time_avg": 1.0096311569213867e-05,
+    "decode_time_avg": 1.2080192565917969e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.017904281616211e-05,
+        "decode_time_avg": 1.2176513671875e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 995,
+        "success_rate": 0.995,
+        "encode_time_avg": 1.0096311569213867e-05,
+        "decode_time_avg": 1.2080192565917969e-05
+      }
+    },
+    "hash": "b818f80a",
+    "timestamp": 1771354143.2588117
+  },
+  "LDPCECC_16": {
+    "ecc_type": "LDPCECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.327967643737793e-05,
+    "decode_time_avg": 1.47857666015625e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3393163681030273e-05,
+        "decode_time_avg": 1.5065193176269532e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.327967643737793e-05,
+        "decode_time_avg": 1.47857666015625e-05
+      }
+    },
+    "hash": "b818f80a",
+    "timestamp": 1771354143.6506057
+  },
+  "LDPCECC_32": {
+    "ecc_type": "LDPCECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.106642723083496e-05,
+    "decode_time_avg": 2.1427154541015625e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.079343795776367e-05,
+        "decode_time_avg": 2.1256685256958007e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.106642723083496e-05,
+        "decode_time_avg": 2.1427154541015625e-05
+      }
+    },
+    "hash": "b818f80a",
+    "timestamp": 1771354144.1333327
+  },
+  "LDPCECC_64": {
+    "ecc_type": "LDPCECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 4.235005378723144e-05,
+    "decode_time_avg": 4.1003942489624024e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.24807071685791e-05,
+        "decode_time_avg": 4.1089773178100583e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.235005378723144e-05,
+        "decode_time_avg": 4.1003942489624024e-05
+      }
+    },
+    "hash": "b818f80a",
+    "timestamp": 1771354144.821068
+  },
+  "LDPCECC_128": {
+    "ecc_type": "LDPCECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 9.68317985534668e-05,
+    "decode_time_avg": 8.57384204864502e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.632420539855956e-05,
+        "decode_time_avg": 8.641552925109863e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.68317985534668e-05,
+        "decode_time_avg": 8.57384204864502e-05
+      }
+    },
+    "hash": "b818f80a",
+    "timestamp": 1771354146.2013958
+  },
+  "PolarECC_4": {
+    "ecc_type": "PolarECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 8,
+    "encode_time_avg": 6.771087646484375e-06,
+    "decode_time_avg": 1.4042854309082031e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.796287536621094e-06,
+        "decode_time_avg": 1.559257507324219e-05
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 8,
+        "success_rate": 0.8,
+        "encode_time_avg": 6.771087646484375e-06,
+        "decode_time_avg": 1.4042854309082031e-05
+      }
+    },
+    "hash": "025eecd3",
+    "timestamp": 1771357002.4757152
+  },
+  "PolarECC_8": {
+    "ecc_type": "PolarECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 1.1920928955078125e-05,
+    "decode_time_avg": 3.292560577392578e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.2373924255371093e-05,
+        "decode_time_avg": 3.2114982604980466e-05
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.1920928955078125e-05,
+        "decode_time_avg": 3.292560577392578e-05
+      }
+    },
+    "hash": "025eecd3",
+    "timestamp": 1771357002.4856243
+  },
+  "PolarECC_16": {
+    "ecc_type": "PolarECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 2.226829528808594e-05,
+    "decode_time_avg": 7.18832015991211e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.2816658020019532e-05,
+        "decode_time_avg": 7.297992706298829e-05
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.226829528808594e-05,
+        "decode_time_avg": 7.18832015991211e-05
+      }
+    },
+    "hash": "025eecd3",
+    "timestamp": 1771357002.4969573
+  },
+  "PolarECC_32": {
+    "ecc_type": "PolarECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 4.5180320739746094e-05,
+    "decode_time_avg": 0.0001750946044921875,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.7159194946289065e-05,
+        "decode_time_avg": 0.00017669200897216797
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.5180320739746094e-05,
+        "decode_time_avg": 0.0001750946044921875
+      }
+    },
+    "hash": "025eecd3",
+    "timestamp": 1771357002.5123055
+  },
+  "PolarECC_64": {
+    "ecc_type": "PolarECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 9.648799896240234e-05,
+    "decode_time_avg": 0.0004201650619506836,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.47713851928711e-05,
+        "decode_time_avg": 0.0004100322723388672
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.648799896240234e-05,
+        "decode_time_avg": 0.0004201650619506836
+      }
+    },
+    "hash": "025eecd3",
+    "timestamp": 1771357002.536268
+  },
+  "PolarECC_128": {
+    "ecc_type": "PolarECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 0.00019068717956542968,
+    "decode_time_avg": 0.0009369134902954101,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00019388198852539064,
+        "decode_time_avg": 0.000943446159362793
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00019068717956542968,
+        "decode_time_avg": 0.0009369134902954101
+      }
+    },
+    "hash": "025eecd3",
+    "timestamp": 1771357002.5796483
+  },
+  "ExtendedHammingECC_4": {
+    "ecc_type": "ExtendedHammingECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 932,
+    "encode_time_avg": 4.23121452331543e-06,
+    "decode_time_avg": 3.6704540252685546e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.824710845947266e-06,
+        "decode_time_avg": 3.4077167510986326e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 932,
+        "success_rate": 0.932,
+        "encode_time_avg": 4.23121452331543e-06,
+        "decode_time_avg": 3.6704540252685546e-06
+      }
+    },
+    "hash": "5ee7961f",
+    "timestamp": 1771143302.385647
+  },
+  "ExtendedHammingECC_8": {
+    "ecc_type": "ExtendedHammingECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 994,
+    "encode_time_avg": 6.708860397338867e-06,
+    "decode_time_avg": 5.858898162841797e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.715774536132812e-06,
+        "decode_time_avg": 5.790233612060547e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 994,
+        "success_rate": 0.994,
+        "encode_time_avg": 6.708860397338867e-06,
+        "decode_time_avg": 5.858898162841797e-06
+      }
+    },
+    "hash": "5ee7961f",
+    "timestamp": 1771143302.4610782
+  },
+  "ExtendedHammingECC_16": {
+    "ecc_type": "ExtendedHammingECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.1609315872192382e-05,
+    "decode_time_avg": 1.0715961456298828e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.1737585067749024e-05,
+        "decode_time_avg": 1.0700464248657227e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.1609315872192382e-05,
+        "decode_time_avg": 1.0715961456298828e-05
+      }
+    },
+    "hash": "5ee7961f",
+    "timestamp": 1771143302.5683212
+  },
+  "ExtendedHammingECC_32": {
+    "ecc_type": "ExtendedHammingECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.4955987930297852e-05,
+    "decode_time_avg": 2.4135589599609375e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.485966682434082e-05,
+        "decode_time_avg": 2.4006366729736328e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.4955987930297852e-05,
+        "decode_time_avg": 2.4135589599609375e-05
+      }
+    },
+    "hash": "5ee7961f",
+    "timestamp": 1771143302.7560184
+  },
+  "ExtendedHammingECC_64": {
+    "ecc_type": "ExtendedHammingECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 5.38022518157959e-05,
+    "decode_time_avg": 5.294680595397949e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.375218391418457e-05,
+        "decode_time_avg": 5.298066139221192e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.38022518157959e-05,
+        "decode_time_avg": 5.294680595397949e-05
+      }
+    },
+    "hash": "5ee7961f",
+    "timestamp": 1771143303.118005
+  },
+  "ExtendedHammingECC_128": {
+    "ecc_type": "ExtendedHammingECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.00011870574951171874,
+    "decode_time_avg": 0.00011791205406188965,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0001187286376953125,
+        "decode_time_avg": 0.00011828923225402832
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00011870574951171874,
+        "decode_time_avg": 0.00011791205406188965
+      }
+    },
+    "hash": "5ee7961f",
+    "timestamp": 1771143303.870591
+  },
+  "ProductCodeECC_4": {
+    "ecc_type": "ProductCodeECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 944,
+    "encode_time_avg": 8.341550827026368e-06,
+    "decode_time_avg": 8.030176162719726e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.337974548339844e-06,
+        "decode_time_avg": 8.091211318969726e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 944,
+        "success_rate": 0.944,
+        "encode_time_avg": 8.341550827026368e-06,
+        "decode_time_avg": 8.030176162719726e-06
+      }
+    },
+    "hash": "45bb473c",
+    "timestamp": 1771354147.6423626
+  },
+  "ProductCodeECC_8": {
+    "ecc_type": "ProductCodeECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 993,
+    "encode_time_avg": 8.983373641967774e-06,
+    "decode_time_avg": 8.570194244384765e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.912086486816407e-06,
+        "decode_time_avg": 8.559703826904297e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 993,
+        "success_rate": 0.993,
+        "encode_time_avg": 8.983373641967774e-06,
+        "decode_time_avg": 8.570194244384765e-06
+      }
+    },
+    "hash": "45bb473c",
+    "timestamp": 1771354147.7371197
+  },
+  "ProductCodeECC_16": {
+    "ecc_type": "ProductCodeECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.4158248901367188e-05,
+    "decode_time_avg": 1.3679742813110352e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3989925384521484e-05,
+        "decode_time_avg": 1.3669729232788086e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.4158248901367188e-05,
+        "decode_time_avg": 1.3679742813110352e-05
+      }
+    },
+    "hash": "45bb473c",
+    "timestamp": 1771354147.8635964
+  },
+  "ProductCodeECC_32": {
+    "ecc_type": "ProductCodeECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.434706687927246e-05,
+    "decode_time_avg": 2.410125732421875e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.4549722671508788e-05,
+        "decode_time_avg": 2.4272918701171877e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.434706687927246e-05,
+        "decode_time_avg": 2.410125732421875e-05
+      }
+    },
+    "hash": "45bb473c",
+    "timestamp": 1771354148.0541883
+  },
+  "ProductCodeECC_64": {
+    "ecc_type": "ProductCodeECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 4.501986503601074e-05,
+    "decode_time_avg": 4.592061042785644e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.497766494750977e-05,
+        "decode_time_avg": 4.60512638092041e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.501986503601074e-05,
+        "decode_time_avg": 4.592061042785644e-05
+      }
+    },
+    "hash": "45bb473c",
+    "timestamp": 1771354148.3721278
+  },
+  "ProductCodeECC_128": {
+    "ecc_type": "ProductCodeECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 8.62596035003662e-05,
+    "decode_time_avg": 8.97982120513916e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.620095252990723e-05,
+        "decode_time_avg": 9.002256393432617e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.62596035003662e-05,
+        "decode_time_avg": 8.97982120513916e-05
+      }
+    },
+    "hash": "45bb473c",
+    "timestamp": 1771354148.9459474
+  },
+  "ConcatenatedECC_4": {
+    "ecc_type": "ConcatenatedECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 940,
+    "encode_time_avg": 1.0825634002685547e-05,
+    "decode_time_avg": 9.87696647644043e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0841131210327148e-05,
+        "decode_time_avg": 9.830951690673829e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 940,
+        "success_rate": 0.94,
+        "encode_time_avg": 1.0825634002685547e-05,
+        "decode_time_avg": 9.87696647644043e-06
+      }
+    },
+    "hash": "a5e48468",
+    "timestamp": 1771354149.0510619
+  },
+  "ConcatenatedECC_8": {
+    "ecc_type": "ConcatenatedECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 997,
+    "encode_time_avg": 1.212167739868164e-05,
+    "decode_time_avg": 1.0952234268188476e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.1928081512451172e-05,
+        "decode_time_avg": 1.0938405990600585e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 997,
+        "success_rate": 0.997,
+        "encode_time_avg": 1.212167739868164e-05,
+        "decode_time_avg": 1.0952234268188476e-05
+      }
+    },
+    "hash": "a5e48468",
+    "timestamp": 1771354149.1623688
+  },
+  "ConcatenatedECC_16": {
+    "ecc_type": "ConcatenatedECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.2811174392700197e-05,
+    "decode_time_avg": 2.2476911544799806e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.3248910903930665e-05,
+        "decode_time_avg": 2.302408218383789e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.2811174392700197e-05,
+        "decode_time_avg": 2.2476911544799806e-05
+      }
+    },
+    "hash": "a5e48468",
+    "timestamp": 1771354149.3425777
+  },
+  "ConcatenatedECC_32": {
+    "ecc_type": "ConcatenatedECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 3.870844841003418e-05,
+    "decode_time_avg": 3.9451837539672855e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.8796424865722654e-05,
+        "decode_time_avg": 3.9439916610717774e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.870844841003418e-05,
+        "decode_time_avg": 3.9451837539672855e-05
+      }
+    },
+    "hash": "a5e48468",
+    "timestamp": 1771354149.7341614
+  },
+  "ConcatenatedECC_64": {
+    "ecc_type": "ConcatenatedECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 7.459211349487305e-05,
+    "decode_time_avg": 7.799124717712403e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.333946228027344e-05,
+        "decode_time_avg": 7.66897201538086e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.459211349487305e-05,
+        "decode_time_avg": 7.799124717712403e-05
+      }
+    },
+    "hash": "a5e48468",
+    "timestamp": 1771354150.2321274
+  },
+  "ConcatenatedECC_128": {
+    "ecc_type": "ConcatenatedECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.00014351916313171386,
+    "decode_time_avg": 0.00015209412574768066,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0001440112590789795,
+        "decode_time_avg": 0.00015291953086853026
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00014351916313171386,
+        "decode_time_avg": 0.00015209412574768066
+      }
+    },
+    "hash": "a5e48468",
+    "timestamp": 1771354151.1691046
+  },
+  "ReedMullerECC_4": {
+    "ecc_type": "ReedMullerECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 934,
+    "encode_time_avg": 3.1843185424804687e-06,
+    "decode_time_avg": 2.374410629272461e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.23486328125e-06,
+        "decode_time_avg": 2.3005008697509764e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 934,
+        "success_rate": 0.934,
+        "encode_time_avg": 3.1843185424804687e-06,
+        "decode_time_avg": 2.374410629272461e-06
+      }
+    },
+    "hash": "7a82d1cc",
+    "timestamp": 1771358579.4682693
+  },
+  "ReedMullerECC_8": {
+    "ecc_type": "ReedMullerECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 995,
+    "encode_time_avg": 6.51240348815918e-06,
+    "decode_time_avg": 5.866527557373047e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.4449310302734375e-06,
+        "decode_time_avg": 5.987167358398437e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 995,
+        "success_rate": 0.995,
+        "encode_time_avg": 6.51240348815918e-06,
+        "decode_time_avg": 5.866527557373047e-06
+      }
+    },
+    "hash": "7a82d1cc",
+    "timestamp": 1771358579.5500975
+  },
+  "ReedMullerECC_16": {
+    "ecc_type": "ReedMullerECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.873445510864258e-05,
+    "decode_time_avg": 2.001190185546875e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.8748283386230468e-05,
+        "decode_time_avg": 2.0139694213867186e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.873445510864258e-05,
+        "decode_time_avg": 2.001190185546875e-05
+      }
+    },
+    "hash": "7a82d1cc",
+    "timestamp": 1771358579.7209141
+  },
+  "ReedMullerECC_32": {
+    "ecc_type": "ReedMullerECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 7.336592674255371e-05,
+    "decode_time_avg": 8.644342422485351e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.838892936706542e-05,
+        "decode_time_avg": 9.190583229064941e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.336592674255371e-05,
+        "decode_time_avg": 8.644342422485351e-05
+      }
+    },
+    "hash": "7a82d1cc",
+    "timestamp": 1771358580.3128636
+  },
+  "FireCodeECC_4": {
+    "ecc_type": "FireCodeECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 939,
+    "encode_time_avg": 1.0170936584472656e-06,
+    "decode_time_avg": 8.788108825683594e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0287761688232423e-06,
+        "decode_time_avg": 8.971691131591797e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 939,
+        "success_rate": 0.939,
+        "encode_time_avg": 1.0170936584472656e-06,
+        "decode_time_avg": 8.788108825683594e-07
+      }
+    },
+    "hash": "f1b79320",
+    "timestamp": 1771143314.737134
+  },
+  "FireCodeECC_8": {
+    "ecc_type": "FireCodeECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 996,
+    "encode_time_avg": 1.3906955718994141e-06,
+    "decode_time_avg": 1.1086463928222657e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.385211944580078e-06,
+        "decode_time_avg": 1.0564327239990234e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 996,
+        "success_rate": 0.996,
+        "encode_time_avg": 1.3906955718994141e-06,
+        "decode_time_avg": 1.1086463928222657e-06
+      }
+    },
+    "hash": "f1b79320",
+    "timestamp": 1771143314.7831202
+  },
+  "FireCodeECC_16": {
+    "ecc_type": "FireCodeECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.189159393310547e-06,
+    "decode_time_avg": 1.6455650329589844e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.2492408752441405e-06,
+        "decode_time_avg": 1.7032623291015625e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.189159393310547e-06,
+        "decode_time_avg": 1.6455650329589844e-06
+      }
+    },
+    "hash": "f1b79320",
+    "timestamp": 1771143314.8390448
+  },
+  "FireCodeECC_32": {
+    "ecc_type": "FireCodeECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 3.9000511169433595e-06,
+    "decode_time_avg": 3.1723976135253904e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.786325454711914e-06,
+        "decode_time_avg": 3.124237060546875e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.9000511169433595e-06,
+        "decode_time_avg": 3.1723976135253904e-06
+      }
+    },
+    "hash": "f1b79320",
+    "timestamp": 1771143314.9088123
+  },
+  "FireCodeECC_64": {
+    "ecc_type": "FireCodeECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 7.238388061523437e-06,
+    "decode_time_avg": 6.119489669799805e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.30752944946289e-06,
+        "decode_time_avg": 6.159782409667968e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.238388061523437e-06,
+        "decode_time_avg": 6.119489669799805e-06
+      }
+    },
+    "hash": "f1b79320",
+    "timestamp": 1771143315.0062823
+  },
+  "FireCodeECC_128": {
+    "ecc_type": "FireCodeECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.3635635375976563e-05,
+    "decode_time_avg": 1.229548454284668e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3672590255737305e-05,
+        "decode_time_avg": 1.2149810791015625e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3635635375976563e-05,
+        "decode_time_avg": 1.229548454284668e-05
+      }
+    },
+    "hash": "f1b79320",
+    "timestamp": 1771143315.1547346
+  },
+  "SpatiallyCoupledLDPCECC_4": {
+    "ecc_type": "SpatiallyCoupledLDPCECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 946,
+    "encode_time_avg": 8.10551643371582e-06,
+    "decode_time_avg": 9.008884429931641e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.265972137451172e-06,
+        "decode_time_avg": 9.084224700927734e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 946,
+        "success_rate": 0.946,
+        "encode_time_avg": 8.10551643371582e-06,
+        "decode_time_avg": 9.008884429931641e-06
+      }
+    },
+    "hash": "819f5455",
+    "timestamp": 1771143315.2641897
+  },
+  "SpatiallyCoupledLDPCECC_8": {
+    "ecc_type": "SpatiallyCoupledLDPCECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 998,
+    "encode_time_avg": 9.653329849243163e-06,
+    "decode_time_avg": 9.968280792236329e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.924650192260743e-06,
+        "decode_time_avg": 1.0088682174682617e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 998,
+        "success_rate": 0.998,
+        "encode_time_avg": 9.653329849243163e-06,
+        "decode_time_avg": 9.968280792236329e-06
+      }
+    },
+    "hash": "819f5455",
+    "timestamp": 1771143315.3933847
+  },
+  "SpatiallyCoupledLDPCECC_16": {
+    "ecc_type": "SpatiallyCoupledLDPCECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.2861251831054688e-05,
+    "decode_time_avg": 1.2405872344970703e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.2984037399291993e-05,
+        "decode_time_avg": 1.2481451034545898e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.2861251831054688e-05,
+        "decode_time_avg": 1.2405872344970703e-05
+      }
+    },
+    "hash": "819f5455",
+    "timestamp": 1771143315.5739691
+  },
+  "SpatiallyCoupledLDPCECC_32": {
+    "ecc_type": "SpatiallyCoupledLDPCECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.0524024963378907e-05,
+    "decode_time_avg": 1.7605066299438475e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.0591020584106444e-05,
+        "decode_time_avg": 1.7755746841430664e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.0524024963378907e-05,
+        "decode_time_avg": 1.7605066299438475e-05
+      }
+    },
+    "hash": "819f5455",
+    "timestamp": 1771143315.89946
+  },
+  "SpatiallyCoupledLDPCECC_64": {
+    "ecc_type": "SpatiallyCoupledLDPCECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 3.734683990478516e-05,
+    "decode_time_avg": 3.079867362976074e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.754854202270508e-05,
+        "decode_time_avg": 3.089475631713867e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.734683990478516e-05,
+        "decode_time_avg": 3.079867362976074e-05
+      }
+    },
+    "hash": "819f5455",
+    "timestamp": 1771143316.6886897
+  },
+  "SpatiallyCoupledLDPCECC_128": {
+    "ecc_type": "SpatiallyCoupledLDPCECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 9.21003818511963e-05,
+    "decode_time_avg": 7.056283950805664e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.655071258544921e-05,
+        "decode_time_avg": 6.573820114135742e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.21003818511963e-05,
+        "decode_time_avg": 7.056283950805664e-05
+      }
+    },
+    "hash": "819f5455",
+    "timestamp": 1771143319.8745263
+  },
+  "NonBinaryLDPCECC_4": {
+    "ecc_type": "NonBinaryLDPCECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 3.0279159545898436e-06,
+    "decode_time_avg": 2.288818359375e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.6716461181640626e-06,
+        "decode_time_avg": 2.408027648925781e-06
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.0279159545898436e-06,
+        "decode_time_avg": 2.288818359375e-06
+      }
+    },
+    "hash": "b9bae6d6",
+    "timestamp": 1771357002.251109
+  },
+  "NonBinaryLDPCECC_8": {
+    "ecc_type": "NonBinaryLDPCECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 5.91278076171875e-06,
+    "decode_time_avg": 5.984306335449219e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.508827209472656e-06,
+        "decode_time_avg": 6.055831909179687e-06
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.91278076171875e-06,
+        "decode_time_avg": 5.984306335449219e-06
+      }
+    },
+    "hash": "b9bae6d6",
+    "timestamp": 1771357002.259824
+  },
+  "NonBinaryLDPCECC_16": {
+    "ecc_type": "NonBinaryLDPCECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 1.8978118896484374e-05,
+    "decode_time_avg": 2.1696090698242188e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.9812583923339842e-05,
+        "decode_time_avg": 2.0885467529296874e-05
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.8978118896484374e-05,
+        "decode_time_avg": 2.1696090698242188e-05
+      }
+    },
+    "hash": "b9bae6d6",
+    "timestamp": 1771357002.2695713
+  },
+  "NonBinaryLDPCECC_32": {
+    "ecc_type": "NonBinaryLDPCECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 6.995201110839843e-05,
+    "decode_time_avg": 8.776187896728516e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.669925689697265e-05,
+        "decode_time_avg": 8.156299591064454e-05
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.995201110839843e-05,
+        "decode_time_avg": 8.776187896728516e-05
+      }
+    },
+    "hash": "b9bae6d6",
+    "timestamp": 1771357002.2830386
+  },
+  "NonBinaryLDPCECC_64": {
+    "ecc_type": "NonBinaryLDPCECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 0.00031430721282958983,
+    "decode_time_avg": 0.0003437519073486328,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00030834674835205077,
+        "decode_time_avg": 0.0003364086151123047
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00031430721282958983,
+        "decode_time_avg": 0.0003437519073486328
+      }
+    },
+    "hash": "b9bae6d6",
+    "timestamp": 1771357002.3121943
+  },
+  "RaptorCodeECC_4": {
+    "ecc_type": "RaptorCodeECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 939,
+    "encode_time_avg": 8.217096328735352e-06,
+    "decode_time_avg": 8.832693099975585e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.26096534729004e-06,
+        "decode_time_avg": 8.889198303222656e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 939,
+        "success_rate": 0.939,
+        "encode_time_avg": 8.217096328735352e-06,
+        "decode_time_avg": 8.832693099975585e-06
+      }
+    },
+    "hash": "d697a269",
+    "timestamp": 1771395388.0039778
+  },
+  "RaptorCodeECC_8": {
+    "ecc_type": "RaptorCodeECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 997,
+    "encode_time_avg": 9.707450866699219e-06,
+    "decode_time_avg": 9.944200515747071e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0054826736450196e-05,
+        "decode_time_avg": 1.0309457778930664e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 997,
+        "success_rate": 0.997,
+        "encode_time_avg": 9.707450866699219e-06,
+        "decode_time_avg": 9.944200515747071e-06
+      }
+    },
+    "hash": "d697a269",
+    "timestamp": 1771395390.9117117
+  },
+  "RaptorCodeECC_16": {
+    "ecc_type": "RaptorCodeECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.3025283813476562e-05,
+    "decode_time_avg": 1.2721538543701171e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3057947158813476e-05,
+        "decode_time_avg": 1.2768268585205079e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3025283813476562e-05,
+        "decode_time_avg": 1.2721538543701171e-05
+      }
+    },
+    "hash": "d697a269",
+    "timestamp": 1771395391.034054
+  },
+  "RaptorCodeECC_32": {
+    "ecc_type": "RaptorCodeECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.3534297943115233e-05,
+    "decode_time_avg": 2.132749557495117e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.4080276489257812e-05,
+        "decode_time_avg": 2.2050857543945312e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.3534297943115233e-05,
+        "decode_time_avg": 2.132749557495117e-05
+      }
+    },
+    "hash": "d697a269",
+    "timestamp": 1771395392.7634664
+  },
+  "CompositeECC_4": {
+    "ecc_type": "CompositeECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 943,
+    "encode_time_avg": 3.24249267578125e-07,
+    "decode_time_avg": 3.6525726318359376e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.0589103698730467e-07,
+        "decode_time_avg": 3.590583801269531e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 943,
+        "success_rate": 0.943,
+        "encode_time_avg": 3.24249267578125e-07,
+        "decode_time_avg": 3.6525726318359376e-07
+      }
+    },
+    "hash": "8cd8c867",
+    "timestamp": 1771395393.6761813
+  },
+  "CompositeECC_8": {
+    "ecc_type": "CompositeECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 995,
+    "encode_time_avg": 3.011226654052734e-07,
+    "decode_time_avg": 3.5572052001953125e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.3140182495117185e-07,
+        "decode_time_avg": 3.8051605224609377e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 995,
+        "success_rate": 0.995,
+        "encode_time_avg": 3.011226654052734e-07,
+        "decode_time_avg": 3.5572052001953125e-07
+      }
+    },
+    "hash": "8cd8c867",
+    "timestamp": 1771395393.714629
+  },
+  "CompositeECC_16": {
+    "ecc_type": "CompositeECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.701282501220703e-07,
+    "decode_time_avg": 4.067420959472656e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.0565261840820313e-07,
+        "decode_time_avg": 4.23431396484375e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.701282501220703e-07,
+        "decode_time_avg": 4.067420959472656e-07
+      }
+    },
+    "hash": "8cd8c867",
+    "timestamp": 1771395393.7517793
+  },
+  "CompositeECC_32": {
+    "ecc_type": "CompositeECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 3.619194030761719e-07,
+    "decode_time_avg": 5.612373352050781e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.6644935607910154e-07,
+        "decode_time_avg": 5.207061767578125e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.619194030761719e-07,
+        "decode_time_avg": 5.612373352050781e-07
+      }
+    },
+    "hash": "8cd8c867",
+    "timestamp": 1771395393.7920291
+  },
+  "SystemECC_4": {
+    "ecc_type": "SystemECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 945,
+    "encode_time_avg": 4.018545150756836e-06,
+    "decode_time_avg": 3.170490264892578e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.040002822875977e-06,
+        "decode_time_avg": 3.162860870361328e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 945,
+        "success_rate": 0.945,
+        "encode_time_avg": 4.018545150756836e-06,
+        "decode_time_avg": 3.170490264892578e-06
+      }
+    },
+    "hash": "6dc99d27",
+    "timestamp": 1771254594.63695
+  },
+  "SystemECC_8": {
+    "ecc_type": "SystemECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 994,
+    "encode_time_avg": 6.506919860839844e-06,
+    "decode_time_avg": 5.405664443969726e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.610393524169922e-06,
+        "decode_time_avg": 5.513668060302735e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 994,
+        "success_rate": 0.994,
+        "encode_time_avg": 6.506919860839844e-06,
+        "decode_time_avg": 5.405664443969726e-06
+      }
+    },
+    "hash": "6dc99d27",
+    "timestamp": 1771254594.708281
+  },
+  "SystemECC_16": {
+    "ecc_type": "SystemECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.1602163314819335e-05,
+    "decode_time_avg": 1.0291576385498046e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.1418819427490234e-05,
+        "decode_time_avg": 1.027679443359375e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.1602163314819335e-05,
+        "decode_time_avg": 1.0291576385498046e-05
+      }
+    },
+    "hash": "6dc99d27",
+    "timestamp": 1771254594.8052938
+  },
+  "SystemECC_32": {
+    "ecc_type": "SystemECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.483201026916504e-05,
+    "decode_time_avg": 2.367401123046875e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.4703741073608397e-05,
+        "decode_time_avg": 2.3498296737670898e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.483201026916504e-05,
+        "decode_time_avg": 2.367401123046875e-05
+      }
+    },
+    "hash": "6dc99d27",
+    "timestamp": 1771254594.9707632
+  },
+  "SystemECC_64": {
+    "ecc_type": "SystemECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 5.40468692779541e-05,
+    "decode_time_avg": 5.339455604553223e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.4147958755493164e-05,
+        "decode_time_avg": 5.307126045227051e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.40468692779541e-05,
+        "decode_time_avg": 5.339455604553223e-05
+      }
+    },
+    "hash": "6dc99d27",
+    "timestamp": 1771254595.2848458
+  },
+  "SystemECC_128": {
+    "ecc_type": "SystemECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.00012128162384033203,
+    "decode_time_avg": 0.00012080717086791992,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0001214754581451416,
+        "decode_time_avg": 0.00011928582191467286
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00012128162384033203,
+        "decode_time_avg": 0.00012080717086791992
+      }
+    },
+    "hash": "6dc99d27",
+    "timestamp": 1771254595.935313
+  },
+  "AdaptiveECC_4": {
+    "ecc_type": "AdaptiveECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 937,
+    "encode_time_avg": 4.257917404174805e-06,
+    "decode_time_avg": 3.426313400268555e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.291534423828125e-06,
+        "decode_time_avg": 3.363609313964844e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 937,
+        "success_rate": 0.937,
+        "encode_time_avg": 4.257917404174805e-06,
+        "decode_time_avg": 3.426313400268555e-06
+      }
+    },
+    "hash": "23650054",
+    "timestamp": 1771354394.1948886
+  },
+  "AdaptiveECC_8": {
+    "ecc_type": "AdaptiveECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 998,
+    "encode_time_avg": 6.914377212524414e-06,
+    "decode_time_avg": 5.661249160766602e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.869792938232422e-06,
+        "decode_time_avg": 5.644083023071289e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 998,
+        "success_rate": 0.998,
+        "encode_time_avg": 6.914377212524414e-06,
+        "decode_time_avg": 5.661249160766602e-06
+      }
+    },
+    "hash": "23650054",
+    "timestamp": 1771354394.274727
+  },
+  "AdaptiveECC_16": {
+    "ecc_type": "AdaptiveECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.1824131011962891e-05,
+    "decode_time_avg": 1.0637283325195312e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.1792182922363281e-05,
+        "decode_time_avg": 1.0381460189819336e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.1824131011962891e-05,
+        "decode_time_avg": 1.0637283325195312e-05
+      }
+    },
+    "hash": "23650054",
+    "timestamp": 1771354394.3855293
+  },
+  "AdaptiveECC_32": {
+    "ecc_type": "AdaptiveECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.5116682052612303e-05,
+    "decode_time_avg": 2.3938417434692383e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.4881839752197264e-05,
+        "decode_time_avg": 2.3618221282958984e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.5116682052612303e-05,
+        "decode_time_avg": 2.3938417434692383e-05
+      }
+    },
+    "hash": "23650054",
+    "timestamp": 1771354394.5769742
+  },
+  "AdaptiveECC_64": {
+    "ecc_type": "AdaptiveECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 5.3893089294433596e-05,
+    "decode_time_avg": 5.3054571151733395e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.3714275360107425e-05,
+        "decode_time_avg": 5.2273035049438475e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.3893089294433596e-05,
+        "decode_time_avg": 5.3054571151733395e-05
+      }
+    },
+    "hash": "23650054",
+    "timestamp": 1771354394.9425209
+  },
+  "AdaptiveECC_128": {
+    "ecc_type": "AdaptiveECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.00011817169189453126,
+    "decode_time_avg": 0.00011704754829406738,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00012689781188964845,
+        "decode_time_avg": 0.00012603306770324707
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00011817169189453126,
+        "decode_time_avg": 0.00011704754829406738
+      }
+    },
+    "hash": "23650054",
+    "timestamp": 1771354395.7159271
+  },
+  "ThreeDMemoryECC_4": {
+    "ecc_type": "ThreeDMemoryECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 940,
+    "encode_time_avg": 7.784128189086914e-06,
+    "decode_time_avg": 7.587432861328125e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.390737533569336e-06,
+        "decode_time_avg": 7.071733474731446e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 940,
+        "success_rate": 0.94,
+        "encode_time_avg": 7.784128189086914e-06,
+        "decode_time_avg": 7.587432861328125e-06
+      }
+    },
+    "hash": "5f110fe1",
+    "timestamp": 1771357266.5367038
+  },
+  "ThreeDMemoryECC_8": {
+    "ecc_type": "ThreeDMemoryECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 994,
+    "encode_time_avg": 9.453296661376953e-06,
+    "decode_time_avg": 9.471654891967773e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.553339004516602e-06,
+        "decode_time_avg": 7.1718692779541014e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 994,
+        "success_rate": 0.994,
+        "encode_time_avg": 9.453296661376953e-06,
+        "decode_time_avg": 9.471654891967773e-06
+      }
+    },
+    "hash": "5f110fe1",
+    "timestamp": 1771357266.6455586
+  },
+  "ThreeDMemoryECC_16": {
+    "ecc_type": "ThreeDMemoryECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 999,
+    "encode_time_avg": 9.830951690673829e-06,
+    "decode_time_avg": 9.558677673339843e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0915279388427734e-05,
+        "decode_time_avg": 1.0774612426757813e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 999,
+        "success_rate": 0.999,
+        "encode_time_avg": 9.830951690673829e-06,
+        "decode_time_avg": 9.558677673339843e-06
+      }
+    },
+    "hash": "5f110fe1",
+    "timestamp": 1771357266.7640681
+  },
+  "ThreeDMemoryECC_32": {
+    "ecc_type": "ThreeDMemoryECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.5056610107421875e-05,
+    "decode_time_avg": 1.5694856643676756e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.5172243118286133e-05,
+        "decode_time_avg": 1.5783309936523438e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.5056610107421875e-05,
+        "decode_time_avg": 1.5694856643676756e-05
+      }
+    },
+    "hash": "5f110fe1",
+    "timestamp": 1771357266.9152184
+  },
+  "PrimarySecondaryECC_4": {
+    "ecc_type": "PrimarySecondaryECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 921,
+    "encode_time_avg": 3.1838417053222654e-06,
+    "decode_time_avg": 2.2830963134765626e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.1893253326416017e-06,
+        "decode_time_avg": 2.347707748413086e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 921,
+        "success_rate": 0.921,
+        "encode_time_avg": 3.1838417053222654e-06,
+        "decode_time_avg": 2.2830963134765626e-06
+      }
+    },
+    "hash": "ca434cc0",
+    "timestamp": 1771358592.2218087
+  },
+  "PrimarySecondaryECC_8": {
+    "ecc_type": "PrimarySecondaryECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 994,
+    "encode_time_avg": 6.451606750488281e-06,
+    "decode_time_avg": 5.8746337890625e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.410837173461914e-06,
+        "decode_time_avg": 5.8381557464599605e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 994,
+        "success_rate": 0.994,
+        "encode_time_avg": 6.451606750488281e-06,
+        "decode_time_avg": 5.8746337890625e-06
+      }
+    },
+    "hash": "ca434cc0",
+    "timestamp": 1771358592.3042634
+  },
+  "PrimarySecondaryECC_16": {
+    "ecc_type": "PrimarySecondaryECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.880192756652832e-05,
+    "decode_time_avg": 2.0293712615966796e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.8812179565429687e-05,
+        "decode_time_avg": 2.024531364440918e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.880192756652832e-05,
+        "decode_time_avg": 2.0293712615966796e-05
+      }
+    },
+    "hash": "ca434cc0",
+    "timestamp": 1771358592.4764118
+  },
+  "PrimarySecondaryECC_32": {
+    "ecc_type": "PrimarySecondaryECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 7.368659973144532e-05,
+    "decode_time_avg": 8.568549156188965e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.309055328369141e-05,
+        "decode_time_avg": 8.623123168945313e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.368659973144532e-05,
+        "decode_time_avg": 8.568549156188965e-05
+      }
+    },
+    "hash": "ca434cc0",
+    "timestamp": 1771358593.042286
+  },
+  "CyclicECC_4": {
+    "ecc_type": "CyclicECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 925,
+    "encode_time_avg": 3.923416137695312e-06,
+    "decode_time_avg": 4.00543212890625e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.02975082397461e-06,
+        "decode_time_avg": 4.1294097900390625e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 925,
+        "success_rate": 0.925,
+        "encode_time_avg": 3.923416137695312e-06,
+        "decode_time_avg": 4.00543212890625e-07
+      }
+    },
+    "hash": "7ad5f7ac",
+    "timestamp": 1771143468.1044939
+  },
+  "CyclicECC_8": {
+    "ecc_type": "CyclicECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 995,
+    "encode_time_avg": 4.004001617431641e-06,
+    "decode_time_avg": 3.876686096191406e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.952980041503906e-06,
+        "decode_time_avg": 3.833770751953125e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 995,
+        "success_rate": 0.995,
+        "encode_time_avg": 4.004001617431641e-06,
+        "decode_time_avg": 3.876686096191406e-07
+      }
+    },
+    "hash": "7ad5f7ac",
+    "timestamp": 1771143468.4702559
+  },
+  "CyclicECC_16": {
+    "ecc_type": "CyclicECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 7.674455642700195e-06,
+    "decode_time_avg": 4.76837158203125e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.814884185791015e-06,
+        "decode_time_avg": 4.6706199645996096e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.674455642700195e-06,
+        "decode_time_avg": 4.76837158203125e-07
+      }
+    },
+    "hash": "7ad5f7ac",
+    "timestamp": 1771143468.536236
+  },
+  "CyclicECC_32": {
+    "ecc_type": "CyclicECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.5784740447998048e-05,
+    "decode_time_avg": 5.190372467041016e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.5626668930053712e-05,
+        "decode_time_avg": 4.985332489013672e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.5784740447998048e-05,
+        "decode_time_avg": 5.190372467041016e-07
+      }
+    },
+    "hash": "7ad5f7ac",
+    "timestamp": 1771143468.6287737
+  },
+  "CyclicECC_64": {
+    "ecc_type": "CyclicECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 3.235173225402832e-05,
+    "decode_time_avg": 4.7254562377929687e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.230905532836914e-05,
+        "decode_time_avg": 4.749298095703125e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.235173225402832e-05,
+        "decode_time_avg": 4.7254562377929687e-07
+      }
+    },
+    "hash": "7ad5f7ac",
+    "timestamp": 1771143468.7728589
+  },
+  "CyclicECC_128": {
+    "ecc_type": "CyclicECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 5.865669250488281e-05,
+    "decode_time_avg": 5.159378051757813e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.917644500732422e-05,
+        "decode_time_avg": 5.07354736328125e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.865669250488281e-05,
+        "decode_time_avg": 5.159378051757813e-07
+      }
+    },
+    "hash": "7ad5f7ac",
+    "timestamp": 1771143469.0008402
+  },
+  "BurstErrorECC_4": {
+    "ecc_type": "BurstErrorECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 945,
+    "encode_time_avg": 3.2224655151367188e-06,
+    "decode_time_avg": 2.356529235839844e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.2007694244384767e-06,
+        "decode_time_avg": 2.385854721069336e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 945,
+        "success_rate": 0.945,
+        "encode_time_avg": 3.2224655151367188e-06,
+        "decode_time_avg": 2.356529235839844e-06
+      }
+    },
+    "hash": "60b806ef",
+    "timestamp": 1771358605.0285587
+  },
+  "BurstErrorECC_8": {
+    "ecc_type": "BurstErrorECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 994,
+    "encode_time_avg": 6.429433822631836e-06,
+    "decode_time_avg": 6.0472488403320314e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 6.755352020263672e-06,
+        "decode_time_avg": 6.3326358795166015e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 994,
+        "success_rate": 0.994,
+        "encode_time_avg": 6.429433822631836e-06,
+        "decode_time_avg": 6.0472488403320314e-06
+      }
+    },
+    "hash": "60b806ef",
+    "timestamp": 1771358605.1238852
+  },
+  "BurstErrorECC_16": {
+    "ecc_type": "BurstErrorECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.8705606460571288e-05,
+    "decode_time_avg": 2.0452022552490234e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.8793106079101562e-05,
+        "decode_time_avg": 2.0465850830078126e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.8705606460571288e-05,
+        "decode_time_avg": 2.0452022552490234e-05
+      }
+    },
+    "hash": "60b806ef",
+    "timestamp": 1771358605.333469
+  },
+  "BurstErrorECC_32": {
+    "ecc_type": "BurstErrorECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 7.21898078918457e-05,
+    "decode_time_avg": 8.935546875e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.227754592895508e-05,
+        "decode_time_avg": 8.94153118133545e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 7.21898078918457e-05,
+        "decode_time_avg": 8.935546875e-05
+      }
+    },
+    "hash": "60b806ef",
+    "timestamp": 1771358606.0268974
+  },
+  "TurboECC_4": {
+    "ecc_type": "TurboECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.1020421981811523e-05,
+    "decode_time_avg": 1.7817020416259765e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.0978460311889648e-05,
+        "decode_time_avg": 1.7483234405517579e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.1020421981811523e-05,
+        "decode_time_avg": 1.7817020416259765e-06
+      }
+    },
+    "hash": "d8e24b7b",
+    "timestamp": 1771381829.0498016
+  },
+  "TurboECC_8": {
+    "ecc_type": "TurboECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.3026714324951171e-05,
+    "decode_time_avg": 2.4151802062988283e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3220310211181641e-05,
+        "decode_time_avg": 2.4521350860595703e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3026714324951171e-05,
+        "decode_time_avg": 2.4151802062988283e-06
+      }
+    },
+    "hash": "d8e24b7b",
+    "timestamp": 1771381829.1386425
+  },
+  "TurboECC_16": {
+    "ecc_type": "TurboECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.7635345458984376e-05,
+    "decode_time_avg": 4.492998123168945e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.754188537597656e-05,
+        "decode_time_avg": 4.5146942138671875e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.7635345458984376e-05,
+        "decode_time_avg": 4.492998123168945e-06
+      }
+    },
+    "hash": "d8e24b7b",
+    "timestamp": 1771381829.2475183
+  },
+  "TurboECC_32": {
+    "ecc_type": "TurboECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.6975870132446288e-05,
+    "decode_time_avg": 8.893966674804688e-06,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.7018308639526366e-05,
+        "decode_time_avg": 9.00125503540039e-06
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.6975870132446288e-05,
+        "decode_time_avg": 8.893966674804688e-06
+      }
+    },
+    "hash": "d8e24b7b",
+    "timestamp": 1771381829.3984835
+  },
+  "TurboECC_64": {
+    "ecc_type": "TurboECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 4.680871963500977e-05,
+    "decode_time_avg": 1.76539421081543e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.636526107788086e-05,
+        "decode_time_avg": 1.7627477645874024e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.680871963500977e-05,
+        "decode_time_avg": 1.76539421081543e-05
+      }
+    },
+    "hash": "d8e24b7b",
+    "timestamp": 1771381829.6351593
+  },
+  "TurboECC_128": {
+    "ecc_type": "TurboECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 9.311246871948242e-05,
+    "decode_time_avg": 3.97639274597168e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.548140525817872e-05,
+        "decode_time_avg": 3.6390066146850586e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.311246871948242e-05,
+        "decode_time_avg": 3.97639274597168e-05
+      }
+    },
+    "hash": "d8e24b7b",
+    "timestamp": 1771381830.0882502
+  },
+  "ConvolutionalECC_4": {
+    "ecc_type": "ConvolutionalECC",
+    "word_length": 4,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 922,
+    "encode_time_avg": 5.859851837158203e-06,
+    "decode_time_avg": 5.256986618041992e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 5.803346633911133e-06,
+        "decode_time_avg": 5.28109073638916e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 922,
+        "success_rate": 0.922,
+        "encode_time_avg": 5.859851837158203e-06,
+        "decode_time_avg": 5.256986618041992e-05
+      }
+    },
+    "hash": "d18d313a",
+    "timestamp": 1771354412.364631
+  },
+  "ConvolutionalECC_8": {
+    "ecc_type": "ConvolutionalECC",
+    "word_length": 8,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 993,
+    "encode_time_avg": 8.327722549438477e-06,
+    "decode_time_avg": 9.116983413696289e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.38613510131836e-06,
+        "decode_time_avg": 9.110426902770997e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 993,
+        "success_rate": 0.993,
+        "encode_time_avg": 8.327722549438477e-06,
+        "decode_time_avg": 9.116983413696289e-05
+      }
+    },
+    "hash": "d18d313a",
+    "timestamp": 1771354412.7073197
+  },
+  "ConvolutionalECC_16": {
+    "ecc_type": "ConvolutionalECC",
+    "word_length": 16,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 1.3558626174926758e-05,
+    "decode_time_avg": 0.00016805028915405274,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3588428497314453e-05,
+        "decode_time_avg": 0.00016792654991149903
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 1.3558626174926758e-05,
+        "decode_time_avg": 0.00016805028915405274
+      }
+    },
+    "hash": "d18d313a",
+    "timestamp": 1771354413.2977467
+  },
+  "ConvolutionalECC_32": {
+    "ecc_type": "ConvolutionalECC",
+    "word_length": 32,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.3833751678466795e-05,
+    "decode_time_avg": 0.0003226797580718994,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.3757457733154297e-05,
+        "decode_time_avg": 0.0003249027729034424
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.3833751678466795e-05,
+        "decode_time_avg": 0.0003226797580718994
+      }
+    },
+    "hash": "d18d313a",
+    "timestamp": 1771354414.3847463
+  },
+  "ConvolutionalECC_64": {
+    "ecc_type": "ConvolutionalECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 4.5537233352661136e-05,
+    "decode_time_avg": 0.0006291241645812988,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.5134782791137695e-05,
+        "decode_time_avg": 0.0006260182857513427
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.5537233352661136e-05,
+        "decode_time_avg": 0.0006291241645812988
+      }
+    },
+    "hash": "d18d313a",
+    "timestamp": 1771354416.4548516
+  },
+  "ConvolutionalECC_128": {
+    "ecc_type": "ConvolutionalECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 8.832621574401855e-05,
+    "decode_time_avg": 0.0012399001121520996,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.874034881591797e-05,
+        "decode_time_avg": 0.001250138521194458
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 8.832621574401855e-05,
+        "decode_time_avg": 0.0012399001121520996
+      }
+    },
+    "hash": "d18d313a",
+    "timestamp": 1771354420.4941957
+  },
+  "ReedMullerECC_64": {
+    "ecc_type": "ReedMullerECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.0003163561820983887,
+    "decode_time_avg": 0.000348130464553833,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00031729316711425783,
+        "decode_time_avg": 0.00034757113456726073
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0003163561820983887,
+        "decode_time_avg": 0.000348130464553833
+      }
+    },
+    "hash": "7a82d1cc",
+    "timestamp": 1771358582.534399
+  },
+  "NonBinaryLDPCECC_128": {
+    "ecc_type": "NonBinaryLDPCECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 10,
+    "round_trip_successes": 10,
+    "error_correction_tests": 10,
+    "error_correction_successes": 10,
+    "performance_tests": 10,
+    "performance_successes": 10,
+    "encode_time_avg": 0.0013304948806762695,
+    "decode_time_avg": 0.0014672994613647461,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.001345658302307129,
+        "decode_time_avg": 0.0014440536499023438
+      },
+      "error_correction": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 10,
+        "successes": 10,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0013304948806762695,
+        "decode_time_avg": 0.0014672994613647461
+      }
+    },
+    "hash": "b9bae6d6",
+    "timestamp": 1771357002.4083261
+  },
+  "RaptorCodeECC_64": {
+    "ecc_type": "RaptorCodeECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 4.3774604797363284e-05,
+    "decode_time_avg": 3.8265705108642576e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.301834106445312e-05,
+        "decode_time_avg": 3.792476654052735e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.3774604797363284e-05,
+        "decode_time_avg": 3.8265705108642576e-05
+      }
+    },
+    "hash": "d697a269",
+    "timestamp": 1771395393.0599117
+  },
+  "RaptorCodeECC_128": {
+    "ecc_type": "RaptorCodeECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 9.126114845275879e-05,
+    "decode_time_avg": 8.003616333007813e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.27419662475586e-05,
+        "decode_time_avg": 8.110857009887696e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 9.126114845275879e-05,
+        "decode_time_avg": 8.003616333007813e-05
+      }
+    },
+    "hash": "d697a269",
+    "timestamp": 1771395393.6404314
+  },
+  "CompositeECC_64": {
+    "ecc_type": "CompositeECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 3.9958953857421873e-07,
+    "decode_time_avg": 5.278587341308594e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.138946533203125e-07,
+        "decode_time_avg": 5.216598510742188e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.9958953857421873e-07,
+        "decode_time_avg": 5.278587341308594e-07
+      }
+    },
+    "hash": "8cd8c867",
+    "timestamp": 1771395393.8340724
+  },
+  "CompositeECC_128": {
+    "ecc_type": "CompositeECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 3.917217254638672e-07,
+    "decode_time_avg": 5.376338958740234e-07,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.933906555175781e-07,
+        "decode_time_avg": 5.204677581787109e-07
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 3.917217254638672e-07,
+        "decode_time_avg": 5.376338958740234e-07
+      }
+    },
+    "hash": "8cd8c867",
+    "timestamp": 1771395393.875475
+  },
+  "ThreeDMemoryECC_64": {
+    "ecc_type": "ThreeDMemoryECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 2.3697137832641602e-05,
+    "decode_time_avg": 2.599191665649414e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.4374961853027345e-05,
+        "decode_time_avg": 2.6826620101928712e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 2.3697137832641602e-05,
+        "decode_time_avg": 2.599191665649414e-05
+      }
+    },
+    "hash": "5f110fe1",
+    "timestamp": 1771357267.1259217
+  },
+  "ThreeDMemoryECC_128": {
+    "ecc_type": "ThreeDMemoryECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 4.3181896209716796e-05,
+    "decode_time_avg": 4.920125007629395e-05,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.275274276733399e-05,
+        "decode_time_avg": 4.918289184570313e-05
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 4.3181896209716796e-05,
+        "decode_time_avg": 4.920125007629395e-05
+      }
+    },
+    "hash": "5f110fe1",
+    "timestamp": 1771357267.4638274
+  },
+  "PrimarySecondaryECC_64": {
+    "ecc_type": "PrimarySecondaryECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.00031760096549987793,
+    "decode_time_avg": 0.00034823918342590334,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00031777071952819824,
+        "decode_time_avg": 0.00034706664085388183
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00031760096549987793,
+        "decode_time_avg": 0.00034823918342590334
+      }
+    },
+    "hash": "ca434cc0",
+    "timestamp": 1771358595.2574835
+  },
+  "BurstErrorECC_64": {
+    "ecc_type": "BurstErrorECC",
+    "word_length": 64,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.0003254878520965576,
+    "decode_time_avg": 0.00036372756958007814,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.00031237268447875975,
+        "decode_time_avg": 0.00034806203842163084
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0003254878520965576,
+        "decode_time_avg": 0.00036372756958007814
+      }
+    },
+    "hash": "60b806ef",
+    "timestamp": 1771358608.6495018
+  },
+  "ReedMullerECC_128": {
+    "ecc_type": "ReedMullerECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.0014653160572052001,
+    "decode_time_avg": 0.0015564823150634765,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0014033243656158447,
+        "decode_time_avg": 0.0014903793334960938
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0014653160572052001,
+        "decode_time_avg": 0.0015564823150634765
+      }
+    },
+    "hash": "7a82d1cc",
+    "timestamp": 1771358592.0928447
+  },
+  "PrimarySecondaryECC_128": {
+    "ecc_type": "PrimarySecondaryECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.0015068910121917726,
+    "decode_time_avg": 0.0016072659492492676,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0013899421691894532,
+        "decode_time_avg": 0.0014812684059143067
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0015068910121917726,
+        "decode_time_avg": 0.0016072659492492676
+      }
+    },
+    "hash": "ca434cc0",
+    "timestamp": 1771358604.94829
+  },
+  "BurstErrorECC_128": {
+    "ecc_type": "BurstErrorECC",
+    "word_length": 128,
+    "verification_passed": true,
+    "round_trip_tests": 1000,
+    "round_trip_successes": 1000,
+    "error_correction_tests": 1000,
+    "error_correction_successes": 1000,
+    "performance_tests": 1000,
+    "performance_successes": 1000,
+    "encode_time_avg": 0.0013826909065246583,
+    "decode_time_avg": 0.001504798173904419,
+    "error_messages": [],
+    "test_details": {
+      "round_trip": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0013856046199798584,
+        "decode_time_avg": 0.001512798309326172
+      },
+      "error_correction": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0
+      },
+      "performance": {
+        "tests": 1000,
+        "successes": 1000,
+        "success_rate": 1.0,
+        "encode_time_avg": 0.0013826909065246583,
+        "decode_time_avg": 0.001504798173904419
+      }
+    },
+    "hash": "60b806ef",
+    "timestamp": 1771358619.582575
+  }
+}

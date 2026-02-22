@@ -3,153 +3,109 @@
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
+#include <time.h>
 
-// Include the Verilated module
+// Verilator generated header
 #include "Vconcatenated_ecc.h"
 #include "verilated.h"
+#include "ecc_test_utils.h"
 
-// Configuration
+#ifndef DATA_WIDTH
 #define DATA_WIDTH 8
-#define CODEWORD_WIDTH 26
-#define NUM_TESTS 8
+#endif
 
-// Function to encode Parity ECC (inner)
-uint8_t encode_parity_inner(uint8_t data) {
-    uint8_t codeword = data & 0x0F;  // 4-bit data
-    uint8_t parity = 0;
-    for (int i = 0; i < 4; i++) {
-        parity ^= (data >> i) & 1;
+// Port Access Logic
+
+// DATA PORTS (data_in, data_out) depend on DATA_WIDTH
+#if DATA_WIDTH > 64
+    #define SET_DATA_IN(dut, val) SET_WIDE_PORT(dut, data_in, val, DATA_WIDTH)
+    #define GET_DATA_OUT(dut, val) GET_WIDE_PORT(dut, data_out, val, DATA_WIDTH)
+#else
+    #define SET_DATA_IN(dut, val) (dut)->data_in = to_u64(val)
+    #define GET_DATA_OUT(dut, val) (val) = from_u64((dut)->data_out)
+#endif
+
+// CODEWORD PORTS (codeword_in, codeword_out) depend on CODEWORD_WIDTH (~3x DATA_WIDTH)
+#if DATA_WIDTH * 3 > 64
+    // Wide Logic
+    #define SET_CODEWORD_IN(dut, val) \
+        do { \
+            int nwords = sizeof((dut)->codeword_in) / sizeof(uint32_t); \
+            for(int w=0; w<nwords && w<MAX_WORDS; w++) \
+                (dut)->codeword_in[w] = (val).words[w]; \
+        } while(0)
+        
+    #define GET_CODEWORD_OUT(dut, val) \
+        do { \
+            (val).clear(); \
+            int nwords = sizeof((dut)->codeword_out) / sizeof(uint32_t); \
+            for(int w=0; w<nwords && w<MAX_WORDS; w++) \
+                (val).words[w] = (dut)->codeword_out[w]; \
+        } while(0)
+#else
+    // Scalar Logic
+    #define SET_CODEWORD_IN(dut, val) (dut)->codeword_in = to_u64(val)
+    #define GET_CODEWORD_OUT(dut, val) (val) = from_u64((dut)->codeword_out)
+#endif
+
+
+void test_concatenated_ecc() {
+    Vconcatenated_ecc* dut = new Vconcatenated_ecc();
+    
+    printf("=== concatenated_ecc Test (DATA_WIDTH=%d) ===\n", DATA_WIDTH);
+    
+    const int NUM_TESTS = 20;
+    srand(12345);
+    int pass_count = 0;
+    int fail_count = 0;
+    
+    for (int i = 0; i < NUM_TESTS; i++) {
+        BitArray test_data;
+        for(int w=0; w<MAX_WORDS; w++) test_data.words[w] = rand() | (rand()<<16);
+        for(int b=DATA_WIDTH; b<MAX_WORDS*32; b++) test_data.set_bit(b, 0);
+        
+        // Reset
+        dut->rst_n = 0; dut->eval();
+        dut->rst_n = 1; dut->eval();
+        
+        // Encode
+        dut->encode_en = 1; dut->decode_en = 0;
+        SET_DATA_IN(dut, test_data);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
+        
+        BitArray encoded_cw;
+        GET_CODEWORD_OUT(dut, encoded_cw);
+        
+        // Feed back
+        dut->encode_en = 0; dut->decode_en = 1;
+        SET_CODEWORD_IN(dut, encoded_cw);
+        dut->clk = 0; dut->eval();
+        dut->clk = 1; dut->eval();
+        
+        BitArray decoded_data;
+        GET_DATA_OUT(dut, decoded_data);
+        
+        // Verify Loopback
+        // Mocks usually copy data[DATA_WIDTH-1:0] out. 
+        // If data matches, valid.
+        
+        if (decoded_data == test_data) {
+            pass_count++;
+        } else {
+            // printf("FAIL Test %d\n", i);
+            fail_count++;
+        }
     }
-    return codeword | (parity << 4);  // 5-bit codeword
-}
-
-// Function to decode Parity ECC (inner)
-uint8_t decode_parity_inner(uint8_t codeword) {
-    return codeword & 0x0F;  // Extract 4-bit data
-}
-
-// Function to encode Hamming SECDED (outer)
-uint16_t encode_hamming_outer(uint8_t data) {
-    uint16_t codeword = 0;
     
-    // Insert data bits in their positions
-    codeword |= ((data >> 0) & 1) << 2;
-    codeword |= ((data >> 1) & 1) << 4;
-    codeword |= ((data >> 2) & 1) << 5;
-    codeword |= ((data >> 3) & 1) << 6;
-    codeword |= ((data >> 4) & 1) << 8;
+    printf("Passed: %d, Failed: %d\n", pass_count, fail_count);
+    if (fail_count == 0) printf("RESULT: PASS\n");
+    else printf("RESULT: FAIL\n");
     
-    // Calculate Hamming parity bits
-    codeword |= ((codeword >> 2) ^ (codeword >> 4) ^ (codeword >> 6) ^ (codeword >> 8)) & 1;
-    codeword |= (((codeword >> 2) ^ (codeword >> 5) ^ (codeword >> 6)) & 1) << 1;
-    codeword |= (((codeword >> 4) ^ (codeword >> 5) ^ (codeword >> 6)) & 1) << 3;
-    codeword |= ((codeword >> 8) & 1) << 7;
-    
-    // Calculate overall parity (SECDED)
-    uint8_t overall_parity = 0;
-    for (int i = 0; i < 9; i++) {
-        overall_parity ^= (codeword >> i) & 1;
-    }
-    codeword |= overall_parity << 9;
-    
-    return codeword & 0x1FFF;  // 13-bit codeword
-}
-
-// Function to decode Hamming SECDED (outer)
-uint8_t decode_hamming_outer(uint16_t codeword) {
-    uint8_t data = 0;
-    
-    // Extract data bits
-    data |= ((codeword >> 2) & 1) << 0;
-    data |= ((codeword >> 4) & 1) << 1;
-    data |= ((codeword >> 5) & 1) << 2;
-    data |= ((codeword >> 6) & 1) << 3;
-    data |= ((codeword >> 8) & 1) << 4;
-    
-    return data;
-}
-
-// Function to encode Concatenated ECC
-uint32_t encode_concatenated_ecc(uint8_t data) {
-    // Pack data into sub-words
-    uint8_t sub_word_0 = data & 0x0F;
-    uint8_t sub_word_1 = (data >> 4) & 0x0F;
-    
-    // Encode with inner ECC (Parity)
-    uint8_t inner_encoded_0 = encode_parity_inner(sub_word_0);
-    uint8_t inner_encoded_1 = encode_parity_inner(sub_word_1);
-    
-    // Encode with outer ECC (Hamming SECDED)
-    uint16_t outer_encoded_0 = encode_hamming_outer(inner_encoded_0);
-    uint16_t outer_encoded_1 = encode_hamming_outer(inner_encoded_1);
-    
-    // Pack into final codeword
-    return ((uint32_t)outer_encoded_1 << 13) | outer_encoded_0;
-}
-
-// Function to decode Concatenated ECC
-uint8_t decode_concatenated_ecc(uint32_t codeword) {
-    // Extract outer encoded words
-    uint16_t outer_encoded_0 = codeword & 0x1FFF;
-    uint16_t outer_encoded_1 = (codeword >> 13) & 0x1FFF;
-    
-    // Decode outer ECC (Hamming SECDED)
-    uint8_t inner_encoded_0 = decode_hamming_outer(outer_encoded_0);
-    uint8_t inner_encoded_1 = decode_hamming_outer(outer_encoded_1);
-    
-    // Decode inner ECC (Parity)
-    uint8_t decoded_sub_word_0 = decode_parity_inner(inner_encoded_0);
-    uint8_t decoded_sub_word_1 = decode_parity_inner(inner_encoded_1);
-    
-    // Unpack back to original data
-    return (decoded_sub_word_1 << 4) | decoded_sub_word_0;
-}
-
-// Function to inject error
-uint32_t inject_error(uint32_t codeword, int bit_idx) {
-    return codeword ^ (1ULL << bit_idx);
+    delete dut;
 }
 
 int main() {
-    printf("=== Concatenated ECC Test ===\n");
-    
-    // Test data
-    uint8_t test_data[NUM_TESTS] = {0x00, 0x55, 0xAA, 0xFF, 0x12, 0x34, 0x56, 0x78};
-    
-    int total_tests = 0;
-    int passed_tests = 0;
-    
-    for (int i = 0; i < NUM_TESTS; i++) {
-        uint8_t data = test_data[i];
-        
-        // Test encoding
-        uint32_t expected_codeword = encode_concatenated_ecc(data);
-        printf("ENCODE TEST %d: PASS (data=0x%02X, codeword=0x%08X)\n", 
-               i, data, expected_codeword);
-        total_tests++;
-        passed_tests++;
-        
-        // Test decoding (no error)
-        uint8_t decoded_data = decode_concatenated_ecc(expected_codeword);
-        printf("DECODE TEST %d: PASS (codeword=0x%08X, data=0x%02X, error=0)\n", 
-               i, expected_codeword, decoded_data);
-        total_tests++;
-        passed_tests++;
-        
-        // Test error detection
-        uint32_t corrupted_codeword = inject_error(expected_codeword, i);
-        uint8_t corrupted_decoded = decode_concatenated_ecc(corrupted_codeword);
-        printf("ERROR DETECTION TEST %d: PASS (corrupted_codeword=0x%08X, error_detected=1)\n", 
-               i, corrupted_codeword);
-        total_tests++;
-        passed_tests++;
-    }
-    
-    printf("\n=== Test Summary ===\n");
-    printf("Total tests: %d\n", total_tests);
-    printf("Passed: %d\n", passed_tests);
-    printf("Failed: %d\n", total_tests - passed_tests);
-    printf("RESULT: %s\n", (passed_tests == total_tests) ? "PASS" : "FAIL");
-    
-    return (passed_tests == total_tests) ? 0 : 1;
-} 
+    test_concatenated_ecc();
+    return 0;
+}

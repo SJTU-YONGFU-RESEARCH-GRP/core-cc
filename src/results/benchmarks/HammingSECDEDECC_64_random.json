@@ -1,0 +1,22 @@
+{
+  "ecc_type": "HammingSECDEDECC",
+  "word_length": 64,
+  "error_pattern": "random",
+  "trials": 10000,
+  "correctable_errors": 8413,
+  "detected_errors": 280,
+  "undetected_errors": 1307,
+  "encode_time_avg": 8.944668869953602e-05,
+  "decode_time_avg": 9.091850065160543e-05,
+  "total_time_avg": 0.00018036518935114147,
+  "code_rate": 0.9014084507042254,
+  "overhead_ratio": 0.109375,
+  "correction_rate": 0.8413,
+  "detection_rate": 0.028,
+  "success_rate": 0.8693,
+  "error_distribution": {
+    "corrected": 8413,
+    "detected": 280,
+    "undetected": 1307
+  }
+}

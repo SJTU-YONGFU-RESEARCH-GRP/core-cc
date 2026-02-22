@@ -344,12 +344,16 @@ class HardwareVerificationRunner:
         build_dir.mkdir(exist_ok=True, parents=True)
         
         # Compile with Verilator
+        data_width = config.get("data_width", 8)
         cmd = [
             "verilator", "--cc", "--exe", "--build",
-            "-CFLAGS", "-I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd",
+            "-CFLAGS", f"-I/usr/share/verilator/include -I/usr/share/verilator/include/vltstd -DDATA_WIDTH={data_width}",
+            f"-GDATA_WIDTH={data_width}",
+            f"-I{self.verilogs_dir}",
+            f"-I{self.verilogs_dir}/generated",
             str(verilog_file), str(testbench_file),
-            "-o", ecc_type,
-            "--Mdir", str(build_dir / "obj_dir"),
+            "-o", f"{ecc_type}_w{data_width}",
+            "--Mdir", str(build_dir / f"obj_dir_{ecc_type}_w{data_width}"),
             "-j", "1"  # Use single thread to avoid "locked Thread Pool" errors
         ]
         
@@ -358,7 +362,7 @@ class HardwareVerificationRunner:
             print(f"Command: {' '.join(cmd)}")
         
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
             
             if result.returncode != 0:
                 print(f"Compilation failed for {ecc_type}:")
@@ -377,27 +381,29 @@ class HardwareVerificationRunner:
             print(f"Compilation error for {ecc_type}: {e}")
             return False
     
-    def run_testbench(self, ecc_name: str) -> Dict[str, Any]:
+    def run_testbench(self, ecc_name: str, width: int = 8) -> Dict[str, Any]:
         """
         Run the Verilator testbench for a specific ECC module.
         
         Args:
             ecc_name: Name of the ECC module (e.g., 'parity_ecc')
+            width: Data width to test (default: 8)
             
         Returns:
             Dictionary containing test results and metrics
         """
-        print(f"Running hardware verification for {ecc_name}...")
+        if self.verbose:
+            print(f"Running hardware verification for {ecc_name} (width={width})...")
         
         # Paths
         tb_dir = self.testbenches_dir / f"{ecc_name}_tb"
-        build_dir = self.results_dir / "build" / "obj_dir"
-        exe_path = build_dir / ecc_name
+        build_dir = self.results_dir / "build" / f"obj_dir_{ecc_name}_w{width}"
+        exe_path = build_dir / f"{ecc_name}_w{width}"
         
         # Check if executable exists
         if not exe_path.exists():
             # Try to compile it first
-            print(f"Executable not found for {ecc_name}, attempting to compile...")
+            print(f"Executable not found for {ecc_name}_w{width}, attempting to compile...")
             
             # Get config for this ECC type
             if ecc_name not in self.ecc_configs:
@@ -408,6 +414,7 @@ class HardwareVerificationRunner:
                 }
             
             config = self.ecc_configs[ecc_name]
+            config["data_width"] = width # Override width
             compile_success = self.compile_test(ecc_name, config)
             
             if not compile_success:
@@ -424,7 +431,7 @@ class HardwareVerificationRunner:
                 [str(exe_path)],
                 capture_output=True,
                 text=True,
-                timeout=60  # 60 second timeout per test
+                timeout=300  # 300 second timeout per test
             )
             runtime = time.time() - start_time
             
@@ -506,7 +513,7 @@ class HardwareVerificationRunner:
                 ["yosys", "-s", str(script_path)],
                 capture_output=True,
                 text=True,
-                timeout=60
+                timeout=300
             )
             
             if result.returncode == 0:
@@ -597,63 +604,118 @@ class HardwareVerificationRunner:
         print(f"Testing {len(self.ecc_configs)} ECC types...")
         print()
         
-        for i, (ecc_type, config) in enumerate(self.ecc_configs.items(), 1):
-            print(f"[{i}/{len(self.ecc_configs)}] Testing {ecc_type}...")
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        import multiprocessing
+        
+        # Use number of CPUS or 4, whichever is smaller to avoid overload
+        max_workers = min(multiprocessing.cpu_count(), 4)
+        print(f"Testing {len(self.ecc_configs)} ECC types with {max_workers} workers...")
+        print()
+        
+        # Define worker function for a single ECC type
+        def test_single_ecc(item):
+            i, (ecc_type, config) = item
+            # Return summary, passed_ecc_types increment (0 or 1), failed_ecc_types increment (0 or 1)
+            # But we can't easily print in order. We should buffer output or just print as we go (might interleave).
+            # Let's buffer output and print after completion.
             
-            # Run verification test
-            # result is a dict: {"status": "PASS/FAIL", "output": ..., "runtime": ...}
-            result_dict = self.run_testbench(ecc_type)
-            
-            # Convert dict to ECCTestSummary
-            passed = (result_dict["status"] == "PASS")
-            
-            test_result = TestResult(
+            output_buffer = []
+            local_passed = 0
+            local_failed = 0
+            local_summary = ECCTestSummary(
                 ecc_type=ecc_type,
-                test_name="hardware_verification",
-                passed=passed,
-                expected="PASS",
-                actual=result_dict["status"],
-                error_message=result_dict.get("error"),
-                execution_time=result_dict.get("runtime", 0.0)
+                total_tests=0,
+                passed_tests=0,
+                failed_tests=0,
+                test_results=[],
+                overall_status="PASS"
             )
             
-            summary = ECCTestSummary(
-                ecc_type=ecc_type,
-                total_tests=1,
-                passed_tests=1 if passed else 0,
-                failed_tests=0 if passed else 1,
-                test_results=[test_result],
-                overall_status=result_dict["status"]
-            )
+            output_buffer.append(f"[{i}/{len(self.ecc_configs)}] Testing {ecc_type}...")
             
-            ecc_summaries[ecc_type] = summary
+            widths_to_test = [4, 8, 16, 32, 64, 128]
             
-            # Run synthesis if available
-            if yosys_available:
-                if self.verbose:
-                    print(f"  Running synthesis for {ecc_type}...")
-                synth_result = self.run_synthesis(ecc_type, config)
-                synthesis_results[ecc_type] = synth_result
-                if self.verbose and synth_result.synthesis_available:
-                    print(f"  Synthesis successful: {synth_result.area_cells} cells")
+            for width in widths_to_test:
+                output_buffer.append(f"  Testing {ecc_type} (Width={width})...")
+                
+                current_config = config.copy()
+                current_config["data_width"] = width
+                
+                # Check cache/timestamp if possible? No, compile_test handles that (if makefile logic exists, but here it calls verilator directly).
+                # Actually compile_test re-runs verilator every time unless we add logic.
+                # But verilator itself caches if sources haven't changed? 
+                # Our compile_test calls `verilator ...` which might re-compile.
+                # Let's trust compile_test.
+                
+                compile_success = self.compile_test(ecc_type, current_config)
+                
+                if not compile_success:
+                    result_dict = {
+                        "status": "FAIL",
+                        "error": "Compilation failed",
+                        "runtime": 0.0
+                    }
+                else:
+                    result_dict = self.run_testbench(ecc_type, width)
+                
+                passed = (result_dict["status"] == "PASS")
+                
+                test_result = TestResult(
+                    ecc_type=ecc_type,
+                    test_name=f"hardware_verification_w{width}",
+                    passed=passed,
+                    expected="PASS",
+                    actual=result_dict["status"],
+                    error_message=result_dict.get("error"),
+                    execution_time=result_dict.get("runtime", 0.0)
+                )
+                
+                local_summary.total_tests += 1
+                local_summary.test_results.append(test_result)
+                
+                if passed:
+                    local_summary.passed_tests += 1
+                    output_buffer.append(f"    ✅ Width {width}: PASS ({test_result.execution_time:.3f}s)")
+                else:
+                    local_summary.failed_tests += 1
+                    local_summary.overall_status = "FAIL"
+                    local_summary.test_results[-1].error_message = result_dict.get("error", "Unknown error")
+                    output_buffer.append(f"    ❌ Width {width}: FAIL ({test_result.execution_time:.3f}s)")
+                    if result_dict.get("error"):
+                        output_buffer.append(f"      Error: {result_dict['error']}")
             
-            if summary.overall_status == "PASS":
-                passed_ecc_types += 1
-                print(f"  ✅ {ecc_type}: PASS ({summary.test_results[0].execution_time:.3f}s)")
+            if local_summary.overall_status == "PASS":
+                local_passed = 1
+                output_buffer.append(f"  ✅ {ecc_type}: ALL WIDTHS PASS")
             else:
-                failed_ecc_types += 1
-                print(f"  ❌ {ecc_type}: FAIL ({summary.test_results[0].execution_time:.3f}s)")
-                if result_dict.get("error"):
-                    print(f"    Error: {result_dict['error']}")
-                if result_dict.get("output") and result_dict["status"] == "FAIL":
-                    if self.verbose:
-                        print("    Full Output:")
-                        print(result_dict["output"])
-                    else:
-                        print("    Output snippet:")
-                        print("\n".join(result_dict["output"].splitlines()[-10:]))  # Print last 10 lines
+                local_failed = 1
+                output_buffer.append(f"  ❌ {ecc_type}: SOME WIDTHS FAILED")
+                
+            return ecc_type, local_summary, local_passed, local_failed, output_buffer
+
+        # Execute in parallel
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            items = list(enumerate(self.ecc_configs.items(), 1))
+            future_to_ecc = {executor.submit(test_single_ecc, item): item for item in items}
             
-            print()
+            for future in as_completed(future_to_ecc):
+                ecc_type, summary, passed, failed, output_buffer = future.result()
+                
+                # Print buffered output
+                for line in output_buffer:
+                    print(line)
+                print()
+                
+                # Update main stats
+                ecc_summaries[ecc_type] = summary
+                
+                if summary.overall_status == "PASS":
+                    passed_ecc_types += 1
+                else:
+                    failed_ecc_types += 1
+
+        # Skip the original loop
+        # (Indent the original loop or just remove it. Here we replaced it)
         
         execution_time = time.time() - start_time
         
@@ -754,17 +816,40 @@ class HardwareVerificationRunner:
         print(f"Results saved to: {output_path}")
 
 
-def main(verbose: bool = False) -> int:
+
+import argparse
+
+def main() -> int:
     """
     Main function to run hardware verification tests.
     
-    Args:
-        verbose: Enable verbose output
-        
     Returns:
         int: Exit code (0 for success, 1 for failure)
     """
-    runner = HardwareVerificationRunner(verbose=verbose)
+    parser = argparse.ArgumentParser(description="Hardware Verification Runner")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose output")
+    parser.add_argument("-m", "--modules", type=str, help="Comma-separated list of modules to test (e.g., 'ldpc_ecc,bch_ecc')")
+    args = parser.parse_args()
+
+    runner = HardwareVerificationRunner(verbose=args.verbose)
+    
+    # Filter modules if specified
+    if args.modules:
+        modules_list = [m.strip() for m in args.modules.split(",")]
+        # Validate modules
+        filtered_configs = {}
+        for m in modules_list:
+            if m in runner.ecc_configs:
+                filtered_configs[m] = runner.ecc_configs[m]
+            else:
+                print(f"WARNING: Module '{m}' not found. Skipping.")
+        
+        if not filtered_configs:
+            print("ERROR: No valid modules specified.")
+            return 1
+            
+        runner.ecc_configs = filtered_configs
+
     summary = runner.run_all_tests()
     
     # Save results
@@ -775,6 +860,5 @@ def main(verbose: bool = False) -> int:
 
 
 if __name__ == "__main__":
-    verbose = "--verbose" in sys.argv or "-v" in sys.argv
-    exit_code = main(verbose=verbose)
-    sys.exit(exit_code) 
+    sys.exit(main())
+ 

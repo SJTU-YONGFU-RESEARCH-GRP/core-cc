@@ -42,7 +42,7 @@ class ExtendedHammingECC(ECCBase):
             self.parity_positions = [0, 1, 3, 7, 15]  # Hamming parity bit positions
             self.data_positions = [2, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20]  # Data bit positions
             self.extended_parity_position = 21  # Extended parity bit position
-        else:
+        elif self.word_length <= 32:
             # Extended Hamming(39,32) - 32 data bits, 7 parity bits (6 Hamming + 1 extended)
             self.n = 39
             self.k = 32
@@ -51,6 +51,20 @@ class ExtendedHammingECC(ECCBase):
             # Data positions: all positions from 0 to 37 except parity positions
             self.data_positions = [i for i in range(38) if i not in self.parity_positions]
             self.extended_parity_position = 38  # Extended parity bit position
+        elif self.word_length <= 64:
+            # Extended Hamming(72,64) - 64 data bits, 8 parity bits (7 Hamming + 1 extended)
+            self.n = 72
+            self.k = 64
+            self.parity_positions = [0, 1, 3, 7, 15, 31, 63]
+            self.data_positions = [i for i in range(71) if i not in self.parity_positions]
+            self.extended_parity_position = 71
+        elif self.word_length <= 128:
+            # Extended Hamming(137,128) - 128 data bits, 9 parity bits (8 Hamming + 1 extended)
+            self.n = 137
+            self.k = 128
+            self.parity_positions = [0, 1, 3, 7, 15, 31, 63, 127]
+            self.data_positions = [i for i in range(136) if i not in self.parity_positions]
+            self.extended_parity_position = 136
 
     def encode(self, data: int) -> int:
         """
