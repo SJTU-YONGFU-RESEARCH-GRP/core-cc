@@ -32,5 +32,3 @@ results/*
 !results/run.log
 reports/
 
-# Test Scripts
-tests/
