@@ -1,6 +1,6 @@
 # ECC (Error Correction Code) Analysis Report
 
-**Generated:** 2026-02-22 19:42:55  
+**Generated:** 2026-02-28 15:03:30  
 **Framework Version:** 3.0  
 **Analysis Scope:** Comprehensive analysis of 26 ECC types: PrimarySecondaryECC, HammingSECDEDECC, AdaptiveECC, SpatiallyCoupledLDPCECC, BCHECC, ThreeDMemoryECC, NonBinaryLDPCECC, CRCECC, FireCodeECC, SystemECC, ReedSolomonECC, TurboECC, ParityECC, ConcatenatedECC, ConvolutionalECC, ProductCodeECC, CyclicECC, BurstErrorECC, ExtendedHammingECC, ReedMullerECC, RaptorCodeECC, CompositeECC, RepetitionECC, GolayECC, PolarECC, LDPCECC
 
@@ -37,10 +37,10 @@ This report provides a comprehensive analysis of different Error Correction Code
 | Hardware Verification Pass Rate | 100.0% |
 | Hardware Data Widths | 4, 8, 16, 32, 64, 128 bits |
 | Hardware Total test vectors | 156 |
-| Hardware Total runtime (s) | 1056.30 |
-| - Verilator (Functional) | 1.00 |
-| - Yosys (Synthesis) | 1055.30 |
-| Average runtime per module (s) | 40.63 |
+| Hardware Total runtime (s) | 1217.70 |
+| - Verilator (Functional) | 86.80 |
+| - Yosys (Synthesis) | 1130.90 |
+| Average runtime per module (s) | 46.83 |
 
 
 
@@ -299,73 +299,73 @@ This report provides a comprehensive analysis of different Error Correction Code
 
 *Hardware area scaling with increasing data width.*
 
-### Relative Cost (Normalized to minimum, 64-bit Data Width)
+### Relative Cost and Cycle Counts (Normalized to minimum, 64-bit Data Width)
 
-| Module | Area (Cells) | Relative Cost |
-|--------|--------------|---------------|
-| composite_ecc | 129 | 1.0x |
-| burst_error_ecc | 193 | 1.5x |
-| parity_ecc | 195 | 1.5x |
-| fire_code_ecc | 289 | 2.2x |
-| three_d_memory_ecc | 308 | 2.4x |
-| non_binary_ldpc_ecc | 382 | 3.0x |
-| raptor_code_ecc | 383 | 3.0x |
-| spatially_coupled_ldpc_ecc | 383 | 3.0x |
-| concatenated_ecc | 558 | 4.3x |
-| reed_muller_ecc | 642 | 5.0x |
-| convolutional_ecc | 779 | 6.0x |
-| hamming_secded_ecc | 959 | 7.4x |
-| adaptive_ecc | 960 | 7.4x |
-| primary_secondary_ecc | 1030 | 8.0x |
-| product_code_ecc | 1146 | 8.9x |
-| repetition_ecc | 1220 | 9.5x |
-| extended_hamming_ecc | 1227 | 9.5x |
-| system_ecc | 1248 | 9.7x |
-| reed_solomon_ecc | 1509 | 11.7x |
-| crc_ecc | 2278 | 17.7x |
-| cyclic_ecc | 2687 | 20.8x |
-| bch_ecc | 7685 | 59.6x |
-| ldpc_ecc | 12105 | 93.8x |
-| golay_ecc | 20561 | 159.4x |
-| turbo_ecc | 25986 | 201.4x |
-| polar_ecc | 46375 | 359.5x |
+| Module | Area (Cells) | Relative Cost | Encode Cycles | Decode Cycles |
+|--------|--------------|---------------|---------------|---------------|
+| composite_ecc | 129 | 1.0x | 1 | 1 |
+| burst_error_ecc | 193 | 1.5x | 1 | 1 |
+| parity_ecc | 195 | 1.5x | 1 | 1 |
+| fire_code_ecc | 289 | 2.2x | 1 | 1 |
+| three_d_memory_ecc | 308 | 2.4x | 1 | 1 |
+| non_binary_ldpc_ecc | 382 | 3.0x | 1 | 1 |
+| raptor_code_ecc | 383 | 3.0x | 1 | 1 |
+| spatially_coupled_ldpc_ecc | 383 | 3.0x | 1 | 1 |
+| concatenated_ecc | 558 | 4.3x | 1 | 1 |
+| reed_muller_ecc | 642 | 5.0x | 1 | 1 |
+| convolutional_ecc | 779 | 6.0x | 1 | 1 |
+| hamming_secded_ecc | 959 | 7.4x | 1 | 1 |
+| adaptive_ecc | 960 | 7.4x | 1 | 1 |
+| primary_secondary_ecc | 1030 | 8.0x | 1 | 1 |
+| product_code_ecc | 1146 | 8.9x | 1 | 1 |
+| repetition_ecc | 1220 | 9.5x | 1 | 1 |
+| extended_hamming_ecc | 1227 | 9.5x | 1 | 1 |
+| system_ecc | 1248 | 9.7x | 3 | 3 |
+| reed_solomon_ecc | 1509 | 11.7x | 1 | 1 |
+| crc_ecc | 2278 | 17.7x | 1 | 1 |
+| cyclic_ecc | 2687 | 20.8x | 1 | 1 |
+| bch_ecc | 7685 | 59.6x | 1 | 1 |
+| ldpc_ecc | 12105 | 93.8x | 1 | 0 |
+| golay_ecc | 20561 | 159.4x | 1 | 1 |
+| turbo_ecc | 25986 | 201.4x | 1 | 1 |
+| polar_ecc | 46375 | 359.5x | 1 | 1 |
 
 
 ## Hardware Verification Results
 
-**Total Verification Time:** 1056.30s
-**Average Runtime per Module:** 40.6000s
+**Total Verification Time:** 1217.70s
+**Average Runtime per Module:** 46.8000s
 
 ### Testbench Summary
 
 | Testbench | Overall Status | Test Cases | Notes |
 |-----------|----------------|------------|-------|
-| burst_error_ecc_tb | PASS | hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
-| adaptive_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w4: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
-| bch_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS, hardware_verification_w8: PASS | Functional verification completed |
-| composite_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS, hardware_verification_w32: PASS | Functional verification completed |
-| concatenated_ecc_tb | PASS | hardware_verification_w16: PASS, hardware_verification_w8: PASS, hardware_verification_w32: PASS, hardware_verification_w4: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
-| convolutional_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS, hardware_verification_w4: PASS, hardware_verification_w32: PASS | Functional verification completed |
-| crc_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w8: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
-| cyclic_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w128: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS | Functional verification completed |
-| extended_hamming_ecc_tb | PASS | hardware_verification_w16: PASS, hardware_verification_w8: PASS, hardware_verification_w32: PASS, hardware_verification_w4: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
-| fire_code_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
-| golay_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w8: PASS, hardware_verification_w64: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS | Functional verification completed |
-| hamming_secded_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w4: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
-| ldpc_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w64: PASS, hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| adaptive_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w8: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
+| bch_ecc_tb | PASS | hardware_verification_w16: PASS, hardware_verification_w4: PASS, hardware_verification_w64: PASS, hardware_verification_w32: PASS, hardware_verification_w8: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| concatenated_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w4: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| burst_error_ecc_tb | PASS | hardware_verification_w128: PASS, hardware_verification_w32: PASS, hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS | Functional verification completed |
+| composite_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w128: PASS, hardware_verification_w32: PASS, hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS | Functional verification completed |
+| cyclic_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w4: PASS, hardware_verification_w32: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| convolutional_ecc_tb | PASS | hardware_verification_w64: PASS, hardware_verification_w16: PASS, hardware_verification_w8: PASS, hardware_verification_w128: PASS, hardware_verification_w32: PASS, hardware_verification_w4: PASS | Functional verification completed |
+| crc_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
+| fire_code_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
+| golay_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| hamming_secded_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| ldpc_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS | Functional verification completed |
 | non_binary_ldpc_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
-| parity_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w4: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
-| polar_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
-| primary_secondary_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
-| product_code_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w64: PASS, hardware_verification_w16: PASS, hardware_verification_w128: PASS, hardware_verification_w32: PASS | Functional verification completed |
-| raptor_code_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w8: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
-| reed_muller_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS | Functional verification completed |
-| reed_solomon_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS | Functional verification completed |
-| repetition_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w8: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
-| spatially_coupled_ldpc_ecc_tb | PASS | hardware_verification_w16: PASS, hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
-| system_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w8: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
-| three_d_memory_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
-| turbo_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| extended_hamming_ecc_tb | PASS | hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
+| polar_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS | Functional verification completed |
+| product_code_ecc_tb | PASS | hardware_verification_w16: PASS, hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w32: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| primary_secondary_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| parity_ecc_tb | PASS | hardware_verification_w128: PASS, hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w32: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS | Functional verification completed |
+| reed_muller_ecc_tb | PASS | hardware_verification_w16: PASS, hardware_verification_w8: PASS, hardware_verification_w64: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS, hardware_verification_w4: PASS | Functional verification completed |
+| reed_solomon_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w64: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| raptor_code_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w8: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS, hardware_verification_w32: PASS | Functional verification completed |
+| repetition_ecc_tb | PASS | hardware_verification_w64: PASS, hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w4: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| system_ecc_tb | PASS | hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| turbo_ecc_tb | PASS | hardware_verification_w8: PASS, hardware_verification_w4: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w64: PASS, hardware_verification_w128: PASS | Functional verification completed |
+| spatially_coupled_ldpc_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS | Functional verification completed |
+| three_d_memory_ecc_tb | PASS | hardware_verification_w4: PASS, hardware_verification_w8: PASS, hardware_verification_w16: PASS, hardware_verification_w32: PASS, hardware_verification_w128: PASS, hardware_verification_w64: PASS | Functional verification completed |
 
 
 ## Detailed ECC Analysis

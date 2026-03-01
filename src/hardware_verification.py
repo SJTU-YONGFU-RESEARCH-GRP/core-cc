@@ -77,6 +77,8 @@ class TestbenchResult:
     test_cases: Optional[Dict[str, str]] = None
     simulation_log: Optional[str] = None
     error_message: Optional[str] = None
+    encode_cycles: Optional[int] = None
+    decode_cycles: Optional[int] = None
 
 
 @dataclass
@@ -173,6 +175,16 @@ def verify_testbench_worker(
                     # If no width, could be legacy or unknown
                     test_cases["default_verification"] = simulation_status
 
+                # Extract cycle counts if present
+                encode_cycles = None
+                decode_cycles = None
+                encode_match = re.search(r"ENCODE_CYCLES=(\d+)", log_content)
+                decode_match = re.search(r"DECODE_CYCLES=(\d+)", log_content)
+                if encode_match:
+                    encode_cycles = int(encode_match.group(1))
+                if decode_match:
+                    decode_cycles = int(decode_match.group(1))
+
                 return TestbenchResult(
                     testbench_name=testbench_name,
                     testbench_file=str(testbench_file),
@@ -180,7 +192,9 @@ def verify_testbench_worker(
                     verilator_available=True,
                     simulation_status=simulation_status,
                     test_cases=test_cases,
-                    simulation_log=log_content
+                    simulation_log=log_content,
+                    encode_cycles=encode_cycles,
+                    decode_cycles=decode_cycles
                 )
             except Exception as e:
                 return TestbenchResult(testbench_name=testbench_name, testbench_file=str(testbench_file), testbench_available=True, verilator_available=True, error_message=str(e))
@@ -604,6 +618,12 @@ class HardwareVerifier:
                         if res.test_cases:
                             if current.test_cases is None: current.test_cases = {}
                             current.test_cases.update(res.test_cases)
+                            
+                        # Update cycles (keep max across widths, or just any valid one)
+                        if res.encode_cycles is not None:
+                            current.encode_cycles = max(current.encode_cycles or 0, res.encode_cycles)
+                        if res.decode_cycles is not None:
+                            current.decode_cycles = max(current.decode_cycles or 0, res.decode_cycles)
                         
                         # Append log? No, keep logs separate or just last one? 
                         # We used separate output dirs so logs are unique on disk. 
@@ -751,6 +771,8 @@ class HardwareVerifier:
                 "verilator_available": result.verilator_available,
                 "simulation_status": result.simulation_status,
                 "test_cases": result.test_cases,
+                "encode_cycles": result.encode_cycles,
+                "decode_cycles": result.decode_cycles,
                 "error_message": result.error_message
             }
         
@@ -812,7 +834,9 @@ class HardwareVerifier:
                 testbench_data[name] = {
                     "status": result.simulation_status,
                     "test_cases": result.test_cases,
-                    "output": result.simulation_log
+                    "output": result.simulation_log,
+                    "encode_cycles": result.encode_cycles,
+                    "decode_cycles": result.decode_cycles
                 }
         
         return testbench_data
@@ -998,7 +1022,9 @@ def load_verification_results(results_file: str = "results/hardware_verification
                     verilator_available=data.get("verilator_available", True),
                     simulation_status=result_data.get("overall_status"),
                     test_cases=test_cases_dict,
-                    error_message=None  # Detailed errors are in test_results
+                    error_message=None,  # Detailed errors are in test_results
+                    encode_cycles=result_data.get("encode_cycles"),
+                    decode_cycles=result_data.get("decode_cycles")
                 )
         
         # Handle legacy results or direct Verilator runs (testbench_results format)
@@ -1011,7 +1037,9 @@ def load_verification_results(results_file: str = "results/hardware_verification
                     verilator_available=result_data["verilator_available"],
                     simulation_status=result_data.get("simulation_status"),
                     test_cases=result_data.get("test_cases"),
-                    error_message=result_data.get("error_message")
+                    error_message=result_data.get("error_message"),
+                    encode_cycles=result_data.get("encode_cycles"),
+                    decode_cycles=result_data.get("decode_cycles")
                 )
         
         return HardwareVerificationResult(

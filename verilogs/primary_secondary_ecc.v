@@ -124,6 +124,8 @@ module primary_secondary_ecc #(
         end else if (encode_en) begin
             codeword_out <= {parity_bits, data_in}; 
             valid_out <= 1'b1;
+        end else if (decode_en) begin
+            valid_out <= 1'b1;
         end else begin
             valid_out <= 1'b0;
         end

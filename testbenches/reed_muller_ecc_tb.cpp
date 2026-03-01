@@ -93,6 +93,8 @@ void test_reed_muller_ecc() {
     srand(12345);
     int pass_count = 0;
     int fail_count = 0;
+    int max_encode_cycles = 0;
+    int max_decode_cycles = 0;
     
     for (int i = 0; i < NUM_TESTS; i++) {
         BitArray test_data;
@@ -106,8 +108,13 @@ void test_reed_muller_ecc() {
         // Encode
         dut->encode_en = 1; dut->decode_en = 0;
         SET_DATA_IN(dut, test_data);
-        dut->clk = 0; dut->eval();
-        dut->clk = 1; dut->eval();
+        int encode_cycles = 0;
+        do {
+            dut->clk = 0; dut->eval();
+            dut->clk = 1; dut->eval();
+            encode_cycles++;
+        } while (!dut->valid_out && encode_cycles < 100);
+        if (encode_cycles > max_encode_cycles) max_encode_cycles = encode_cycles;
         
         BitArray encoded_cw;
         GET_CODEWORD_OUT(dut, encoded_cw);
@@ -115,8 +122,13 @@ void test_reed_muller_ecc() {
         // Feed back
         dut->encode_en = 0; dut->decode_en = 1;
         SET_CODEWORD_IN(dut, encoded_cw);
-        dut->clk = 0; dut->eval();
-        dut->clk = 1; dut->eval();
+        int decode_cycles = 0;
+        do {
+            dut->clk = 0; dut->eval();
+            dut->clk = 1; dut->eval();
+            decode_cycles++;
+        } while (!dut->valid_out && decode_cycles < 100);
+        if (decode_cycles > max_decode_cycles) max_decode_cycles = decode_cycles;
         
         BitArray decoded_data;
         GET_DATA_OUT(dut, decoded_data);
@@ -136,6 +148,8 @@ void test_reed_muller_ecc() {
     printf("Passed: %d, Failed: %d\n", pass_count, fail_count);
     if (fail_count == 0) printf("RESULT: PASS\n");
     else printf("RESULT: FAIL\n");
+    printf("ENCODE_CYCLES=%d\n", max_encode_cycles);
+    printf("DECODE_CYCLES=%d\n", max_decode_cycles);
     
     delete dut;
 }

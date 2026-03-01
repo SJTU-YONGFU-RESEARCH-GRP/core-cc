@@ -61,6 +61,8 @@ module three_d_memory_ecc #(
         end else if (encode_en) begin
             codeword_out <= {overall_parity, bit_parity, layer_parity, data_in};
             valid_out <= 1;
+        end else if (decode_en) begin
+            valid_out <= 1'b1;
         end else begin
             valid_out <= 0;
         end

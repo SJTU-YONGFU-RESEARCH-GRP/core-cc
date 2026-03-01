@@ -341,10 +341,10 @@ class ECCReportGenerator:
             # Setup plot style
             plt.rcParams.update({
                 'font.family': 'serif',
-                'font.size': 10,
-                'axes.labelsize': 10,
-                'axes.titlesize': 12,
-                'figure.titlesize': 14,
+                'font.size': 16,
+                'axes.labelsize': 16,
+                'axes.titlesize': 18,
+                'figure.titlesize': 20,
             })
             
             # Compute angle for each axis
@@ -353,14 +353,14 @@ class ECCReportGenerator:
             angles += angles[:1]
             metrics_labels = metrics + [metrics[0]]
             
-            fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True))
+            fig, ax = plt.subplots(figsize=(14, 14), subplot_kw=dict(polar=True))
             
             # Draw one axe per variable and add labels
-            plt.xticks(angles[:-1], metrics, color='black', size=11, fontweight='bold')
+            plt.xticks(angles[:-1], metrics, color='black', size=24, fontweight='bold')
             
             # Draw ylabels
             ax.set_rlabel_position(30)
-            plt.yticks([0.2, 0.4, 0.6, 0.8], ["0.2", "0.4", "0.6", "0.8"], color="black", size=10, fontweight='bold')
+            plt.yticks([0.2, 0.4, 0.6, 0.8], ["0.2", "0.4", "0.6", "0.8"], color="black", size=24, fontweight='bold')
             plt.ylim(0, 1)
             
             # Style the grid lines separating the concentric circles
@@ -411,17 +411,22 @@ class ECCReportGenerator:
                     ax.fill(angles, data, color=colors[i], alpha=0.15, zorder=zorder)
 
             # Add legend (single column, moved further right to avoid blocking the graph)
-            leg = plt.legend(loc='center left', bbox_to_anchor=(1.15, 0.5), fontsize=8, ncol=1)
+            leg = plt.legend(loc='center left', bbox_to_anchor=(1.15, 0.5), fontsize=20, ncol=1)
             # Ensure legend lines are opaque regardless of plot alpha
             for legobj in leg.legend_handles:
                 legobj.set_alpha(1.0)
                 legobj.set_linewidth(2.0)
             
-            plt.title('Multi-Dimensional Performance Comparison\n(Normalized: 1.0 = Best)', size=14, fontweight='bold', y=1.1)
+            # Use fig.suptitle to position it over the entire figure rather than just the polar plot
+            fig.suptitle('Multi-Dimensional Performance Comparison\n(Normalized: 1.0 = Best)', fontsize=36, fontweight='bold', x=0.65, y=1.05)
             
             # Save chart
             chart_path = self.results_dir / "ecc_performance_radar.png"
             plt.savefig(chart_path, dpi=300, bbox_inches='tight')
+            
+            pdf_path = self.results_dir / "ecc_performance_radar.pdf"
+            plt.savefig(pdf_path, dpi=300, bbox_inches='tight')
+            
             plt.close()
             
             md_section = f"![ECC Performance Radar](ecc_performance_radar.png)\n\n"
@@ -605,6 +610,10 @@ class ECCReportGenerator:
             
             chart_path = self.results_dir / "ecc_hardware_cost.png"
             plt.savefig(chart_path, dpi=300, bbox_inches='tight')
+            
+            pdf_path = self.results_dir / "ecc_hardware_cost.pdf"
+            plt.savefig(pdf_path, dpi=300, bbox_inches='tight')
+            
             plt.close()
             
             return f"![ECC Hardware Cost Comparison](ecc_hardware_cost.png)\n\n*Relative hardware cost comparison of ECC modules (in Yosys internal cells, 64-bit data width).*\n\n"
@@ -691,10 +700,13 @@ class ECCReportGenerator:
         if scaling_chart_md:
             table += scaling_chart_md
 
+        # Retrieve testbench cycle counts
+        testbench_data = self.get_testbench_data()
+
         # Generate table for 32-bit (or available)
-        table += f"### Relative Cost (Normalized to minimum, 64-bit Data Width)\n\n"
-        table += "| Module | Area (Cells) | Relative Cost |\n"
-        table += "|--------|--------------|---------------|\n"
+        table += f"### Relative Cost and Cycle Counts (Normalized to minimum, 64-bit Data Width)\n\n"
+        table += "| Module | Area (Cells) | Relative Cost | Encode Cycles | Decode Cycles |\n"
+        table += "|--------|--------------|---------------|---------------|---------------|\n"
         
         if synthesis_data:
             # Filter out 0 or None
@@ -707,11 +719,16 @@ class ECCReportGenerator:
 
                 for module, cells in sorted_data.items():
                     relative_cost = (cells / min_cost) if min_cost > 0 else 1
-                    table += f"| {module} | {cells} | {relative_cost:.1f}x |\n"
+                    
+                    tb_data = testbench_data.get(f"{module}_tb", {})
+                    enc_cycles = tb_data.get("encode_cycles", "N/A")
+                    dec_cycles = tb_data.get("decode_cycles", "N/A")
+                    
+                    table += f"| {module} | {cells} | {relative_cost:.1f}x | {enc_cycles} | {dec_cycles} |\n"
             else:
-                 table += "| No valid synthesis data | - | - |\n"
+                 table += "| No valid synthesis data | - | - | - | - |\n"
         else:
-            table += "| No synthesis data available | - | - |\n"
+            table += "| No synthesis data available | - | - | - | - |\n"
         
         return table
     

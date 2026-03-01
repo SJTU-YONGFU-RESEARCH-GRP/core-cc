@@ -201,6 +201,8 @@ module extended_hamming_ecc #(
         end else if (encode_en) begin
             codeword_out <= {{(138-N_TOTAL){1'b0}}, full_encoded_word};
             valid_out <= 1'b1;
+        end else if (decode_en) begin
+            valid_out <= 1'b1;
         end else begin
             valid_out <= 1'b0;
         end

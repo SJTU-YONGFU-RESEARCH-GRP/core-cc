@@ -2,10 +2,10 @@
   "yosys_available": true,
   "verilator_available": true,
   "overall_status": "COMPLETE",
-  "execution_time": 1056.3,
-  "verilator_time": 1.0,
-  "synthesis_time": 1055.3,
-  "average_runtime_per_module": 40.6,
+  "execution_time": 1217.7,
+  "verilator_time": 86.8,
+  "synthesis_time": 1130.9,
+  "average_runtime_per_module": 46.8,
   "synthesis_results": {
     "adaptive_ecc": {
       "module_name": "adaptive_ecc",
@@ -29,7 +29,7 @@
       "module_name": "burst_error_ecc",
       "verilog_file": "verilogs/burst_error_ecc.v",
       "synthesis_available": true,
-      "area_cells": 97,
+      "area_cells": 98,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -38,7 +38,7 @@
       "module_name": "composite_ecc",
       "verilog_file": "verilogs/composite_ecc.v",
       "synthesis_available": true,
-      "area_cells": 65,
+      "area_cells": 66,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -56,7 +56,7 @@
       "module_name": "convolutional_ecc",
       "verilog_file": "verilogs/convolutional_ecc.v",
       "synthesis_available": true,
-      "area_cells": 395,
+      "area_cells": 396,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -65,7 +65,7 @@
       "module_name": "crc_ecc",
       "verilog_file": "verilogs/crc_ecc.v",
       "synthesis_available": true,
-      "area_cells": 1093,
+      "area_cells": 1094,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -83,7 +83,7 @@
       "module_name": "extended_hamming_ecc",
       "verilog_file": "verilogs/extended_hamming_ecc.v",
       "synthesis_available": true,
-      "area_cells": 609,
+      "area_cells": 610,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -128,7 +128,7 @@
       "module_name": "non_binary_ldpc_ecc",
       "verilog_file": "verilogs/non_binary_ldpc_ecc.v",
       "synthesis_available": true,
-      "area_cells": 190,
+      "area_cells": 191,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -137,7 +137,7 @@
       "module_name": "parity_ecc",
       "verilog_file": "verilogs/parity_ecc.v",
       "synthesis_available": true,
-      "area_cells": 99,
+      "area_cells": 100,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -155,7 +155,7 @@
       "module_name": "primary_secondary_ecc",
       "verilog_file": "verilogs/primary_secondary_ecc.v",
       "synthesis_available": true,
-      "area_cells": 486,
+      "area_cells": 487,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -173,7 +173,7 @@
       "module_name": "raptor_code_ecc",
       "verilog_file": "verilogs/raptor_code_ecc.v",
       "synthesis_available": true,
-      "area_cells": 191,
+      "area_cells": 192,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -209,7 +209,7 @@
       "module_name": "spatially_coupled_ldpc_ecc",
       "verilog_file": "verilogs/spatially_coupled_ldpc_ecc.v",
       "synthesis_available": true,
-      "area_cells": 191,
+      "area_cells": 192,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -227,7 +227,7 @@
       "module_name": "three_d_memory_ecc",
       "verilog_file": "verilogs/three_d_memory_ecc.v",
       "synthesis_available": true,
-      "area_cells": 156,
+      "area_cells": 157,
       "timing_info": null,
       "power_estimate": null,
       "error_message": null
@@ -243,22 +243,6 @@
     }
   },
   "testbench_results": {
-    "burst_error_ecc_tb": {
-      "testbench_name": "burst_error_ecc_tb",
-      "testbench_file": "testbenches/burst_error_ecc_tb.cpp",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "PASS",
-      "test_cases": {
-        "hardware_verification_w16": "PASS",
-        "hardware_verification_w32": "PASS",
-        "hardware_verification_w4": "PASS",
-        "hardware_verification_w8": "PASS",
-        "hardware_verification_w64": "PASS",
-        "hardware_verification_w128": "PASS"
-      },
-      "error_message": null
-    },
     "adaptive_ecc_tb": {
       "testbench_name": "adaptive_ecc_tb",
       "testbench_file": "testbenches/adaptive_ecc_tb.cpp",
@@ -266,13 +250,15 @@
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
-        "hardware_verification_w8": "PASS",
+        "hardware_verification_w4": "PASS",
         "hardware_verification_w32": "PASS",
         "hardware_verification_w16": "PASS",
-        "hardware_verification_w4": "PASS",
+        "hardware_verification_w8": "PASS",
         "hardware_verification_w128": "PASS",
         "hardware_verification_w64": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "bch_ecc_tb": {
@@ -282,29 +268,15 @@
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
-        "hardware_verification_w4": "PASS",
         "hardware_verification_w16": "PASS",
+        "hardware_verification_w4": "PASS",
         "hardware_verification_w64": "PASS",
         "hardware_verification_w32": "PASS",
-        "hardware_verification_w128": "PASS",
-        "hardware_verification_w8": "PASS"
-      },
-      "error_message": null
-    },
-    "composite_ecc_tb": {
-      "testbench_name": "composite_ecc_tb",
-      "testbench_file": "testbenches/composite_ecc_tb.cpp",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "PASS",
-      "test_cases": {
         "hardware_verification_w8": "PASS",
-        "hardware_verification_w4": "PASS",
-        "hardware_verification_w16": "PASS",
-        "hardware_verification_w128": "PASS",
-        "hardware_verification_w64": "PASS",
-        "hardware_verification_w32": "PASS"
+        "hardware_verification_w128": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "concatenated_ecc_tb": {
@@ -314,45 +286,51 @@
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
-        "hardware_verification_w16": "PASS",
         "hardware_verification_w8": "PASS",
         "hardware_verification_w32": "PASS",
+        "hardware_verification_w16": "PASS",
         "hardware_verification_w4": "PASS",
         "hardware_verification_w64": "PASS",
         "hardware_verification_w128": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
-    "convolutional_ecc_tb": {
-      "testbench_name": "convolutional_ecc_tb",
-      "testbench_file": "testbenches/convolutional_ecc_tb.cpp",
+    "burst_error_ecc_tb": {
+      "testbench_name": "burst_error_ecc_tb",
+      "testbench_file": "testbenches/burst_error_ecc_tb.cpp",
       "testbench_available": true,
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
-        "hardware_verification_w8": "PASS",
-        "hardware_verification_w16": "PASS",
-        "hardware_verification_w64": "PASS",
         "hardware_verification_w128": "PASS",
-        "hardware_verification_w4": "PASS",
-        "hardware_verification_w32": "PASS"
-      },
-      "error_message": null
-    },
-    "crc_ecc_tb": {
-      "testbench_name": "crc_ecc_tb",
-      "testbench_file": "testbenches/crc_ecc_tb.cpp",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "PASS",
-      "test_cases": {
-        "hardware_verification_w4": "PASS",
         "hardware_verification_w32": "PASS",
-        "hardware_verification_w16": "PASS",
         "hardware_verification_w8": "PASS",
-        "hardware_verification_w128": "PASS",
+        "hardware_verification_w4": "PASS",
+        "hardware_verification_w16": "PASS",
         "hardware_verification_w64": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
+      "error_message": null
+    },
+    "composite_ecc_tb": {
+      "testbench_name": "composite_ecc_tb",
+      "testbench_file": "testbenches/composite_ecc_tb.cpp",
+      "testbench_available": true,
+      "verilator_available": true,
+      "simulation_status": "PASS",
+      "test_cases": {
+        "hardware_verification_w4": "PASS",
+        "hardware_verification_w128": "PASS",
+        "hardware_verification_w32": "PASS",
+        "hardware_verification_w8": "PASS",
+        "hardware_verification_w16": "PASS",
+        "hardware_verification_w64": "PASS"
+      },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "cyclic_ecc_tb": {
@@ -362,29 +340,51 @@
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
-        "hardware_verification_w4": "PASS",
         "hardware_verification_w8": "PASS",
-        "hardware_verification_w128": "PASS",
-        "hardware_verification_w32": "PASS",
         "hardware_verification_w16": "PASS",
-        "hardware_verification_w64": "PASS"
+        "hardware_verification_w4": "PASS",
+        "hardware_verification_w32": "PASS",
+        "hardware_verification_w64": "PASS",
+        "hardware_verification_w128": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
-    "extended_hamming_ecc_tb": {
-      "testbench_name": "extended_hamming_ecc_tb",
-      "testbench_file": "testbenches/extended_hamming_ecc_tb.cpp",
+    "convolutional_ecc_tb": {
+      "testbench_name": "convolutional_ecc_tb",
+      "testbench_file": "testbenches/convolutional_ecc_tb.cpp",
       "testbench_available": true,
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
+        "hardware_verification_w64": "PASS",
         "hardware_verification_w16": "PASS",
         "hardware_verification_w8": "PASS",
+        "hardware_verification_w128": "PASS",
         "hardware_verification_w32": "PASS",
-        "hardware_verification_w4": "PASS",
-        "hardware_verification_w64": "PASS",
-        "hardware_verification_w128": "PASS"
+        "hardware_verification_w4": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
+      "error_message": null
+    },
+    "crc_ecc_tb": {
+      "testbench_name": "crc_ecc_tb",
+      "testbench_file": "testbenches/crc_ecc_tb.cpp",
+      "testbench_available": true,
+      "verilator_available": true,
+      "simulation_status": "PASS",
+      "test_cases": {
+        "hardware_verification_w8": "PASS",
+        "hardware_verification_w4": "PASS",
+        "hardware_verification_w32": "PASS",
+        "hardware_verification_w16": "PASS",
+        "hardware_verification_w128": "PASS",
+        "hardware_verification_w64": "PASS"
+      },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "fire_code_ecc_tb": {
@@ -394,13 +394,15 @@
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
-        "hardware_verification_w4": "PASS",
         "hardware_verification_w8": "PASS",
+        "hardware_verification_w4": "PASS",
         "hardware_verification_w16": "PASS",
         "hardware_verification_w32": "PASS",
         "hardware_verification_w128": "PASS",
         "hardware_verification_w64": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "golay_ecc_tb": {
@@ -411,12 +413,14 @@
       "simulation_status": "PASS",
       "test_cases": {
         "hardware_verification_w4": "PASS",
-        "hardware_verification_w16": "PASS",
         "hardware_verification_w8": "PASS",
-        "hardware_verification_w64": "PASS",
+        "hardware_verification_w16": "PASS",
         "hardware_verification_w32": "PASS",
+        "hardware_verification_w64": "PASS",
         "hardware_verification_w128": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "hamming_secded_ecc_tb": {
@@ -426,13 +430,15 @@
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
+        "hardware_verification_w4": "PASS",
         "hardware_verification_w8": "PASS",
         "hardware_verification_w16": "PASS",
-        "hardware_verification_w4": "PASS",
         "hardware_verification_w32": "PASS",
-        "hardware_verification_w128": "PASS",
-        "hardware_verification_w64": "PASS"
+        "hardware_verification_w64": "PASS",
+        "hardware_verification_w128": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "ldpc_ecc_tb": {
@@ -443,12 +449,14 @@
       "simulation_status": "PASS",
       "test_cases": {
         "hardware_verification_w4": "PASS",
-        "hardware_verification_w64": "PASS",
         "hardware_verification_w8": "PASS",
+        "hardware_verification_w128": "PASS",
+        "hardware_verification_w64": "PASS",
         "hardware_verification_w16": "PASS",
-        "hardware_verification_w32": "PASS",
-        "hardware_verification_w128": "PASS"
+        "hardware_verification_w32": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 0,
       "error_message": null
     },
     "non_binary_ldpc_ecc_tb": {
@@ -465,22 +473,26 @@
         "hardware_verification_w64": "PASS",
         "hardware_verification_w128": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
-    "parity_ecc_tb": {
-      "testbench_name": "parity_ecc_tb",
-      "testbench_file": "testbenches/parity_ecc_tb.cpp",
+    "extended_hamming_ecc_tb": {
+      "testbench_name": "extended_hamming_ecc_tb",
+      "testbench_file": "testbenches/extended_hamming_ecc_tb.cpp",
       "testbench_available": true,
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
-        "hardware_verification_w8": "PASS",
         "hardware_verification_w16": "PASS",
-        "hardware_verification_w4": "PASS",
         "hardware_verification_w32": "PASS",
+        "hardware_verification_w4": "PASS",
+        "hardware_verification_w8": "PASS",
         "hardware_verification_w128": "PASS",
         "hardware_verification_w64": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "polar_ecc_tb": {
@@ -492,27 +504,13 @@
       "test_cases": {
         "hardware_verification_w4": "PASS",
         "hardware_verification_w8": "PASS",
-        "hardware_verification_w32": "PASS",
-        "hardware_verification_w16": "PASS",
-        "hardware_verification_w128": "PASS",
-        "hardware_verification_w64": "PASS"
-      },
-      "error_message": null
-    },
-    "primary_secondary_ecc_tb": {
-      "testbench_name": "primary_secondary_ecc_tb",
-      "testbench_file": "testbenches/primary_secondary_ecc_tb.cpp",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "PASS",
-      "test_cases": {
-        "hardware_verification_w4": "PASS",
-        "hardware_verification_w8": "PASS",
-        "hardware_verification_w32": "PASS",
-        "hardware_verification_w16": "PASS",
         "hardware_verification_w64": "PASS",
-        "hardware_verification_w128": "PASS"
+        "hardware_verification_w128": "PASS",
+        "hardware_verification_w32": "PASS",
+        "hardware_verification_w16": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "product_code_ecc_tb": {
@@ -522,13 +520,87 @@
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
+        "hardware_verification_w16": "PASS",
+        "hardware_verification_w4": "PASS",
+        "hardware_verification_w8": "PASS",
+        "hardware_verification_w32": "PASS",
+        "hardware_verification_w64": "PASS",
+        "hardware_verification_w128": "PASS"
+      },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
+      "error_message": null
+    },
+    "primary_secondary_ecc_tb": {
+      "testbench_name": "primary_secondary_ecc_tb",
+      "testbench_file": "testbenches/primary_secondary_ecc_tb.cpp",
+      "testbench_available": true,
+      "verilator_available": true,
+      "simulation_status": "PASS",
+      "test_cases": {
         "hardware_verification_w8": "PASS",
         "hardware_verification_w4": "PASS",
-        "hardware_verification_w64": "PASS",
+        "hardware_verification_w32": "PASS",
         "hardware_verification_w16": "PASS",
-        "hardware_verification_w128": "PASS",
-        "hardware_verification_w32": "PASS"
+        "hardware_verification_w64": "PASS",
+        "hardware_verification_w128": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
+      "error_message": null
+    },
+    "parity_ecc_tb": {
+      "testbench_name": "parity_ecc_tb",
+      "testbench_file": "testbenches/parity_ecc_tb.cpp",
+      "testbench_available": true,
+      "verilator_available": true,
+      "simulation_status": "PASS",
+      "test_cases": {
+        "hardware_verification_w128": "PASS",
+        "hardware_verification_w4": "PASS",
+        "hardware_verification_w8": "PASS",
+        "hardware_verification_w32": "PASS",
+        "hardware_verification_w16": "PASS",
+        "hardware_verification_w64": "PASS"
+      },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
+      "error_message": null
+    },
+    "reed_muller_ecc_tb": {
+      "testbench_name": "reed_muller_ecc_tb",
+      "testbench_file": "testbenches/reed_muller_ecc_tb.cpp",
+      "testbench_available": true,
+      "verilator_available": true,
+      "simulation_status": "PASS",
+      "test_cases": {
+        "hardware_verification_w16": "PASS",
+        "hardware_verification_w8": "PASS",
+        "hardware_verification_w64": "PASS",
+        "hardware_verification_w32": "PASS",
+        "hardware_verification_w128": "PASS",
+        "hardware_verification_w4": "PASS"
+      },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
+      "error_message": null
+    },
+    "reed_solomon_ecc_tb": {
+      "testbench_name": "reed_solomon_ecc_tb",
+      "testbench_file": "testbenches/reed_solomon_ecc_tb.cpp",
+      "testbench_available": true,
+      "verilator_available": true,
+      "simulation_status": "PASS",
+      "test_cases": {
+        "hardware_verification_w4": "PASS",
+        "hardware_verification_w8": "PASS",
+        "hardware_verification_w16": "PASS",
+        "hardware_verification_w64": "PASS",
+        "hardware_verification_w32": "PASS",
+        "hardware_verification_w128": "PASS"
+      },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "raptor_code_ecc_tb": {
@@ -541,42 +613,12 @@
         "hardware_verification_w4": "PASS",
         "hardware_verification_w16": "PASS",
         "hardware_verification_w8": "PASS",
-        "hardware_verification_w32": "PASS",
-        "hardware_verification_w128": "PASS",
-        "hardware_verification_w64": "PASS"
-      },
-      "error_message": null
-    },
-    "reed_muller_ecc_tb": {
-      "testbench_name": "reed_muller_ecc_tb",
-      "testbench_file": "testbenches/reed_muller_ecc_tb.cpp",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "PASS",
-      "test_cases": {
-        "hardware_verification_w8": "PASS",
-        "hardware_verification_w4": "PASS",
-        "hardware_verification_w16": "PASS",
         "hardware_verification_w64": "PASS",
-        "hardware_verification_w32": "PASS",
-        "hardware_verification_w128": "PASS"
-      },
-      "error_message": null
-    },
-    "reed_solomon_ecc_tb": {
-      "testbench_name": "reed_solomon_ecc_tb",
-      "testbench_file": "testbenches/reed_solomon_ecc_tb.cpp",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "PASS",
-      "test_cases": {
-        "hardware_verification_w8": "PASS",
-        "hardware_verification_w4": "PASS",
-        "hardware_verification_w32": "PASS",
         "hardware_verification_w128": "PASS",
-        "hardware_verification_w16": "PASS",
-        "hardware_verification_w64": "PASS"
+        "hardware_verification_w32": "PASS"
       },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "repetition_ecc_tb": {
@@ -586,29 +628,15 @@
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
-        "hardware_verification_w4": "PASS",
+        "hardware_verification_w64": "PASS",
+        "hardware_verification_w8": "PASS",
         "hardware_verification_w16": "PASS",
         "hardware_verification_w32": "PASS",
-        "hardware_verification_w8": "PASS",
-        "hardware_verification_w64": "PASS",
+        "hardware_verification_w4": "PASS",
         "hardware_verification_w128": "PASS"
       },
-      "error_message": null
-    },
-    "spatially_coupled_ldpc_ecc_tb": {
-      "testbench_name": "spatially_coupled_ldpc_ecc_tb",
-      "testbench_file": "testbenches/spatially_coupled_ldpc_ecc_tb.cpp",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "PASS",
-      "test_cases": {
-        "hardware_verification_w16": "PASS",
-        "hardware_verification_w8": "PASS",
-        "hardware_verification_w4": "PASS",
-        "hardware_verification_w32": "PASS",
-        "hardware_verification_w128": "PASS",
-        "hardware_verification_w64": "PASS"
-      },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "system_ecc_tb": {
@@ -618,13 +646,51 @@
       "verilator_available": true,
       "simulation_status": "PASS",
       "test_cases": {
-        "hardware_verification_w4": "PASS",
         "hardware_verification_w16": "PASS",
         "hardware_verification_w32": "PASS",
         "hardware_verification_w8": "PASS",
+        "hardware_verification_w4": "PASS",
         "hardware_verification_w64": "PASS",
         "hardware_verification_w128": "PASS"
       },
+      "encode_cycles": 3,
+      "decode_cycles": 3,
+      "error_message": null
+    },
+    "turbo_ecc_tb": {
+      "testbench_name": "turbo_ecc_tb",
+      "testbench_file": "testbenches/turbo_ecc_tb.cpp",
+      "testbench_available": true,
+      "verilator_available": true,
+      "simulation_status": "PASS",
+      "test_cases": {
+        "hardware_verification_w8": "PASS",
+        "hardware_verification_w4": "PASS",
+        "hardware_verification_w16": "PASS",
+        "hardware_verification_w32": "PASS",
+        "hardware_verification_w64": "PASS",
+        "hardware_verification_w128": "PASS"
+      },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
+      "error_message": null
+    },
+    "spatially_coupled_ldpc_ecc_tb": {
+      "testbench_name": "spatially_coupled_ldpc_ecc_tb",
+      "testbench_file": "testbenches/spatially_coupled_ldpc_ecc_tb.cpp",
+      "testbench_available": true,
+      "verilator_available": true,
+      "simulation_status": "PASS",
+      "test_cases": {
+        "hardware_verification_w4": "PASS",
+        "hardware_verification_w8": "PASS",
+        "hardware_verification_w128": "PASS",
+        "hardware_verification_w64": "PASS",
+        "hardware_verification_w16": "PASS",
+        "hardware_verification_w32": "PASS"
+      },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     },
     "three_d_memory_ecc_tb": {
@@ -638,25 +704,11 @@
         "hardware_verification_w8": "PASS",
         "hardware_verification_w16": "PASS",
         "hardware_verification_w32": "PASS",
-        "hardware_verification_w64": "PASS",
-        "hardware_verification_w128": "PASS"
+        "hardware_verification_w128": "PASS",
+        "hardware_verification_w64": "PASS"
       },
-      "error_message": null
-    },
-    "turbo_ecc_tb": {
-      "testbench_name": "turbo_ecc_tb",
-      "testbench_file": "testbenches/turbo_ecc_tb.cpp",
-      "testbench_available": true,
-      "verilator_available": true,
-      "simulation_status": "PASS",
-      "test_cases": {
-        "hardware_verification_w4": "PASS",
-        "hardware_verification_w8": "PASS",
-        "hardware_verification_w16": "PASS",
-        "hardware_verification_w64": "PASS",
-        "hardware_verification_w32": "PASS",
-        "hardware_verification_w128": "PASS"
-      },
+      "encode_cycles": 1,
+      "decode_cycles": 1,
       "error_message": null
     }
   },
@@ -678,20 +730,20 @@
       "128": 32352
     },
     "burst_error_ecc": {
-      "4": 13,
-      "8": 25,
-      "16": 49,
-      "32": 97,
-      "64": 193,
-      "128": 385
+      "4": 14,
+      "8": 26,
+      "16": 50,
+      "32": 98,
+      "64": 194,
+      "128": 386
     },
     "composite_ecc": {
-      "4": 9,
-      "8": 17,
-      "16": 33,
-      "32": 65,
-      "64": 129,
-      "128": 257
+      "4": 10,
+      "8": 18,
+      "16": 34,
+      "32": 66,
+      "64": 130,
+      "128": 258
     },
     "concatenated_ecc": {
       "4": 34,
@@ -702,20 +754,20 @@
       "128": 1026
     },
     "convolutional_ecc": {
-      "4": 59,
-      "8": 107,
-      "16": 203,
-      "32": 395,
-      "64": 779,
-      "128": 1547
+      "4": 60,
+      "8": 108,
+      "16": 204,
+      "32": 396,
+      "64": 780,
+      "128": 1548
     },
     "crc_ecc": {
-      "4": 64,
-      "8": 205,
-      "16": 501,
-      "32": 1093,
-      "64": 2277,
-      "128": 4645
+      "4": 65,
+      "8": 206,
+      "16": 502,
+      "32": 1094,
+      "64": 2278,
+      "128": 4646
     },
     "cyclic_ecc": {
       "4": 52,
@@ -726,12 +778,12 @@
       "128": 4985
     },
     "extended_hamming_ecc": {
-      "4": 77,
-      "8": 156,
-      "16": 311,
-      "32": 609,
-      "64": 1226,
-      "128": 2520
+      "4": 78,
+      "8": 157,
+      "16": 312,
+      "32": 610,
+      "64": 1227,
+      "128": 2521
     },
     "fire_code_ecc": {
       "4": 26,
@@ -766,20 +818,20 @@
       "128": 43515
     },
     "non_binary_ldpc_ecc": {
-      "4": 20,
-      "8": 46,
-      "16": 94,
-      "32": 190,
-      "64": 382,
-      "128": 766
+      "4": 21,
+      "8": 47,
+      "16": 95,
+      "32": 191,
+      "64": 383,
+      "128": 767
     },
     "parity_ecc": {
-      "4": 15,
-      "8": 27,
-      "16": 51,
-      "32": 99,
-      "64": 195,
-      "128": 387
+      "4": 16,
+      "8": 28,
+      "16": 52,
+      "32": 100,
+      "64": 196,
+      "128": 388
     },
     "polar_ecc": {
       "4": 522,
@@ -790,11 +842,11 @@
       "128": null
     },
     "primary_secondary_ecc": {
-      "4": 54,
-      "8": 110,
-      "16": 230,
-      "32": 486,
-      "64": 1030,
+      "4": 55,
+      "8": 111,
+      "16": 231,
+      "32": 487,
+      "64": 1031,
       "128": null
     },
     "product_code_ecc": {
@@ -806,11 +858,11 @@
       "128": 2024
     },
     "raptor_code_ecc": {
-      "4": 23,
-      "8": 47,
-      "16": 95,
-      "32": 191,
-      "64": 383,
+      "4": 24,
+      "8": 48,
+      "16": 96,
+      "32": 192,
+      "64": 384,
       "128": null
     },
     "reed_muller_ecc": {
@@ -838,11 +890,11 @@
       "128": 2944
     },
     "spatially_coupled_ldpc_ecc": {
-      "4": 23,
-      "8": 47,
-      "16": 95,
-      "32": 191,
-      "64": 383,
+      "4": 24,
+      "8": 48,
+      "16": 96,
+      "32": 192,
+      "64": 384,
       "128": null
     },
     "system_ecc": {
@@ -854,12 +906,12 @@
       "128": 2538
     },
     "three_d_memory_ecc": {
-      "4": 9,
-      "8": 42,
-      "16": 80,
-      "32": 156,
-      "64": 308,
-      "128": 612
+      "4": 10,
+      "8": 43,
+      "16": 81,
+      "32": 157,
+      "64": 309,
+      "128": 613
     },
     "turbo_ecc": {
       "4": 1333,
