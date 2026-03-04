@@ -274,7 +274,41 @@ class ECCReportGenerator:
         if chart_path.exists():
             return f"![ECC Performance Comparison](ecc_performance_comparison.png)\n\n*Detailed comparison of success, correction, and detection rates across all ECC types.*\n\n"
         return ""
-    
+
+    def _optimal_xtick_fontsize(
+        self,
+        ax,
+        fig,
+        min_size: int = 10,
+        max_size: int = 30,
+        allowed_overlap_px: float = 8.0
+    ) -> int:
+        """Set the largest x-tick font size that avoids overlap on current canvas."""
+        ticklabels = [lbl for lbl in ax.get_xticklabels() if lbl.get_text()]
+        if not ticklabels:
+            return min_size
+
+        for size in range(max_size, min_size - 1, -1):
+            for lbl in ticklabels:
+                lbl.set_fontsize(size)
+                lbl.set_fontweight('bold')
+                lbl.set_fontfamily('serif')
+
+            fig.canvas.draw()
+            renderer = fig.canvas.get_renderer()
+            bboxes = [lbl.get_window_extent(renderer=renderer) for lbl in ticklabels]
+
+            overlap = any(bboxes[i].x1 > (bboxes[i + 1].x0 + allowed_overlap_px) for i in range(len(bboxes) - 1))
+            if not overlap:
+                return size
+
+        for lbl in ticklabels:
+            lbl.set_fontsize(min_size)
+            lbl.set_fontweight('bold')
+            lbl.set_fontfamily('serif')
+        fig.canvas.draw()
+        return min_size
+
     def generate_radar_chart(self) -> str:
         """Generate a radar chart comparing all ECC types across key metrics."""
         if not self.analysis_results:
@@ -468,8 +502,11 @@ class ECCReportGenerator:
         table += "| ECC Type | Success Rate (%) | Correction Rate (%) | Detection Rate (%) | Code Rate | Overhead Ratio | Encode Time (ms) | Decode Time (ms) |\n"
         table += "|----------|------------------|-------------------|-------------------|-----------|----------------|------------------|------------------|\n"
         
-        for ecc_type, metrics in summary.items():
-            table += f"| {ecc_type} | {metrics['avg_success_rate']:.1f} | {metrics['avg_correction_rate']:.1f} | {metrics['avg_detection_rate']:.1f} | {metrics['avg_code_rate']:.3f} | {metrics['avg_overhead_ratio']:.3f} | {metrics['avg_encode_time_ms']:.6f} | {metrics['avg_decode_time_ms']:.6f} |\n"
+        # Sort by success rate
+        sorted_summary = sorted(summary.items(), key=lambda x: x[1]['avg_success_rate'], reverse=True)
+        
+        for ecc_type, metrics in sorted_summary:
+            table += f"| {ecc_type} | {metrics['avg_success_rate']*100:.2f} | {metrics['avg_correction_rate']*100:.2f} | {metrics['avg_detection_rate']*100:.2f} | {metrics['avg_code_rate']:.3f} | {metrics['avg_overhead_ratio']:.3f} | {metrics['avg_encode_time_ms']:.6f} | {metrics['avg_decode_time_ms']:.6f} |\n"
         
         return table
     
@@ -589,24 +626,40 @@ class ECCReportGenerator:
                 'grid.linestyle': '--',
             })
             
-            fig, ax = plt.subplots(figsize=(14, 8))
+            fig_width = 14.0
+            fig_height = 8.0
+            label_rotation = 68
+
+            fig, ax = plt.subplots(figsize=(fig_width, fig_height))
             x = np.arange(len(modules))
             width = 0.6
             
             bars = ax.bar(x, cells, width, label='Area (Cells)', color='#0000FF', alpha=0.9, edgecolor='black')
             
-            ax.set_ylabel('Area (Cells)', fontsize=12, fontweight='bold', fontfamily='serif')
-            ax.set_xlabel('Module', fontsize=12, fontweight='bold', fontfamily='serif')
+            ax.set_ylabel('Area (Cells)', fontsize=14, fontweight='bold', fontfamily='serif')
+            ax.set_xlabel('ECC Type', fontsize=14, fontweight='bold', fontfamily='serif')
             ax.set_xticks(x)
-            ax.set_xticklabels(modules, rotation=45, ha='right', fontsize=10, fontweight='bold', fontfamily='serif')
-            ax.set_title('Hardware Cost Comparison: Area (Cells) - 64-bit Data Width', fontsize=16, fontweight='bold', fontfamily='serif', pad=20)
+            ax.set_xticklabels(modules, rotation=label_rotation, ha='right')
+            xtick_font = 12
+            for lbl in ax.get_xticklabels():
+                lbl.set_fontsize(xtick_font)
+                lbl.set_fontweight('bold')
+                lbl.set_fontfamily('serif')
+
+            ax.set_title('Hardware Cost Comparison: Area (Cells) - 64-bit Data Width', fontsize=max(18, xtick_font + 6), fontweight='bold', fontfamily='serif', pad=20)
+            ax.tick_params(axis='y', labelsize=max(11, xtick_font - 1))
+            for label in ax.get_yticklabels():
+                label.set_fontweight('bold')
+                label.set_fontfamily('serif')
+
+            ax.legend(loc='upper left', fontsize=max(11, xtick_font - 1), prop={'family': 'serif', 'weight': 'bold'})
             
             # Add value labels
             for bar, cell_count in zip(bars, cells):
                 ax.text(bar.get_x() + bar.get_width() / 2., bar.get_height(),
-                        f'{cell_count}', ha='center', va='bottom', fontsize=11, fontweight='bold')
+                    f'{cell_count}', ha='center', va='bottom', fontsize=max(10, xtick_font - 1), fontweight='bold')
             
-            plt.tight_layout()
+            fig.tight_layout(rect=[0, 0.08, 1, 1])
             
             chart_path = self.results_dir / "ecc_hardware_cost.png"
             plt.savefig(chart_path, dpi=300, bbox_inches='tight')
@@ -616,7 +669,7 @@ class ECCReportGenerator:
             
             plt.close()
             
-            return f"![ECC Hardware Cost Comparison](ecc_hardware_cost.png)\n\n*Relative hardware cost comparison of ECC modules (in Yosys internal cells, 64-bit data width).*\n\n"
+            return f"![ECC Hardware Cost Comparison](ecc_hardware_cost.png)\n\n*Relative hardware cost comparison of ECC types (in Yosys internal cells, 64-bit data width).*\n\n"
             
         except Exception as e:
             print(f"Error generating hardware cost chart: {e}")

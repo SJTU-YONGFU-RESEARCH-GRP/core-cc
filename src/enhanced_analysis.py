@@ -445,6 +445,39 @@ class ECCAnalyzer:
         output_path.mkdir(exist_ok=True)
         
         charts = {}
+
+        def maximize_xtick_fontsize(
+            ax,
+            fig,
+            min_size: int = 10,
+            max_size: int = 30,
+            allowed_overlap_px: float = 8.0
+        ) -> int:
+            """Set the largest x-tick font size that avoids overlap on the current canvas."""
+            ticklabels = [lbl for lbl in ax.get_xticklabels() if lbl.get_text()]
+            if not ticklabels:
+                return min_size
+
+            for size in range(max_size, min_size - 1, -1):
+                for lbl in ticklabels:
+                    lbl.set_fontsize(size)
+                    lbl.set_fontweight('bold')
+                    lbl.set_fontfamily('serif')
+
+                fig.canvas.draw()
+                renderer = fig.canvas.get_renderer()
+                bboxes = [lbl.get_window_extent(renderer=renderer) for lbl in ticklabels]
+
+                overlap = any(bboxes[i].x1 > (bboxes[i + 1].x0 + allowed_overlap_px) for i in range(len(bboxes) - 1))
+                if not overlap:
+                    return size
+
+            for lbl in ticklabels:
+                lbl.set_fontsize(min_size)
+                lbl.set_fontweight('bold')
+                lbl.set_fontfamily('serif')
+            fig.canvas.draw()
+            return min_size
         
         # Set style for scientific publication
         # Use a style that mimics scientific papers (white background, no grid or minimal grid, serif fonts)
@@ -726,7 +759,6 @@ class ECCAnalyzer:
         plt.close()
 
         # 4. Efficiency vs Latency Trade-off (Sorted Bubble Chart)
-        plt.figure(figsize=(18, 10))
         
         summary = self.generate_metrics_summary()
         ecc_names = list(summary.keys())
@@ -741,11 +773,18 @@ class ECCAnalyzer:
         total_times = total_times[sort_idx]
         overhead_ratios = overhead_ratios[sort_idx]
         
-        # Normalize overhead for marker size (min size 100, max size 1000)
-        overhead_sizes = [max(100, min(1000, (o + 0.1) * 300)) for o in overhead_ratios]
+        # Normalize overhead for marker size (min size 120, max size 1200)
+        overhead_sizes = [max(120, min(1200, (o + 0.1) * 340)) for o in overhead_ratios]
+
+        n_ecc = len(ecc_names)
+        fig_width = 18.0
+        fig_height = 10.0
+        label_rotation = 68
+
+        fig, ax = plt.subplots(figsize=(fig_width, fig_height))
         
         x_positions = np.arange(len(ecc_names))
-        scatter = plt.scatter(
+        scatter = ax.scatter(
             x_positions,
             total_times,
             s=overhead_sizes,
@@ -756,35 +795,47 @@ class ECCAnalyzer:
             linewidth=1.2
         )
         
-        plt.title('Efficiency vs Latency Trade-off (Sorted by Latency)', fontsize=18, fontweight='bold', fontfamily='serif', pad=20)
-        plt.xlabel('ECC Type (Sorted by Latency)', fontsize=14, fontweight='bold', fontfamily='serif')
-        plt.ylabel('Total Latency (ms) [Log Scale]', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax.set_title('Efficiency vs Latency Trade-off (Sorted by Latency)', fontsize=18, fontweight='bold', fontfamily='serif', pad=20)
+        ax.set_xlabel('ECC Type (Sorted by Latency)', fontsize=14, fontweight='bold', fontfamily='serif')
+        ax.set_ylabel('Total Latency (ms) [Log Scale]', fontsize=14, fontweight='bold', fontfamily='serif')
         
-        plt.yscale('log')
-        plt.grid(True, which="both", ls="--", alpha=0.3)
+        ax.set_yscale('log')
+        ax.grid(True, which="both", ls="--", alpha=0.3)
         
-        plt.xticks(x_positions, ecc_names, rotation=60, ha='right', fontsize=9, fontweight='bold', fontfamily='serif')
-        for label in plt.gca().get_yticklabels():
+        ax.set_xticks(x_positions)
+        ax.set_xticklabels(
+            ecc_names,
+            rotation=label_rotation,
+            ha='right',
+        )
+        xtick_font = 12
+        for lbl in ax.get_xticklabels():
+            lbl.set_fontsize(xtick_font)
+            lbl.set_fontweight('bold')
+            lbl.set_fontfamily('serif')
+
+        for label in ax.get_yticklabels():
             label.set_fontweight('bold')
             label.set_fontfamily('serif')
+            label.set_fontsize(max(12, xtick_font - 1))
         
-        cbar = plt.colorbar(scatter)
-        cbar.set_label('Code Rate (Higher is Better)', fontsize=12, fontweight='bold', fontfamily='serif')
-        cbar.ax.tick_params(labelsize=10)
+        cbar = plt.colorbar(scatter, ax=ax)
+        cbar.set_label('Code Rate (Higher is Better)', fontsize=max(14, xtick_font + 1), fontweight='bold', fontfamily='serif')
+        cbar.ax.tick_params(labelsize=max(11, xtick_font - 1))
         for label in cbar.ax.get_yticklabels():
             label.set_fontweight('bold')
             label.set_family('serif')
         
-        plt.tight_layout()
+        fig.tight_layout(rect=[0, 0.08, 1, 1])
         
         # Save as PNG
         chart_path_png = output_path / "ecc_efficiency_latency_tradeoff.png"
         chart_path_pdf = output_path / "ecc_efficiency_latency_tradeoff.pdf"
-        plt.savefig(chart_path_png, dpi=300, bbox_inches='tight')
-        plt.savefig(chart_path_pdf, bbox_inches='tight')
+        fig.savefig(chart_path_png, dpi=300, bbox_inches='tight')
+        fig.savefig(chart_path_pdf, bbox_inches='tight')
         charts['efficiency_latency_tradeoff'] = str(chart_path_png)
         
-        plt.close()
+        plt.close(fig)
         # Grouped bar chart for Success Rate, Correction Rate, Detection Rate
         summary_df = pd.DataFrame(summary).T
         metrics_to_plot = ['avg_success_rate', 'avg_correction_rate', 'avg_detection_rate']

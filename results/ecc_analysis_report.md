@@ -1,6 +1,6 @@
 # ECC (Error Correction Code) Analysis Report
 
-**Generated:** 2026-02-28 15:03:30  
+**Generated:** 2026-03-04 17:30:30  
 **Framework Version:** 3.0  
 **Analysis Scope:** Comprehensive analysis of 26 ECC types: PrimarySecondaryECC, HammingSECDEDECC, AdaptiveECC, SpatiallyCoupledLDPCECC, BCHECC, ThreeDMemoryECC, NonBinaryLDPCECC, CRCECC, FireCodeECC, SystemECC, ReedSolomonECC, TurboECC, ParityECC, ConcatenatedECC, ConvolutionalECC, ProductCodeECC, CyclicECC, BurstErrorECC, ExtendedHammingECC, ReedMullerECC, RaptorCodeECC, CompositeECC, RepetitionECC, GolayECC, PolarECC, LDPCECC
 
@@ -73,32 +73,32 @@ This report provides a comprehensive analysis of different Error Correction Code
 
 | ECC Type | Success Rate (%) | Correction Rate (%) | Detection Rate (%) | Code Rate | Overhead Ratio | Encode Time (ms) | Decode Time (ms) |
 |----------|------------------|-------------------|-------------------|-----------|----------------|------------------|------------------|
-| PrimarySecondaryECC | 0.6 | 0.2 | 0.4 | 0.732 | 0.530 | 0.062974 | 2.655884 |
-| HammingSECDEDECC | 0.5 | 0.4 | 0.1 | 0.815 | 0.259 | 0.057592 | 0.058739 |
-| AdaptiveECC | 0.7 | 0.5 | 0.2 | 0.720 | 0.686 | 0.042892 | 0.054652 |
-| SpatiallyCoupledLDPCECC | 0.6 | 0.2 | 0.4 | 0.586 | 0.825 | 0.046592 | 1.730265 |
-| BCHECC | 1.0 | 0.8 | 0.2 | 0.528 | 0.896 | 0.006171 | 0.071062 |
-| ThreeDMemoryECC | 0.7 | 0.3 | 0.4 | 0.717 | 0.703 | 0.012812 | 0.021506 |
-| NonBinaryLDPCECC | 0.8 | 0.2 | 0.6 | 0.526 | 0.940 | 0.377750 | 69.215699 |
-| CRCECC | 0.7 | 0.1 | 0.6 | 0.888 | 0.196 | 0.045644 | 0.042609 |
-| FireCodeECC | 0.9 | 0.1 | 0.8 | 0.744 | 0.391 | 0.006332 | 0.025563 |
-| SystemECC | 0.8 | 0.1 | 0.7 | 0.798 | 0.299 | 0.052745 | 0.021089 |
-| ReedSolomonECC | 1.0 | 0.7 | 0.3 | 0.528 | 0.896 | 0.011920 | 0.176379 |
-| TurboECC | 1.0 | 0.2 | 0.8 | 0.333 | 2.000 | 0.045960 | 0.049953 |
-| ParityECC | 0.7 | 0.1 | 0.6 | 0.958 | 0.050 | 0.004711 | 0.004648 |
-| ConcatenatedECC | 0.9 | 0.5 | 0.4 | 0.369 | 1.937 | 0.077522 | 0.084498 |
-| ConvolutionalECC | 0.6 | 0.6 | 0.0 | 0.438 | 1.328 | 0.044760 | 0.674397 |
-| ProductCodeECC | 0.9 | 0.2 | 0.7 | 0.395 | 2.038 | 0.044693 | 0.048636 |
-| CyclicECC | 0.4 | 0.4 | 0.0 | 0.509 | 0.967 | 0.028665 | 0.000406 |
-| BurstErrorECC | 1.0 | 0.1 | 0.9 | 0.714 | 0.562 | 0.060963 | 4.139999 |
-| ExtendedHammingECC | 0.7 | 0.3 | 0.4 | 0.798 | 0.318 | 0.059671 | 0.060839 |
-| ReedMullerECC | 0.6 | 0.2 | 0.4 | 0.815 | 0.365 | 0.064740 | 2.699491 |
-| RaptorCodeECC | 0.9 | 0.2 | 0.8 | 0.500 | 1.000 | 0.046946 | 0.044679 |
-| CompositeECC | 0.7 | 0.2 | 0.5 | 0.688 | 0.656 | 0.000317 | 0.000462 |
-| RepetitionECC | 0.6 | 0.6 | 0.0 | 0.374 | 1.773 | 0.026786 | 0.030282 |
-| GolayECC | 1.0 | 1.0 | 0.0 | 0.504 | 1.038 | 0.008968 | 0.009261 |
-| PolarECC | 0.3 | 0.3 | 0.0 | 0.739 | 0.589 | 0.002019 | 0.131366 |
-| LDPCECC | 0.8 | 0.1 | 0.8 | 0.602 | 0.770 | 0.035164 | 0.836315 |
+| ReedSolomonECC | 100.00 | 71.43 | 28.57 | 0.528 | 0.896 | 0.011920 | 0.176379 |
+| TurboECC | 100.00 | 16.67 | 83.33 | 0.333 | 2.000 | 0.045960 | 0.049953 |
+| GolayECC | 99.98 | 99.98 | 0.00 | 0.504 | 1.038 | 0.008968 | 0.009261 |
+| BCHECC | 99.87 | 81.71 | 18.16 | 0.528 | 0.896 | 0.006171 | 0.071062 |
+| BurstErrorECC | 95.31 | 7.58 | 87.73 | 0.714 | 0.562 | 0.060963 | 4.139999 |
+| RaptorCodeECC | 94.94 | 16.35 | 78.60 | 0.500 | 1.000 | 0.046946 | 0.044679 |
+| ConcatenatedECC | 91.13 | 52.55 | 38.58 | 0.369 | 1.937 | 0.077522 | 0.084498 |
+| ProductCodeECC | 88.73 | 22.85 | 65.88 | 0.395 | 2.038 | 0.044693 | 0.048636 |
+| FireCodeECC | 88.36 | 7.07 | 81.30 | 0.744 | 0.391 | 0.006332 | 0.025563 |
+| LDPCECC | 84.11 | 8.97 | 75.13 | 0.602 | 0.770 | 0.035164 | 0.836315 |
+| NonBinaryLDPCECC | 82.08 | 20.24 | 61.84 | 0.526 | 0.940 | 0.377750 | 69.215699 |
+| SystemECC | 78.38 | 5.27 | 73.10 | 0.798 | 0.299 | 0.052745 | 0.021089 |
+| ThreeDMemoryECC | 71.65 | 26.83 | 44.82 | 0.717 | 0.703 | 0.012812 | 0.021506 |
+| ExtendedHammingECC | 70.04 | 34.88 | 35.15 | 0.798 | 0.318 | 0.059671 | 0.060839 |
+| CRCECC | 68.86 | 6.20 | 62.66 | 0.888 | 0.196 | 0.045644 | 0.042609 |
+| ParityECC | 68.64 | 7.93 | 60.70 | 0.958 | 0.050 | 0.004711 | 0.004648 |
+| AdaptiveECC | 67.68 | 48.52 | 19.15 | 0.720 | 0.686 | 0.042892 | 0.054652 |
+| CompositeECC | 65.91 | 17.57 | 48.34 | 0.688 | 0.656 | 0.000317 | 0.000462 |
+| SpatiallyCoupledLDPCECC | 61.66 | 19.28 | 42.38 | 0.586 | 0.825 | 0.046592 | 1.730265 |
+| RepetitionECC | 60.96 | 60.96 | 0.00 | 0.374 | 1.773 | 0.026786 | 0.030282 |
+| ConvolutionalECC | 60.90 | 60.90 | 0.00 | 0.438 | 1.328 | 0.044760 | 0.674397 |
+| PrimarySecondaryECC | 58.52 | 16.31 | 42.21 | 0.732 | 0.530 | 0.062974 | 2.655884 |
+| ReedMullerECC | 58.27 | 16.29 | 41.98 | 0.815 | 0.365 | 0.064740 | 2.699491 |
+| HammingSECDEDECC | 45.23 | 35.68 | 9.55 | 0.815 | 0.259 | 0.057592 | 0.058739 |
+| CyclicECC | 38.57 | 38.57 | 0.00 | 0.509 | 0.967 | 0.028665 | 0.000406 |
+| PolarECC | 31.92 | 31.92 | 0.00 | 0.739 | 0.589 | 0.002019 | 0.131366 |
 
 
 
@@ -293,7 +293,7 @@ This report provides a comprehensive analysis of different Error Correction Code
 
 ![ECC Hardware Cost Comparison](ecc_hardware_cost.png)
 
-*Relative hardware cost comparison of ECC modules (in Yosys internal cells, 64-bit data width).*
+*Relative hardware cost comparison of ECC types (in Yosys internal cells, 64-bit data width).*
 
 ![ECC Hardware Scaling](ecc_hardware_scaling.png)
 
