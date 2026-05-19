@@ -39,6 +39,20 @@
     #endif
 #endif
 
+// Clock until valid_out is asserted; track cycles for latency reporting
+#define CLOCK_UNTIL_VALID(dut, max_cycles_var) \
+    do { \
+        int _cycles = 0; \
+        do { \
+            (dut)->clk = 0; \
+            (dut)->eval(); \
+            (dut)->clk = 1; \
+            (dut)->eval(); \
+            _cycles++; \
+        } while (!(dut)->valid_out && _cycles < 100); \
+        if (_cycles > (max_cycles_var)) (max_cycles_var) = _cycles; \
+    } while (0)
+
 // Reference model: even parity, parity at bit 0, data at bits [DATA_WIDTH:1]
 int calculate_parity(const BitArray& data, int data_width) {
     int parity = 0;
@@ -127,10 +141,7 @@ void test_parity_ecc() {
         dut->decode_en = 1;
         SET_DATA_IN(dut, test_data);
         SET_CODEWORD_IN(dut, expected_codeword);
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        CLOCK_UNTIL_VALID(dut, max_decode_cycles);
 
         BitArray dut_out;
         GET_DATA_OUT(dut, dut_out);
@@ -147,10 +158,7 @@ void test_parity_ecc() {
         poison_data.words[0] = 0xDEADBEEF;
         SET_DATA_IN(dut, poison_data);
         SET_CODEWORD_IN(dut, expected_codeword);
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        CLOCK_UNTIL_VALID(dut, max_decode_cycles);
 
         if (!dut->error_detected) {
             pass_count++;
@@ -165,10 +173,7 @@ void test_parity_ecc() {
         BitArray parity_corrupted = expected_codeword;
         parity_corrupted.set_bit(0, !parity_corrupted.get_bit(0));
         SET_CODEWORD_IN(dut, parity_corrupted);
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        CLOCK_UNTIL_VALID(dut, max_decode_cycles);
 
         if (dut->error_detected) {
             pass_count++;
@@ -183,10 +188,7 @@ void test_parity_ecc() {
         int random_bit_pos = (rand() % data_width) + 1;
         data_corrupted.set_bit(random_bit_pos, !data_corrupted.get_bit(random_bit_pos));
         SET_CODEWORD_IN(dut, data_corrupted);
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        CLOCK_UNTIL_VALID(dut, max_decode_cycles);
 
         if (dut->error_detected) {
             pass_count++;
@@ -203,10 +205,7 @@ void test_parity_ecc() {
         double_corrupted.set_bit(pos1, !double_corrupted.get_bit(pos1));
         double_corrupted.set_bit(pos2, !double_corrupted.get_bit(pos2));
         SET_CODEWORD_IN(dut, double_corrupted);
-        dut->clk = 0;
-        dut->eval();
-        dut->clk = 1;
-        dut->eval();
+        CLOCK_UNTIL_VALID(dut, max_decode_cycles);
 
         if (!dut->error_detected) {
             pass_count++;
@@ -231,6 +230,7 @@ void test_parity_ecc() {
     printf("--------------------------------------------------\n");
     printf(" Check outcomes: %d passed, %d failed\n", pass_count, fail_count);
     printf(" Max encode cycles observed: %d\n", max_encode_cycles);
+    printf(" Max decode cycles observed: %d\n", max_decode_cycles);
     printf("==================================================\n");
 
     bool all_pass = (strat1_pass && strat2_pass && strat3_pass && strat4_pass && strat5_pass);
