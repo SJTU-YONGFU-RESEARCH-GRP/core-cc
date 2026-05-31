@@ -12,9 +12,16 @@ venv/
 *.obj
 *.exe
 
-# Verilog/Verilator
+# Golden full-matrix regression logs
+testbenches/.golden_all_logs/
+
+# Verilog/Verilator (all Verilator -Mdir outputs; safe to delete anytime)
 obj_dir/
+obj_dir_*/
+**/obj_dir/
+**/obj_dir_*/
 *.vcd
+*.fst
 *.ys
 
 # Project Specific

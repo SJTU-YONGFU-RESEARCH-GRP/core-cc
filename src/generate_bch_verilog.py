@@ -131,6 +131,77 @@ def get_bch_generator_poly(m, n, k, t, prim_poly):
     return binary_g # Lowest degree first (p0, p1, ...)
 
 
+def resolve_bch_geometry(m, n, k_user, t, prim_poly):
+    """Algebraic code parameters aligned with bch_codec.py (no g(x) zero-padding)."""
+    g_poly = get_bch_generator_poly(m, n, k_user, t, prim_poly)
+    if g_poly is None:
+        return None
+    parity_bits = len(g_poly) - 1
+    k_encode = n - parity_bits
+    return {
+        "g_poly": g_poly,
+        "parity_bits": parity_bits,
+        "k_encode": k_encode,
+        "k_user": k_user,
+    }
+
+
+def emit_data_k_wire(verilog, width, k_encode):
+    if k_encode > width:
+        pad = k_encode - width
+        verilog.append(f"    wire [{k_encode - 1}:0] data_k = {{{pad}'b0, data_in}};")
+    elif k_encode < width:
+        verilog.append(f"    wire [{k_encode - 1}:0] data_k = data_in[{k_encode - 1}:0];")
+    else:
+        verilog.append(f"    wire [{k_encode - 1}:0] data_k = data_in;")
+
+
+def emit_encoder_lfsr(verilog, k_encode, parity_bits, g_poly):
+    rem_equations = [set() for _ in range(parity_bits)]
+    for i in range(k_encode - 1, -1, -1):
+        feedback = rem_equations[parity_bits - 1].copy()
+        if i in feedback:
+            feedback.remove(i)
+        else:
+            feedback.add(i)
+        next_equations = [set() for _ in range(parity_bits)]
+        for j in range(parity_bits):
+            if j == 0:
+                if g_poly[j] == 1:
+                    next_equations[j] = feedback.copy()
+            else:
+                next_equations[j] = rem_equations[j - 1].copy()
+                if j < len(g_poly) and g_poly[j] == 1:
+                    for term in feedback:
+                        if term in next_equations[j]:
+                            next_equations[j].remove(term)
+                        else:
+                            next_equations[j].add(term)
+        rem_equations = next_equations
+    verilog.append(f"    wire [{parity_bits - 1}:0] parity;")
+    for j in range(parity_bits):
+        terms = sorted(rem_equations[j])
+        if not terms:
+            verilog.append(f"    assign parity[{j}] = 1'b0;")
+        else:
+            vexpr = " ^ ".join(f"data_k[{t}]" for t in terms)
+            verilog.append(f"    assign parity[{j}] = {vexpr};")
+
+
+def emit_syndrome_wires(verilog, gf, n, t):
+    m = gf.m
+    for j in range(1, 2 * t + 1):
+        vals = [gf.power(gf.power(2, j), i) for i in range(n)]
+        for bit_idx in range(m):
+            contributors = [i for i in range(n) if (vals[i] >> bit_idx) & 1]
+            s_name = f"synd_{j}_{bit_idx}"
+            if not contributors:
+                verilog.append(f"    wire {s_name} = 1'b0;")
+            else:
+                vexpr = " ^ ".join(f"codeword_in[{c}]" for c in contributors)
+                verilog.append(f"    wire {s_name} = {vexpr};")
+
+
 def generate_bch_verilog(width, n, k, t, prim_poly, output_dir):
     # Calculate m. n = 2^m - 1.
     # n.bit_length() usually gives m for Mersenne numbers.
@@ -142,27 +213,15 @@ def generate_bch_verilog(width, n, k, t, prim_poly, output_dir):
     
     print(f"Generating {module_name} (n={n}, k={k}, t={t})...")
     
-    # Get Generator Polynomial
-    # Format: [p0, p1, ..., p_degree] where p0 is const term (usually 1), p_degree is x^deg (usually 1)
-    g_poly = get_bch_generator_poly(m, n, k, t, prim_poly)
-    
-    # Degree of g(x) should be n - k
-    parity_bits = n - k
-    
-    # Pad g_poly with zeros to match parity_bits length + 1 (for coeff of x^parity)
-    # Actually remainder loop uses coefficients up to parity_bits-1?
-    # g(x) = p[0] + ... + p[deg] x^deg.
-    # We need p[j] for j in 0..parity_bits-1.
-    
-    current_len = len(g_poly)
-    needed_len = parity_bits + 1
-    if current_len < needed_len:
-        print(f"Warning: Calculated g(x) degree {current_len-1} does not match parity bits {parity_bits}. Padding with 0s.")
-        g_poly.extend([0] * (needed_len - current_len))
-    elif current_len > needed_len:
-         print(f"Error: Calculated g(x) degree {current_len-1} exceeds parity bits {parity_bits}. Impossible for systematic.")
-         # This happens for w32 if t=6 (deg 33 > 31)
-         return
+    geom = resolve_bch_geometry(m, n, k, t, prim_poly)
+    if geom is None:
+        return
+    g_poly = geom["g_poly"]
+    parity_bits = geom["parity_bits"]
+    k_encode = geom["k_encode"]
+    if parity_bits > n - 1:
+        print(f"Error: g(x) degree {parity_bits} too large for n={n}")
+        return
 
     # Verilog Generation
     verilog = []
@@ -181,8 +240,9 @@ def generate_bch_verilog(width, n, k, t, prim_poly, output_dir):
     verilog.append(f"    output reg  valid_out")
     verilog.append(f");")
     
-    verilog.append(f"    // Configuration: n={n}, k={k}, t={t}")
-    verilog.append(f"    // Generator Poly Limit: x^{parity_bits}")
+    verilog.append(f"    // BCH({n},{k},t={t})  k_encode={k_encode} parity_bits={parity_bits} deg(g)={parity_bits}")
+    if k_encode != k:
+        verilog.append(f"    // User data_in[{width-1}:0] padded into data_k[{k_encode-1}:0] (high {k_encode - width} bits zero)")
     
     # ---------------------------------------------------------
     # ENCODING LOGIC (Combinational LFSR / Matrix)
@@ -221,66 +281,8 @@ def generate_bch_verilog(width, n, k, t, prim_poly, output_dir):
     # Symbolic:
     # Represent each bit of R as a set of indices from 'data_in' that are XORed.
     
-    rem_equations = [set() for _ in range(parity_bits)]
-    
-    # We process data bits from k-1 down to 0
-    # But wait, Python's int representation:
-    # "data = 1" -> 0...01. Coeff of x^0.
-    # "data << parity" -> Coeff of x^parity.
-    # So data_in[0] is x^parity. data_in[k-1] is x^(n-1).
-    # We shift in High order coefficients first?
-    # Standard polynomial division processes high degree first.
-    # x^(n-1) -> ...
-    
-    # LFSR Input: use only k bits of data_in
-    data_range = f"data_in[{k-1}:0]" if k <= width else f"data_in" # Assuming width matches or is larger
-    if k < width:
-        verilog.append(f"    wire [{k-1}:0] data_k = data_in[{k-1}:0];")
-    elif k > width:
-        verilog.append(f"    wire [{k-1}:0] data_k = {{ {{ {k-width}{{1'b0}} }}, data_in }};")
-    else:
-        verilog.append(f"    wire [{k-1}:0] data_k = data_in;")
-        
-    for i in range(k-1, -1, -1):
-        # Input bit: data_k[i]
-        # Current MSB of remainder (coeff of x^{parity-1}) is rem_equations[parity_bits-1]
-        
-        feedback = rem_equations[parity_bits-1].copy()
-        
-        # Add data_k[i] to feedback
-        if i in feedback: feedback.remove(i)
-        else: feedback.add(i)
-        
-        # Shift and Add
-        # Next state j:
-        # R_next[j] = R_curr[j-1] ^ (feedback if g[j]==1 else 0)
-        # R_next[0] = (feedback if g[0]==1 else 0) (since R[-1] is 0)
-        
-        next_equations = [set() for _ in range(parity_bits)]
-        
-        for j in range(parity_bits):
-            if j == 0:
-                if g_poly[j] == 1:
-                    next_equations[j] = feedback.copy()
-            else:
-                next_equations[j] = rem_equations[j-1].copy()
-                if g_poly[j] == 1:
-                    # XOR with feedback
-                    for term in feedback:
-                        if term in next_equations[j]: next_equations[j].remove(term)
-                        else: next_equations[j].add(term)
-                        
-        rem_equations = next_equations
-        
-    # Generate Parity Logic
-    verilog.append(f"    wire [{parity_bits-1}:0] parity;")
-    for j in range(parity_bits):
-        terms = sorted(list(rem_equations[j]))
-        if len(terms) == 0:
-            verilog.append(f"    assign parity[{j}] = 1'b0;")
-        else:
-            vexpr = " ^ ".join([f"data_k[{t}]" for t in terms])
-            verilog.append(f"    assign parity[{j}] = {vexpr};")
+    emit_data_k_wire(verilog, width, k_encode)
+    emit_encoder_lfsr(verilog, k_encode, parity_bits, g_poly)
             
     # Format systematic codeword: [Data | Parity]
     # In bits: data at MSB (n-1 .. parity), parity at LSB (parity-1 .. 0)
@@ -307,33 +309,7 @@ def generate_bch_verilog(width, n, k, t, prim_poly, output_dir):
     # S_j[bit b] = XOR sum of (V_{j,i}[bit b] & codeword_in[i])
     
     gf = GF2m(m, prim_poly)
-    verilog.append(f"    wire [{2*t*m - 1}:0] syndromes_flat;")
-    
-    syndromes_found = False
-    
-    for j in range(1, 2 * t + 1):
-        # Calculate S_j
-        # Precompute values (alpha^j)^i
-        vals = [gf.power(gf.power(2, j), i) for i in range(n)] # 2 is alpha in int (binary 10)
-        
-        # For each bit bit_idx of the result (0..m-1)
-        for bit_idx in range(m):
-            contributors = []
-            for i in range(n):
-                val = vals[i]
-                if (val >> bit_idx) & 1:
-                    contributors.append(i)
-            
-            # Assign S_j_bit
-            s_name = f"synd_{j}_{bit_idx}"
-            if not contributors:
-                verilog.append(f"    wire {s_name} = 1'b0;")
-            else:
-                vexpr = " ^ ".join([f"codeword_in[{c}]" for c in contributors])
-                verilog.append(f"    wire {s_name} = {vexpr};")
-
-        # Combine into flat bus for easy checking
-        # (Optional, but useful for debug)
+    emit_syndrome_wires(verilog, gf, n, t)
     
     # Error Detection Logic
     # any_error = OR of all syndrome bits
@@ -366,15 +342,9 @@ def generate_bch_verilog(width, n, k, t, prim_poly, output_dir):
     verilog.append(f"            ")
     verilog.append(f"            if (decode_en) begin")
     verilog.append(f"                // Extract Systematic Data")
-    if (width > k):
-        # Pad with 0s if width > k
-        verilog.append(f"                data_out <= {{ {{ {width-k}{{1'b0}} }}, codeword_in[{n-1}:{parity_bits}] }};")
-    elif (width < k):
-        # Extract lower width bits if width < k (assuming data was LSB aligned in k-bit field)
-        verilog.append(f"                data_out <= codeword_in[{parity_bits+width-1}:{parity_bits}];")
-    else:
-        # width == k
-        verilog.append(f"                data_out <= codeword_in[{n-1}:{parity_bits}];")
+    verilog.append(
+        f"                data_out <= codeword_in[{parity_bits + width - 1}:{parity_bits}];"
+    )
     verilog.append(f"                error_detected <= any_syndrome;")
     verilog.append(f"                error_corrected <= 1'b0; // Corrected placeholder")
     verilog.append(f"                valid_out <= 1'b1;")
@@ -388,7 +358,7 @@ def generate_bch_verilog(width, n, k, t, prim_poly, output_dir):
         f.write("\n".join(verilog))
 
 def main():
-    output_dir = "verilogs/generated"
+    output_dir = "verilogs/raw_llm_generated/generated"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         
@@ -397,7 +367,7 @@ def main():
         (4,   7,   4,   1,  0b1011),
         (8,   15,  11,  1,  0b10011), # k=7 too small for w8. Use k=11 (t=1).
         (16,  31,  16,  3,  0b100101),
-        (32,  63,  32,  5,  0b1000011), # t=6 impossible (deg 33 > 31). t=5 deg 27 OK.
+        (32,  63,  32,  5,  0b1000011), # deg(g)=27, k_encode=36, parity=27 (no padding)
         (64,  127, 64,  9,  0b10001001),
         (128, 255, 128, 15, 0b100011101)
     ]

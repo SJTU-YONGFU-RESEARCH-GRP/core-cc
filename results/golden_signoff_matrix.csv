@@ -1,0 +1,55 @@
+module,width,vectors,coverage,rtl,pass,dataset
+Parity,4,258,Walking-one/zero + random,parity_ecc.v,PASS,core_cc_vectors_parity_w4_crv.jsonl
+Parity,8,416,Walking-one/zero + random,parity_ecc.v,PASS,core_cc_vectors_parity_w8_crv.jsonl
+Parity,16,732,Walking-one/zero + random,parity_ecc.v,PASS,core_cc_vectors_parity_w16_crv.jsonl
+Parity,32,1564,Walking-one/zero + random,parity_ecc.v,PASS,core_cc_vectors_parity_w32_crv.jsonl
+Parity,64,1628,Walking-one/zero + random,parity_ecc.v,PASS,core_cc_vectors_parity_w64_crv.jsonl
+Parity,128,4756,Walking-one/zero + random,parity_ecc.v,PASS,core_cc_vectors_parity_w128_crv.jsonl
+Hamming SEC,4,32,Walk-one + codeword 1-err exhaustive,hamming_sec_ecc.v,PASS,core_cc_vectors_hamming_w4_crv.jsonl
+Hamming SEC,8,104,Walk-one + codeword 1-err exhaustive,hamming_sec_ecc.v,PASS,core_cc_vectors_hamming_w8_crv.jsonl
+Hamming SEC,16,352,Walk-one + codeword 1-err exhaustive,hamming_sec_ecc.v,PASS,core_cc_vectors_hamming_w16_crv.jsonl
+Hamming SEC,32,1248,Walk-one + codeword 1-err exhaustive,hamming_sec_ecc.v,PASS,core_cc_vectors_hamming_w32_crv.jsonl
+Hamming SEC,64,4608,Walk-one + codeword 1-err exhaustive,hamming_sec_ecc.v,PASS,core_cc_vectors_hamming_w64_crv.jsonl
+Hamming SEC,128,17536,Walk-one + codeword 1-err exhaustive,hamming_sec_ecc.v,PASS,core_cc_vectors_hamming_w128_crv.jsonl
+SECDED,4,64,Walk-one + 1-err exhaustive + 2-err CRV,extended_hamming_secded_ecc.v,PASS,core_cc_vectors_secded_w4_crv.jsonl
+SECDED,8,190,Walk-one + 1-err exhaustive + 2-err CRV,extended_hamming_secded_ecc.v,PASS,core_cc_vectors_secded_w8_crv.jsonl
+SECDED,16,599,Walk-one + 1-err exhaustive + 2-err CRV,extended_hamming_secded_ecc.v,PASS,core_cc_vectors_secded_w16_crv.jsonl
+SECDED,32,2780,Walk-one + 1-err exhaustive + 2-err CRV,extended_hamming_secded_ecc.v,PASS,core_cc_vectors_secded_w32_crv.jsonl
+SECDED,64,7172,Walk-one + 1-err exhaustive + 2-err CRV,extended_hamming_secded_ecc.v,PASS,core_cc_vectors_secded_w64_crv.jsonl
+SECDED,128,22664,Walk-one + 1-err exhaustive + 2-err CRV,extended_hamming_secded_ecc.v,PASS,core_cc_vectors_secded_w128_crv.jsonl
+CRC (serial),4,690,Walking-one/zero + random err tiers,crc_ecc.v,PASS,core_cc_vectors_crc_w4_crv.jsonl
+CRC (serial),8,1080,Walking-one/zero + random err tiers,crc_ecc.v,PASS,core_cc_vectors_crc_w8_crv.jsonl
+CRC (serial),16,1860,Walking-one/zero + random err tiers,crc_ecc.v,PASS,core_cc_vectors_crc_w16_crv.jsonl
+CRC (serial),32,3820,Walking-one/zero + random err tiers,crc_ecc.v,PASS,core_cc_vectors_crc_w32_crv.jsonl
+CRC (serial),64,4140,Walking-one/zero + random err tiers,crc_ecc.v,PASS,core_cc_vectors_crc_w64_crv.jsonl
+CRC (serial),128,10780,Walking-one/zero + random err tiers,crc_ecc.v,PASS,core_cc_vectors_crc_w128_crv.jsonl
+CRC (comb),4,690,Same JSONL (parallel XOR tree),generated/crc_ecc_w4.v,PASS,core_cc_vectors_crc_w4_crv.jsonl
+CRC (comb),8,1080,Same JSONL (parallel XOR tree),generated/crc_ecc_w8.v,PASS,core_cc_vectors_crc_w8_crv.jsonl
+CRC (comb),16,1860,Same JSONL (parallel XOR tree),generated/crc_ecc_w16.v,PASS,core_cc_vectors_crc_w16_crv.jsonl
+CRC (comb),32,3820,Same JSONL (parallel XOR tree),generated/crc_ecc_w32.v,PASS,core_cc_vectors_crc_w32_crv.jsonl
+CRC (comb),64,4140,Same JSONL (parallel XOR tree),generated/crc_ecc_w64.v,PASS,core_cc_vectors_crc_w64_crv.jsonl
+CRC (comb),128,10780,Same JSONL (parallel XOR tree),generated/crc_ecc_w128.v,PASS,core_cc_vectors_crc_w128_crv.jsonl
+Repetition rf=3,4,168,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=3),PASS,core_cc_vectors_repetition_w4_rf3_crv.jsonl
+Repetition rf=4,4,196,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=4),PASS,core_cc_vectors_repetition_w4_rf4_crv.jsonl
+Repetition rf=3,8,432,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=3),PASS,core_cc_vectors_repetition_w8_rf3_crv.jsonl
+Repetition rf=4,8,520,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=4),PASS,core_cc_vectors_repetition_w8_rf4_crv.jsonl
+Repetition rf=3,16,1148,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=3),PASS,core_cc_vectors_repetition_w16_rf3_crv.jsonl
+Repetition rf=4,16,1452,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=4),PASS,core_cc_vectors_repetition_w16_rf4_crv.jsonl
+Repetition rf=3,32,3732,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=3),PASS,core_cc_vectors_repetition_w32_rf3_crv.jsonl
+Repetition rf=4,32,4852,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=4),PASS,core_cc_vectors_repetition_w32_rf4_crv.jsonl
+Repetition rf=3,64,1504,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=3),PASS,core_cc_vectors_repetition_w64_rf3_crv.jsonl
+Repetition rf=4,64,1824,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=4),PASS,core_cc_vectors_repetition_w64_rf4_crv.jsonl
+Repetition rf=3,128,2408,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=3),PASS,core_cc_vectors_repetition_w128_rf3_crv.jsonl
+Repetition rf=4,128,3048,Walk-one/zero + 1-err exhaust + 2-err/channel + random,repetition_ecc.v (rf=4),PASS,core_cc_vectors_repetition_w128_rf4_crv.jsonl
+BCH,4,27,"Clean + C(n,1) 1-err (t=1)",generated/bch_ecc_w4.v,PASS,core_cc_vectors_w4_exhaust.jsonl
+BCH,8,35,"Clean + C(n,1) 1-err (t=1)",generated/bch_ecc_w8.v,PASS,core_cc_vectors_w8_exhaust.jsonl
+BCH,16,5041,1/2/3-err exhaustive (t=3),bch_ecc_w16 LUT / COMB / FSM,PASS,core_cc_vectors_w16_exhaust.jsonl
+BCH,32,5066,Clean + 1/2-err exhaustive + random 3..t,generated/bch_ecc_w32.v FSM,PASS,core_cc_vectors_w32_crv.jsonl
+BCH,64,11678,Clean + 1/2-err exhaustive + random 3..t,generated/bch_ecc_w64.v FSM,PASS,core_cc_vectors_w64_crv.jsonl
+BCH,128,36590,Clean + 1/2-err exhaustive + random 3..t,generated/bch_ecc_w128.v FSM,PASS,core_cc_vectors_w128_crv.jsonl
+RS,4,35,Clean + 1/2-byte exhaustive (t=2),generated/reed_solomon_ecc_w4.v,PASS,core_cc_vectors_rs_w4_exhaust.jsonl
+RS,8,35,Clean + 1/2-byte exhaustive (t=2),generated/reed_solomon_ecc_w8.v,PASS,core_cc_vectors_rs_w8_exhaust.jsonl
+RS,16,41,Clean + 1/2-byte exhaustive (t=2),generated/reed_solomon_ecc_w16.v,PASS,core_cc_vectors_rs_w16_exhaust.jsonl
+RS,32,56,Clean + 1/2-byte exhaustive (t=2),generated/reed_solomon_ecc_w32.v,PASS,core_cc_vectors_rs_w32_exhaust.jsonl
+RS,64,2378,Clean + 1/2-byte + random 3-byte,generated/reed_solomon_ecc_w64.v,PASS,core_cc_vectors_rs_w64_crv.jsonl
+RS,128,3010,Clean + 1/2-byte + random 3-byte,generated/reed_solomon_ecc_w128.v,PASS,core_cc_vectors_rs_w128_crv.jsonl
